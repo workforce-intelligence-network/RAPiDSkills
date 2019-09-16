@@ -26,3 +26,15 @@ div.container {
 div#email-form {
   margin-top: 27px;
 }
+
+/* Can't figure out quickly how to change Boostrap $primary color when using
+ * the CDN.  I'm sure there's a better way to do this. */
+.btn-primary {
+  background-color: $mi-primary-color;
+  border-color: $mi-primary-color;
+
+  &:hover {
+    background-color: lighten($mi-primary-color, 10%);
+    border-color: lighten($mi-primary-color, 10%);
+  }
+}
