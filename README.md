@@ -62,3 +62,33 @@ To run the rails console:
 ```
 $ docker-compose exec web rails c
 ```
+
+## Testing Suite
+
+We are using [RSpec](http://rspec.info/) for tests.  Before beginning a new
+feature, please run the specs and make sure the entire test suite is passing.
+All tests should be passing when submitting a PR.  Please write specs as
+appropriate.
+
+To run all specs:
+
+```
+$ docker-compose exec web rspec spec -fd
+```
+
+To run an individual file:
+
+```
+$ docker-compose exec web rspec spec/models/user_spec.rb -fd
+```
+
+To run an individual spec, pass the spec name or partial match:
+```
+$ docker-compose exec web rspec spec/models/user_spec.rb -fd -e "valid factory"
+```
+
+Individual specs can also be run by specifying the line number:
+
+```
+$ docker-compose exec web rspec spec/models/user_spec.rb:4 -fd
+```
