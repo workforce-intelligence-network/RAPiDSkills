@@ -1,6 +1,9 @@
 ActiveAdmin.register Occupation do
   permit_params :title, :type, :rapids_code, :onet_code, :onet_page_url, :term_length_min, :term_length_max, :title_aliases
 
+  preserve_default_filters!
+  remove_filter :title_aliases
+
   index do
     column :id
     column :title
