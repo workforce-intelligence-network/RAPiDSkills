@@ -15,7 +15,7 @@ ActiveAdmin.register Occupation do
       "#{occupation.term_length_min} - #{occupation.term_length_max}"
     end
     column "Aliases" do |occupation|
-      occupation.title_aliases.join(", ")
+      occupation.title_aliases.join("; ")
     end
     actions
   end
@@ -32,7 +32,7 @@ ActiveAdmin.register Occupation do
         "#{occupation.term_length_min} - #{occupation.term_length_max}"
       end
       row "Aliases" do |occupation|
-        occupation.title_aliases
+        occupation.title_aliases.join("; ")
       end
       row :created_at
       row :updated_at
@@ -50,7 +50,7 @@ ActiveAdmin.register Occupation do
       f.input :onet_page_url
       f.input :term_length_min
       f.input :term_length_max
-      f.input :title_aliases, input_html: { value: f.object.title_aliases.join(", ") }, label: "Aliases (separate with commas)"
+      f.input :title_aliases, input_html: { value: f.object.title_aliases.join("; ") }, label: "Aliases (separate with semi-colons)"
     end
     f.actions
   end
