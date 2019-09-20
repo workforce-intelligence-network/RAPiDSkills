@@ -1,0 +1,2 @@
+class TimeOccupation < Occupation
+end
