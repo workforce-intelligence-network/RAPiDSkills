@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :occupation do
-    type { "" }
+    type { "HybridOccupation" }
     rapids_code { "MyString" }
     onet_code { "MyString" }
     onet_page_url { "MyString" }
