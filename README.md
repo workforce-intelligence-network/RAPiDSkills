@@ -63,6 +63,27 @@ To run the rails console:
 $ docker-compose exec web rails c
 ```
 
+## Mailcatcher
+We use [Mailcatcher](https://mailcatcher.me/) to receive mail in development.
+All mail sent in the development environment can be viewed at http://localhost:1080.
+
+## Secret keys
+To edit the encrypted credentials for staging and production, you must have the
+master key files stored in `config/credentials/staging.key` and
+`config/credentials/production.key`.
+
+To edit:
+
+```
+$ docker-compose run --rm -e EDITOR=vim web rails credentials:edit --environment <environment>
+```
+
+For example:
+
+```
+$ docker-compose run --rm -e EDITOR=vim web rails credentials:edit --environment staging
+```
+
 ## Testing Suite
 
 We are using [RSpec](http://rspec.info/) for tests.  Before beginning a new

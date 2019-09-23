@@ -17,6 +17,8 @@ Rails.application.configure do
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
   # config.require_master_key = true
+  config.credentials.content_path = "config/credentials/#{ENV['RAPID_SKILLS_ENVIRONMENT'] || Rails.env}.yml.enc"
+  config.credentials.key_path = "config/credentials/#{ENV['RAPID_SKILLS_ENVIRONMENT'] || Rails.env}.key"
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -61,7 +63,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "rapid_skills_production"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 } # Placeholder for now until I have Heroku info
+  config.action_mailer.default_url_options = { host: Rails.application.credentials.domain }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -110,4 +112,14 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  ActionMailer::Base.smtp_settings = {
+    port: ENV['MAILGUN_SMTP_PORT'],
+    address: ENV['MAILGUN_SMTP_SERVER'],
+    user_name: ENV['MAILGUN_SMTP_LOGIN'],
+    password: ENV['MAILGUN_SMTP_PASSWORD'],
+    domain: Rails.application.credentials.mailer_domain || Rails.application.credentials.domain,
+    authentication: :plain,
+  }
+  ActionMailer::Base.delivery_method = :smtp
 end
