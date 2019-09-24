@@ -2,12 +2,12 @@ ActiveAdmin.register Occupation do
   permit_params :title, :type, :rapids_code, :onet_code, :onet_page_url, :term_length_min, :term_length_max, :title_aliases
 
   preserve_default_filters!
+  filter :type, as: :select, collection: %w(HybridOccupation TimeOccupation CompetencyOccupation)
   remove_filter :title_aliases
 
   index do
     column :id
     column :title
-    column :type
     column :rapids_code
     column :onet_code
     column :onet_page_url
@@ -17,6 +17,8 @@ ActiveAdmin.register Occupation do
     column "Aliases" do |occupation|
       occupation.title_aliases.join("; ")
     end
+    column :created_at
+    column :updated_at
     actions
   end
 
@@ -44,7 +46,7 @@ ActiveAdmin.register Occupation do
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
       f.input :title
-      f.input :type
+      f.input :type, as: :select, collection: %w(HybridOccupation TimeOccupation CompetencyOccupation), include_blank: false
       f.input :rapids_code
       f.input :onet_code
       f.input :onet_page_url
