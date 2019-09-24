@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_19_181716) do
+ActiveRecord::Schema.define(version: 2019_09_24_155733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,15 @@ ActiveRecord::Schema.define(version: 2019_09_19_181716) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["rapids_code"], name: "index_occupations_on_rapids_code", unique: true
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "type"
+    t.string "title"
+    t.string "logo_url"
+    t.boolean "registers_standards"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
