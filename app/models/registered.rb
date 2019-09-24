@@ -1,0 +1,2 @@
+class Registered < OccupationStandard
+end
