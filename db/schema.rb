@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_160604) do
+ActiveRecord::Schema.define(version: 2019_09_24_161053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,28 @@ ActiveRecord::Schema.define(version: 2019_09_24_160604) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "occupation_standards", force: :cascade do |t|
+    t.string "type"
+    t.bigint "organization_id", null: false
+    t.bigint "creator_id", null: false
+    t.bigint "occupation_id", null: false
+    t.boolean "data_trust_approval"
+    t.bigint "parent_occupation_standard_id"
+    t.bigint "industry_id"
+    t.datetime "completed_at"
+    t.datetime "published_at"
+    t.string "pdf_file_url"
+    t.string "excel_file_url"
+    t.string "source_file_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["creator_id"], name: "index_occupation_standards_on_creator_id"
+    t.index ["industry_id"], name: "index_occupation_standards_on_industry_id"
+    t.index ["occupation_id"], name: "index_occupation_standards_on_occupation_id"
+    t.index ["organization_id"], name: "index_occupation_standards_on_organization_id"
+    t.index ["parent_occupation_standard_id"], name: "index_occupation_standards_on_parent_occupation_standard_id"
+  end
+
   create_table "occupations", force: :cascade do |t|
     t.string "title"
     t.string "type"
@@ -79,4 +101,9 @@ ActiveRecord::Schema.define(version: 2019_09_24_160604) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "occupation_standards", "industries"
+  add_foreign_key "occupation_standards", "occupation_standards", column: "parent_occupation_standard_id"
+  add_foreign_key "occupation_standards", "occupations"
+  add_foreign_key "occupation_standards", "organizations"
+  add_foreign_key "occupation_standards", "users", column: "creator_id"
 end
