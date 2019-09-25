@@ -6,7 +6,6 @@ ActiveAdmin.register OccupationStandard do
   preserve_default_filters!
   filter :type, as: :select, collection: SUBMODELS
 
-
   index do
     column :id
     column :type
@@ -33,6 +32,7 @@ ActiveAdmin.register OccupationStandard do
       row :parent_occupation_standard
       row :industry
       row :skills
+      row :work_processes
       row :completed_at
       row :published_at
       row :pdf_file_url
