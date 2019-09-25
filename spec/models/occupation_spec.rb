@@ -11,4 +11,10 @@ RSpec.describe Occupation, type: :model do
     new_o = build(:occupation, rapids_code: o.rapids_code)
     expect(new_o.valid?).to be false
   end
+
+  it "has many industries" do
+    industry = create(:industry)
+    os = create(:occupation_standard, industry: industry)
+    expect(os.occupation.industries).to eq [industry]
+  end
 end
