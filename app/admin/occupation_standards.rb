@@ -30,6 +30,7 @@ ActiveAdmin.register OccupationStandard do
       row :parent_occupation_standard
       row :industry
       row :skills
+      row :work_processes
       row :completed_at
       row :published_at
       row :pdf_file_url

@@ -36,6 +36,7 @@ ActiveAdmin.register Occupation do
       row "Aliases" do |occupation|
         occupation.title_aliases.join("; ")
       end
+      row :industries
       row :created_at
       row :updated_at
     end
