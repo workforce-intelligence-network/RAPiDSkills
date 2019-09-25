@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_201153) do
+ActiveRecord::Schema.define(version: 2019_09_25_214154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,18 @@ ActiveRecord::Schema.define(version: 2019_09_25_201153) do
     t.string "naics_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "state_id", null: false
+    t.string "street_address"
+    t.string "city"
+    t.string "zip_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_locations_on_organization_id"
+    t.index ["state_id"], name: "index_locations_on_state_id"
   end
 
   create_table "occupation_standard_skills", force: :cascade do |t|
@@ -153,6 +165,8 @@ ActiveRecord::Schema.define(version: 2019_09_25_201153) do
     t.index ["occupation_standard_id"], name: "index_work_processes_on_occupation_standard_id"
   end
 
+  add_foreign_key "locations", "organizations"
+  add_foreign_key "locations", "states"
   add_foreign_key "occupation_standard_skills", "occupation_standards"
   add_foreign_key "occupation_standard_skills", "skills"
   add_foreign_key "occupation_standards", "industries"
