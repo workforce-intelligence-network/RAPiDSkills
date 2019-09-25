@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_180633) do
+ActiveRecord::Schema.define(version: 2019_09_25_181524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,17 @@ ActiveRecord::Schema.define(version: 2019_09_25_180633) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "skills", force: :cascade do |t|
+    t.text "description"
+    t.integer "usage_count"
+    t.bigint "work_process_id", null: false
+    t.bigint "parent_skill_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["parent_skill_id"], name: "index_skills_on_parent_skill_id"
+    t.index ["work_process_id"], name: "index_skills_on_work_process_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "name"
@@ -116,5 +127,7 @@ ActiveRecord::Schema.define(version: 2019_09_25_180633) do
   add_foreign_key "occupation_standards", "occupations"
   add_foreign_key "occupation_standards", "organizations"
   add_foreign_key "occupation_standards", "users", column: "creator_id"
+  add_foreign_key "skills", "skills", column: "parent_skill_id"
+  add_foreign_key "skills", "work_processes"
   add_foreign_key "work_processes", "occupation_standards"
 end
