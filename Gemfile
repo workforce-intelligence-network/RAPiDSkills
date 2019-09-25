@@ -18,6 +18,9 @@ gem 'sass-rails', '~> 5'
 gem 'activeadmin'
 gem 'devise'
 
+# Utilities
+gem 'after_party'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
