@@ -4,6 +4,8 @@ class OccupationStandard < ApplicationRecord
   belongs_to :industry, optional: true
   belongs_to :creator, class_name: 'User'
   belongs_to :parent_occupation_standard, class_name: 'OccupationStandard', optional: true
+  has_many :occupation_standard_skills
+  has_many :skills, through: :occupation_standard_skills
 
   def to_s
     "#{occupation.title} (#{organization.title})"
