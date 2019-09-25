@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_161053) do
+ActiveRecord::Schema.define(version: 2019_09_25_180633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,9 +101,20 @@ ActiveRecord::Schema.define(version: 2019_09_24_161053) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  create_table "work_processes", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "hours"
+    t.bigint "occupation_standard_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["occupation_standard_id"], name: "index_work_processes_on_occupation_standard_id"
+  end
+
   add_foreign_key "occupation_standards", "industries"
   add_foreign_key "occupation_standards", "occupation_standards", column: "parent_occupation_standard_id"
   add_foreign_key "occupation_standards", "occupations"
   add_foreign_key "occupation_standards", "organizations"
   add_foreign_key "occupation_standards", "users", column: "creator_id"
+  add_foreign_key "work_processes", "occupation_standards"
 end
