@@ -3,6 +3,5 @@ FactoryBot.define do
     title { Faker::Lorem.sentence }
     description { Faker::Lorem.paragraph }
     hours { 1 }
-    occupation_standard
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_214154) do
+ActiveRecord::Schema.define(version: 2019_09_26_174307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,10 +159,8 @@ ActiveRecord::Schema.define(version: 2019_09_25_214154) do
     t.string "title"
     t.text "description"
     t.integer "hours"
-    t.bigint "occupation_standard_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["occupation_standard_id"], name: "index_work_processes_on_occupation_standard_id"
   end
 
   add_foreign_key "locations", "organizations"
@@ -179,5 +177,4 @@ ActiveRecord::Schema.define(version: 2019_09_25_214154) do
   add_foreign_key "standards_registrations", "occupation_standards"
   add_foreign_key "standards_registrations", "organizations"
   add_foreign_key "standards_registrations", "states"
-  add_foreign_key "work_processes", "occupation_standards"
 end
