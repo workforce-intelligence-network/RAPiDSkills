@@ -1,8 +1,11 @@
 ActiveAdmin.register OccupationStandard do
   permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :pdf_file_url, :excel_file_url, :source_file_url
 
+  SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)
+
   preserve_default_filters!
-  filter :type, as: :select, collection: %w(Framework Registered Guideline Unregistered)
+  filter :type, as: :select, collection: SUBMODELS
+
 
   index do
     column :id
@@ -43,7 +46,7 @@ ActiveAdmin.register OccupationStandard do
   form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
-      f.input :type, as: :select, collection: %w(Framework Registered Guideline Unregistered), include_blank: false
+      f.input :type, as: :select, collection: SUBMODELS, include_blank: false
       f.input :organization
       f.input :creator
       f.input :occupation

@@ -1,0 +1,2 @@
+class FrameworkStandard < OccupationStandard
+end

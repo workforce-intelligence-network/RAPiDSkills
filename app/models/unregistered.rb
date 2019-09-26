@@ -1,2 +1,0 @@
-class Unregistered < OccupationStandard
-end

@@ -1,2 +1,0 @@
-class Guideline < OccupationStandard
-end
