@@ -6,7 +6,8 @@ class OccupationStandard < ApplicationRecord
   belongs_to :parent_occupation_standard, class_name: 'OccupationStandard', optional: true
   has_many :occupation_standard_skills
   has_many :skills, through: :occupation_standard_skills
-  has_many :work_processes
+  has_many :occupation_standard_work_processes
+  has_many :work_processes, through: :occupation_standard_work_processes
   has_many :standards_registrations
 
   def to_s
