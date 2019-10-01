@@ -1,0 +1,2 @@
+class UnregisteredStandard < OccupationStandard
+end
