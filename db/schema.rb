@@ -50,6 +50,13 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "data_imports", force: :cascade do |t|
+    t.string "description"
+    t.integer "kind"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "industries", force: :cascade do |t|
     t.string "title"
     t.string "naics_code"

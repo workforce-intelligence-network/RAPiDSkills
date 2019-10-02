@@ -1,0 +1,2 @@
+class DataImport < ApplicationRecord
+end
