@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :data_import do
     description { Faker::Lorem.sentence }
-    kind { 1 }
+    kind { 0 }
   end
 end
