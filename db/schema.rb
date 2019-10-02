@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.bigint "skill_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "sort_order", default: 0
     t.index ["occupation_standard_id"], name: "index_occupation_standard_skills_on_occupation_standard_id"
     t.index ["skill_id"], name: "index_occupation_standard_skills_on_skill_id"
   end
@@ -62,6 +63,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.bigint "work_process_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "sort_order", default: 0
     t.index ["occupation_standard_id"], name: "occupation_standard_id_idx"
     t.index ["work_process_id"], name: "index_occupation_standard_work_processes_on_work_process_id"
   end
