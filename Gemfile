@@ -21,6 +21,10 @@ gem 'devise'
 # Utilities
 gem 'after_party'
 
+# Cache store
+gem 'redis-objects'
+gem 'connection_pool'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
