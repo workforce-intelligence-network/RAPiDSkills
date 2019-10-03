@@ -52,15 +52,20 @@ docker-compose logs -f web
 ```
 
 ### Accessing services
-To access the postgres database:
+#### Postgres database
 ```
 $ docker-compose exec database psql -h database -Upostgres rapidskills_development
 ```
 Enter password when prompted (use `POSTGRES_PASSWORD` environment variable in `config/docker.env`).
 
-To run the rails console:
+#### Rails console
 ```
 $ docker-compose exec web rails c
+```
+
+#### Redis CLI
+```
+$ docker-compose exec redis redis-cli -h redis
 ```
 
 ## Mailcatcher
