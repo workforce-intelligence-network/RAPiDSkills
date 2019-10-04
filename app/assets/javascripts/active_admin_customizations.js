@@ -1,9 +1,14 @@
 $(document).ready(function() {
-  $("#data_import_creator_type").on("change", function() {
+  function change_creator(val) {
     $(".polymorphic").hide();
-    $("#data_import_creator_id_input_" + this.value).show();
-    console.log(this.value);
+    $("#data_import_creator_id_input_" + val).show();
+  }
+
+  $("#data_import_creator_type").on("change", function() {
+    change_creator(this.value);
   });
 
-  console.log($("#data_import_creator_type").val());
+  if ($("#data_import_creator_type").val()) {
+    change_creator($("#data_import_creator_type").val());
+  }
 });
