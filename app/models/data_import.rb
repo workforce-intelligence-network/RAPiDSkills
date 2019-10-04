@@ -1,6 +1,8 @@
 class DataImport < ApplicationRecord
   include Redis::Objects
 
+  validates :file, :kind, presence: true
+
   has_one_attached :file
 
   enum kind: [:occupation_standards]
