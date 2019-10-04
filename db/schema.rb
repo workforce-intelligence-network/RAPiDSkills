@@ -144,7 +144,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
   create_table "skills", force: :cascade do |t|
     t.text "description"
     t.integer "usage_count"
-    t.bigint "work_process_id", null: false
+    t.bigint "work_process_id"
     t.bigint "parent_skill_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
