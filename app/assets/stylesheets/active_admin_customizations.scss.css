@@ -1,0 +1,5 @@
+/* Add style customizations for active admin here */
+p.info {
+  font-size: 1.5em;
+  margin-bottom: 9px;
+}

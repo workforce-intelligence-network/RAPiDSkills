@@ -28,6 +28,7 @@ ActiveAdmin.register DataImport do
   end
 
   form do |f|
+    para "Do not modify headers of files for CSV imports", class: "info"
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
       f.input :file, as: :file
