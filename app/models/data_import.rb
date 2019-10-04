@@ -3,6 +3,7 @@ class DataImport < ApplicationRecord
 
   validates :file, :kind, presence: true
 
+  belongs_to :creator, polymorphic: true
   has_one_attached :file
 
   enum kind: [:occupation_standards]

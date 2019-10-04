@@ -55,6 +55,9 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.integer "kind"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "creator_type", null: false
+    t.bigint "creator_id", null: false
+    t.index ["creator_type", "creator_id"], name: "index_data_imports_on_creator_type_and_creator_id"
   end
 
   create_table "industries", force: :cascade do |t|
