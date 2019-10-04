@@ -3,6 +3,7 @@ ActiveAdmin.register DataImport do
 
   index do
     column :id
+    column :creator
     column :kind
     column :description
     column :file do |data_import|
@@ -34,8 +35,8 @@ ActiveAdmin.register DataImport do
     f.inputs do
       f.input :file, as: :file
       f.input :creator_type, as: :select, collection: %w(AdminUser User), include_blank: false
-      f.input :creator_id, as: :select, collection: AdminUser.all, input_html: { id: "data_import_creator_id_admin_user" }, wrapper_html: { class: "polymorphic", id: "data_import_creator_id_input_AdminUser" }
-      f.input :creator_id, as: :select, collection: User.all, input_html: { id: "data_import_creator_id_user" }, wrapper_html: { class: "polymorphic hide", id: "data_import_creator_id_input_User" }
+      f.input :creator_id, as: :select, collection: AdminUser.order(:email), input_html: { id: "data_import_creator_id_admin_user" }, wrapper_html: { class: "polymorphic", id: "data_import_creator_id_input_AdminUser" }
+      f.input :creator_id, as: :select, collection: User.order(:name), input_html: { id: "data_import_creator_id_user", disabled: true }, wrapper_html: { class: "polymorphic hide", id: "data_import_creator_id_input_User" }
       f.input :kind
       f.input :description
     end

@@ -1,7 +1,9 @@
 $(document).ready(function() {
   function change_creator(val) {
     $(".polymorphic").hide();
+    $(".polymorphic select").prop('disabled', true);
     $("#data_import_creator_id_input_" + val).show();
+    $("#data_import_creator_id_input_" + val + " select").prop('disabled', false);
   }
 
   $("#data_import_creator_type").on("change", function() {
