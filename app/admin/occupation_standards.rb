@@ -1,5 +1,5 @@
 ActiveAdmin.register OccupationStandard do
-  permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :pdf_file_url, :excel_file_url, :source_file_url, skill_ids: [], work_process_ids: []
+  permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :pdf_file_url, :excel_file_url, :source_file_url, :title, skill_ids: [], work_process_ids: []
 
   SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)
 
@@ -10,6 +10,7 @@ ActiveAdmin.register OccupationStandard do
     column :id
     column :type
     column :organization
+    column :title
     column :creator
     column :occupation
     column :data_trust_approval
@@ -26,6 +27,7 @@ ActiveAdmin.register OccupationStandard do
       row :id
       row :type
       row :organization
+      row :title
       row :creator
       row :occupation
       row :data_trust_approval
@@ -49,6 +51,7 @@ ActiveAdmin.register OccupationStandard do
     f.inputs do
       f.input :type, as: :select, collection: SUBMODELS, include_blank: false
       f.input :organization
+      f.input :title
       f.input :creator
       f.input :occupation
       f.input :data_trust_approval

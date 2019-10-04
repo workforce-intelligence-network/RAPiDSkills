@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.string "source_file_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
     t.index ["creator_id"], name: "index_occupation_standards_on_creator_id"
     t.index ["industry_id"], name: "index_occupation_standards_on_industry_id"
     t.index ["occupation_id"], name: "index_occupation_standards_on_occupation_id"
