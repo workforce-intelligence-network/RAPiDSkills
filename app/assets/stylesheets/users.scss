@@ -6,15 +6,6 @@ $mi-primary-color: rgb(14, 74, 94);
 
 .navbar {
   background-color: $mi-primary-color;
-
-  a.navbar-brand, a {
-    text-decoration: none;
-    color: white;
-
-    &:hover {
-      color: #eee;
-    }
-  }
 }
 
 div#site-header {
