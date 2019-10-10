@@ -44,18 +44,20 @@ class DataImport < ApplicationRecord
                 description: row["work_process_description"],
                 hours: row["work_process_hours"],
               ).first_or_create!
-              OccupationStandardWorkProcess.create(
+              OccupationStandardWorkProcess.where(
                 occupation_standard: occupation_standard,
                 work_process: work_process,
+              ).first_or_create!(
                 sort_order: row["work_process_sort"],
               )
               skill = Skill.where(
                 description: row["skill"],
                 work_process: work_process,
               ).first_or_create!
-              OccupationStandardSkill.create(
+              OccupationStandardSkill.where(
                 occupation_standard: occupation_standard,
                 skill: skill,
+              ).first_or_create!(
                 sort_order: row["skill_sort"],
               )
           end

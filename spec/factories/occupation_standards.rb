@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :occupation_standard do
-    type { "Framework" }
+    type { "FrameworkStandard" }
     organization
     association :creator, factory: :user
     occupation
