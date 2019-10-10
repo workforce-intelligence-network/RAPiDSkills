@@ -40,7 +40,7 @@ RSpec.describe "Admin::DataImports", type: :request do
 
           os1 = OccupationStandard.first
           expect(os1.title).to eq "Heeling"
-          expect(os1.occupation_id).to eq occupation.id
+          expect(os1.occupation).to eq occupation
           expect(os1.organization).to eq organization
           expect(os1.creator).to eq user
           expect(os1.type).to eq "FrameworkStandard"
@@ -59,7 +59,7 @@ RSpec.describe "Admin::DataImports", type: :request do
 
           os2 = OccupationStandard.last
           expect(os2.title).to eq "Dog Training"
-          expect(os2.occupation.id).to eq occupation.id
+          expect(os2.occupation).to eq occupation
           expect(os2.organization).to eq organization
           expect(os2.creator).to eq user
           expect(os2.type).to eq "UnregisteredStandard"
@@ -164,7 +164,7 @@ RSpec.describe "Admin::DataImports", type: :request do
 
           os2 = OccupationStandard.last
           expect(os2.title).to eq "Dog Training"
-          expect(os2.occupation.id).to eq occupation.id
+          expect(os2.occupation).to eq occupation
           expect(os2.organization).to eq organization
           expect(os2.creator).to eq user
 
