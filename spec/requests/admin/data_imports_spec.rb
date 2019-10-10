@@ -30,6 +30,8 @@ RSpec.describe "Admin::DataImports", type: :request do
             .and change(OccupationStandard, :count).by(2)
             .and change(WorkProcess, :count).by(3)
             .and change(Skill, :count).by(5)
+            .and change(OccupationStandardWorkProcess, :count).by(3)
+            .and change(OccupationStandardSkill, :count).by(5)
 
           di = DataImport.last
           expect(di.user).to eq user
@@ -78,6 +80,8 @@ RSpec.describe "Admin::DataImports", type: :request do
               .and change(OccupationStandard, :count).by(0)
               .and change(WorkProcess, :count).by(0)
               .and change(Skill, :count).by(0)
+              .and change(OccupationStandardWorkProcess, :count).by(0)
+              .and change(OccupationStandardSkill, :count).by(0)
           end
         end
 
