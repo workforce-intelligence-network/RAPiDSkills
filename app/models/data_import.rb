@@ -26,13 +26,15 @@ class DataImport < ApplicationRecord
         transaction do
           # https://github.com/rails/rails/issues/36994
           file_data = File.read(attachment_changes['file'].attachable)
+          @count = 0
           CSV.parse(file_data, headers: true) do |row|
+            @count += 1
             occupation = Occupation.find_by(rapids_code: row["rapids_code"])
             organization = Organization.find_by(title: row["organization_title"])
             occupation_standard = OccupationStandard.where(
               organization: organization,
               occupation: occupation,
-              title: row["occupation_standard_title"].presence || occupation.title,
+              title: row["occupation_standard_title"].presence || occupation.try(:title),
             ).first_or_create!(
               creator: user
               )
@@ -58,7 +60,8 @@ class DataImport < ApplicationRecord
           end
         end
       rescue Exception => e
-        errors.add(:base, e.message)
+        error_msg = "[Error on line #{@count}] #{e.message}"
+        errors.add(:base, error_msg)
         throw(:abort)
       end
     end
