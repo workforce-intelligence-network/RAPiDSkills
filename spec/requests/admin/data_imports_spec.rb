@@ -67,6 +67,33 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os2.skills[0].description).to eq "Understand costs"
         end
       end
+
+      context "with invalid data" do
+        context "with missing occupation" do
+          let!(:organization) { create(:organization, title: "Acme Dog Walking") }
+          it "does not save data" do
+            expect{
+              post path, params: params
+            }.to change(DataImport, :count).by(0)
+              .and change(OccupationStandard, :count).by(0)
+              .and change(WorkProcess, :count).by(0)
+              .and change(Skill, :count).by(0)
+          end
+        end
+
+        context "with missing organization" do
+          let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
+
+          it "does not save data" do
+            expect{
+              post path, params: params
+            }.to change(DataImport, :count).by(0)
+              .and change(OccupationStandard, :count).by(0)
+              .and change(WorkProcess, :count).by(0)
+              .and change(Skill, :count).by(0)
+          end
+        end
+      end
     end
   end
 end
