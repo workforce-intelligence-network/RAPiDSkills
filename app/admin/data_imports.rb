@@ -1,5 +1,5 @@
 ActiveAdmin.register DataImport do
-  permit_params :description, :kind, :file, :user
+  permit_params :description, :kind, :file, :user_id
 
   index do
     column :id

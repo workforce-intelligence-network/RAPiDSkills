@@ -20,7 +20,41 @@ class DataImport < ApplicationRecord
   end
 
   def run_import
-    # Import data here according to kind
+    case kind
+    when "occupation_standards"
+      # https://github.com/rails/rails/issues/36994
+      file_data = File.read(attachment_changes['file'].attachable)
+      CSV.parse(file_data, headers: true) do |row|
+        occupation = Occupation.find_by(rapids_code: row["rapids_code"])
+        organization = Organization.find_by(title: row["organization_title"])
+        occupation_standard = OccupationStandard.where(
+          organization: organization,
+          occupation: occupation,
+          title: row["occupation_standard_title"].presence || occupation.title,
+        ).first_or_create(
+          creator: user
+          )
+        work_process = WorkProcess.where(
+          title: row["work_process_title"],
+          description: row["work_process_description"],
+          hours: row["work_process_hours"],
+        ).first_or_create
+        OccupationStandardWorkProcess.create(
+          occupation_standard: occupation_standard,
+          work_process: work_process,
+          sort_order: row["work_process_sort"],
+        )
+        skill = Skill.where(
+          description: row["skill"],
+          work_process: work_process,
+        ).first_or_create
+        OccupationStandardSkill.create(
+          occupation_standard: occupation_standard,
+          skill: skill,
+          sort_order: row["skill_sort"],
+        )
+      end
+    end
   end
 
   def set_blob_key
