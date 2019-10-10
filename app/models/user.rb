@@ -6,5 +6,5 @@ class User < ApplicationRecord
 
   enum role: [:basic, :admin]
 
-  has_many :data_imports, as: :creator
+  has_many :data_imports
 end

@@ -3,6 +3,6 @@ FactoryBot.define do
     file { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.csv'), 'text/csv') }
     description { Faker::Lorem.sentence }
     kind { 0 }
-    association :creator, factory: :user
+    user
   end
 end
