@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "Admin::DataImports", type: :request do
   describe "POST #create" do
     let(:path) { admin_data_imports_path }
-    let(:admin) { create(:admin_user) }
-    let(:creator) { create(:user) }
+    let(:admin) { create(:admin) }
+    let(:user) { create(:user) }
 
     before { sign_in admin }
 
@@ -15,8 +15,7 @@ RSpec.describe "Admin::DataImports", type: :request do
         {
           data_import: {
             file: fixture_file_upload("files/dog_walking.csv", "text/csv"),
-            creator_type: "User",
-            creator_id: creator.id,
+            user_id: user.id,
             kind: "occupation_standards",
             description: "this is a description",
           }
@@ -33,7 +32,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             .and change(Skill, :count).by(5)
 
           di = DataImport.last
-          expect(di.creator).to eq creator
+          expect(di.user).to eq user
           expect(di.description).to eq "this is a description"
           expect(di.occupation_standards?).to be true
 
