@@ -32,6 +32,7 @@ class DataImport < ApplicationRecord
             occupation = Occupation.find_by(rapids_code: row["rapids_code"])
             organization = Organization.find_by(title: row["organization_title"])
             occupation_standard = OccupationStandard.where(
+              type: "#{row["type"]}Standard",
               organization: organization,
               occupation: occupation,
               title: row["occupation_standard_title"].presence || occupation.try(:title),
