@@ -32,6 +32,7 @@ gem "aws-sdk-s3", require: false
 # gem 'image_processing', '~> 1.2'
 
 group :development, :test do
+  gem 'bullet'
   gem 'factory_bot_rails'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.8'
