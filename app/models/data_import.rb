@@ -40,11 +40,11 @@ class DataImport < ApplicationRecord
             work_process = WorkProcess.where(
               title: row["work_process_title"],
               description: row["work_process_description"],
-              hours: row["work_process_hours"],
             ).first_or_create!
             OccupationStandardWorkProcess.where(
               occupation_standard: occupation_standard,
               work_process: work_process,
+              hours: row["work_process_hours"],
             ).first_or_create!(sort_order: row["work_process_sort"])
             skill = Skill.where(
               description: row["skill"],
