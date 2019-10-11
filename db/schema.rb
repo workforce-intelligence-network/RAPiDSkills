@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_10_190315) do
+ActiveRecord::Schema.define(version: 2019_10_11_230411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_190315) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "sort_order", default: 0
+    t.integer "hours"
     t.index ["occupation_standard_id"], name: "occupation_standard_id_idx"
     t.index ["work_process_id"], name: "index_occupation_standard_work_processes_on_work_process_id"
   end
