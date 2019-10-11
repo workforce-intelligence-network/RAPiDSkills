@@ -1,4 +1,6 @@
 ActiveAdmin.register OccupationStandard do
+  includes :organization, :occupation, :parent_occupation_standard, :creator
+
   permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :pdf_file_url, :excel_file_url, :source_file_url, :title, skill_ids: [], work_process_ids: []
 
   SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)

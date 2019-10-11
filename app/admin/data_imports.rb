@@ -1,4 +1,6 @@
 ActiveAdmin.register DataImport do
+  includes :user, file_attachment: :blob
+
   permit_params :description, :kind, :file, :user_id
 
   index do
