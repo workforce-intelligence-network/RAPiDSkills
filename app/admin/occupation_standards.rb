@@ -9,6 +9,8 @@ ActiveAdmin.register OccupationStandard do
 
   preserve_default_filters!
   filter :type, as: :select, collection: SUBMODELS
+  remove_filter :occupation_standard_skills
+  remove_filter :occupation_standard_work_processes
 
   index do
     column :id
