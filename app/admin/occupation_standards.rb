@@ -28,7 +28,7 @@ ActiveAdmin.register OccupationStandard do
     actions
   end
 
-  show do
+  show do |os|
     attributes_table do
       row :id
       row :type
@@ -39,8 +39,16 @@ ActiveAdmin.register OccupationStandard do
       row :data_trust_approval
       row :parent_occupation_standard
       row :industry
-      row :skills
-      row :work_processes
+      table_for os.occupation_standard_work_processes.includes(:work_process) do
+        column "Work Processes" do |oswp|
+          link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
+        end
+      end
+      table_for os.occupation_standard_skills.includes(:skill) do
+        column "Skills" do |oss|
+          link_to oss.skill.to_s, admin_occupation_standard_skill_path(oss)
+        end
+      end
       row :completed_at
       row :published_at
       row :pdf_file_url
