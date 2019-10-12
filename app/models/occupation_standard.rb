@@ -13,6 +13,6 @@ class OccupationStandard < ApplicationRecord
   validates :title, presence: true
 
   def to_s
-    "#{occupation.title} (#{organization.title})"
+    "#{title} (#{organization.title})"
   end
 end
