@@ -1,0 +1,10 @@
+.git
+.gitignore
+
+log/*
+tmp/*
+
+*.swp
+*.swo
+
+node_modules/*
