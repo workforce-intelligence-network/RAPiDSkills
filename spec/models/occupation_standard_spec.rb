@@ -13,18 +13,31 @@ RSpec.describe OccupationStandard, type: :model do
     let(:user) { create(:user) }
     let(:organization) { create(:organization) }
 
-    it "creates UnregisteredStandard" do
-      os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
-      expect(os).to be_a(UnregisteredStandard)
-      expect(os.skills).to match_array occupation_standard.skills
-      expect(os.work_processes).to match_array occupation_standard.work_processes
-      expect(os.title).to eq "OS Title COPY"
-      expect(os.occupation).to eq os.occupation
-      expect(os.parent_occupation_standard).to eq occupation_standard
-      expect(os.creator).to eq user
-      expect(os.organization).to eq organization
-      expect(os.completed_at).to be nil
-      expect(os.published_at).to be nil
+    context "when successful" do
+      it "creates UnregisteredStandard" do
+        os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
+        expect(os).to be_a(UnregisteredStandard)
+        expect(os.skills).to match_array occupation_standard.skills
+        expect(os.work_processes).to match_array occupation_standard.work_processes
+        expect(os.title).to eq "OS Title COPY"
+        expect(os.occupation).to eq os.occupation
+        expect(os.parent_occupation_standard).to eq occupation_standard
+        expect(os.creator).to eq user
+        expect(os.organization).to eq organization
+        expect(os.completed_at).to be nil
+        expect(os.published_at).to be nil
+      end
+    end
+
+    context "when unsuccessful" do
+      let(:error) { StandardError.new("error msg") }
+
+      it "does not create new standard" do
+        allow(UnregisteredStandard).to receive(:create!).and_raise(error)
+        os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
+        expect(os).to be_new_record
+        expect(occupation_standard.errors.full_messages.to_sentence).to eq "error msg"
+      end
     end
   end
 end
