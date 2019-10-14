@@ -13,18 +13,25 @@ class OccupationStandard < ApplicationRecord
   validates :title, presence: true
 
   def unregistered_clone(creator_id:, organization_id:)
-    os = UnregisteredStandard.create(
-      creator_id: creator_id,
-      organization_id: organization_id,
-      occupation: occupation,
-      title: title,
-      parent_occupation_standard: self,
-    )
+    begin
+      OccupationStandard.transaction do
+        os = UnregisteredStandard.create!(
+          creator_id: creator_id,
+          organization_id: organization_id,
+          occupation: occupation,
+          title: title,
+          parent_occupation_standard: self,
+        )
 
-    os.occupation_standard_work_processes = occupation_standard_work_processes.map(&:dup)
-    os.occupation_standard_skills = occupation_standard_skills.map(&:dup)
+        os.occupation_standard_work_processes = occupation_standard_work_processes.map(&:dup)
+        os.occupation_standard_skills = occupation_standard_skills.map(&:dup)
 
-    os
+        os
+      end
+    rescue Exception => e
+      errors.add(:base, e.message)
+      OccupationStandard.new
+    end
   end
 
   def to_s

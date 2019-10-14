@@ -20,7 +20,11 @@ ActiveAdmin.register OccupationStandard do
     if request.post?
       args = params.require(resource.type.underscore.to_sym).permit(:creator_id, :organization_id).to_h.symbolize_keys
       os = resource.unregistered_clone(args)
-      redirect_to admin_occupation_standard_path(os)
+      if os.persisted?
+        redirect_to admin_occupation_standard_path(os)
+      else
+        render :clone_master_skill
+      end
     end
   end
 
