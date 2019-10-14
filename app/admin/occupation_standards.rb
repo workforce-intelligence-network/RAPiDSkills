@@ -12,7 +12,20 @@ ActiveAdmin.register OccupationStandard do
   remove_filter :occupation_standard_skills
   remove_filter :occupation_standard_work_processes
 
+  action_item :clone_master_skill, only: :show do
+    link_to 'Clone Occupation Standard', clone_master_skill_admin_occupation_standard_path(occupation_standard)
+  end
+
+  member_action :clone_master_skill, method: [:get, :post] do
+    if request.post?
+      args = params.require(resource.type.underscore.to_sym).permit(:creator_id, :organization_id).to_h.symbolize_keys
+      os = resource.unregistered_clone(args)
+      redirect_to admin_occupation_standard_path(os)
+    end
+  end
+
   index do
+    selectable_column
     column :id
     column :type
     column :organization

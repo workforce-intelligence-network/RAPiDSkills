@@ -1,0 +1,10 @@
+<%= semantic_form_for [:admin, resource], url: clone_master_skill_admin_occupation_standard_path(resource), method: :post do |f| %>
+  <%= f.semantic_errors(*f.object.errors.keys) %>
+    <%= f.inputs do %>
+      <%= f.input :organization %>
+      <%= f.input :creator %>
+    <% end %>
+    <%= f.actions do %>
+      <%= f.action :submit, label: "Clone Occupation Standard" %>
+    <% end %>
+<% end %>
