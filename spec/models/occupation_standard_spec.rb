@@ -14,7 +14,7 @@ RSpec.describe OccupationStandard, type: :model do
     let(:organization) { create(:organization) }
 
     it "creates UnregisteredStandard" do
-      os = occupation_standard.unregistered_clone(user_id: user.id, organization_id: organization.id)
+      os = occupation_standard.unregistered_clone(creator_id: user.id, organization_id: organization.id)
       expect(os).to be_a(UnregisteredStandard)
       expect(os.skills).to match_array occupation_standard.skills
       expect(os.work_processes).to match_array occupation_standard.work_processes
