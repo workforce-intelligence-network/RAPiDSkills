@@ -12,7 +12,7 @@ class OccupationStandard < ApplicationRecord
 
   validates :title, presence: true
 
-  def unregistered_clone(creator_id:, organization_id:)
+  def clone_as_unregistered!(creator_id:, organization_id:)
     begin
       OccupationStandard.transaction do
         os = UnregisteredStandard.create!(
