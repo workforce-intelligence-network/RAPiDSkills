@@ -19,7 +19,7 @@ class OccupationStandard < ApplicationRecord
           creator_id: creator_id,
           organization_id: organization_id,
           occupation: occupation,
-          title: title,
+          title: "#{title} COPY",
           parent_occupation_standard: self,
         )
 

@@ -18,7 +18,7 @@ RSpec.describe OccupationStandard, type: :model do
       expect(os).to be_a(UnregisteredStandard)
       expect(os.skills).to match_array occupation_standard.skills
       expect(os.work_processes).to match_array occupation_standard.work_processes
-      expect(os.title).to eq "OS Title"
+      expect(os.title).to eq "OS Title COPY"
       expect(os.occupation).to eq os.occupation
       expect(os.parent_occupation_standard).to eq occupation_standard
       expect(os.creator).to eq user
