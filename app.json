@@ -10,9 +10,6 @@
     }
   ],
   "env": {
-    "DOMAIN": {
-      "required": true
-    },
     "LANG": {
       "required": true
     },

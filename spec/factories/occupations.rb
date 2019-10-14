@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :occupation do
+  factory :occupation, class: 'HybridOccupation' do
     type { "HybridOccupation" }
     rapids_code { "MyString" }
     onet_code { "MyString" }

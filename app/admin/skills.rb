@@ -1,4 +1,6 @@
 ActiveAdmin.register Skill do
+  includes :work_process, :parent_skill
+
   permit_params :description, :usage_count, :work_process_id, :parent_skill_id
 
   form do |f|

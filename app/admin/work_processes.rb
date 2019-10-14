@@ -1,3 +1,3 @@
 ActiveAdmin.register WorkProcess do
-  permit_params :title, :description, :hours
+  permit_params :title, :description
 end

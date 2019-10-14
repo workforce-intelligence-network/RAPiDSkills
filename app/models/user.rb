@@ -5,4 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   enum role: [:basic, :admin]
+
+  has_many :data_imports
 end

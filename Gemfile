@@ -21,10 +21,18 @@ gem 'devise'
 # Utilities
 gem 'after_party'
 
+# Cache store
+gem 'redis-objects'
+gem 'connection_pool'
+
+# File uploading
+gem "aws-sdk-s3", require: false
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
 group :development, :test do
+  gem 'bullet'
   gem 'factory_bot_rails'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.8'

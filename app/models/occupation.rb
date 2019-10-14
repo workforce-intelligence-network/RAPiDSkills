@@ -1,5 +1,6 @@
 class Occupation < ApplicationRecord
   validates :rapids_code, presence: true, uniqueness: true
+  validates :type, presence: true
   has_many :occupation_standards
   has_many :industries, through: :occupation_standards
 

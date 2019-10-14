@@ -50,7 +50,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = ENV["RAPID_SKILLS_ENVIRONMENT"] == "staging" ? :debug : :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -63,7 +63,9 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "rapid_skills_production"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { host: Rails.application.credentials.domain }
+
+  host = ENV["HEROKU_APP_NAME"].present? ? "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" : Rails.application.credentials.domain
+  config.action_mailer.default_url_options = { host: host }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

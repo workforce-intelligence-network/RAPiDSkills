@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_09_233556) do
+ActiveRecord::Schema.define(version: 2019_10_11_231501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,36 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "data_imports", force: :cascade do |t|
+    t.string "description"
+    t.integer "kind"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_data_imports_on_user_id"
   end
 
   create_table "industries", force: :cascade do |t|
@@ -53,6 +83,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.bigint "skill_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "sort_order", default: 0
     t.index ["occupation_standard_id"], name: "index_occupation_standard_skills_on_occupation_standard_id"
     t.index ["skill_id"], name: "index_occupation_standard_skills_on_skill_id"
   end
@@ -62,6 +93,8 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.bigint "work_process_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "sort_order", default: 0
+    t.integer "hours"
     t.index ["occupation_standard_id"], name: "occupation_standard_id_idx"
     t.index ["work_process_id"], name: "index_occupation_standard_work_processes_on_work_process_id"
   end
@@ -81,6 +114,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
     t.string "source_file_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "title"
     t.index ["creator_id"], name: "index_occupation_standards_on_creator_id"
     t.index ["industry_id"], name: "index_occupation_standards_on_industry_id"
     t.index ["occupation_id"], name: "index_occupation_standards_on_occupation_id"
@@ -114,7 +148,7 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
   create_table "skills", force: :cascade do |t|
     t.text "description"
     t.integer "usage_count"
-    t.bigint "work_process_id", null: false
+    t.bigint "work_process_id"
     t.bigint "parent_skill_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -171,11 +205,12 @@ ActiveRecord::Schema.define(version: 2019_10_09_233556) do
   create_table "work_processes", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "hours"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "data_imports", "users"
   add_foreign_key "locations", "organizations"
   add_foreign_key "locations", "states"
   add_foreign_key "occupation_standard_skills", "occupation_standards"

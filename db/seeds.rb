@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password', role: :admin) if Rails.env.development?
+User.where(email: 'admin@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :admin, name: 'Admin')
 
+Rake::Task['occupations:import'].invoke
 Rake::Task['after_party:run'].invoke

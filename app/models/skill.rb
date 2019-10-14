@@ -4,6 +4,8 @@ class Skill < ApplicationRecord
   has_many :occupation_standard_skills
   has_many :occupation_standards, through: :occupation_standard_skills
 
+  validates :description, presence: true
+
   def to_s
     description
   end

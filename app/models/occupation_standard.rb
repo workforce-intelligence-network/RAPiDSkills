@@ -10,7 +10,9 @@ class OccupationStandard < ApplicationRecord
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :standards_registrations
 
+  validates :title, presence: true
+
   def to_s
-    "#{occupation.title} (#{organization.title})"
+    "#{title} (#{organization.title})"
   end
 end
