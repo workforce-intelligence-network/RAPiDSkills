@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :organization do
     type { "" }
-    title { "MyString" }
-    logo_url { "MyString" }
+    sequence(:title) { |n| "Org Title #{n}" }
+    logo_url { "http://www.example.com" }
     registers_standards { false }
   end
 end
