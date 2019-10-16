@@ -38,6 +38,7 @@ gem "aws-sdk-s3", require: false
 group :development, :test do
   gem 'bullet'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.8'
 end
@@ -49,5 +50,4 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
 end
