@@ -3,6 +3,9 @@ ActiveAdmin.register DataImport do
 
   permit_params :description, :kind, :file, :user_id
 
+  preserve_default_filters!
+  remove_filter :file_blob
+
   index do
     column :id
     column :user

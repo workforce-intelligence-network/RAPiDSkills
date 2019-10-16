@@ -11,6 +11,8 @@ ActiveAdmin.register OccupationStandard do
   filter :type, as: :select, collection: SUBMODELS
   remove_filter :occupation_standard_skills
   remove_filter :occupation_standard_work_processes
+  remove_filter :pdf_attachment
+  remove_filter :pdf_blob
 
   action_item :clone_master_skill, only: :show do
     link_to 'Clone', clone_master_skill_admin_occupation_standard_path(occupation_standard)
