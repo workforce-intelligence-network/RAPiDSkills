@@ -32,7 +32,9 @@
 en:
   date:
     formats:
+      mdY: "%m/%d/%Y"
       long: "%Y-%m-%d"
   time:
     formats:
+      mdY: "%m/%d/%Y"
       long: "%Y-%m-%d %H:%M:%S %Z"
