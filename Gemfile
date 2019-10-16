@@ -20,6 +20,7 @@ gem 'devise'
 
 # Utilities
 gem 'after_party'
+gem 'prawn'
 
 # Cache store
 gem 'redis-objects'

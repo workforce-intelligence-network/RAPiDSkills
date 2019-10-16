@@ -173,9 +173,13 @@ GEM
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
+    pdf-core (0.7.0)
     pg (1.1.4)
     polyamorous (2.3.0)
       activerecord (>= 5.0)
+    prawn (2.2.2)
+      pdf-core (~> 0.7.0)
+      ttfunk (~> 1.5)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -284,6 +288,7 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.9)
+    ttfunk (1.5.1)
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -320,6 +325,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   pg
+  prawn
   pry-nav
   puma (~> 3.11)
   rails (~> 6.0.0)
