@@ -22,6 +22,9 @@ gem 'devise'
 gem 'after_party'
 gem 'prawn'
 
+# Background jobs
+gem 'sidekiq'
+
 # Cache store
 gem 'redis-objects'
 gem 'connection_pool'
