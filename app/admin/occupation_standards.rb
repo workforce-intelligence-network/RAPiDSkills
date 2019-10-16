@@ -13,7 +13,11 @@ ActiveAdmin.register OccupationStandard do
   remove_filter :occupation_standard_work_processes
 
   action_item :clone_master_skill, only: :show do
-    link_to 'Clone Occupation Standard', clone_master_skill_admin_occupation_standard_path(occupation_standard)
+    link_to 'Clone', clone_master_skill_admin_occupation_standard_path(occupation_standard)
+  end
+
+  action_item :generate_master_skill_pdf, only: :show do
+    link_to 'Generate PDF', generate_pdf_admin_occupation_standard_path(occupation_standard), method: :post
   end
 
   member_action :clone_master_skill, method: [:get, :post] do
@@ -26,6 +30,10 @@ ActiveAdmin.register OccupationStandard do
         render :clone_master_skill
       end
     end
+  end
+
+  member_action :generate_pdf, method: [:post] do
+    redirect_to admin_occupation_standard_path(resource)
   end
 
   index do
