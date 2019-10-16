@@ -33,6 +33,8 @@ ActiveAdmin.register OccupationStandard do
   end
 
   member_action :generate_pdf, method: [:post] do
+    GenerateMasterSkillPdfJob.perform_later(resource.id)
+    flash[:notice] = "PDF is being generated"
     redirect_to admin_occupation_standard_path(resource)
   end
 
@@ -76,7 +78,11 @@ ActiveAdmin.register OccupationStandard do
       end
       row :completed_at
       row :published_at
-      row :pdf_file_url
+      row :pdf do |occupation_standard|
+        if occupation_standard.pdf.attached?
+          link_to occupation_standard.pdf.filename, url_for(occupation_standard.pdf)
+        end
+      end
       row :excel_file_url
       row :source_file_url
       row :created_at

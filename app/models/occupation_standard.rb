@@ -10,6 +10,8 @@ class OccupationStandard < ApplicationRecord
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :standards_registrations
 
+  has_one_attached :pdf
+
   validates :title, presence: true
 
   def clone_as_unregistered!(creator_id:, organization_id:)
