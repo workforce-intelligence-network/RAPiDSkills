@@ -14,6 +14,11 @@ class OccupationStandard < ApplicationRecord
 
   validates :title, presence: true
 
+  delegate :title, to: :organization, prefix: true
+  delegate :title, to: :occupation, prefix: true
+  delegate :title, to: :industry, prefix: true
+  delegate :name, to: :creator, prefix: true
+
   def clone_as_unregistered!(creator_id:, organization_id:)
     begin
       OccupationStandard.transaction do
@@ -34,22 +39,6 @@ class OccupationStandard < ApplicationRecord
       errors.add(:base, e.message)
       OccupationStandard.new
     end
-  end
-
-  def organization_title
-    organization.title
-  end
-
-  def occupation_title
-    occupation.title
-  end
-
-  def industry_title
-    industry.title
-  end
-
-  def creator_name
-    creator.name
   end
 
   def to_s
