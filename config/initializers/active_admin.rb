@@ -232,7 +232,7 @@ ActiveAdmin.setup do |config|
   #
   config.namespace :admin do |admin|
     admin.build_menu :utility_navigation do |menu|
-      menu.add label: "Sidekiq", url: "/sidekiq", html_options: { target: "_blank" }, priority: 1
+      menu.add label: "Sidekiq", url: "/admin/sidekiq", html_options: { target: "_blank" }, priority: 1
       admin.add_current_user_to_menu menu, 2
       admin.add_logout_button_to_menu menu
     end
