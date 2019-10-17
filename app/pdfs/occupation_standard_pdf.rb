@@ -1,4 +1,4 @@
-class MasterSkill < Prawn::Document
+class OccupationStandardPdf < Prawn::Document
   def initialize(os)
     super()
 

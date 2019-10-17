@@ -14,28 +14,28 @@ ActiveAdmin.register OccupationStandard do
   remove_filter :pdf_attachment
   remove_filter :pdf_blob
 
-  action_item :clone_master_skill, only: :show do
-    link_to 'Clone', clone_master_skill_admin_occupation_standard_path(occupation_standard)
+  action_item :clone_occupation_standard, only: :show do
+    link_to 'Clone', clone_occupation_standard_admin_occupation_standard_path(occupation_standard)
   end
 
-  action_item :generate_master_skill_pdf, only: :show do
+  action_item :generate_occupation_standard_pdf, only: :show do
     link_to 'Generate PDF', generate_pdf_admin_occupation_standard_path(occupation_standard), method: :post
   end
 
-  member_action :clone_master_skill, method: [:get, :post] do
+  member_action :clone_occupation_standard, method: [:get, :post] do
     if request.post?
       args = params.require(resource.type.underscore.to_sym).permit(:creator_id, :organization_id).to_h.symbolize_keys
       os = resource.clone_as_unregistered!(args)
       if os.persisted?
         redirect_to admin_occupation_standard_path(os)
       else
-        render :clone_master_skill
+        render :clone_occupation_standard
       end
     end
   end
 
   member_action :generate_pdf, method: [:post] do
-    GenerateMasterSkillPdfJob.perform_later(resource.id)
+    GenerateOccupationStandardPdfJob.perform_later(resource.id)
     flash[:notice] = "PDF is being generated"
     redirect_to admin_occupation_standard_path(resource)
   end
