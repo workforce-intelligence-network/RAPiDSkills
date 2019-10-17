@@ -21,6 +21,7 @@ gem 'devise'
 # Utilities
 gem 'after_party'
 gem 'prawn'
+gem 'faker'
 
 # Background jobs
 gem 'sidekiq'
@@ -38,7 +39,6 @@ gem "aws-sdk-s3", require: false
 group :development, :test do
   gem 'bullet'
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'pry-nav'
   gem 'rspec-rails', '~> 3.8'
 end
