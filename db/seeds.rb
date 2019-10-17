@@ -15,9 +15,25 @@ Rake::Task['occupations:import'].invoke
 # Create organization that allows importing of spec test file
 organization = Organization.where(title: "Acme Dog Walking").first_or_create!
 
-occupation_standard = FactoryBot.create(:occupation_standard, creator: user, organization: organization, occupation: Occupation.first)
-wps = FactoryBot.create_list(:work_process, 4)
-skills = FactoryBot.create_list(:skill, 3)
+occupation_standard = FrameworkStandard.create(
+  creator: user,
+  organization: organization,
+  occupation: Occupation.first,
+  title: Faker::Job.title,
+)
+
+wps = []
+(1..4).each do
+  wps << WorkProcess.create(
+    title: Faker::Lorem.sentence,
+    description: Faker::Lorem.paragraph,
+  )
+end
+
+skills = []
+(1..3).each do
+ skills << Skill.create(description: Faker::Job.key_skill)
+end
 
 wps.each_with_index do |work_process, index|
   OccupationStandardWorkProcess.create(
