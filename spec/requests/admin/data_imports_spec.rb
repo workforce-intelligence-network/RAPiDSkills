@@ -157,10 +157,10 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os1.work_processes[1].description).to eq "Communicate effectively with dog and human"
           expect(os1.occupation_standard_work_processes[1].hours).to eq 60
 
-          expect(os1.skills[0].description).to eq "Demonstrate ability to cross intersection"
-          expect(os1.skills[1].description).to eq "Communicate with dog"
-          expect(os1.skills[2].description).to eq "Communicate with human"
-          expect(os1.skills[3].description).to eq "Demonstrate ability to walk by aggressive dogs"
+          expect(os1.skills[0].description).to eq "Communicate with dog"
+          expect(os1.skills[1].description).to eq "Communicate with human"
+          expect(os1.skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
+          expect(os1.skills[3].description).to eq "Demonstrate ability to cross intersection"
 
           os2 = OccupationStandard.last
           expect(os2.title).to eq "Dog Training"

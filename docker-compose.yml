@@ -20,6 +20,14 @@ services:
   redis:
     image: redis:5.0
 
+  sidekiq:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    env_file:
+      - config/docker.env
+
   mailcatcher:
     image: schickling/mailcatcher:latest
     ports:

@@ -1,0 +1,15 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+#   sidekiq -C sidekiq.yml
+---
+:verbose: true
+:pidfile: /tmp/sidekiq.pid
+:concurrency: 5
+# Set timeout to 8 on Heroku, longer if you manage your own systems.
+:timeout: 8
+:queues:
+  - default
+  - mailers
+  - active_storage_analysis
+  - active_storage_purge
+  - low

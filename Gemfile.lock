@@ -173,9 +173,13 @@ GEM
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
+    pdf-core (0.7.0)
     pg (1.1.4)
     polyamorous (2.3.0)
       activerecord (>= 5.0)
+    prawn (2.2.2)
+      pdf-core (~> 0.7.0)
+      ttfunk (~> 1.5)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -183,6 +187,8 @@ GEM
       pry (>= 0.9.10, < 0.13.0)
     puma (3.12.1)
     rack (2.0.7)
+    rack-protection (2.0.7)
+      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -266,6 +272,11 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    sidekiq (6.0.2)
+      connection_pool (>= 2.2.2)
+      rack (>= 2.0.0)
+      rack-protection (>= 2.0.0)
+      redis (>= 4.1.0)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -284,6 +295,7 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.9)
+    ttfunk (1.5.1)
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -320,12 +332,14 @@ DEPENDENCIES
   factory_bot_rails
   faker
   pg
+  prawn
   pry-nav
   puma (~> 3.11)
   rails (~> 6.0.0)
   redis-objects
   rspec-rails (~> 3.8)
   sass-rails (~> 5)
+  sidekiq
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)

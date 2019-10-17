@@ -20,6 +20,11 @@ gem 'devise'
 
 # Utilities
 gem 'after_party'
+gem 'prawn'
+gem 'faker'
+
+# Background jobs
+gem 'sidekiq'
 
 # Cache store
 gem 'redis-objects'
@@ -45,5 +50,4 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
 end

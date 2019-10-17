@@ -7,4 +7,9 @@ Rails.application.routes.draw do
     only: [:new, :create]
 
   root to: "users#new"
+
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/admin/sidekiq'
+  end
 end
