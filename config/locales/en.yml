@@ -38,3 +38,4 @@ en:
     formats:
       mdY: "%m/%d/%Y"
       long: "%Y-%m-%d %H:%M:%S %Z"
+      filename: '%Y_%m_%d_%H_%M_%S'
