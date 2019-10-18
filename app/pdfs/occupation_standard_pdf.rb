@@ -28,18 +28,21 @@ class OccupationStandardPdf < Prawn::Document
 
       text "Work Processes", size: 16, style: :bold
       move_down 3
-      os.occupation_standard_work_processes.each.with_index(1) do |oswp, index|
-        text "#{index}."
+      os.occupation_standard_work_processes.each do |oswp|
 
-        bounding_box([bounds.left + 18, cursor + 14], width: bounds.width) do
-          text oswp.work_process.title
+        bounding_box([bounds.left + 18, cursor], width: bounds.width) do
+          font_size(14) do
+            text oswp.work_process.title
+          end
           text "Hours: #{oswp.hours}"
 
-          bounding_box([bounds.left, cursor - 12], width: bounds.width - 20) do
-            text "Skills", size: 12, style: :bold
-            oswp.skills.each do |skill|
-              text skill.description
-              move_down 2
+          if oswp.skills.any?
+            bounding_box([bounds.left + 18, cursor - 12], width: bounds.width - 20) do
+              text "Skills", size: 12, style: :bold
+              oswp.skills.each do |skill|
+                text skill.description
+                move_down 2
+              end
             end
           end
         end
