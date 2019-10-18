@@ -81,14 +81,30 @@ ActiveAdmin.register OccupationStandard do
       row :updated_at
 
       panel "Work Processes" do
+        columns do
+          column do
+            span "Title", class: "header"
+          end
+          column do
+            span "Hours", class: "header"
+          end
+          column do
+            span "Skills", class: "header"
+          end
+        end
         os.occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
-          panel link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp) do
-
-            table_for oswp.skills do
-              column "Skills" do |skill|
+          columns do
+            column do
+              link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
+            end
+            column do
+              oswp.hours
+            end
+            column do
+              oswp.skills.map do |skill|
                 oss = os.occupation_standard_skills.where(skill: skill).first
                 link_to skill.to_s, admin_occupation_standard_skill_path(oss)
-              end
+              end.join(", ").html_safe
             end
           end
         end
