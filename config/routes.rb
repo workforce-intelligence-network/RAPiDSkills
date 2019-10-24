@@ -12,4 +12,10 @@ Rails.application.routes.draw do
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/admin/sidekiq'
   end
+
+  namespace :api, path: '', defaults: { format: :json } do
+    namespace :v1 do
+      resources :occupations, only: [:index]
+    end
+  end
 end
