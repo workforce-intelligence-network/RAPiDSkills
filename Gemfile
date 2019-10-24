@@ -6,10 +6,11 @@ ruby '2.6.3'
 # Architecture
 gem 'rails', '~> 6.0.0'
 gem 'fast_jsonapi'
+gem 'jwt'
 gem 'pg'
 gem 'puma', '~> 3.11'
-gem 'webpacker', '~> 4.0'
 gem 'turbolinks', '~> 5'
+gem 'webpacker', '~> 4.0'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 # Frontend
