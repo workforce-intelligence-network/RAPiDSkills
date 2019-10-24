@@ -119,6 +119,8 @@ GEM
       railties (>= 4.2.0)
     faker (2.3.0)
       i18n (~> 1.6.0)
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
     ffi (1.11.1)
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
@@ -331,6 +333,7 @@ DEPENDENCIES
   devise
   factory_bot_rails
   faker
+  fast_jsonapi
   pg
   prawn
   pry-nav
