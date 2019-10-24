@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_16_213838) do
+ActiveRecord::Schema.define(version: 2019_10_18_000928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,7 +84,9 @@ ActiveRecord::Schema.define(version: 2019_10_16_213838) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "sort_order", default: 0
+    t.bigint "occupation_standard_work_process_id", null: false
     t.index ["occupation_standard_id"], name: "index_occupation_standard_skills_on_occupation_standard_id"
+    t.index ["occupation_standard_work_process_id"], name: "occupation_standard_work_process_id_idx"
     t.index ["skill_id"], name: "index_occupation_standard_skills_on_skill_id"
   end
 
@@ -147,12 +149,10 @@ ActiveRecord::Schema.define(version: 2019_10_16_213838) do
   create_table "skills", force: :cascade do |t|
     t.text "description"
     t.integer "usage_count"
-    t.bigint "work_process_id"
     t.bigint "parent_skill_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["parent_skill_id"], name: "index_skills_on_parent_skill_id"
-    t.index ["work_process_id"], name: "index_skills_on_work_process_id"
   end
 
   create_table "standards_registrations", force: :cascade do |t|
@@ -212,6 +212,7 @@ ActiveRecord::Schema.define(version: 2019_10_16_213838) do
   add_foreign_key "data_imports", "users"
   add_foreign_key "locations", "organizations"
   add_foreign_key "locations", "states"
+  add_foreign_key "occupation_standard_skills", "occupation_standard_work_processes"
   add_foreign_key "occupation_standard_skills", "occupation_standards"
   add_foreign_key "occupation_standard_skills", "skills"
   add_foreign_key "occupation_standard_work_processes", "occupation_standards"
@@ -222,7 +223,6 @@ ActiveRecord::Schema.define(version: 2019_10_16_213838) do
   add_foreign_key "occupation_standards", "organizations"
   add_foreign_key "occupation_standards", "users", column: "creator_id"
   add_foreign_key "skills", "skills", column: "parent_skill_id"
-  add_foreign_key "skills", "work_processes"
   add_foreign_key "standards_registrations", "occupation_standards"
   add_foreign_key "standards_registrations", "organizations"
   add_foreign_key "standards_registrations", "states"

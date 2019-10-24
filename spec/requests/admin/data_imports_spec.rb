@@ -56,6 +56,10 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os1.skills[1].description).to eq "Communicate with human"
           expect(os1.skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
           expect(os1.skills[3].description).to eq "Demonstrate ability to cross intersection"
+          expect(os1.occupation_standard_skills[0].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
+          expect(os1.occupation_standard_skills[1].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
+          expect(os1.occupation_standard_skills[2].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
+          expect(os1.occupation_standard_skills[3].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
 
           os2 = OccupationStandard.last
           expect(os2.title).to eq "Dog Training"
@@ -69,6 +73,7 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os2.occupation_standard_work_processes[0].hours).to eq 50
 
           expect(os2.skills[0].description).to eq "Understand costs"
+          expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
         end
       end
 
@@ -129,8 +134,8 @@ RSpec.describe "Admin::DataImports", type: :request do
         let(:organization) { create(:organization, title: "Acme Dog Walking") }
         let!(:os1) { create(:occupation_standard, occupation: occupation, organization: organization, title: "Heeling") }
         let!(:wp1) { create(:work_process, title: "Dealing with other dogs", description: "Handle interactions with other dogs") }
-        let!(:skill1) { create(:skill, description: "Demonstrate ability to cross intersection", work_process: wp1) }
-        let!(:oswp) { create(:occupation_standard_work_process, work_process: wp1, occupation_standard: os1, hours: 100) }
+        let!(:skill1) { create(:skill, description: "Demonstrate ability to cross intersection") }
+        let!(:oswp) { create(:occupation_standard_work_process, work_process: wp1, occupation_standard: os1, hours: 100, sort_order: 0) }
 
         it "saves data correctly" do
           expect{
@@ -160,7 +165,10 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os1.skills[0].description).to eq "Communicate with dog"
           expect(os1.skills[1].description).to eq "Communicate with human"
           expect(os1.skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
-          expect(os1.skills[3].description).to eq "Demonstrate ability to cross intersection"
+          expect(os1.occupation_standard_skills[0].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
+          expect(os1.occupation_standard_skills[1].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
+          expect(os1.occupation_standard_skills[2].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
+          expect(os1.occupation_standard_skills[3].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
 
           os2 = OccupationStandard.last
           expect(os2.title).to eq "Dog Training"
@@ -173,6 +181,7 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os2.occupation_standard_work_processes[0].hours).to eq 50
 
           expect(os2.skills[0].description).to eq "Understand costs"
+          expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
         end
       end
 

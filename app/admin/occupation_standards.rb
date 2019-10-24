@@ -68,16 +68,6 @@ ActiveAdmin.register OccupationStandard do
       row :data_trust_approval
       row :parent_occupation_standard
       row :industry
-      table_for os.occupation_standard_work_processes.includes(:work_process) do
-        column "Work Processes" do |oswp|
-          link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
-        end
-      end
-      table_for os.occupation_standard_skills.includes(:skill) do
-        column "Skills" do |oss|
-          link_to oss.skill.to_s, admin_occupation_standard_skill_path(oss)
-        end
-      end
       row :completed_at
       row :published_at
       row :pdf do |occupation_standard|
@@ -89,6 +79,36 @@ ActiveAdmin.register OccupationStandard do
       row :source_file_url
       row :created_at
       row :updated_at
+
+      panel "Work Processes" do
+        columns do
+          column do
+            span "Title", class: "header"
+          end
+          column do
+            span "Hours", class: "header"
+          end
+          column do
+            span "Skills", class: "header"
+          end
+        end
+        os.occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
+          columns do
+            column do
+              link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
+            end
+            column do
+              oswp.hours
+            end
+            column do
+              oswp.skills.map do |skill|
+                oss = os.occupation_standard_skills.where(skill: skill).first
+                link_to skill.to_s, admin_occupation_standard_skill_path(oss)
+              end.join(", ").html_safe
+            end
+          end
+        end
+      end
     end
     active_admin_comments
   end

@@ -12,7 +12,7 @@ class OccupationStandardPdf < Prawn::Document
       # footer
       bounding_box [bounds.left, bounds.bottom + 50], width: bounds.width do
         stroke_horizontal_rule
-        move_down(5)
+        move_down 5
         font_size(8) do
           text "Created for #{os.creator_name}"
           text "Last updated #{I18n.l(os.updated_at, format: :mdY)}"
@@ -27,17 +27,26 @@ class OccupationStandardPdf < Prawn::Document
       move_down 20
 
       text "Work Processes", size: 16, style: :bold
+      move_down 3
       os.occupation_standard_work_processes.each do |oswp|
-        text oswp.work_process.title
-        text "Hours: #{oswp.hours}"
-        move_down 5
-      end
 
-      move_down 20
-      text "Skills", size: 16, style: :bold
-      os.occupation_standard_skills.each do |oss|
-        text oss.skill.description
-        move_down 5
+        bounding_box([bounds.left + 18, cursor], width: bounds.width) do
+          font_size(14) do
+            text oswp.work_process.title
+          end
+          text "Hours: #{oswp.hours}"
+
+          if oswp.skills.any?
+            bounding_box([bounds.left + 18, cursor - 12], width: bounds.width - 20) do
+              text "Skills", size: 12, style: :bold
+              oswp.skills.each do |skill|
+                text skill.description
+                move_down 2
+              end
+            end
+          end
+        end
+        move_down 15
       end
     end
   end
