@@ -9,13 +9,14 @@ class Occupation < ApplicationRecord
       return all if q.blank?
 
       Occupation
-        .select("O.*")
-        .from("occupations O
-                 LEFT JOIN (SELECT
-                              occupations.id,
-                              UNNEST(title_aliases) AS str
-                            FROM occupations) AS sub ON (O.id = sub.id)")
-        .where("O.title ILIKE :q OR sub.str ILIKE :q", q: "%#{q}%")
+        .select("occupations.*")
+        .from("occupations
+                 LEFT JOIN
+               (SELECT
+                  occupations.id,
+                  UNNEST(title_aliases) AS str
+                FROM occupations) AS sub ON (occupations.id = sub.id)")
+        .where("occupations.title ILIKE :q OR sub.str ILIKE :q", q: "%#{q}%")
     end
   end
 
