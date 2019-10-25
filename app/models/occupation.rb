@@ -8,6 +8,13 @@ class Occupation < ApplicationRecord
     def search(q)
       return all if q.blank?
 
+      terms = q.split(/\s+/)
+      condition = "(occupations.title ILIKE :term OR sub.str ILIKE :term)"
+      conditions = terms.inject([]) do |array, term|
+        array << sanitize_sql_for_conditions([condition, term: "%#{term}%"])
+      end
+      condition_str = conditions.join(" OR ")
+
       Occupation
         .select("occupations.*")
         .from("occupations
@@ -16,7 +23,8 @@ class Occupation < ApplicationRecord
                   occupations.id,
                   UNNEST(title_aliases) AS str
                 FROM occupations) AS sub ON (occupations.id = sub.id)")
-        .where("occupations.title ILIKE :q OR sub.str ILIKE :q", q: "%#{q}%")
+        .where(condition_str)
+        .distinct
     end
   end
 

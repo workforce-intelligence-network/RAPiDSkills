@@ -38,13 +38,13 @@ RSpec.describe API::V1::OccupationsController, type: :request do
       expect(json["data"][1]["attributes"]["title"]).to eq "Foo Bar"
       expect(json["data"][1]["attributes"]["title_aliases"]).to eq ""
 
-      get path, params: { q: "Foo Bar" }
+      get path, params: { q: "Moo Mar" }
       expect(response).to have_http_status(:success)
       expect(json["data"].count).to eq 1
-      expect(json["data"][0]["id"]).to eq occupation1.id.to_s
+      expect(json["data"][0]["id"]).to eq occupation3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation"
-      expect(json["data"][0]["attributes"]["title"]).to eq "Foo Bar"
-      expect(json["data"][0]["attributes"]["title_aliases"]).to eq ""
+      expect(json["data"][0]["attributes"]["title"]).to eq "Moo Bar"
+      expect(json["data"][0]["attributes"]["title_aliases"]).to eq "Foo, Mar"
 
       get path, params: { q: "Baz" }
       expect(response).to have_http_status(:success)

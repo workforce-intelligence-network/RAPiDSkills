@@ -42,6 +42,14 @@ RSpec.describe Occupation, type: :model do
       expect(results).to contain_exactly occupation2
     end
 
+    it "returns OR matched results when q has multiple terms" do
+      results = Occupation.search("Baz Fob")
+      expect(results).to contain_exactly occupation2
+
+      results = Occupation.search("Foo Mar")
+      expect(results).to contain_exactly occupation1, occupation3
+    end
+
     it "returns no results when q does not match" do
       results = Occupation.search("Fob")
       expect(results).to be_empty
