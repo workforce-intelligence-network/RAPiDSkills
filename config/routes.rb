@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   namespace :api, path: '', defaults: { format: :json } do
     namespace :v1 do
       resources :occupations, only: [:index]
+      resources :occupation_standards, only: [:index]
     end
   end
 end

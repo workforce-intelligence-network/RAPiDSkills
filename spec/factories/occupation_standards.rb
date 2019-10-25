@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :occupation_standard do
+  factory :occupation_standard, class: 'FrameworkStandard'  do
     type { "FrameworkStandard" }
     title { Faker::Job.title }
     organization

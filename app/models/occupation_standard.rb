@@ -16,7 +16,7 @@ class OccupationStandard < ApplicationRecord
 
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
-  delegate :title, to: :industry, prefix: true
+  delegate :title, to: :industry, prefix: true, allow_nil: true
   delegate :name, to: :creator, prefix: true
 
   class << self
