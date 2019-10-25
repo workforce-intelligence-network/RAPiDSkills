@@ -19,6 +19,21 @@ class OccupationStandard < ApplicationRecord
   delegate :title, to: :industry, prefix: true
   delegate :name, to: :creator, prefix: true
 
+  class << self
+    def filter_collection(options={})
+      options.delete_if { |k, v| v != false && v.blank? }
+      options.delete_if { |k, v| v.kind_of?(Array) and v.reject(&:blank?).empty? }
+      options.inject(all) do |scope, (key, value)|
+        case key.to_s
+        when "occupation_id"
+          scope.where("#{key}": value)
+        else
+          scope
+        end
+      end
+    end
+  end
+
   def clone_as_unregistered!(creator_id:, organization_id:)
     begin
       OccupationStandard.transaction do
