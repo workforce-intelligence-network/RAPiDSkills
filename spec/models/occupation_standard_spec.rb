@@ -6,22 +6,26 @@ RSpec.describe OccupationStandard, type: :model do
     expect(os.valid?).to be true
   end
 
-  describe ".filter_collection" do
+  describe ".search" do
     let(:occupation) { create(:occupation) }
     let!(:os1) { create(:occupation_standard, occupation: occupation) }
     let!(:os2) { create(:occupation_standard, occupation: occupation) }
     let!(:os3) { create(:occupation_standard) }
 
     it "returns all objects if options are empty" do
-      expect(OccupationStandard.filter_collection).to contain_exactly os1, os2, os3
+      expect(OccupationStandard.search).to contain_exactly os1, os2, os3
+    end
+
+    it "returns all objects if occupation_id is blank" do
+      expect(OccupationStandard.search(occupation_id: nil)).to contain_exactly os1, os2, os3
     end
 
     it "returns filtered objects for valid occupation_id" do
-      expect(OccupationStandard.filter_collection(occupation_id: occupation.id)).to contain_exactly os1, os2
+      expect(OccupationStandard.search(occupation_id: occupation.id)).to contain_exactly os1, os2
     end
 
     it "returns no objects for invalid occupation_id" do
-      expect(OccupationStandard.filter_collection(occupation_id: 9999)).to be_empty
+      expect(OccupationStandard.search(occupation_id: 9999)).to be_empty
     end
   end
 
