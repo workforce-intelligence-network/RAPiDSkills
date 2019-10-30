@@ -24,34 +24,34 @@ RSpec.describe Occupation, type: :model do
     let!(:occupation3) { create(:occupation, title: "Moo Bar", title_aliases: ["Mar", "Foo"]) }
 
     it "returns all results when q is blank" do
-      results = Occupation.search(nil)
+      results = Occupation.search(q: nil)
       expect(results).to contain_exactly occupation1, occupation2, occupation3
 
-      results = Occupation.search("")
+      results = Occupation.search(q: "")
       expect(results).to contain_exactly occupation1, occupation2, occupation3
     end
 
     it "returns matched results when q is not blank" do
-      results = Occupation.search("Foo")
+      results = Occupation.search(q: "Foo")
       expect(results).to contain_exactly occupation1, occupation3
 
-      results = Occupation.search("Mar")
+      results = Occupation.search(q: "Mar")
       expect(results).to contain_exactly occupation3
 
-      results = Occupation.search("Baz")
+      results = Occupation.search(q: "Baz")
       expect(results).to contain_exactly occupation2
     end
 
     it "returns OR matched results when q has multiple terms" do
-      results = Occupation.search("Baz Fob")
+      results = Occupation.search(q: "Baz Fob")
       expect(results).to contain_exactly occupation2
 
-      results = Occupation.search("Foo Mar")
+      results = Occupation.search(q: "Foo Mar")
       expect(results).to contain_exactly occupation1, occupation3
     end
 
     it "returns no results when q does not match" do
-      results = Occupation.search("Fob")
+      results = Occupation.search(q: "Fob")
       expect(results).to be_empty
     end
   end

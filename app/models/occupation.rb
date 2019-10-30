@@ -5,7 +5,8 @@ class Occupation < ApplicationRecord
   has_many :industries, through: :occupation_standards
 
   class << self
-    def search(q)
+    def search(args={})
+      q = args[:q]
       return all if q.blank?
 
       terms = q.split(/\s+/)
