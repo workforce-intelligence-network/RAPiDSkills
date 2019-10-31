@@ -5,6 +5,7 @@ ruby '2.6.3'
 
 # Architecture
 gem 'rails', '~> 6.0.0'
+gem 'fast_jsonapi'
 gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'webpacker', '~> 4.0'

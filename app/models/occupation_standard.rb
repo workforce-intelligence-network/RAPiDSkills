@@ -16,8 +16,16 @@ class OccupationStandard < ApplicationRecord
 
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
-  delegate :title, to: :industry, prefix: true
+  delegate :title, to: :industry, prefix: true, allow_nil: true
   delegate :name, to: :creator, prefix: true
+
+  scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
+
+  class << self
+    def search(args={})
+      occupation(args[:occupation_id])
+    end
+  end
 
   def clone_as_unregistered!(creator_id:, organization_id:)
     begin
