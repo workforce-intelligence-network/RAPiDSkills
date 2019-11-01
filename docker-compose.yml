@@ -34,5 +34,14 @@ services:
       - '1080:1080'
       - '1025:1025'
 
+  middleman:
+    build: documentation/.
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - config/docker.env
+    ports:
+      - '4567:4567'
+
 volumes:
   db_data:
