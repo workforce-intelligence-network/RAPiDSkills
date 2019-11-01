@@ -21,6 +21,7 @@ gem 'devise'
 
 # Documentation
 gem 'sinatra'
+gem 'rack-rewrite'
 
 # Utilities
 gem 'after_party'

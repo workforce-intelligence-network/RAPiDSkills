@@ -194,6 +194,7 @@ GEM
       rack
     rack-proxy (0.6.5)
       rack
+    rack-rewrite (1.5.1)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.0)
@@ -344,6 +345,7 @@ DEPENDENCIES
   prawn
   pry-nav
   puma (~> 3.11)
+  rack-rewrite
   rails (~> 6.0.0)
   redis-objects
   rspec-rails (~> 3.8)
