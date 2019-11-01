@@ -19,6 +19,9 @@ gem 'sass-rails', '~> 5'
 gem 'activeadmin'
 gem 'devise'
 
+# Documentation
+gem 'sinatra'
+
 # Utilities
 gem 'after_party'
 gem 'prawn'
