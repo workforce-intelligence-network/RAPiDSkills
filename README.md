@@ -72,6 +72,17 @@ $ docker-compose exec redis redis-cli -h redis
 We use [Mailcatcher](https://mailcatcher.me/) to receive mail in development.
 All mail sent in the development environment can be viewed at http://localhost:1080.
 
+## Documentation editing
+The API Documentation is generated from [Slate](https://github.com/slatedocs/slate).
+1. Start the middleman service if it is not already running: `docker-compose up -d middleman`
+2. Change into the documentation directory: `cd documentation`. You will now be working in a git submodule, which has its own separate git repository.
+3. Edit files in the `/source` directory. The changes can be viewed at http://localhost:4567.
+4. Commit files and merge to master.
+5. Return to main app repository: `cd ..`
+6. Run `docker-compose run --rm middleman bin/generate_static_pages.rb` to generate the static html pages that will get saved in the main repo.
+6. Run `git status`. You will see that the `documentation` directory has modifications, as well as updates to the `app/lib/docs` files.
+7. Commit both the `documentation` changes and the changes to the `docs` directory into the main repository.
+
 ## Secret keys
 To edit the encrypted credentials for staging and production, you must have the
 master key files stored in `config/credentials/staging.key` and
