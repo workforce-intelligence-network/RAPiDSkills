@@ -5,7 +5,7 @@ application hosted on Heroku.  It is written using Ruby 2.6.3
 and Rails 6.0.  Postgres 11.5 is used for the database.
 
 ## Development setup
-The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading or if there are changes to the Dockerfile.
+The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading, if there are changes to the Dockerfile, or if new gems have been added.
 1. Install [Docker Community Edition](https://docs.docker.com/install/) if it
    is not already installed.
 1. Clone the repository.
