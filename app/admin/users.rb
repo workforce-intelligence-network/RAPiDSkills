@@ -39,6 +39,10 @@ ActiveAdmin.register User do
       f.input :name
       f.input :email
       f.input :role, include_blank: false
+      if f.object.new_record?
+        f.input :password
+        f.input :password_confirmation
+      end
     end
     f.actions
   end
