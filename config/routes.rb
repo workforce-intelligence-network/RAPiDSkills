@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       resources :occupations, only: [:index]
       resources :occupation_standards, only: [:index]
 
+      resources :users, only: [:create]
+
       authenticate :user, lambda { |u| u.admin? } do
         mount Docs::API, at: '/docs'
       end
