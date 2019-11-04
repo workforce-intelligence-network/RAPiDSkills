@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery unless: -> { request.format.json? }
+
   def authenticate_admin_user!
     redirect_to root_path unless current_user&.admin?
   end
