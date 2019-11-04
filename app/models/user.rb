@@ -6,5 +6,6 @@ class User < ApplicationRecord
 
   enum role: [:basic, :admin]
 
+  belongs_to :employer, class_name: 'Organization', optional: true
   has_many :data_imports
 end
