@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :trackable,
          :recoverable, :rememberable, :validatable
 
-  enum role: [:basic, :admin]
+  enum role: [:lead, :basic, :admin]
 
   belongs_to :employer, class_name: 'Organization', optional: true
   has_many :data_imports

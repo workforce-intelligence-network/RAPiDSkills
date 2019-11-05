@@ -8,7 +8,7 @@
 require 'faker'
 
 admin = User.where(email: 'admin@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :admin, name: 'Admin')
-user = User.where(email: 'foo@example.com').first_or_create!(password: 'password', password_confirmation: 'password', name: 'Foo Bob')
+user = User.where(email: 'foo@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :basic, name: 'Foo Bob')
 
 Rake::Task['occupations:import'].invoke
 

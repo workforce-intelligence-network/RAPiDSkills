@@ -33,6 +33,7 @@ RSpec.describe API::V1::UsersController, type: :request do
             expect(user.email).to eq "foo@example.com"
             expect(user.name).to eq "Mickey Mouse"
             expect(user.employer).to eq organization
+            expect(user.lead?).to be true
             expect(user.valid_password?("password")).to be true
           end
 
@@ -49,9 +50,9 @@ RSpec.describe API::V1::UsersController, type: :request do
         end
 
         context "with email already in use" do
-          let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar") }
+          let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar", role: :basic) }
 
-          it "does not create new user record but updates user" do
+          it "does not create new user record but updates some fields" do
             expect {
               post path, params: params
             }.to_not change(User, :count)
@@ -60,6 +61,7 @@ RSpec.describe API::V1::UsersController, type: :request do
             expect(user.email).to eq "foo@example.com"
             expect(user.name).to eq "Mickey Mouse"
             expect(user.employer).to eq organization
+            expect(user.basic?).to be true
             expect(user.valid_password?("supersecret")).to be true
           end
 
