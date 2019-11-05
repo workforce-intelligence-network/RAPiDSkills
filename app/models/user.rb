@@ -9,5 +9,7 @@ class User < ApplicationRecord
   belongs_to :employer, class_name: 'Organization', optional: true
   has_many :data_imports
 
-  delegate :title, to: :employer, prefix: true, allow_nil: true
+  def organization_title
+    employer.title
+  end
 end

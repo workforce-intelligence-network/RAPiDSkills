@@ -14,7 +14,7 @@ RSpec.describe API::V1::UsersController, type: :request do
             attributes: {
               email: "foo@example.com",
               name: "Mickey Mouse",
-              organization_name: "Acme Computing",
+              organization_title: "Acme Computing",
             }
           }
         }
@@ -44,7 +44,7 @@ RSpec.describe API::V1::UsersController, type: :request do
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
             expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-            expect(json["data"]["attributes"]["employer_title"]).to eq "Acme Computing"
+            expect(json["data"]["attributes"]["organization_title"]).to eq "Acme Computing"
           end
         end
 
@@ -71,7 +71,7 @@ RSpec.describe API::V1::UsersController, type: :request do
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
             expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-            expect(json["data"]["attributes"]["employer_title"]).to eq "Acme Computing"
+            expect(json["data"]["attributes"]["organization_title"]).to eq "Acme Computing"
           end
         end
       end
@@ -84,7 +84,7 @@ RSpec.describe API::V1::UsersController, type: :request do
               attributes: {
                 email: "foo@example.com",
                 name: "Mickey Mouse",
-                organization_name: "Acme Computing",
+                organization_title: "Acme Computing",
               }
             }
           }
@@ -107,7 +107,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-          expect(json["data"]["attributes"]["employer_title"]).to eq "Acme Computing"
+          expect(json["data"]["attributes"]["organization_title"]).to eq "Acme Computing"
         end
       end
 
@@ -138,7 +138,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-          expect(json["data"]["attributes"]["employer_title"]).to be nil
+          expect(json["data"]["attributes"]["organization_title"]).to be nil
         end
       end
     end
