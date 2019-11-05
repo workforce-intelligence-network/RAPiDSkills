@@ -21,7 +21,6 @@ RSpec.describe "Admin::DataImports", type: :request do
     context "occupation_standards upload" do
       context "with valid data" do
         let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
-        let!(:organization) { create(:organization, title: "Acme Dog Walking") }
 
         it "saves data correctly" do
           expect{
@@ -32,11 +31,15 @@ RSpec.describe "Admin::DataImports", type: :request do
             .and change(Skill, :count).by(5)
             .and change(OccupationStandardWorkProcess, :count).by(3)
             .and change(OccupationStandardSkill, :count).by(5)
+            .and change(Organization, :count).by(1)
 
           di = DataImport.last
           expect(di.user).to eq user
           expect(di.description).to eq "this is a description"
           expect(di.occupation_standards?).to be true
+
+          organization = Organization.last
+          expect(organization.title).to eq "Acme Dog Walking"
 
           os1 = OccupationStandard.first
           expect(os1.title).to eq "Heeling"
@@ -80,21 +83,6 @@ RSpec.describe "Admin::DataImports", type: :request do
       context "with invalid data" do
         context "with missing occupation" do
           let!(:organization) { create(:organization, title: "Acme Dog Walking") }
-          it "does not save data" do
-            expect{
-              post path, params: params
-            }.to change(DataImport, :count).by(0)
-              .and change(OccupationStandard, :count).by(0)
-              .and change(WorkProcess, :count).by(0)
-              .and change(Skill, :count).by(0)
-              .and change(OccupationStandardWorkProcess, :count).by(0)
-              .and change(OccupationStandardSkill, :count).by(0)
-          end
-        end
-
-        context "with missing organization" do
-          let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
-
           it "does not save data" do
             expect{
               post path, params: params
