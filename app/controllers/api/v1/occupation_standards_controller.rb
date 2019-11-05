@@ -1,4 +1,4 @@
-class API::V1::OccupationStandardsController < ApplicationController
+class API::V1::OccupationStandardsController < API::V1::APIController
   def index
     @oss = OccupationStandard
              .includes(:organization, :occupation, :industry)
