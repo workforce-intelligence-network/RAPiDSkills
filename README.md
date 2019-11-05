@@ -5,7 +5,7 @@ application hosted on Heroku.  It is written using Ruby 2.6.3
 and Rails 6.0.  Postgres 11.5 is used for the database.
 
 ## Development setup
-The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading or if there are changes to the Dockerfile.
+The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading, if there are changes to the Dockerfile, or if new gems have been added.
 1. Install [Docker Community Edition](https://docs.docker.com/install/) if it
    is not already installed.
 1. Clone the repository.
@@ -71,6 +71,17 @@ $ docker-compose exec redis redis-cli -h redis
 ## Mailcatcher
 We use [Mailcatcher](https://mailcatcher.me/) to receive mail in development.
 All mail sent in the development environment can be viewed at http://localhost:1080.
+
+## Documentation editing
+The API Documentation is generated from [Slate](https://github.com/slatedocs/slate).
+1. Start the middleman service if it is not already running: `docker-compose up -d middleman`
+2. Change into the documentation directory: `cd documentation`. You will now be working in a git submodule, which has its own separate git repository.
+3. Edit files in the `/source` directory. The changes can be viewed at http://localhost:4567.
+4. Commit files and merge to master.
+5. Return to main app repository: `cd ..`
+6. Run `docker-compose run --rm middleman bin/generate_static_pages.rb` to generate the static html pages that will get saved in the main repo.
+6. Run `git status`. You will see that the `documentation` directory has modifications, as well as updates to the `app/lib/docs` files.
+7. Commit both the `documentation` changes and the changes to the `docs` directory into the main repository.
 
 ## Secret keys
 To edit the encrypted credentials for staging and production, you must have the
