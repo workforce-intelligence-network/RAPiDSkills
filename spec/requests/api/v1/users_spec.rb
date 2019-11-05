@@ -14,7 +14,7 @@ RSpec.describe API::V1::UsersController, type: :request do
             attributes: {
               email: "foo@example.com",
               name: "Mickey Mouse",
-              organization_title: "Acme Computing",
+              organization_name: "Acme Computing",
             }
           }
         }
@@ -45,7 +45,11 @@ RSpec.describe API::V1::UsersController, type: :request do
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
             expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-            expect(json["data"]["attributes"]["organization_title"]).to eq "Acme Computing"
+            expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
+            expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+            expect(json["included"][0]["id"]).to eq organization.id.to_s
+            expect(json["included"][0]["type"]).to eq "organization"
+            expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
           end
         end
 
@@ -73,7 +77,11 @@ RSpec.describe API::V1::UsersController, type: :request do
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
             expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-            expect(json["data"]["attributes"]["organization_title"]).to eq "Acme Computing"
+            expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
+            expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+            expect(json["included"][0]["id"]).to eq organization.id.to_s
+            expect(json["included"][0]["type"]).to eq "organization"
+            expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
           end
         end
       end
@@ -86,7 +94,7 @@ RSpec.describe API::V1::UsersController, type: :request do
               attributes: {
                 email: "foo@example.com",
                 name: "Mickey Mouse",
-                organization_title: "Acme Computing",
+                organization_name: "Acme Computing",
               }
             }
           }
@@ -104,12 +112,17 @@ RSpec.describe API::V1::UsersController, type: :request do
         it "returns user resource" do
           post path, params: params
           user = User.last
+          organization = Organization.last
           expect(response).to have_http_status(:success)
           expect(json["data"]["id"]).to eq user.id.to_s
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-          expect(json["data"]["attributes"]["organization_title"]).to eq "Acme Computing"
+          expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
+          expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+          expect(json["included"][0]["id"]).to eq organization.id.to_s
+          expect(json["included"][0]["type"]).to eq "organization"
+          expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
         end
       end
 
@@ -140,7 +153,8 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
-          expect(json["data"]["attributes"]["organization_title"]).to be nil
+          expect(json["data"]["relationships"]["employer"]["data"]).to be nil
+          expect(json.has_key?("included")).to be false
         end
       end
     end
