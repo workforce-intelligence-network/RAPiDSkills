@@ -89,4 +89,26 @@ RSpec.describe API::V1::SessionsController, type: :request do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    let(:user) { create(:user) }
+    let(:path) { "/v1/sessions" }
+    let(:params) { {} }
+    let!(:header) { auth_header(user) }
+
+    it_behaves_like "authorization", :delete
+
+    it "deletes client_session record" do
+      expect{
+        delete path, headers: header
+      }.to change(user.client_sessions, :count).by(-1)
+    end
+
+    it "returns no content" do
+      delete path, headers: header
+      expect(response).to have_http_status(:no_content)
+      delete path, headers: header
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 end

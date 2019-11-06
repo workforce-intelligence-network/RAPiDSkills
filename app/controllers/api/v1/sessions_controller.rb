@@ -1,4 +1,6 @@
 class API::V1::SessionsController < API::V1::APIController
+  skip_before_action :authenticate, only: :create
+
   def create
     @user = User.find_by(email: params[:data][:attributes][:email])
     if @user && @user.valid_password?(params[:data][:attributes][:password])
@@ -19,5 +21,10 @@ class API::V1::SessionsController < API::V1::APIController
         ]
       }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @user.destroy_session!(@session_identifier)
+    head :no_content
   end
 end
