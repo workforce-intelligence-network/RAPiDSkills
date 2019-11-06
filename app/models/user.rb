@@ -22,6 +22,10 @@ class User < ApplicationRecord
     JsonWebToken.encode(authentication_payload(session_identifier))
   end
 
+  def destroy_session!(session_identifier)
+    client_sessions.where(identifier: session_identifier).destroy_all
+  end
+
   private
 
   def authentication_payload(session_identifier)

@@ -43,4 +43,15 @@ RSpec.describe User, type: :model do
       expect(jwt).to eq "jwt123"
     end
   end
+
+  describe "#destroy_session!" do
+    let(:client_session) { create(:client_session) }
+    let(:user) { client_session.user }
+
+    it "deletes client session" do
+      expect{
+        user.destroy_session!(client_session.identifier)
+      }.to change(user.client_sessions, :count).by(-1)
+    end
+  end
 end
