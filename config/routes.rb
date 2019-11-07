@@ -20,6 +20,8 @@ Rails.application.routes.draw do
       resources :sessions, only: [:create]
       delete "sessions", to: "sessions#destroy"
 
+      resources :downloads, only: [:create]
+
       authenticate :user, lambda { |u| u.admin? } do
         mount Docs::API, at: '/docs'
       end
