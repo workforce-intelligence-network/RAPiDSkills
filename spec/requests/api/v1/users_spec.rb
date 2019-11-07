@@ -40,7 +40,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           it "returns user resource" do
             post path, params: params
             user = User.last
-            expect(response).to have_http_status(:success)
+            expect(response).to have_http_status(:created)
             expect(json["data"]["id"]).to eq user.id.to_s
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
@@ -72,7 +72,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           it "returns user resource" do
             post path, params: params
             user = User.last
-            expect(response).to have_http_status(:success)
+            expect(response).to have_http_status(:created)
             expect(json["data"]["id"]).to eq user.id.to_s
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
@@ -113,7 +113,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           post path, params: params
           user = User.last
           organization = Organization.last
-          expect(response).to have_http_status(:success)
+          expect(response).to have_http_status(:created)
           expect(json["data"]["id"]).to eq user.id.to_s
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
@@ -148,7 +148,7 @@ RSpec.describe API::V1::UsersController, type: :request do
         it "returns user resource" do
           post path, params: params
           user = User.last
-          expect(response).to have_http_status(:success)
+          expect(response).to have_http_status(:created)
           expect(json["data"]["id"]).to eq user.id.to_s
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"

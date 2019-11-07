@@ -1,4 +1,6 @@
 class API::V1::UsersController < API::V1::APIController
+  skip_before_action :authenticate, only: :create
+
   def create
     @user = User.where(
       email: params[:data][:attributes][:email]
@@ -7,7 +9,7 @@ class API::V1::UsersController < API::V1::APIController
     if @user.update(user_params)
       options = {}
       options[:include] = [:employer] if @user.employer.persisted?
-      render json: API::V1::UserSerializer.new(@user, options)
+      render json: API::V1::UserSerializer.new(@user, options), status: :created
     else
       render_resource_error(@user)
     end
