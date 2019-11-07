@@ -21,13 +21,12 @@ class API::V1::APIController < ApplicationController
   end
 
   def render_resource_error(resource)
-    render json: {
-      errors: [
-        {
-          status: "422",
-          detail: resource.errors.full_messages.to_sentence,
-        }
-      ]
-    }, status: :unprocessable_entity and return
+    errors = resource.errors.full_messages.inject([]) do |array, msg|
+      array << {
+        status: "422",
+        detail: msg,
+      }
+    end
+    render json: { errors: errors }, status: :unprocessable_entity and return
   end
 end
