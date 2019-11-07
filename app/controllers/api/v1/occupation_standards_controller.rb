@@ -1,4 +1,6 @@
 class API::V1::OccupationStandardsController < API::V1::APIController
+  skip_before_action :authenticate, only: :index
+
   def index
     @oss = OccupationStandard
              .includes(:organization, :occupation, :industry)
