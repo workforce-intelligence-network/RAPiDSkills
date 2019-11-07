@@ -55,4 +55,42 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]).to be_empty
     end
   end
+
+  describe "GET #show" do
+    let(:path) { "/v1/occupation_standards/#{os.id}" }
+
+    context "without pdf" do
+      let(:os) { create(:occupation_standard) }
+
+      it "returns the correct data" do
+        get path
+        expect(response).to have_http_status(:success)
+        expect(json["data"]["id"]).to eq os.id.to_s
+        expect(json["data"]["type"]).to eq "occupation_standard"
+        expect(json["data"]["attributes"]["title"]).to eq os.title
+        expect(json["data"]["attributes"]["organization_title"]).to eq os.organization.title
+        expect(json["data"]["attributes"]["occupation_title"]).to eq os.occupation.title
+        expect(json["data"]["attributes"]["industry_title"]).to be nil
+        expect(json["data"]["attributes"]["pdf_filename"]).to be nil
+        expect(json["data"]["attributes"]["pdf_url"]).to be nil
+      end
+    end
+
+    context "with pdf" do
+      let(:os) { create(:occupation_standard, :with_pdf) }
+
+      it "returns the correct data" do
+        get path
+        expect(response).to have_http_status(:success)
+        expect(json["data"]["id"]).to eq os.id.to_s
+        expect(json["data"]["type"]).to eq "occupation_standard"
+        expect(json["data"]["attributes"]["title"]).to eq os.title
+        expect(json["data"]["attributes"]["organization_title"]).to eq os.organization.title
+        expect(json["data"]["attributes"]["occupation_title"]).to eq os.occupation.title
+        expect(json["data"]["attributes"]["industry_title"]).to be nil
+        expect(json["data"]["attributes"]["pdf_filename"]).to eq "pixel1x1.pdf"
+        expect(json["data"]["attributes"]["pdf_url"]).to_not be nil
+      end
+    end
+  end
 end
