@@ -5,7 +5,7 @@ RSpec.describe API::V1::OccupationsController, type: :request do
     let!(:occupation1) { create(:occupation, title: "Foo Bar") }
     let!(:occupation2) { create(:occupation, title: "Bar Baz") }
     let!(:occupation3) { create(:occupation, title: "Moo Bar", title_aliases: ["Foo", "Mar"]) }
-    let(:path) { "/v1/occupations" }
+    let(:path) { "/api/v1/occupations" }
 
     it "returns the correct data" do
       # With no search parameters, returns all data

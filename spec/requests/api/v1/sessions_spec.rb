@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe API::V1::SessionsController, type: :request do
   describe "POST #create" do
-    let(:path) { "/v1/sessions" }
+    let(:path) { "/api/v1/sessions" }
 
     before do
       allow(User).to receive(:new_token).and_return("abc123")
@@ -92,7 +92,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
 
   describe "DELETE #destroy" do
     let(:user) { create(:user) }
-    let(:path) { "/v1/sessions" }
+    let(:path) { "/api/v1/sessions" }
     let(:params) { {} }
     let!(:header) { auth_header(user) }
 
