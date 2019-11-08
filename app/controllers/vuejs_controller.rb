@@ -1,5 +1,5 @@
 class VuejsController < ApplicationController
   def index
-    render file: "#{Rails.root}/client/dist/index.html"
+    render file: "#{Rails.root}/vue/dist/index.html"
   end
 end
