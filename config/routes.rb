@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :users, path: 'welcome', path_names: { new: '' },
     only: [:new, :create]
 
-  root to: "users#new"
+  root to: "vuejs#index"
 
   require 'sidekiq/web'
   authenticate :user, lambda { |u| u.admin? } do
