@@ -29,6 +29,5 @@ Rails.application.routes.draw do
     end
   end
 
-  mount Vuejs::Run, at: '/dist'
   get '*path', controller: 'vuejs', action: 'index', as: :vuejs
 end
