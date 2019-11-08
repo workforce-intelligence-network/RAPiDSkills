@@ -6,6 +6,9 @@ require_relative 'config/environment'
 use Rack::Rewrite do
   # Redirect /v1/docs to have trailing slash
   r301 '/api/v1/docs', '/api/v1/docs/'
+
+  # For Vue front-end
+  r301 '/dist', '/dist/'
 end
 
 run Rails.application
