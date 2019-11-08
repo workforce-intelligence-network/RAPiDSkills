@@ -13,7 +13,7 @@ module RapidSkills
     Rails.application.config.middleware.insert_after(
       ActionDispatch::Static,
       ActionDispatch::Static,
-      Rails.root.join("client").to_s,
+      Rails.root.join("client", "dist").to_s,
       index: config.public_file_server.index_name,
       headers: config.public_file_server.headers || {}
     )
