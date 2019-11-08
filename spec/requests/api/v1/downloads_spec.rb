@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe API::V1::DownloadsController, type: :request do
   describe "POST #create" do
-    let(:path) { "/v1/downloads" }
+    let(:path) { "/api/v1/downloads" }
 
     context "with valid params" do
       let(:os) { create(:occupation_standard) }

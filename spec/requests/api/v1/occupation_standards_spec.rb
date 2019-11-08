@@ -57,7 +57,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
   end
 
   describe "GET #show" do
-    let(:path) { "/v1/occupation_standards/#{os.id}" }
+    let(:path) { "/api/v1/occupation_standards/#{os.id}" }
 
     context "without pdf" do
       let(:os) { create(:occupation_standard) }
