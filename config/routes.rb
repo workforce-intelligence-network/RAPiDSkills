@@ -28,4 +28,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get '*path', controller: 'vuejs', action: 'index', as: :vuejs
 end
