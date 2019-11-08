@@ -12,8 +12,7 @@ user = User.where(email: 'foo@example.com').first_or_create!(password: 'password
 
 Rake::Task['occupations:import'].invoke
 
-# Create organization that allows importing of spec test file
-organization = Organization.where(title: "Acme Dog Walking").first_or_create!
+organization = Organization.where(title: "Acme Computing").first_or_create!
 
 occupation_standard = FrameworkStandard.create(
   creator: user,
