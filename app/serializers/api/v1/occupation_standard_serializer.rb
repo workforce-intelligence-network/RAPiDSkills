@@ -11,7 +11,7 @@ class API::V1::OccupationStandardSerializer
 
   attribute :pdf_url do |object|
     if object.pdf.attached?
-      Rails.application.routes.url_helpers.rails_blob_path(object.pdf)
+      Rails.application.routes.url_helpers.url_for(object.pdf)
     end
   end
 end
