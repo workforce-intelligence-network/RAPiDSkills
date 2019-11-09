@@ -7,7 +7,7 @@
       </div>
       <div class="page--home__text page--home__hero__text page--home__hero__text--description">
         <span>Finally an easy-to-use application that takes the pain out of</span>
-        <span> creating new apprentiship standards from scratch.</span>
+        <span> creating new apprenticeship standards from scratch.</span>
       </div>
       <router-link to="/follow">
         <button
