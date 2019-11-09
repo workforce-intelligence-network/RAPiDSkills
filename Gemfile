@@ -9,6 +9,7 @@ gem 'fast_jsonapi'
 gem 'jwt'
 gem 'pg'
 gem 'puma', '~> 3.11'
+gem 'rack-cors'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 4.0'
 gem 'bootsnap', '>= 1.4.2', require: false
