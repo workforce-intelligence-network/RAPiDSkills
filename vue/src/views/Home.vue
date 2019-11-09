@@ -1,7 +1,7 @@
 <template>
   <div class="page page--home">
     <div class="page--home__hero">
-      <FontAwesomeIcon icon="bolt" class="page--home__hero__logo" />
+      <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__hero__text page--home__hero__text--title">
         Create new apprenticeship standards in a snap!
       </div>
@@ -39,42 +39,42 @@
       </div>
       <div class="page--home__how-it-works__cards">
         <div class="page--home__how-it-works__cards__card">
-          <img src="../assets/search-database.svg" alt="Search the Database Icon" class="page--home__how-it-works__cards__card__icon" />
+          <img :src="ICON_SEARCH_DATABASE" alt="Search the Database Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Search the Database</div>
           <div class="page--home__how-it-works__cards__card__description">
             Access and review thousands of similar standards by searching the RapidSkills Occupation Database.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
-          <img src="../assets/save-clone.svg" alt="Save & Clone Icon" class="page--home__how-it-works__cards__card__icon" />
+          <img :src="ICON_SAVE_CLONE" alt="Save & Clone Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Save & Clone</div>
           <div class="page--home__how-it-works__cards__card__description">
             Easily save and clone similar standards for as a starting point for your own customized work processes.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
-          <img src="../assets/edit-customize.svg" alt="Edit & Customize Icon" class="page--home__how-it-works__cards__card__icon" />
+          <img :src="ICON_EDIT_CUSTOMIZE" alt="Edit & Customize Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Edit & Customize</div>
           <div class="page--home__how-it-works__cards__card__description">
             Once you’ve created a clone of a similar standard RapidSkills makes it super easy to customize and create new standards.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
-          <img src="../assets/leverage-skills.svg" alt="Leverage Existing Skills Icon" class="page--home__how-it-works__cards__card__icon" />
+          <img :src="ICON_LEVERAGE_SKILLS" alt="Leverage Existing Skills Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Leverage Existing Skills</div>
           <div class="page--home__how-it-works__cards__card__description">
             RapidSkills is smart and helps you find existing related skills as you customize and edit your new apprenticeship standards.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
-          <img src="../assets/download-pdf.svg" alt="Download PDF or Excel Icon" class="page--home__how-it-works__cards__card__icon" />
+          <img :src="ICON_DOWNLOAD_PDF" alt="Download PDF or Excel Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Download PDF or Excel</div>
           <div class="page--home__how-it-works__cards__card__description">
             Download your digital standard into a common document form for your records and easy sharing and distribution.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
-          <img src="../assets/share-with-others.svg" alt="Share with Others Icon" class="page--home__how-it-works__cards__card__icon" />
+          <img :src="ICON_SHARE_WITH_OTHERS" alt="Share with Others Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Share with Others</div>
           <div class="page--home__how-it-works__cards__card__description">
             Simply share with others by entering an email address - RapidSkills will send an invite so your contacts can collaborate.
@@ -83,7 +83,7 @@
       </div>
     </div>
     <div class="page--home__follow">
-      <FontAwesomeIcon icon="bolt" class="page--home__follow__logo" />
+      <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__follow__text page--home__follow__text--call-to-action">
         <div>
           <span>Join the many curious users already</span>
@@ -108,15 +108,37 @@
 // @ is an alias to /src
 import LaptopPreview from '@/components/LaptopPreview.vue';
 
+import APP_LOGO from '@/assets/app-logo.svg';
+
+import ICON_SEARCH_DATABASE from '@/assets/search-database.svg';
+import ICON_SAVE_CLONE from '@/assets/save-clone.svg';
+import ICON_EDIT_CUSTOMIZE from '@/assets/edit-customize.svg';
+import ICON_LEVERAGE_SKILLS from '@/assets/leverage-skills.svg';
+import ICON_DOWNLOAD_PDF from '@/assets/download-pdf.svg';
+import ICON_SHARE_WITH_OTHERS from '@/assets/share-with-others.svg';
+
 export default {
   name: 'home',
   components: {
     LaptopPreview,
   },
+  data() {
+    return {
+      APP_LOGO,
+      ICON_SEARCH_DATABASE,
+      ICON_SAVE_CLONE,
+      ICON_EDIT_CUSTOMIZE,
+      ICON_LEVERAGE_SKILLS,
+      ICON_DOWNLOAD_PDF,
+      ICON_SHARE_WITH_OTHERS,
+    };
+  },
 };
 </script>
 
 <style scoped lang="scss">
+@import '@/scss/mixins';
+
 .page--home {
   text-align: center;
 }
@@ -133,7 +155,7 @@ export default {
 }
 
 .page--home__hero {
-  padding-top: 5rem;
+  padding-top: 6rem;
 }
 
 .page--home__follow__logo,
@@ -164,7 +186,10 @@ export default {
 
 .page--home__hero__laptop-preview {
   margin-bottom: 3rem;
-  min-height: 21rem;
+  min-height: 20rem;
+  @include breakpoint--mobile {
+    min-height: auto;
+  }
 }
 
 .page--home__how-it-works {

@@ -2,9 +2,8 @@
   <div id="app" class="app">
     <div id="nav" class="app__nav">
       <router-link to="/">
-        <div class="app__nav__link">
-          <FontAwesomeIcon icon="bolt" class="app__nav__link__icon" />
-          <span>RapidSkills</span>
+        <div class="app__nav__link app__nav__link--logo">
+          <img :src="ICON_WITH_LOGO" alt="RapidSkills Icon" class="app__nav__link__icon" />
         </div>
       </router-link>
       <router-link to="/follow" active-class="app__nav__button--active">
@@ -21,7 +20,7 @@
       <div class="app__footer">
         <router-link to="/">
           <div class="app__footer__icon">
-            <img src="./assets/icon-no-logo.svg" alt="RapidSkills" />
+            <img :src="ICON_NO_LOGO" alt="RapidSkills" />
           </div>
         </router-link>
         <div class="app__footer__copyright">
@@ -41,7 +40,16 @@
 </template>
 
 <script lang="ts">
+import ICON_WITH_LOGO from '@/assets/icon-with-logo.svg';
+import ICON_NO_LOGO from '@/assets/icon-no-logo.svg';
+
 export default {
+  data() {
+    return {
+      ICON_WITH_LOGO,
+      ICON_NO_LOGO,
+    };
+  },
   computed: {
     currentYear() {
       return (new Date()).getFullYear();
@@ -51,15 +59,10 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/scss/mixins';
+
 @import url('https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap');
-
-$breakpoint-mobile: 32rem;
-@mixin breakpoint--mobile {
-  @media (max-width: $breakpoint-mobile) {
-    @content;
-  }
-}
 
 html, body {
   font-size: 16px;
@@ -130,9 +133,9 @@ $hero-height: 50rem;
 }
 
 .app__nav__link__icon {
-  height: 2rem;
-  line-height: 2rem;
-  margin-right: .5rem;
+  @include breakpoint--mobile {
+    max-width: 8rem;
+  }
 }
 
 .app__nav__link {

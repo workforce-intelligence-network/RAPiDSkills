@@ -111,7 +111,8 @@ export default {
 
 <style lang="scss">
 .page--follow {
-  padding-top: 5rem;
+  padding-top: 6rem;
+  min-height: 50rem;
 }
 
 .page--follow__form {

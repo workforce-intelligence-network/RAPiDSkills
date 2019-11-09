@@ -1,0 +1,6 @@
+$breakpoint-mobile: 32rem;
+@mixin breakpoint--mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
