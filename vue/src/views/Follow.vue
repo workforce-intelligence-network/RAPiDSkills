@@ -41,7 +41,7 @@ import {
 } from 'class-validator';
 
 const apiV1 = axios.create({
-  baseURL: `${(process.env.API_BASE_URL || 'https://rapid-skills.herokuapp.com')}/v1`,
+  baseURL: `${(process.env.API_BASE_URL || 'https://rapid-skills.herokuapp.com')}/api/v1`,
 });
 
 class CreateUserUser {
