@@ -30,7 +30,7 @@ class DataImport < ApplicationRecord
           CSV.parse(file_data, headers: true) do |row|
             @count += 1
             occupation = Occupation.find_by(rapids_code: row["rapids_code"])
-            organization = Organization.find_by(title: row["organization_title"])
+            organization = Organization.where(title: row["organization_title"]).first_or_create
             occupation_standard = OccupationStandard.where(
               type: "#{row["type"]}Standard",
               organization: organization,

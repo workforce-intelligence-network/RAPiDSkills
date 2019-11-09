@@ -209,7 +209,7 @@
       </span>
     </a>
     <div class="toc-wrapper">
-      <img src="images/logo-1e815a84.png" class="logo" alt="Logo" />
+      <img src="images/logo-ea5e9ba2.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
         </div>
@@ -220,6 +220,25 @@
       <ul id="toc" class="toc-list-h1">
           <li>
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#sign-in" class="toc-h2 toc-link" data-title="Sign in">Sign in</a>
+                  </li>
+                  <li>
+                    <a href="#sign-out" class="toc-h2 toc-link" data-title="Sign out">Sign out</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#downloads" class="toc-h1 toc-link" data-title="Downloads">Downloads</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#pdf-excel-generation" class="toc-h2 toc-link" data-title="PDF/Excel generation">PDF/Excel generation</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#occupations" class="toc-h1 toc-link" data-title="Occupations">Occupations</a>
@@ -241,7 +260,24 @@
                   <li>
                     <a href="#list-occupation-standards" class="toc-h2 toc-link" data-title="List occupation standards">List occupation standards</a>
                   </li>
+                  <li>
+                    <a href="#retrieve-occupation-standard" class="toc-h2 toc-link" data-title="Retrieve occupation standard">Retrieve occupation standard</a>
+                  </li>
               </ul>
+          </li>
+          <li>
+            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#user-object" class="toc-h2 toc-link" data-title="User object">User object</a>
+                  </li>
+                  <li>
+                    <a href="#create-user" class="toc-h2 toc-link" data-title="Create user">Create user</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
           </li>
       </ul>
         <ul class="toc-footer">
@@ -252,7 +288,120 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>API documentation for RAPiDSkills.</p>
+<p>API documentation for RAPiDSkills. This API follows the <a href="https://jsonapi.org/format/">JSON:API v1.0</a> specification.</p>
+<h1 id='authentication'>Authentication</h1>
+<p>After successful sign in, an access token is returned in the response. All
+authenticated calls are required to pass this access token as a Bearer token in
+the header of the request. The tokens do not expire, but signing out or
+changing the user password will invalidate the token.</p>
+<h2 id='sign-in'>Sign in</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/sessions <span class="se">\</span>
+  -H <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": {
+        "type": "sessions",
+        "attributes": {
+            "email": "mickey@example.com",
+            "password": "supersecret"
+        }
+    }
+}'</span>
+</code></pre><h3 id='http-request'>HTTP Request</h3>
+<p><code>POST http://www.rapidskills.org/api/v1/sessions</code></p>
+<h3 id='resource-attributes'>Resource attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email<br /><em>required</em></td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>password<br /><em>required</em></td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJEY1QXZOQUh1S2VWZmVlWGovd3pUMS4wVlk4VmhtMmFiVnBkTllydmdJcENia2xqSkh0OUNHIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiaFRBSWNfQ2NDX2VHUlRaSnREZ1BudyJ9.5_2pUtK43EpvtqmAfTHeFrWm6Hp1Lkdq8p6XG0g0G4c"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bearer"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='sign-out'>Sign out</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X DELETE <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/sessions <span class="se">\</span>
+  -H <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJEY1QXZOQUh1S2VWZmVlWGovd3pUMS4wVlk4VmhtMmFiVnBkTllydmdJcENia2xqSkh0OUNHIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiaFRBSWNfQ2NDX2VHUlRaSnREZ1BudyJ9.5_2pUtK43EpvtqmAfTHeFrWm6Hp1Lkdq8p6XG0g0G4c'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span>
+</code></pre><h3 id='http-request-2'>HTTP Request</h3>
+<p><code>DELETE http://www.rapidskills.org/api/v1/sessions</code></p>
+
+<p>Returns HTTP status 204, no content.</p>
+<h1 id='downloads'>Downloads</h1><h2 id='pdf-excel-generation'>PDF/Excel generation</h2>
+<p>This endpoint will trigger the PDF and/or Excel document generation for the
+resource passed in the relationships field.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/downloads <span class="se">\</span>
+  -H <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": {
+        "type": "downloads",
+        "relationships": {
+            "downloadable": {
+                "data": {
+                    "type": "occupation_standards",
+                    "id": "1"
+                }
+            }
+        }
+    }
+}'</span>
+</code></pre><h3 id='http-request'>HTTP Request</h3>
+<p><code>POST http://www.rapidskills.org/api/v1/downloads</code></p>
+<h3 id='downloadable-relationship-attributes'>Downloadable relationship attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type<br /><em>required</em></td>
+<td>string</td>
+<td>Object type for which to generate downloadable items</td>
+</tr>
+<tr>
+<td>id<br /><em>required</em></td>
+<td>string</td>
+<td>ID of object for which to generate downloadable items</td>
+</tr>
+</tbody></table>
+
+<p>Returns HTTP status 202, accepted.</p>
 <h1 id='occupations'>Occupations</h1><h2 id='occupation-object'>Occupation object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
@@ -296,10 +445,10 @@
 <blockquote>
 <p>Example requests</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/v1/occupations
-</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/v1/occupations?q<span class="o">=</span>ship+weld
+<pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/api/v1/occupations
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/api/v1/occupations?q<span class="o">=</span>ship+weld
 </code></pre><h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://www.rapidskills.org/v1/occupations</code></p>
+<p><code>GET http://www.rapidskills.org/api/v1/occupations</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -394,11 +543,11 @@
 <blockquote>
 <p>Example requests</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/v1/occupation_standards
+<pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/api/v1/occupation_standards
 
-</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/v1/occupation_standards?occupation_id<span class="o">=</span>23
+</code></pre><pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/api/v1/occupation_standards?occupation_id<span class="o">=</span>23
 </code></pre><h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://www.rapidskills.org/v1/occupation_standards</code></p>
+<p><code>GET http://www.rapidskills.org/api/v1/occupation_standards</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
@@ -438,6 +587,181 @@
                 </span><span class="s2">"occupation_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABLE SEAMAN"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"industry_title"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
             </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='retrieve-occupation-standard'>Retrieve occupation standard</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/api/v1/occupation_standard/25
+
+</code></pre><h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/occupation_standards/:occupation_standard_id</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Boating"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"organization_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Sailing"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"occupation_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABLE SEAMAN"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"industry_title"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"pdf_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boating_2019_11_07_20_54_08.pdf"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"pdf_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/d6b5a0ef4/boating_2019_11_07_20_54_08.pdf"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h1 id='users'>Users</h1><h2 id='user-object'>User object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>organization_name</td>
+<td>string</td>
+<td>Employer name</td>
+</tr>
+</tbody></table>
+<h2 id='create-user'>Create user</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users <span class="se">\</span>
+  -H <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": {
+        "type": "users",
+        "attributes": {
+            "email": "mickey@example.com",
+            "name": "Mickey Mouse",
+            "organization_name": "Disneyland"
+        }
+    }
+}'</span>
+</code></pre><h3 id='http-request'>HTTP Request</h3>
+<p><code>POST http://www.rapidskills.org/api/v1/users</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email<br /><em>required</em></td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>organization_name</td>
+<td>string</td>
+<td>Employer name</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mickey@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mickey Mouse"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"employer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Disneyland"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h1 id='errors'>Errors</h1>
+<p>Errors are returned as an array with the following attributes:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>HTTP status code</td>
+</tr>
+<tr>
+<td>detail</td>
+<td>string</td>
+<td>explanation of the problem</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users <span class="se">\</span>
+  -H <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": {
+        "type": "users",
+        "attributes": {
+            "email": ""
+            "name": "Mickey Mouse"
+        }
+    }
+}'</span>
+</code></pre>
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"422"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"detail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Email can't be blank"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">

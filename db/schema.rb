@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_24_212954) do
+ActiveRecord::Schema.define(version: 2019_11_06_224214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,14 @@ ActiveRecord::Schema.define(version: 2019_10_24_212954) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "client_sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "identifier"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_client_sessions_on_user_id"
   end
 
   create_table "data_imports", force: :cascade do |t|
@@ -197,8 +205,10 @@ ActiveRecord::Schema.define(version: 2019_10_24_212954) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "role", default: 0, null: false
+    t.bigint "employer_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["employer_id"], name: "index_users_on_employer_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -210,6 +220,7 @@ ActiveRecord::Schema.define(version: 2019_10_24_212954) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "client_sessions", "users"
   add_foreign_key "data_imports", "users"
   add_foreign_key "locations", "organizations"
   add_foreign_key "locations", "states"
@@ -227,4 +238,5 @@ ActiveRecord::Schema.define(version: 2019_10_24_212954) do
   add_foreign_key "standards_registrations", "occupation_standards"
   add_foreign_key "standards_registrations", "organizations"
   add_foreign_key "standards_registrations", "states"
+  add_foreign_key "users", "organizations", column: "employer_id"
 end

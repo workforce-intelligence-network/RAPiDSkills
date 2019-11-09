@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  permit_params :email, :name, :role, :password, :password_confirmation
+  permit_params :email, :name, :role, :password, :password_confirmation, :employer_id
 
   action_item :change_password, only: [:edit, :show] do
     link_to 'Change Password', change_password_admin_user_path(user)
@@ -30,6 +30,7 @@ ActiveAdmin.register User do
   filter :role
   filter :name
   filter :email
+  filter :employer
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
@@ -39,6 +40,7 @@ ActiveAdmin.register User do
       f.input :name
       f.input :email
       f.input :role, include_blank: false
+      f.input :employer
       if f.object.new_record?
         f.input :password
         f.input :password_confirmation
