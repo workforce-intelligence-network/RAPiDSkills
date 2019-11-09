@@ -61,9 +61,14 @@ class CreateUserUser {
 }
 
 const createUser = async (user: CreateUserUser) => apiV1.post('users', {
-  name: user.name,
-  email: user.email,
-  organization_name: user.organizationName,
+  data: {
+    type: 'users',
+    attributes: {
+      name: user.name,
+      email: user.email,
+      organization_name: user.organizationName,
+    },
+  },
 });
 
 export default {
