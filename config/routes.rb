@@ -29,5 +29,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '*path', controller: 'vuejs', action: 'index', as: :vuejs
+  get '*path', controller: 'vuejs', action: 'index', as: :vuejs, constraints: lambda { |req|
+    req.path.exclude? 'rails/active_storage'
+  }
 end
