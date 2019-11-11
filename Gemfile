@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 # Architecture
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.1'
 gem 'fast_jsonapi'
 gem 'jwt'
 gem 'pg'
