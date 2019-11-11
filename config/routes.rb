@@ -3,9 +3,6 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  resources :users, path: 'welcome', path_names: { new: '' },
-    only: [:new, :create]
-
   root to: "vuejs#index"
 
   require 'sidekiq/web'
