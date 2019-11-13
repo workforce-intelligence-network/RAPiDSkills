@@ -14,4 +14,8 @@ class API::V1::OccupationStandardSerializer
       Rails.application.routes.url_helpers.url_for(object.pdf)
     end
   end
+
+  attribute :pdf_created_at do |object|
+    object.pdf.created_at if object.pdf.attached?
+  end
 end

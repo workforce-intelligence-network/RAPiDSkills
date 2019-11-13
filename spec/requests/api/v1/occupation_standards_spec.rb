@@ -73,10 +73,14 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["attributes"]["industry_title"]).to be nil
         expect(json["data"]["attributes"]["pdf_filename"]).to be nil
         expect(json["data"]["attributes"]["pdf_url"]).to be nil
+        expect(json["data"]["attributes"]["pdf_created_at"]).to be nil
       end
     end
 
     context "with pdf" do
+      before { Timecop.freeze(Time.new(2019,8,13,12,13,14)) }
+      after { Timecop.return }
+
       let(:os) { create(:occupation_standard, :with_pdf) }
 
       it "returns the correct data" do
@@ -90,6 +94,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["attributes"]["industry_title"]).to be nil
         expect(json["data"]["attributes"]["pdf_filename"]).to eq "pixel1x1.pdf"
         expect(json["data"]["attributes"]["pdf_url"]).to_not be nil
+        expect(json["data"]["attributes"]["pdf_created_at"]).to eq "2019-08-13T12:13:14.000Z"
       end
     end
   end
