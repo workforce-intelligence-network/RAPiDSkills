@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :favorites, -> { order(id: :desc) }, through: :relationships,
     class_name: 'OccupationStandard', source: :occupation_standard
 
+  after_commit :send_welcome_email, on: :create
+
   def create_api_access_token!
     client_session = create_session!
     client_session.token
@@ -27,11 +29,11 @@ class User < ApplicationRecord
     client_sessions.where(id: session_identifier).destroy_all
   end
 
-  def send_welcome_email
-    UserMailer.welcome_email(id).deliver_now
-  end
-
   private
+
+  def send_welcome_email
+    UserMailer.welcome_email(id).deliver_now if lead?
+  end
 
   def authentication_payload(session_identifier)
     {

@@ -62,13 +62,36 @@ RSpec.describe User, type: :model do
   end
 
   describe "#send_welcome_email" do
-    let(:user) { build_stubbed(:user) }
     let(:mailer) { double("mailer", deliver_now: true) }
 
-    it "calls welcome mailer" do
-      expect(UserMailer).to receive(:welcome_email).with(user.id).and_return(mailer)
-      expect(mailer).to receive(:deliver_now)
-      user.send_welcome_email
+    context "when new user" do
+      context "when lead" do
+        let(:user) { build(:user) }
+
+        it "calls welcome mailer" do
+          expect(UserMailer).to receive(:welcome_email).and_return(mailer)
+          expect(mailer).to receive(:deliver_now)
+          user.save!
+        end
+      end
+
+      context "when not lead" do
+        let(:user) { build(:user, role: :admin) }
+
+        it "does not call welcome mailer" do
+          expect(UserMailer).to_not receive(:welcome_email)
+          user.save!
+        end
+      end
+    end
+
+    context "when existing user" do
+      let!(:user) { create(:user) }
+
+      it "does not call welcome mailer" do
+        expect(UserMailer).to_not receive(:welcome_email)
+        user.update!(name: "Foo")
+      end
     end
   end
 end
