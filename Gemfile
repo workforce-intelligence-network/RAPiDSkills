@@ -57,4 +57,5 @@ group :development do
 end
 
 group :test do
+  gem 'timecop'
 end
