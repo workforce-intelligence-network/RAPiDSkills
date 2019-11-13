@@ -60,4 +60,15 @@ RSpec.describe User, type: :model do
       }.to change(user.client_sessions, :count).by(-1)
     end
   end
+
+  describe "#send_welcome_email" do
+    let(:user) { build_stubbed(:user) }
+    let(:mailer) { double("mailer", deliver_now: true) }
+
+    it "calls welcome mailer" do
+      expect(UserMailer).to receive(:welcome_email).with(user.id).and_return(mailer)
+      expect(mailer).to receive(:deliver_now)
+      user.send_welcome_email
+    end
+  end
 end

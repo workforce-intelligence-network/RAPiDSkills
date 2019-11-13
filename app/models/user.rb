@@ -27,6 +27,10 @@ class User < ApplicationRecord
     client_sessions.where(id: session_identifier).destroy_all
   end
 
+  def send_welcome_email
+    UserMailer.welcome_email(id).deliver_now
+  end
+
   private
 
   def authentication_payload(session_identifier)
