@@ -3,7 +3,7 @@ ActiveAdmin.register OccupationStandard do
 
   includes :organization, :occupation, :parent_occupation_standard, :creator
 
-  permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :excel_file_url, :source_file_url, :title, skill_ids: [], work_process_ids: []
+  permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :source_file_url, :title, skill_ids: [], work_process_ids: []
 
   SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)
 
@@ -13,6 +13,8 @@ ActiveAdmin.register OccupationStandard do
   remove_filter :occupation_standard_work_processes
   remove_filter :pdf_attachment
   remove_filter :pdf_blob
+  remove_filter :excel_attachment
+  remove_filter :excel_blob
 
   action_item :clone_occupation_standard, only: :show do
     link_to 'Clone', clone_occupation_standard_admin_occupation_standard_path(occupation_standard)
@@ -20,6 +22,10 @@ ActiveAdmin.register OccupationStandard do
 
   action_item :generate_occupation_standard_pdf, only: :show do
     link_to 'Generate PDF', generate_pdf_admin_occupation_standard_path(occupation_standard), method: :post
+  end
+
+  action_item :generate_occupation_standard_excel, only: :show do
+    link_to 'Generate Excel', generate_excel_admin_occupation_standard_path(occupation_standard), method: :post
   end
 
   member_action :clone_occupation_standard, method: [:get, :post] do
@@ -37,6 +43,12 @@ ActiveAdmin.register OccupationStandard do
   member_action :generate_pdf, method: [:post] do
     GenerateOccupationStandardPdfJob.perform_later(resource.id)
     flash[:notice] = "PDF is being generated"
+    redirect_to admin_occupation_standard_path(resource)
+  end
+
+  member_action :generate_excel, method: [:post] do
+    GenerateOccupationStandardExcelJob.perform_later(resource.id)
+    flash[:notice] = "CSV file is being generated"
     redirect_to admin_occupation_standard_path(resource)
   end
 
@@ -75,7 +87,11 @@ ActiveAdmin.register OccupationStandard do
           link_to occupation_standard.pdf.filename, url_for(occupation_standard.pdf)
         end
       end
-      row :excel_file_url
+      row :excel do |occupation_standard|
+        if occupation_standard.excel.attached?
+          link_to occupation_standard.excel.filename, url_for(occupation_standard.excel)
+        end
+      end
       row :source_file_url
       row :created_at
       row :updated_at
