@@ -106,4 +106,47 @@ RSpec.describe OccupationStandard, type: :model do
       end
     end
   end
+
+  describe "#should_generate_excel?" do
+    context "when no excel attached" do
+      let(:os) { create(:occupation_standard) }
+
+      it "returns true" do
+        expect(os.should_generate_excel?).to be true
+      end
+    end
+
+    context "when excel attached" do
+      let(:os) { create(:occupation_standard, :with_excel) }
+
+      context "when excel is out of date" do
+        before { os.update_columns(updated_at: Time.current + 1.minute) }
+
+        it "returns true" do
+          os.reload
+          expect(os.should_generate_excel?).to be true
+        end
+      end
+
+      context "when excel is up-to-date" do
+        context "when actual time difference" do
+          before { os.update_columns(updated_at: Time.current - 1.hour) }
+
+          it "returns false" do
+            os.reload
+            expect(os.should_generate_excel?).to be false
+          end
+        end
+
+        context "when times match up within a second" do
+          before { os.update_columns(updated_at: Time.current + 5/1000) }
+
+          it "returns false" do
+            os.reload
+            expect(os.should_generate_excel?).to be false
+          end
+        end
+      end
+    end
+  end
 end
