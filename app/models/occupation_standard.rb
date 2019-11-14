@@ -77,6 +77,10 @@ class OccupationStandard < ApplicationRecord
     end
   end
 
+  def export_filename
+    "#{title.parameterize(separator: '_')}_#{I18n.l(Time.current, format: :filename)}"
+  end
+
   def to_s
     "#{title} (#{organization.title})"
   end
