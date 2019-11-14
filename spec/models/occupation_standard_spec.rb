@@ -61,8 +61,11 @@ RSpec.describe OccupationStandard, type: :model do
 
   describe "#clone_as_unregistered!" do
     let!(:occupation_standard) { create(:occupation_standard, title: "OS Title", completed_at: Time.current, published_at: Time.current) }
-    let!(:oswp) { create_list(:occupation_standard_work_process, 2, occupation_standard: occupation_standard) }
-    let!(:oss) { create_list(:occupation_standard_skill, 2, occupation_standard: occupation_standard) }
+    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: occupation_standard) }
+    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: occupation_standard) }
+    let!(:oss1a) { create(:occupation_standard_skill, occupation_standard: occupation_standard, occupation_standard_work_process: oswp1) }
+    let!(:oss1b) { create(:occupation_standard_skill, occupation_standard: occupation_standard, occupation_standard_work_process: oswp1) }
+    let!(:oss) { create(:occupation_standard_skill, occupation_standard: occupation_standard, occupation_standard_work_process: nil) }
     let(:user) { create(:user) }
     let(:organization) { create(:organization) }
 
@@ -70,8 +73,9 @@ RSpec.describe OccupationStandard, type: :model do
       it "creates UnregisteredStandard" do
         os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
         expect(os).to be_a(UnregisteredStandard)
-        expect(os.skills).to match_array occupation_standard.skills
-        expect(os.work_processes).to match_array occupation_standard.work_processes
+        expect(os.work_processes).to match_array [oswp1.work_process, oswp2.work_process]
+        expect(os.occupation_standard_work_processes.flat_map(&:skills)).to match_array [oss1a.skill, oss1b.skill]
+        expect(os.skills).to match_array [oss.skill]
         expect(os.title).to eq "OS Title COPY"
         expect(os.occupation).to eq os.occupation
         expect(os.parent_occupation_standard).to eq occupation_standard
