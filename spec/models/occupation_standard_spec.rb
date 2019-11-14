@@ -77,19 +77,31 @@ RSpec.describe OccupationStandard, type: :model do
       let(:os) { create(:occupation_standard, :with_pdf) }
 
       context "when pdf is out of date" do
-        before { os.update(title: "new title") }
+        before { os.update_columns(updated_at: Time.current + 1.minute) }
 
         it "returns true" do
+          os.reload
           expect(os.should_generate_pdf?).to be true
         end
       end
 
       context "when pdf is up-to-date" do
-        before { os.update_columns(updated_at: Time.current - 1.hour) }
+        context "when actual time difference" do
+          before { os.update_columns(updated_at: Time.current - 1.hour) }
 
-        it "returns false" do
-          os.reload
-          expect(os.should_generate_pdf?).to be false
+          it "returns false" do
+            os.reload
+            expect(os.should_generate_pdf?).to be false
+          end
+        end
+
+        context "when times match up within a second" do
+          before { os.update_columns(updated_at: Time.current + 5/1000) }
+
+          it "returns false" do
+            os.reload
+            expect(os.should_generate_pdf?).to be false
+          end
         end
       end
     end

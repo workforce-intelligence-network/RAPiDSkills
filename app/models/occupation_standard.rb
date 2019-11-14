@@ -50,7 +50,8 @@ class OccupationStandard < ApplicationRecord
   end
 
   def should_generate_pdf?
-    !pdf.attached? || pdf.created_at < updated_at
+    # Record updated_at stamp gets set milliseconds after pdf created_at
+    !pdf.attached? || pdf.created_at < updated_at - 1.second
   end
 
   def to_s
