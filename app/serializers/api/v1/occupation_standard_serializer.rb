@@ -4,6 +4,7 @@ class API::V1::OccupationStandardSerializer
              :organization_title,
              :occupation_title,
              :industry_title
+  attribute :should_generate_pdf, &:should_generate_pdf?
 
   attribute :pdf_filename do |object|
     object.pdf.filename if object.pdf.attached?
