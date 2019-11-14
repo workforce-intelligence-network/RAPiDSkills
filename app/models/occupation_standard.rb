@@ -11,6 +11,7 @@ class OccupationStandard < ApplicationRecord
   has_many :standards_registrations
 
   has_one_attached :pdf
+  has_one_attached :excel
 
   validates :title, presence: true
 
@@ -48,6 +49,11 @@ class OccupationStandard < ApplicationRecord
       errors.add(:base, e.message)
       OccupationStandard.new
     end
+  end
+
+  def should_generate_excel?
+    # Record updated_at stamp gets set milliseconds after excel created_at
+    !excel.attached? || excel.created_at < updated_at - 1.second
   end
 
   def to_csv

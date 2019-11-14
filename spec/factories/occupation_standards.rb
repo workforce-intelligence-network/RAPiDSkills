@@ -6,5 +6,9 @@ FactoryBot.define do
     association :creator, factory: :user
     occupation
     data_trust_approval { false }
+
+    trait :with_excel do
+      excel { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.csv'), 'text/csv') }
+    end
   end
 end
