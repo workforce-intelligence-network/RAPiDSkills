@@ -14,6 +14,7 @@ class OccupationStandard < ApplicationRecord
 
   validates :title, presence: true
 
+  delegate :rapids_code, to: :occupation
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
   delegate :title, to: :industry, prefix: true, allow_nil: true
@@ -46,6 +47,22 @@ class OccupationStandard < ApplicationRecord
     rescue Exception => e
       errors.add(:base, e.message)
       OccupationStandard.new
+    end
+  end
+
+  def to_csv
+    CSV.generate do |csv|
+      csv << %w(rapids_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort)
+      occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
+        array = [rapids_code, organization_title, title, type.gsub('Standard', ''), oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
+        if oswp.skills.any?
+          oswp.occupation_standard_skills.each do |oss|
+            csv << array + [oss.skill_description, oss.sort_order]
+          end
+        else
+          csv << array
+        end
+      end
     end
   end
 
