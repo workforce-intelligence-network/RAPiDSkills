@@ -5,6 +5,9 @@ ActiveAdmin.register OccupationStandardWorkProcess do
 
   permit_params :sort_order, :hours
 
+  preserve_default_filters!
+  remove_filter :occupation_standard_skills
+
   index do
     column :id
     column :occupation_standard

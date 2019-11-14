@@ -72,5 +72,6 @@ Rails.application.configure do
     Bullet.bullet_logger = true
     Bullet.alert = true
     Bullet.console = true
+    Bullet.unused_eager_loading_enable = false
   end
 end
