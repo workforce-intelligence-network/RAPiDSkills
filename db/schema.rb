@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_211840) do
+ActiveRecord::Schema.define(version: 2019_11_14_232914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_211840) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "sort_order", default: 0
-    t.bigint "occupation_standard_work_process_id", null: false
+    t.bigint "occupation_standard_work_process_id"
     t.index ["occupation_standard_id"], name: "index_occupation_standard_skills_on_occupation_standard_id"
     t.index ["occupation_standard_work_process_id"], name: "occupation_standard_work_process_id_idx"
     t.index ["skill_id"], name: "index_occupation_standard_skills_on_skill_id"
