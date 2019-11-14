@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_224214) do
+ActiveRecord::Schema.define(version: 2019_11_14_211840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -119,7 +119,6 @@ ActiveRecord::Schema.define(version: 2019_11_06_224214) do
     t.bigint "industry_id"
     t.datetime "completed_at"
     t.datetime "published_at"
-    t.string "excel_file_url"
     t.string "source_file_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
