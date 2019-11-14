@@ -63,4 +63,35 @@ RSpec.describe OccupationStandard, type: :model do
       end
     end
   end
+
+  describe "#should_generate_pdf?" do
+    context "when no pdf attached" do
+      let(:os) { create(:occupation_standard) }
+
+      it "returns true" do
+        expect(os.should_generate_pdf?).to be true
+      end
+    end
+
+    context "when pdf attached" do
+      let(:os) { create(:occupation_standard, :with_pdf) }
+
+      context "when pdf is out of date" do
+        before { os.update(title: "new title") }
+
+        it "returns true" do
+          expect(os.should_generate_pdf?).to be true
+        end
+      end
+
+      context "when pdf is up-to-date" do
+        before { os.update_columns(updated_at: Time.current - 1.hour) }
+
+        it "returns false" do
+          os.reload
+          expect(os.should_generate_pdf?).to be false
+        end
+      end
+    end
+  end
 end

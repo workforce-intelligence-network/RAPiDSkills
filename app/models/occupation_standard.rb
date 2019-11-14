@@ -49,6 +49,10 @@ class OccupationStandard < ApplicationRecord
     end
   end
 
+  def should_generate_pdf?
+    !pdf.attached? || pdf.created_at < updated_at
+  end
+
   def to_s
     "#{title} (#{organization.title})"
   end
