@@ -6,12 +6,14 @@ class API::V1::OccupationStandardsController < API::V1::APIController
              .includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment)
              .search(search_params.to_h)
              .order(id: :desc)
-    render json: API::V1::OccupationStandardSerializer.new(@oss)
+    options = { links: { self: api_v1_occupation_standards_url } }
+    render json: API::V1::OccupationStandardSerializer.new(@oss, options)
   end
 
   def show
     @os = OccupationStandard.find(params[:id])
-    render json: API::V1::OccupationStandardSerializer.new(@os)
+    options = { links: { self: @os.url } }
+    render json: API::V1::OccupationStandardSerializer.new(@os, options)
   end
 
   private

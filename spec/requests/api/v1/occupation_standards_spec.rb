@@ -12,6 +12,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # With no occupation_id parameter, returns all data
       get path
       expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url
       expect(json["data"].count).to eq 3
       expect(json["data"][0]["id"]).to eq os3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
@@ -19,12 +20,14 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][0]["attributes"]["organization_title"]).to eq os3.organization.title
       expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][0]["attributes"]["industry_title"]).to be nil
+
       expect(json["data"][1]["id"]).to eq os2.id.to_s
       expect(json["data"][1]["type"]).to eq "occupation_standard"
       expect(json["data"][1]["attributes"]["title"]).to eq os2.title
       expect(json["data"][1]["attributes"]["organization_title"]).to eq os2.organization.title
       expect(json["data"][1]["attributes"]["occupation_title"]).to eq os2.occupation.title
       expect(json["data"][1]["attributes"]["industry_title"]).to be nil
+
       expect(json["data"][2]["id"]).to eq os1.id.to_s
       expect(json["data"][2]["type"]).to eq "occupation_standard"
       expect(json["data"][2]["attributes"]["title"]).to eq os1.title
@@ -65,6 +68,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       it "returns the correct data" do
         get path
         expect(response).to have_http_status(:success)
+        expect(json["links"]["self"]).to eq api_v1_occupation_standard_url(os)
         expect(json["data"]["id"]).to eq os.id.to_s
         expect(json["data"]["type"]).to eq "occupation_standard"
         expect(json["data"]["attributes"]["title"]).to eq os.title
