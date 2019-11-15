@@ -10,6 +10,7 @@ class API::V1::DownloadsController < API::V1::APIController
       case object_type
       when "occupation_standards"
         GenerateOccupationStandardPdfJob.perform_later(object_id)
+        GenerateOccupationStandardExcelJob.perform_later(object_id)
       end
       head :accepted
     else

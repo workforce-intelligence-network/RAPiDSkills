@@ -22,8 +22,9 @@ RSpec.describe API::V1::DownloadsController, type: :request do
         }
       }
 
-      it "triggers pdf generation" do
+      it "triggers pdf and excel generation" do
         expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id.to_s)
+        expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id.to_s)
         post path, params: params
       end
 
@@ -35,8 +36,9 @@ RSpec.describe API::V1::DownloadsController, type: :request do
 
     context "with invalid params" do
       shared_examples "fails" do
-        it "does not trigger pdf generation" do
+        it "does not trigger pdf or excel generation" do
           expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
           post path, params: params
         end
 
@@ -55,8 +57,9 @@ RSpec.describe API::V1::DownloadsController, type: :request do
           }
         }
 
-        it "does not trigger pdf generation" do
+        it "does not trigger pdf or excel generation" do
           expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
           post path, params: params
         end
 
@@ -85,8 +88,9 @@ RSpec.describe API::V1::DownloadsController, type: :request do
           }
         }
 
-        it "does not trigger pdf generation" do
+        it "does not trigger pdf or excel generation" do
           expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
           post path, params: params
         end
 
