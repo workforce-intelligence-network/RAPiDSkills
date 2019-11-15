@@ -9,6 +9,9 @@ class User < ApplicationRecord
   belongs_to :employer, class_name: 'Organization', optional: true
   has_many :data_imports
   has_many :client_sessions
+  has_many :relationships
+  has_many :favorites, through: :relationships,
+    class_name: 'OccupationStandard', source: :occupation_standard
 
   class << self
     def new_token

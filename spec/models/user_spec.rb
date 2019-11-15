@@ -12,6 +12,15 @@ RSpec.describe User, type: :model do
     expect(new_user.valid?).to be false
   end
 
+  describe "#favorites" do
+    it "links through relationships table" do
+      user = create(:user)
+      os = create(:occupation_standard)
+      create(:relationship, occupation_standard: os, user: user)
+      expect(user.favorites).to eq [os]
+    end
+  end
+
   describe ".new_token" do
     it "returns url safe base64 string" do
       expect(User.new_token).to be_a(String)
