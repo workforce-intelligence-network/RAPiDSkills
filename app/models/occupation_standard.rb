@@ -70,6 +70,10 @@ class OccupationStandard < ApplicationRecord
           csv << array
         end
       end
+
+      occupation_standard_skills.where(occupation_standard_work_process: nil).each do |oss|
+        csv << [rapids_code, organization_title, title, type.gsub('Standard', ''), nil, nil, nil, nil, oss.skill_description, oss.sort_order]
+      end
     end
   end
 
