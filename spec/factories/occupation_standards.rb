@@ -14,5 +14,10 @@ FactoryBot.define do
     trait :with_excel do
       excel { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.csv'), 'text/csv') }
     end
+
+    trait :with_attachments do
+      pdf { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'pixel1x1.pdf'), 'application/pdf') }
+      excel { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.csv'), 'text/csv') }
+    end
   end
 end

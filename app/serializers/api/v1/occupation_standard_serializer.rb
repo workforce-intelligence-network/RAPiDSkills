@@ -19,6 +19,20 @@ class API::V1::OccupationStandardSerializer
     object.pdf.created_at if object.pdf.attached?
   end
 
+  attribute :excel_filename do |object|
+    object.excel.filename if object.excel.attached?
+  end
+
+  attribute :excel_url do |object|
+    if object.excel.attached?
+      Rails.application.routes.url_helpers.url_for(object.excel)
+    end
+  end
+
+  attribute :excel_created_at do |object|
+    object.excel.created_at if object.excel.attached?
+  end
+
   attribute :should_generate_attachments do |object|
     flag = false
     %w(pdf excel).each do |kind|
