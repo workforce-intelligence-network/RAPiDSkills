@@ -3,7 +3,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def index
     @oss = OccupationStandard
-             .includes(:organization, :occupation, :industry, :pdf_attachment)
+             .includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment)
              .search(search_params.to_h)
              .order(id: :desc)
     render json: API::V1::OccupationStandardSerializer.new(@oss)

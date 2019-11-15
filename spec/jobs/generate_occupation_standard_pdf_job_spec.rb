@@ -10,7 +10,7 @@ RSpec.describe GenerateOccupationStandardPdfJob, type: :job do
       let(:os) { create(:occupation_standard) }
 
       before do
-        allow(os).to receive(:should_generate_pdf?).and_return(true)
+        allow(os).to receive(:should_generate_attachment?).with('pdf').and_return(true)
       end
 
       it "calls pdf writer and attaches file" do
@@ -25,7 +25,7 @@ RSpec.describe GenerateOccupationStandardPdfJob, type: :job do
       let(:os) { create(:occupation_standard) }
 
       before do
-        allow(os).to receive(:should_generate_pdf?).and_return(false)
+        allow(os).to receive(:should_generate_attachment?).with('pdf').and_return(false)
       end
 
       it "does not calls pdf writer" do

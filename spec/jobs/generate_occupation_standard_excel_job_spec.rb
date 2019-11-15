@@ -13,7 +13,7 @@ RSpec.describe GenerateOccupationStandardExcelJob, type: :job do
       let(:os) { create(:occupation_standard) }
 
       before do
-        allow(os).to receive(:should_generate_excel?).and_return(true)
+        allow(os).to receive(:should_generate_attachment?).with('excel').and_return(true)
       end
 
       it "attaches file" do
@@ -27,7 +27,7 @@ RSpec.describe GenerateOccupationStandardExcelJob, type: :job do
       let(:os) { create(:occupation_standard) }
 
       before do
-        allow(os).to receive(:should_generate_excel?).and_return(false)
+        allow(os).to receive(:should_generate_attachment?).with('excel').and_return(false)
       end
 
       it "does not attach file" do

@@ -92,7 +92,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["attributes"]["organization_title"]).to eq os.organization.title
         expect(json["data"]["attributes"]["occupation_title"]).to eq os.occupation.title
         expect(json["data"]["attributes"]["industry_title"]).to be nil
-        expect(json["data"]["attributes"]["should_generate_pdf"]).to be false
+        expect(json["data"]["attributes"]["should_generate_attachments"]).to be true
         expect(json["data"]["attributes"]["pdf_filename"]).to eq "pixel1x1.pdf"
         expect(json["data"]["attributes"]["pdf_url"]).to_not be nil
         expect(json["data"]["attributes"]["pdf_created_at"]).to eq "2019-08-13T12:13:14.000Z"

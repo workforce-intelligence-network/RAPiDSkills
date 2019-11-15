@@ -3,7 +3,7 @@ class GenerateOccupationStandardExcelJob < ApplicationJob
 
   def perform(occupation_standard_id)
     os = OccupationStandard.find(occupation_standard_id)
-    if os.should_generate_excel?
+    if os.should_generate_attachment?('excel')
       os.excel.attach(
         io: StringIO.new(os.to_csv),
         filename: "#{os.export_filename}.csv",

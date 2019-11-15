@@ -51,14 +51,10 @@ class OccupationStandard < ApplicationRecord
     end
   end
 
-  def should_generate_pdf?
-    # Record updated_at stamp gets set milliseconds after pdf created_at
-    !pdf.attached? || pdf.created_at < updated_at - 1.second
-  end
-
-  def should_generate_excel?
-    # Record updated_at stamp gets set milliseconds after excel created_at
-    !excel.attached? || excel.created_at < updated_at - 1.second
+  def should_generate_attachment?(kind)
+    # Occupation standard updated_at timestamp gets set milliseconds after
+    # attachment created_at timestamp.
+    !send(kind).attached? || send(kind).created_at < updated_at - 1.second
   end
 
   def to_csv

@@ -4,7 +4,6 @@ class API::V1::OccupationStandardSerializer
              :organization_title,
              :occupation_title,
              :industry_title
-  attribute :should_generate_pdf, &:should_generate_pdf?
 
   attribute :pdf_filename do |object|
     object.pdf.filename if object.pdf.attached?
@@ -18,5 +17,13 @@ class API::V1::OccupationStandardSerializer
 
   attribute :pdf_created_at do |object|
     object.pdf.created_at if object.pdf.attached?
+  end
+
+  attribute :should_generate_attachments do |object|
+    flag = false
+    %w(pdf excel).each do |kind|
+      flag = true if object.should_generate_attachment?(kind)
+    end
+    flag
   end
 end
