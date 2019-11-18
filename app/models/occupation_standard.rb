@@ -64,24 +64,43 @@ class OccupationStandard < ApplicationRecord
     CSV.generate do |csv|
       csv << CSV_HEADERS
       occupation_standard_work_processes.eager_load_associations.each do |oswp|
-        array = [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
         if oswp.skills.any?
           oswp.occupation_standard_skills.each do |oss|
-            csv << array + [oss.skill_description, oss.sort_order]
+            csv << work_process_with_skill_row(oss)
           end
         else
-          csv << array
+          csv << work_process_row(oswp)
         end
       end
 
       occupation_standard_skills_with_no_work_process.each do |oss|
-        csv << [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), nil, nil, nil, nil, oss.skill_description, oss.sort_order]
+        csv << skill_row(oss)
       end
     end
   end
 
   def export_filename
     "#{title.parameterize(separator: '_')}_#{I18n.l(Time.current, format: :filename)}"
+  end
+
+  def work_process_with_skill_row(oss)
+    work_process_row(oss.occupation_standard_work_process) + skill_fields(oss)
+  end
+
+  def work_process_row(oswp)
+    common_fields + [oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
+  end
+
+  def skill_row(oss)
+    common_fields + [nil, nil, nil, nil] + skill_fields(oss)
+  end
+
+  def common_fields
+    [rapids_code, onet_code, organization_title, title, type.gsub('Standard', '')]
+  end
+
+  def skill_fields(oss)
+    [oss.skill_description, oss.sort_order]
   end
 
   def to_s
