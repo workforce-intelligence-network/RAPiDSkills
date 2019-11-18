@@ -89,15 +89,19 @@ class OccupationStandard < ApplicationRecord
   end
 
   def work_process_row(oswp)
-    common_fields + [oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
+    common_fields + work_process_fields(oswp)
   end
 
   def skill_row(oss)
-    common_fields + [nil, nil, nil, nil] + skill_fields(oss)
+    common_fields + work_process_fields + skill_fields(oss)
   end
 
   def common_fields
     [rapids_code, onet_code, organization_title, title, type.gsub('Standard', '')]
+  end
+
+  def work_process_fields(oswp=nil)
+    [oswp.try(:work_process_title), oswp.try(:work_process_description), oswp.try(:hours), oswp.try(:sort_order)]
   end
 
   def skill_fields(oss)
