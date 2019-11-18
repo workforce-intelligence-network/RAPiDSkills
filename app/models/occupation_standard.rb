@@ -13,6 +13,7 @@ class OccupationStandard < ApplicationRecord
     through: :occupation_standard_skills,
     class_name: 'Skill',
     source: :skill
+  has_many :occupation_standard_skills_with_no_work_process, -> { where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
   has_many :standards_registrations
 
   has_one_attached :pdf
