@@ -62,7 +62,7 @@ class OccupationStandard < ApplicationRecord
   def to_csv
     CSV.generate do |csv|
       csv << CSV_HEADERS
-      occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
+      occupation_standard_work_processes.eager_loaded_associations.each do |oswp|
         array = [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
         if oswp.skills.any?
           oswp.occupation_standard_skills.each do |oss|
