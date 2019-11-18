@@ -29,6 +29,16 @@ RSpec.describe OccupationStandard, type: :model do
     end
   end
 
+  describe "#skills_with_no_work_process" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns skills with no work process" do
+      expect(os.skills_with_no_work_process).to eq [oss2.skill]
+    end
+  end
+
   describe "#occupation_standard_skills_with_no_work_process" do
     let(:os) { create(:occupation_standard) }
     let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
