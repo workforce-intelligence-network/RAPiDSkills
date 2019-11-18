@@ -106,4 +106,12 @@ RSpec.describe OccupationStandard, type: :model do
       end
     end
   end
+
+  describe "#to_csv" do
+    let(:os) { build_stubbed(:occupation_standard) }
+
+    it "returns a string" do
+      expect(os.to_csv).to be_a(String)
+    end
+  end
 end
