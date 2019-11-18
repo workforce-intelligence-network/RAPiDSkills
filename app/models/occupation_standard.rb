@@ -59,9 +59,9 @@ class OccupationStandard < ApplicationRecord
 
   def to_csv
     CSV.generate do |csv|
-      csv << %w(rapids_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort)
+      csv << %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort)
       occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
-        array = [rapids_code, organization_title, title, type.gsub('Standard', ''), oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
+        array = [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
         if oswp.skills.any?
           oswp.occupation_standard_skills.each do |oss|
             csv << array + [oss.skill_description, oss.sort_order]
@@ -72,7 +72,7 @@ class OccupationStandard < ApplicationRecord
       end
 
       occupation_standard_skills.where(occupation_standard_work_process: nil).each do |oss|
-        csv << [rapids_code, organization_title, title, type.gsub('Standard', ''), nil, nil, nil, nil, oss.skill_description, oss.sort_order]
+        csv << [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), nil, nil, nil, nil, oss.skill_description, oss.sort_order]
       end
     end
   end
