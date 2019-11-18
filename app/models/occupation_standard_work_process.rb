@@ -10,7 +10,7 @@ class OccupationStandardWorkProcess < ApplicationRecord
   delegate :title, to: :work_process, prefix: true
   delegate :description, to: :work_process, prefix: true
 
-  scope :eager_loaded_associations, -> { includes(:work_process, :occupation_standard_skills, :skills) }
+  scope :eager_load_associations, -> { includes(:work_process, :occupation_standard_skills, :skills) }
 
   def to_s
     "#{occupation_standard.to_s}: #{work_process.to_s}"
