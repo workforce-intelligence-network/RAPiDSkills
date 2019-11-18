@@ -17,6 +17,7 @@ class OccupationStandard < ApplicationRecord
   validates :title, presence: true
 
   delegate :rapids_code, to: :occupation
+  delegate :onet_code, to: :occupation
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
   delegate :title, to: :industry, prefix: true, allow_nil: true
