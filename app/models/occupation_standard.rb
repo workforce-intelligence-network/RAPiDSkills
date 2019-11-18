@@ -9,10 +9,6 @@ class OccupationStandard < ApplicationRecord
   has_many :occupation_standard_work_processes, -> { order(:sort_order) }
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :occupation_standard_skills_with_no_work_process, -> { where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
-  has_many :skills_with_no_work_process,
-    through: :occupation_standard_skills_with_no_work_process,
-    class_name: 'Skill',
-    source: :skill
   has_many :standards_registrations
 
   has_one_attached :pdf
@@ -78,7 +74,7 @@ class OccupationStandard < ApplicationRecord
         end
       end
 
-      occupation_standard_skills.where(occupation_standard_work_process: nil).each do |oss|
+      occupation_standard_skills_with_no_work_process.each do |oss|
         csv << [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), nil, nil, nil, nil, oss.skill_description, oss.sort_order]
       end
     end

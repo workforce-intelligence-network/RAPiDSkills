@@ -11,6 +11,7 @@ ActiveAdmin.register OccupationStandard do
   filter :type, as: :select, collection: SUBMODELS
   remove_filter :occupation_standard_skills
   remove_filter :occupation_standard_work_processes
+  remove_filter :occupation_standard_skills_with_no_work_process
   remove_filter :pdf_attachment
   remove_filter :pdf_blob
   remove_filter :excel_attachment
@@ -108,7 +109,7 @@ ActiveAdmin.register OccupationStandard do
             span "Skills", class: "header"
           end
         end
-        os.occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
+        os.occupation_standard_work_processes.eager_loaded_associations.each do |oswp|
           columns do
             column do
               link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
@@ -121,6 +122,21 @@ ActiveAdmin.register OccupationStandard do
                 oss = os.occupation_standard_skills.where(skill: skill).first
                 link_to skill.to_s, admin_occupation_standard_skill_path(oss)
               end.join(", ").html_safe
+            end
+          end
+        end
+      end
+
+      panel "Skills with no associated work process" do
+        columns do
+          column do
+            span "Description", class: "header"
+          end
+        end
+        os.occupation_standard_skills_with_no_work_process.each do |oss|
+          columns do
+            column do
+              link_to oss.skill.to_s, admin_occupation_standard_skill_path(oss)
             end
           end
         end
