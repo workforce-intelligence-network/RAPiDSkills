@@ -23,6 +23,8 @@ class OccupationStandard < ApplicationRecord
 
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
 
+  CSV_HEADERS = %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort).freeze
+
   class << self
     def search(args={})
       occupation(args[:occupation_id])
@@ -59,7 +61,7 @@ class OccupationStandard < ApplicationRecord
 
   def to_csv
     CSV.generate do |csv|
-      csv << %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort)
+      csv << CSV_HEADERS
       occupation_standard_work_processes.includes(:work_process, :occupation_standard_skills, :skills).each do |oswp|
         array = [rapids_code, onet_code, organization_title, title, type.gsub('Standard', ''), oswp.work_process_title, oswp.work_process_description, oswp.hours, oswp.sort_order]
         if oswp.skills.any?
