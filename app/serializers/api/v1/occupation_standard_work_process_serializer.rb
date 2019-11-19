@@ -3,12 +3,8 @@ class API::V1::OccupationStandardWorkProcessSerializer
   set_type :work_process
 
   has_many :skills, links: {
-    self: ->(object) { 
-      Rails.application.routes.url_helpers.relationships_skills_api_v1_work_process_url(object)
-    },
-    related: ->(object) {
-      Rails.application.routes.url_helpers.api_v1_work_process_skills_url(object)
-    }
+    self: ->(object) { object.relationships_url('skills') },
+    related: ->(object) { object.related_url('skills') },
   }
 
   attribute :title do |object|

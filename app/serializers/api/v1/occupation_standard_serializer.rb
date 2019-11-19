@@ -1,23 +1,16 @@
 class API::V1::OccupationStandardSerializer
   include FastJsonapi::ObjectSerializer
-  include Rails.application.routes.url_helpers
 
   link :self, :url
 
   has_many :occupation_standard_work_processes, record_type: :work_process, key: :work_processes, links: {
-    self: ->(object) { Rails.application.routes.url_helpers.relationships_work_processes_api_v1_occupation_standard_url(object)
-    },
-    related: ->(object) {
-      Rails.application.routes.url_helpers.api_v1_occupation_standard_work_processes_url(object)
-    }
+    self: ->(object) { object.relationships_url('work_processes') },
+    related: ->(object) { object.related_url('work_processes') },
   }
 
   has_many :skills, links: {
-    self: ->(object) { Rails.application.routes.url_helpers.relationships_skills_api_v1_occupation_standard_url(object)
-    },
-    related: ->(object) {
-      Rails.application.routes.url_helpers.api_v1_occupation_standard_skills_url(object)
-    }
+    self: ->(object) { object.relationships_url('skills') },
+    related: ->(object) { object.related_url('skills') },
   }
 
   attributes :title,
