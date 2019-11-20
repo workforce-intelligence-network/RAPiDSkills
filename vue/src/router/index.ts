@@ -1,22 +1,62 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import AppInnerLanding from '@/components/AppInnerLanding.vue';
+import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
+import Search from '@/components/Search.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home,
+    component: AppInnerLanding,
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+      },
+      {
+        path: 'follow',
+        name: 'follow',
+        // route level code-splitting
+        // this generates a separate chunk (follow.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "follow" */ '@/views/Follow.vue'),
+      },
+    ],
   },
   {
-    path: '/follow',
-    name: 'follow',
-    // route level code-splitting
-    // this generates a separate chunk (follow.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "follow" */ '../views/Follow.vue'),
+    path: '/',
+    component: AppInnerDashboard,
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        components: {
+          default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
+          search: Search,
+        },
+      },
+      {
+        path: 'favorites',
+        name: 'favorites',
+        components: {
+          default: () => import(/* webpackChunkName: "favorites" */ '@/views/Favorites.vue'),
+          search: Search,
+        },
+      },
+      {
+        path: 'reports',
+        name: 'reports',
+        component: () => import(/* webpackChunkName: "reports" */ '@/views/Reports.vue'),
+      },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue'),
+      },
+    ],
   },
 ];
 
