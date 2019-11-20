@@ -8,10 +8,10 @@ class API::V1::OccupationStandardWorkProcessSerializer
   }
 
   attribute :title do |object|
-    object.work_process.title
+    object.work_process_title
   end
 
   attribute :description do |object|
-    object.work_process.description
+    object.work_process_description
   end
 end
