@@ -117,8 +117,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           relationships: {
             skills: {
               links: {
-                self: relationships_skills_api_v1_work_process_url(oswp),
-                related: api_v1_work_process_skills_url(oswp),
+                self: relationships_skills_api_v1_occupation_standard_work_process_url(oswp),
+                related: api_v1_occupation_standard_work_process_skills_url(oswp),
               }.stringify_keys,
               data: [ { type: "skill", id: oss1.skill_id.to_s }.stringify_keys ],
             }.stringify_keys,
