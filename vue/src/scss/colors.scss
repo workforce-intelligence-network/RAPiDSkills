@@ -1,0 +1,10 @@
+$color-white: #FFFFFF;
+$color-white-darkened: darken($color: $color-white, $amount: 10);;
+
+$color-black: #002E58;
+$color-black-darkened: darken($color: $color-black, $amount: 10);
+
+$color-blue: #0077FF;
+$color-blue-darkened: darken($color: $color-blue, $amount: 10);
+
+$color-nav-bar-top-box-shadow: rgba($color: #080606, $alpha: 0.04);
