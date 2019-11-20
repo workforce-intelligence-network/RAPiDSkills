@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         resources :skills, only: [:index]
       end
 
-      resources :work_processes, only: [] do
+      resources :occupation_standard_work_processes, path: "work_processes", only: [:show] do
         member do
           get "relationships/skills", to: "work_processes/relationships#skills"
         end
