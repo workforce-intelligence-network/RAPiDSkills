@@ -29,6 +29,7 @@ Rails.application.routes.draw do
         resources :skills, only: [:index]
       end
 
+      resources :skills, only: [:show]
       resources :users, only: [:create]
 
       resources :sessions, only: [:create]
