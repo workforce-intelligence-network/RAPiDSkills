@@ -37,6 +37,9 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
+  # Serializer routes
+  routes.default_url_options = { host: 'localhost', port: 3000 }
+
   # Set up mailcatcher
   config.action_mailer.delivery_method = :smtp
   smtp_address = ENV["MAILCATCHER_HOST"].presence || 'localhost'
@@ -72,5 +75,6 @@ Rails.application.configure do
     Bullet.bullet_logger = true
     Bullet.alert = true
     Bullet.console = true
+    Bullet.unused_eager_loading_enable = false
   end
 end

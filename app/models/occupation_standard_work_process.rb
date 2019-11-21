@@ -7,6 +7,11 @@ class OccupationStandardWorkProcess < ApplicationRecord
   validates :occupation_standard, uniqueness: { scope: :work_process }
   validates :hours, presence: true
 
+  delegate :title, to: :work_process, prefix: true
+  delegate :description, to: :work_process, prefix: true
+
+  scope :eager_load_associations, -> { includes(:work_process, :occupation_standard_skills, :skills) }
+
   def to_s
     "#{occupation_standard.to_s}: #{work_process.to_s}"
   end

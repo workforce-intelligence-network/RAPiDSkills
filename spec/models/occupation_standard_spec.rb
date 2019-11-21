@@ -29,6 +29,16 @@ RSpec.describe OccupationStandard, type: :model do
     end
   end
 
+  describe "#occupation_standard_skills_with_no_work_process" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns occupation_standard skills with no work process" do
+      expect(os.occupation_standard_skills_with_no_work_process).to eq [oss2]
+    end
+  end
+
   describe "#clone_as_unregistered!" do
     let!(:occupation_standard) { create(:occupation_standard, title: "OS Title", completed_at: Time.current, published_at: Time.current) }
     let!(:oswp) { create_list(:occupation_standard_work_process, 2, occupation_standard: occupation_standard) }
@@ -61,6 +71,60 @@ RSpec.describe OccupationStandard, type: :model do
         expect(os).to be_new_record
         expect(occupation_standard.errors.full_messages.to_sentence).to eq "error msg"
       end
+    end
+  end
+
+  describe "#should_generate_attachment?" do
+    context "when no pdf attached" do
+      let(:os) { create(:occupation_standard) }
+
+      it "returns true" do
+        expect(os.should_generate_attachment?('pdf')).to be true
+      end
+    end
+
+    context "when pdf attached" do
+      let(:os) { create(:occupation_standard, :with_pdf) }
+
+      context "when pdf is out of date" do
+        before { os.update_columns(updated_at: Time.current + 1.minute) }
+
+        it "returns true" do
+          os.reload
+          expect(os.should_generate_attachment?('pdf')).to be true
+        end
+      end
+
+      context "when pdf is up-to-date" do
+        context "when actual time difference" do
+          before { os.update_columns(updated_at: Time.current - 1.hour) }
+
+          it "returns false" do
+            os.reload
+            expect(os.should_generate_attachment?('pdf')).to be false
+          end
+        end
+
+        context "when times match up within a second" do
+          before { os.update_columns(updated_at: Time.current + 5/1000) }
+
+          it "returns false" do
+            os.reload
+            expect(os.should_generate_attachment?('pdf')).to be false
+          end
+        end
+      end
+    end
+  end
+
+  describe "#to_csv" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns a string" do
+      expect(os.to_csv).to be_a(String)
     end
   end
 end

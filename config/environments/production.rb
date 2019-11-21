@@ -67,6 +67,9 @@ Rails.application.configure do
   host = ENV["HEROKU_APP_NAME"].present? ? "#{ENV['HEROKU_APP_NAME']}.herokuapp.com" : Rails.application.credentials.domain
   config.action_mailer.default_url_options = { host: host }
 
+  # Serializer routes
+  routes.default_url_options = { host: host }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

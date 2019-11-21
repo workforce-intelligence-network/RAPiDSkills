@@ -13,12 +13,14 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :occupations, only: [:index]
-      resources :occupation_standards, only: [:index]
+      resources :occupation_standards, only: [:index, :show]
 
       resources :users, only: [:create]
 
       resources :sessions, only: [:create]
       delete "sessions", to: "sessions#destroy"
+
+      resources :downloads, only: [:create]
 
       authenticate :user, lambda { |u| u.admin? } do
         mount Docs::API, at: '/docs'

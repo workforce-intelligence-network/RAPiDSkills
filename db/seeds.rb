@@ -47,6 +47,7 @@ skills.each_with_index do |skill, index|
   OccupationStandardSkill.create(
     occupation_standard: occupation_standard,
     skill: skill,
+    work_process: wps[index],
     sort_order: index,
   )
 end
