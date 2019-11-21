@@ -47,6 +47,16 @@ class API::V1::APIController < ApplicationController
     render json: { errors: [ error ] }, status: :unprocessable_entity
   end
 
+  def render_not_acceptable(title: nil, detail: nil, source_pointer: nil)
+    error = { status: "406" }
+    error[:title] = title if title
+    error[:detail] = detail if detail
+    if source_pointer
+      error[:source] = { pointer: source_pointer }
+    end
+    render json: { errors: [ error ] }, status: :not_acceptable
+  end
+
   def user_not_authorized
     render json: {
       errors: {
