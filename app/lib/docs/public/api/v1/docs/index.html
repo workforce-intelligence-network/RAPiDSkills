@@ -368,11 +368,11 @@ resource passed in the relationships field.</p>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -d <span class="s1">'{
     "data": {
-        "type": "downloads",
+        "type": "download",
         "relationships": {
             "downloadable": {
                 "data": {
-                    "type": "occupation_standards",
+                    "type": "occupation_standard",
                     "id": "1"
                 }
             }
@@ -392,7 +392,7 @@ resource passed in the relationships field.</p>
 <tr>
 <td>type<br /><em>required</em></td>
 <td>string</td>
-<td>Object type for which to generate downloadable items</td>
+<td>Singular object type for which to generate downloadable items</td>
 </tr>
 <tr>
 <td>id<br /><em>required</em></td>
@@ -650,7 +650,7 @@ resource passed in the relationships field.</p>
   -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
   -d <span class="s1">'{
     "data": {
-        "type": "users",
+        "type": "user",
         "attributes": {
             "email": "mickey@example.com",
             "name": "Mickey Mouse",
