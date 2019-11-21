@@ -9,11 +9,11 @@ RSpec.describe API::V1::DownloadsController, type: :request do
       let(:params) {
         {
           data: {
-            type: "downloads",
+            type: "download",
             relationships: {
               downloadable: {
                 data: {
-                  type: "occupation_standards",
+                  type: "occupation_standard",
                   id: os.id.to_s,
                 }
               }
@@ -39,7 +39,7 @@ RSpec.describe API::V1::DownloadsController, type: :request do
         let(:params) {
           {
             data: {
-              type: "downloads"
+              type: "download"
             }
           }
         }
@@ -62,11 +62,11 @@ RSpec.describe API::V1::DownloadsController, type: :request do
         let(:params) {
           {
             data: {
-              type: "downloads",
+              type: "download",
               relationships: {
                 downloadable: {
                   data: {
-                    type: "occupation_standards",
+                    type: "occupation_standard",
                     id: "999"
                   }
                 }

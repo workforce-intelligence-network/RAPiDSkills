@@ -8,7 +8,7 @@ class API::V1::DownloadsController < API::V1::APIController
 
     if object
       case object_type
-      when "occupation_standards"
+      when "occupation_standard"
         GenerateOccupationStandardPdfJob.perform_later(object_id)
         GenerateOccupationStandardExcelJob.perform_later(object_id)
       end
