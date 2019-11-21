@@ -104,7 +104,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_skills_url(os)
       expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
-      expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss2.skill_id.to_s
+      expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss2.id.to_s
 
       included_array = [
         {
@@ -120,20 +120,20 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
                 self: relationships_skills_api_v1_occupation_standard_work_process_url(oswp),
                 related: api_v1_occupation_standard_work_process_skills_url(oswp),
               }.stringify_keys,
-              data: [ { type: "skill", id: oss1.skill_id.to_s }.stringify_keys ],
+              data: [ { type: "skill", id: oss1.id.to_s }.stringify_keys ],
             }.stringify_keys,
           }.stringify_keys,
         }.stringify_keys,
         {
           type: "skill",
-          id: oss2.skill_id.to_s,
+          id: oss2.id.to_s,
           attributes: {
             description: oss2.skill.description,
           }.stringify_keys,
         }.stringify_keys,
         {
           type: "skill",
-          id: oss1.skill_id.to_s,
+          id: oss1.id.to_s,
           attributes: {
             description: oss1.skill.description,
           }.stringify_keys,

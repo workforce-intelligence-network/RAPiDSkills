@@ -8,7 +8,7 @@ class API::V1::OccupationStandardSerializer
     related: ->(object) { object.related_url('work_processes') },
   }
 
-  has_many :skills, links: {
+  has_many :occupation_standard_skills, object_method_name: :occupation_standard_skills_with_no_work_process, id_method_name: :occupation_standard_skills_with_no_work_process_ids, record_type: :skill, key: :skills, links: {
     self: ->(object) { object.relationships_url('skills') },
     related: ->(object) { object.related_url('skills') },
   }

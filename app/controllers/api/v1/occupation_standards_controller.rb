@@ -13,7 +13,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   def show
     @os = OccupationStandard.find(params[:id])
     options = { links: { self: @os.url } }
-    options[:include] = [:"occupation_standard_work_processes.skills", :skills]
+    options[:include] = [:"occupation_standard_work_processes.occupation_standard_skills", :occupation_standard_skills]
     render json: API::V1::OccupationStandardSerializer.new(@os, options)
   end
 

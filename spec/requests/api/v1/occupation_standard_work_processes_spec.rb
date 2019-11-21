@@ -20,9 +20,9 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
       expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_skills_url(oswp)
       expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
-      expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss.skill_id.to_s
+      expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss.id.to_s
       expect(json["included"][0]["type"]).to eq "skill"
-      expect(json["included"][0]["id"]).to eq oss.skill_id.to_s
+      expect(json["included"][0]["id"]).to eq oss.id.to_s
       expect(json["included"][0]["attributes"]["description"]).to eq oss.skill.description
     end
   end
