@@ -12,12 +12,7 @@ class API::V1::ClonesController < API::V1::APIController
           creator_id: current_user.id,
           organization_id: current_user.employer_id,
         )
-        options = {
-          include: [
-            :"occupation_standard_work_processes.occupation_standard_skills",
-            :occupation_standard_skills,
-          ],
-        }
+        options = { include: OccupationStandard::DEFAULT_RELATIONSHIP_INCLUDE }
         render json: API::V1::OccupationStandardSerializer.new(@os, options)
       else
         error_scope = "errors.clonable.not_acceptable"
