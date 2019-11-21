@@ -6,8 +6,8 @@
         Create new apprenticeship standards in a snap!
       </div>
       <div class="page--home__text page--home__hero__text page--home__hero__text--description">
-        <span>Finally an easy-to-use application that takes the pain out of</span>
-        <span> creating new apprenticeship standards from scratch.</span>
+        <span>RapidSkills takes the pain out of creating new apprenticeship standards from scratch.</span>
+        <span>We're starting with competency-based standards and working from there. Follow now to find out when we launch.</span>
       </div>
       <router-link to="/follow">
         <button
@@ -33,9 +33,9 @@
       <div
         class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--description"
       >
-        <span>RapidSkills uses smart technology to help you streamline</span>
-        <span> your process saving you time and the frustration of</span>
-        <span> having to create new standards from scratch.</span>
+        <span>RapidSkills leverages high-quality apprenticeship standards from across the country.</span>
+        <span> to help you streamline your development process, saving you time and frustration</span>
+        <span> from building your standards from scratch.</span>
       </div>
       <div class="page--home__how-it-works__cards">
         <div class="page--home__how-it-works__cards__card">
@@ -49,35 +49,35 @@
           <img :src="ICON_SAVE_CLONE" alt="Save & Clone Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Save & Clone</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Easily save and clone similar standards for as a starting point for your own customized work processes.
+            Easily copy similar standards as a starting point for your own customized work processes and skills.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_EDIT_CUSTOMIZE" alt="Edit & Customize Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Edit & Customize</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Once you’ve created a clone of a similar standard RapidSkills makes it super easy to customize and create new standards.
+            Once you’ve created a copy, RapidSkills makes it super easy to customize and create new work processes and skills.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_LEVERAGE_SKILLS" alt="Leverage Existing Skills Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Leverage Existing Skills</div>
           <div class="page--home__how-it-works__cards__card__description">
-            RapidSkills is smart and helps you find existing related skills as you customize and edit your new apprenticeship standards.
+            RapidSkills helps you find existing, related skills as you customize and edit your new apprenticeship standards.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_DOWNLOAD_PDF" alt="Download PDF or Excel Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Download PDF or Excel</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Download your digital standard into a common document form for your records and easy sharing and distribution.
+            Download your digital standard into a common document for easy sharing and distribution or Appendix A.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_SHARE_WITH_OTHERS" alt="Share with Others Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Share with Others</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Simply share with others by entering an email address - RapidSkills will send an invite so your contacts can collaborate.
+            Share with others by entering an email address - RapidSkills will send an invite so your contacts can collaborate.
           </div>
         </div>
       </div>

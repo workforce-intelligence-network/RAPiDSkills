@@ -5,7 +5,7 @@
         Follow Us
       </div>
       <div class="page--follow__text page--follow__form__text page--follow__subtitle">
-        Please enter your information so that we can keep you up to date on what is happening with RapidSkills.
+        Please enter your information so that we can keep you up to date on what is happening with RapidSkills. We're starting with hybrid and competency-based work processes, first, but we'll support time-based programs soon after.
       </div>
       <div class="page--follow__form__submitted page--follow__form__text" v-if="!loading && successful">
         <div>Your information has been submitted!</div>
