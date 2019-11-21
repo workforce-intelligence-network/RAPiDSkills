@@ -70,7 +70,7 @@ class OccupationStandard < ApplicationRecord
   def to_csv
     CSV.generate do |csv|
       csv << CSV_HEADERS
-      occupation_standard_work_processes.eager_load_associations.each do |oswp|
+      occupation_standard_work_processes.each do |oswp|
         if oswp.skills.any?
           oswp.occupation_standard_skills.each do |oss|
             csv << work_process_with_skill_row(oss)

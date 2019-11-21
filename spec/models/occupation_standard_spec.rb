@@ -139,8 +139,9 @@ RSpec.describe OccupationStandard, type: :model do
 
   describe "#to_csv" do
     let(:os) { create(:occupation_standard) }
-    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp1) }
     let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
 
     it "returns a string" do
