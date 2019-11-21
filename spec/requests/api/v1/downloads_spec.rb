@@ -35,19 +35,6 @@ RSpec.describe API::V1::DownloadsController, type: :request do
     end
 
     context "with invalid params" do
-      shared_examples "fails" do
-        it "does not trigger pdf or excel generation" do
-          expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
-          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
-          post path, params: params
-        end
-
-        it "returns not found http status" do
-          post path, params: params
-          expect(response).to have_http_status(:not_found)
-        end
-      end
-
       context "when missing relationship data" do
         let(:params) {
           {
