@@ -11,8 +11,19 @@ class API::V1::DownloadsController < API::V1::APIController
       when "occupation_standard"
         GenerateOccupationStandardPdfJob.perform_later(object_id)
         GenerateOccupationStandardExcelJob.perform_later(object_id)
+        head :accepted
+      else
+        render json: {
+          errors: [
+            {
+              status: "406",
+              title: "Records of type #{object_type} are not downloadable",
+              detail: "Valid downloadable record types include: occupation_standard",
+              source: { pointer: "/data/relationships/downloadable/data/type" },
+            }
+          ]
+        }, status: :not_acceptable
       end
-      head :accepted
     else
       head :not_found
     end

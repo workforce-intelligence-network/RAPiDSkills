@@ -58,6 +58,34 @@ RSpec.describe API::V1::DownloadsController, type: :request do
         end
       end
 
+      context "when bad type" do
+        let(:work_process) { create(:work_process) }
+        let(:params) {
+          {
+            data: {
+              type: "download",
+              relationships: {
+                downloadable: {
+                  data: {
+                    type: "work_process",
+                    id: work_process.id.to_s
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        it "returns 406 http status" do
+          post path, params: params
+          expect(response).to have_http_status(:not_acceptable)
+          expect(json["errors"][0]["status"]).to eq "406"
+          expect(json["errors"][0]["title"]).to eq "Records of type work_process are not downloadable"
+          expect(json["errors"][0]["detail"]).to eq "Valid downloadable record types include: occupation_standard"
+          expect(json["errors"][0]["source"]["pointer"]).to eq "/data/relationships/downloadable/data/type"
+        end
+      end
+
       context "when bad occupation standard id" do
         let(:params) {
           {
