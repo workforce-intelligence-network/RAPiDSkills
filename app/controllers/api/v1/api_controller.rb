@@ -40,6 +40,13 @@ class API::V1::APIController < ApplicationController
     render json: { errors: errors }, status: :unprocessable_entity and return
   end
 
+  def render_unprocessable_entity(title: nil, detail: nil)
+    error = { status: "422" }
+    error[:title] = title if title
+    error[:detail] = detail if detail
+    render json: { errors: [ error ] }, status: :unprocessable_entity
+  end
+
   def user_not_authorized
     render json: {
       errors: {

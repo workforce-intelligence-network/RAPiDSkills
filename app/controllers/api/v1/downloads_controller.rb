@@ -29,14 +29,7 @@ class API::V1::DownloadsController < API::V1::APIController
     end
 
   rescue ActionController::ParameterMissing => e
-    render json: {
-      errors: [
-        {
-          status: "422",
-          detail: e.message,
-        }
-      ]
-    }, status: :unprocessable_entity
+    render_unprocessable_entity(detail: e.message)
   end
 
   private
