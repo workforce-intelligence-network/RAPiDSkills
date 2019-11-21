@@ -8,7 +8,7 @@ and Rails 6.0.  Postgres 11.5 is used for the database.
 The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading, if there are changes to the Dockerfile, or if new gems have been added.
 1. Install [Docker Community Edition](https://docs.docker.com/install/) if it
    is not already installed.
-1. Clone the repository.
+1. Clone the repository: `git clone --recurse-submodules git@github.com:WorkHands/RAPiDSkills.git`
 2. Copy `config/database.yml.example` to `config/database.yml`: `cp config/database.yml.example config/database.yml`.
 2. Copy `config/docker.env.example` to `config/docker.env`:  `cp config/docker.env.example config/docker.env`. It is not necessary to change any of the values.
 3. Run `docker-compose build` to build images for all services.
@@ -16,6 +16,10 @@ The following commands should just be run for the initial setup only. Rebuilding
 4. Run `docker-compose run --rm web rails db:reset` to create the dev and test databases, load the schema, and run the seeds file.
 4. Run `docker-compose up -d` to start all the remaining services.
 5. The web application will be available at http://localhost:3000
+
+If you cloned the directory without the documentation submodule, you must initialize and update the submodule in order to have the `middleman` service start correctly:
+1. Change into the documentation directory: `cd documentation`
+2. Pull in the submodule: `git submodule update --init`
 
 For ongoing development:
 1. Run `docker-compose up -d` to start all services.
