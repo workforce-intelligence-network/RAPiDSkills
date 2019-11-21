@@ -7,6 +7,7 @@ class OccupationStandardSkill < ApplicationRecord
   validates :occupation_standard, uniqueness: { scope: :skill }
 
   delegate :description, to: :skill, prefix: true
+  delegate :creator, to: :occupation_standard
 
   def to_s
     "#{occupation_standard.to_s}: #{skill.to_s}"
