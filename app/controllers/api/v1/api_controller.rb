@@ -3,6 +3,7 @@ class API::V1::APIController < ApplicationController
   include API::V1::APIHelper
 
   skip_before_action :verify_authenticity_token
+  before_action :set_headers
   before_action :authenticate
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -23,6 +24,10 @@ class API::V1::APIController < ApplicationController
     end
 
     head :unauthorized and return unless @user
+  end
+
+  def set_headers
+    response.headers['Content-Type'] = 'application/vnd.api+json'
   end
 
   def render_resource_error(resource)
