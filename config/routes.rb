@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       delete "sessions", to: "sessions#destroy"
 
       resources :downloads, only: [:create]
+      resources :clones, only: [:create]
 
       authenticate :user, lambda { |u| u.admin? } do
         mount Docs::API, at: '/docs'

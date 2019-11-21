@@ -45,3 +45,8 @@ en:
         title: "Records of type %{type} are not downloadable"
         detail: "Valid downloadable record types include: occupation_standard"
         source_pointer: "/data/relationships/downloadable/data/type"
+    clonable:
+      not_acceptable:
+        title: "Records of type %{type} are not clonable"
+        detail: "Valid clonable record types include: occupation_standard"
+        source_pointer: "/data/relationships/clonable/data/type"
