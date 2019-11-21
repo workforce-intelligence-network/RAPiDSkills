@@ -2,10 +2,13 @@ class API::V1::OccupationStandardWorkProcessSerializer
   include FastJsonapi::ObjectSerializer
   set_type :work_process
 
-  has_many :occupation_standard_skills, record_type: :skill, key: :skills, links: {
-    self: ->(object) { object.relationships_url('skills') },
-    related: ->(object) { object.related_url('skills') },
-  }
+  has_many :occupation_standard_skills,
+    record_type: :skill,
+    key: :skills,
+    links: {
+      self: ->(object) { object.relationships_url('skills') },
+      related: ->(object) { object.related_url('skills') },
+    }
 
   attribute :title do |object|
     object.work_process_title

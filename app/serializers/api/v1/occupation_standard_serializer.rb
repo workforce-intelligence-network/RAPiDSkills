@@ -3,15 +3,23 @@ class API::V1::OccupationStandardSerializer
 
   link :self, :url
 
-  has_many :occupation_standard_work_processes, record_type: :work_process, key: :work_processes, links: {
-    self: ->(object) { object.relationships_url('work_processes') },
-    related: ->(object) { object.related_url('work_processes') },
-  }
+  has_many :occupation_standard_work_processes,
+    record_type: :work_process,
+    key: :work_processes,
+    links: {
+      self: ->(object) { object.relationships_url('work_processes') },
+      related: ->(object) { object.related_url('work_processes') },
+    }
 
-  has_many :occupation_standard_skills, object_method_name: :occupation_standard_skills_with_no_work_process, id_method_name: :occupation_standard_skills_with_no_work_process_ids, record_type: :skill, key: :skills, links: {
-    self: ->(object) { object.relationships_url('skills') },
-    related: ->(object) { object.related_url('skills') },
-  }
+  has_many :occupation_standard_skills,
+    object_method_name: :occupation_standard_skills_with_no_work_process,
+    id_method_name: :occupation_standard_skills_with_no_work_process_ids,
+    record_type: :skill,
+    key: :skills,
+    links: {
+      self: ->(object) { object.relationships_url('skills') },
+      related: ->(object) { object.related_url('skills') },
+    }
 
   attributes :title,
              :organization_title,
