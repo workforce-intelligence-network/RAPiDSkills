@@ -18,7 +18,7 @@ class API::V1::OccupationStandardSerializer
     key: :skills,
     links: {
       self: ->(object) { object.relationships_url('skills') },
-      related: ->(object) { object.related_url('skills') },
+      related: ->(object) { object.related_url('occupation_standard_skills') },
     }
 
   attributes :title,

@@ -18,14 +18,14 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
       expect(json["data"][0]["attributes"]["title"]).to eq oswp2.work_process.title
       expect(json["data"][0]["attributes"]["description"]).to eq oswp2.work_process.description
       expect(json["data"][0]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_work_process_url(oswp2)
-      expect(json["data"][0]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_skills_url(oswp2)
+      expect(json["data"][0]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp2)
       expect(json["data"][0]["relationships"]["skills"]["data"]).to be_empty
       expect(json["data"][1]["id"]).to eq oswp1.id.to_s
       expect(json["data"][1]["type"]).to eq "work_process"
       expect(json["data"][1]["attributes"]["title"]).to eq oswp1.work_process.title
       expect(json["data"][1]["attributes"]["description"]).to eq oswp1.work_process.description
       expect(json["data"][1]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_work_process_url(oswp1)
-      expect(json["data"][1]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_skills_url(oswp1)
+      expect(json["data"][1]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp1)
       expect(json["data"][1]["relationships"]["skills"]["data"]).to be_empty
     end
   end
@@ -46,7 +46,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
       expect(json["data"]["attributes"]["title"]).to eq oswp.work_process.title
       expect(json["data"]["attributes"]["description"]).to eq oswp.work_process.description
       expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_work_process_url(oswp)
-      expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_skills_url(oswp)
+      expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp)
       expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
       expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss.id.to_s

@@ -8,7 +8,7 @@ class API::V1::OccupationStandardWorkProcesses::RelationshipsController < API::V
     options = {
       links: {
         self: @oswp.relationships_url('skills'),
-        related: @oswp.related_url('skills'),
+        related: @oswp.related_url('occupation_standard_skills'),
       }
     }
     render json: API::V1::OccupationStandardWorkProcess::Relationships::SkillSerializer.new(@skills, options)

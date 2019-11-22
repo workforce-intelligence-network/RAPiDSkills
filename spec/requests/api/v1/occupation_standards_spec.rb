@@ -101,7 +101,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["work_processes"]["data"][0]["id"]).to eq oswp.id.to_s
 
       expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(os)
-      expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_skills_url(os)
+      expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(os)
       expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
       expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss2.id.to_s
@@ -118,7 +118,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
             skills: {
               links: {
                 self: relationships_skills_api_v1_occupation_standard_work_process_url(oswp),
-                related: api_v1_occupation_standard_work_process_skills_url(oswp),
+                related: api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp),
               }.stringify_keys,
               data: [ { type: "skill", id: oss1.id.to_s }.stringify_keys ],
             }.stringify_keys,
@@ -188,7 +188,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["relationships"]["work_processes"]["data"]).to be_empty
 
         expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(new_os)
-        expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_skills_url(new_os)
+        expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(new_os)
         expect(json["data"]["relationships"]["skills"]["data"]).to be_empty
         expect(json["included"]).to be_empty
       end
