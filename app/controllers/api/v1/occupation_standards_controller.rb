@@ -13,8 +13,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   def show
     @os = OccupationStandard.find(params[:id])
     options = { links: { self: @os.url } }
-    options[:include] = OccupationStandard::DEFAULT_RELATIONSHIP_INCLUDE
-    render json: API::V1::OccupationStandardSerializer.new(@os, options)
+    render_object(@os, options)
   end
 
   def create
@@ -24,8 +23,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
         creator_id: current_user.id,
         organization_id: current_user.employer_id,
       )
-      options = { include: OccupationStandard::DEFAULT_RELATIONSHIP_INCLUDE }
-      render json: API::V1::OccupationStandardSerializer.new(@os, options)
+      render_object(@os)
     else
       @os = OccupationStandard.new
       @os.errors.add(:parent_occupation_standard_id, :invalid)
@@ -41,5 +39,13 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def create_params
     params.require(:data).require(:attributes).permit(:parent_occupation_standard_id)
+  end
+
+  def render_object(record, options={})
+    options[:include] = [
+      :"occupation_standard_work_processes.occupation_standard_skills",
+      :occupation_standard_skills,
+    ]
+    render json: API::V1::OccupationStandardSerializer.new(record, options)
   end
 end
