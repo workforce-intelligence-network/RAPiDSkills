@@ -19,14 +19,14 @@ Rails.application.routes.draw do
           get "relationships/skills", to: "occupation_standards/relationships#skills"
         end
         resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
-        resources :skills, only: [:index]
+        resources :occupation_standard_skills, path: "skills", only: [:index]
       end
 
       resources :occupation_standard_work_processes, path: "work_processes", only: [:show] do
         member do
           get "relationships/skills", to: "occupation_standard_work_processes/relationships#skills"
         end
-        resources :skills, only: [:index]
+        resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
       end
 
       resources :occupation_standard_skills, path: "skills", only: [:show]

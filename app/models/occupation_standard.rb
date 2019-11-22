@@ -9,7 +9,7 @@ class OccupationStandard < ApplicationRecord
     class_name: 'Skill', source: :skill
   has_many :occupation_standard_work_processes, -> { includes(:work_process, :occupation_standard_skills).order(:sort_order) }
   has_many :work_processes, through: :occupation_standard_work_processes
-  has_many :occupation_standard_skills_with_no_work_process, -> { where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
+  has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
   has_many :skills, through: :occupation_standard_skills_with_no_work_process
   has_many :standards_registrations
 
