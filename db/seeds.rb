@@ -29,27 +29,33 @@ wps = []
   )
 end
 
-skills = []
-(1..3).each do
- skills << Skill.create(description: Faker::Job.key_skill)
-end
-
 wps.each_with_index do |work_process, index|
-  OccupationStandardWorkProcess.create(
+  oswp = OccupationStandardWorkProcess.create(
     occupation_standard: occupation_standard,
     work_process: work_process,
     sort_order: index,
     hours: 10 * (index + 1),
   )
+
+  (1..2).each_with_index do |i, skill_index|
+    skill = Skill.create(description: Faker::Job.key_skill)
+    OccupationStandardSkill.create(
+      occupation_standard: occupation_standard,
+      skill: skill,
+      occupation_standard_work_process: oswp,
+      sort_order: skill_index,
+    )
+  end
 end
 
-skills.each_with_index do |skill, index|
-  OccupationStandardSkill.create(
-    occupation_standard: occupation_standard,
-    skill: skill,
-    work_process: wps[index],
-    sort_order: index,
-  )
+(1..2).each_with_index do |i, index|
+ skill = Skill.create(description: Faker::Job.key_skill)
+ OccupationStandardSkill.create(
+   occupation_standard: occupation_standard,
+   skill: skill,
+   occupation_standard_work_process: nil,
+   sort_order: index,
+ )
 end
 
 Rake::Task['after_party:run'].invoke
