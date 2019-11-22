@@ -1,9 +1,8 @@
 class OccupationStandardWorkProcess < ApplicationRecord
   belongs_to :occupation_standard
   belongs_to :work_process
-  has_many :occupation_standard_skills
-  has_many :skills, -> { order(:sort_order) },
-    through: :occupation_standard_skills
+  has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
+  has_many :skills, through: :occupation_standard_skills
 
   validates :occupation_standard, uniqueness: { scope: :work_process }
   validates :hours, presence: true
