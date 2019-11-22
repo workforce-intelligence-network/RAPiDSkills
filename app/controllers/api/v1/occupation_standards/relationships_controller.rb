@@ -4,7 +4,7 @@ class API::V1::OccupationStandards::RelationshipsController < API::V1::APIContro
   before_action :set_occupation_standard
 
   def work_processes
-    @oswps = @os.occupation_standard_work_processes.includes(:work_process)
+    @oswps = @os.occupation_standard_work_processes
     options = {
       links: {
         self: @os.relationships_url('work_processes'),
@@ -12,6 +12,17 @@ class API::V1::OccupationStandards::RelationshipsController < API::V1::APIContro
       }
     }
     render json: API::V1::OccupationStandard::Relationships::WorkProcessSerializer.new(@oswps, options)
+  end
+
+  def skills
+    @osss = @os.occupation_standard_skills_with_no_work_process
+    options = {
+      links: {
+        self: @os.relationships_url('skills'),
+        related: @os.related_url('occupation_standard_skills'),
+      }
+    }
+    render json: API::V1::OccupationStandard::Relationships::SkillSerializer.new(@osss, options)
   end
 
   private
