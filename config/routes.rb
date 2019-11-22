@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :occupations, only: [:index]
-      resources :occupation_standards, only: [:index, :show] do
+      resources :occupation_standards, only: [:index, :show, :create] do
         member do
           get "relationships/work_processes", to: "occupation_standards/relationships#work_processes"
           get "relationships/skills", to: "occupation_standards/relationships#skills"
@@ -36,7 +36,6 @@ Rails.application.routes.draw do
       delete "sessions", to: "sessions#destroy"
 
       resources :downloads, only: [:create]
-      resources :clones, only: [:create]
 
       authenticate :user, lambda { |u| u.admin? } do
         mount Docs::API, at: '/docs'
