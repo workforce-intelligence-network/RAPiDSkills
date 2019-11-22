@@ -8,7 +8,7 @@ class API::V1::OccupationStandards::RelationshipsController < API::V1::APIContro
     options = {
       links: {
         self: @os.relationships_url('work_processes'),
-        related: @os.related_url('work_processes'),
+        related: @os.related_url('occupation_standard_work_processes'),
       }
     }
     render json: API::V1::OccupationStandard::Relationships::WorkProcessSerializer.new(@oswps, options)

@@ -18,7 +18,7 @@ Rails.application.routes.draw do
           get "relationships/work_processes", to: "occupation_standards/relationships#work_processes"
           get "relationships/skills", to: "occupation_standards/relationships#skills"
         end
-        resources :work_processes, only: [:index]
+        resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
         resources :skills, only: [:index]
       end
 

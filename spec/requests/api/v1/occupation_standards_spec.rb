@@ -95,7 +95,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["attributes"]["excel_created_at"]).to eq "2019-08-13T12:13:14.000Z"
 
       expect(json["data"]["relationships"]["work_processes"]["links"]["self"]).to eq relationships_work_processes_api_v1_occupation_standard_url(os)
-      expect(json["data"]["relationships"]["work_processes"]["links"]["related"]).to eq api_v1_occupation_standard_work_processes_url(os)
+      expect(json["data"]["relationships"]["work_processes"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_work_processes_url(os)
       expect(json["data"]["relationships"]["work_processes"]["data"].count).to eq 1
       expect(json["data"]["relationships"]["work_processes"]["data"][0]["type"]).to eq "work_process"
       expect(json["data"]["relationships"]["work_processes"]["data"][0]["id"]).to eq oswp.id.to_s
@@ -184,7 +184,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["attributes"]["excel_created_at"]).to be nil
 
         expect(json["data"]["relationships"]["work_processes"]["links"]["self"]).to eq relationships_work_processes_api_v1_occupation_standard_url(new_os)
-        expect(json["data"]["relationships"]["work_processes"]["links"]["related"]).to eq api_v1_occupation_standard_work_processes_url(new_os)
+        expect(json["data"]["relationships"]["work_processes"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_work_processes_url(new_os)
         expect(json["data"]["relationships"]["work_processes"]["data"]).to be_empty
 
         expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(new_os)

@@ -11,7 +11,7 @@ RSpec.describe API::V1::OccupationStandards::RelationshipsController, type: :req
       get path
       expect(response).to have_http_status(:success)
       expect(json["links"]["self"]).to eq relationships_work_processes_api_v1_occupation_standard_url(os)
-      expect(json["links"]["related"]).to eq api_v1_occupation_standard_work_processes_url(os)
+      expect(json["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_work_processes_url(os)
       expect(json["data"].count).to eq 2
       expect(json["data"][0]["type"]).to eq "work_process"
       expect(json["data"][0]["id"]).to eq oswp2.id.to_s
