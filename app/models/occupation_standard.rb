@@ -4,11 +4,13 @@ class OccupationStandard < ApplicationRecord
   belongs_to :industry, optional: true
   belongs_to :creator, class_name: 'User'
   belongs_to :parent_occupation_standard, class_name: 'OccupationStandard', optional: true
-  has_many :occupation_standard_skills, -> { order(:sort_order) }
-  has_many :skills, through: :occupation_standard_skills
-  has_many :occupation_standard_work_processes, -> { order(:sort_order) }
+  has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
+  has_many :flattened_skills, through: :occupation_standard_skills,
+    class_name: 'Skill', source: :skill
+  has_many :occupation_standard_work_processes, -> { includes(:work_process, :occupation_standard_skills).order(:sort_order) }
   has_many :work_processes, through: :occupation_standard_work_processes
-  has_many :occupation_standard_skills_with_no_work_process, -> { where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
+  has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
+  has_many :skills, through: :occupation_standard_skills_with_no_work_process
   has_many :standards_registrations
 
   has_one_attached :pdf
@@ -26,6 +28,10 @@ class OccupationStandard < ApplicationRecord
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
 
   CSV_HEADERS = %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort).freeze
+
+  def occupation_standard_skills_with_no_work_process_ids
+    occupation_standard_skills_with_no_work_process.pluck(:id)
+  end
 
   class << self
     def search(args={})
@@ -64,7 +70,7 @@ class OccupationStandard < ApplicationRecord
   def to_csv
     CSV.generate do |csv|
       csv << CSV_HEADERS
-      occupation_standard_work_processes.eager_load_associations.each do |oswp|
+      occupation_standard_work_processes.each do |oswp|
         if oswp.skills.any?
           oswp.occupation_standard_skills.each do |oss|
             csv << work_process_with_skill_row(oss)

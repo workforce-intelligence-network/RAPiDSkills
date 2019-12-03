@@ -29,6 +29,26 @@ RSpec.describe OccupationStandard, type: :model do
     end
   end
 
+  describe "#skills" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns skills with no work process" do
+      expect(os.skills).to eq [oss2.skill]
+    end
+  end
+
+  describe "#flattened_skills" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns all skills" do
+      expect(os.flattened_skills).to match_array [oss1.skill, oss2.skill]
+    end
+  end
+
   describe "#occupation_standard_skills_with_no_work_process" do
     let(:os) { create(:occupation_standard) }
     let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
@@ -119,8 +139,9 @@ RSpec.describe OccupationStandard, type: :model do
 
   describe "#to_csv" do
     let(:os) { create(:occupation_standard) }
-    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp1) }
     let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
 
     it "returns a string" do

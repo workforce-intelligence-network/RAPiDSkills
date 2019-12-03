@@ -10,7 +10,7 @@ RSpec.describe API::V1::UsersController, type: :request do
       let(:params) {
         {
           data: {
-            type: "users",
+            type: "user",
             attributes: {
               email: "foo@example.com",
               name: "Mickey Mouse",
@@ -90,7 +90,7 @@ RSpec.describe API::V1::UsersController, type: :request do
         let(:params) {
           {
             data: {
-              type: "users",
+              type: "user",
               attributes: {
                 email: "foo@example.com",
                 name: "Mickey Mouse",
@@ -130,7 +130,7 @@ RSpec.describe API::V1::UsersController, type: :request do
         let(:params) {
           {
             data: {
-              type: "users",
+              type: "user",
               attributes: {
                 email: "foo@example.com",
                 name: "Mickey Mouse",
@@ -164,7 +164,7 @@ RSpec.describe API::V1::UsersController, type: :request do
         let(:params) {
           {
             data: {
-              type: "users",
+              type: "user",
               attributes: {
                 email: "",
                 name: "Mickey Mouse",

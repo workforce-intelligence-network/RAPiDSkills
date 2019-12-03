@@ -13,8 +13,23 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :occupations, only: [:index]
-      resources :occupation_standards, only: [:index, :show]
+      resources :occupation_standards, only: [:index, :show, :create] do
+        member do
+          get "relationships/work_processes", to: "occupation_standards/relationships#work_processes"
+          get "relationships/skills", to: "occupation_standards/relationships#skills"
+        end
+        resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
+        resources :occupation_standard_skills, path: "skills", only: [:index]
+      end
 
+      resources :occupation_standard_work_processes, path: "work_processes", only: [:show] do
+        member do
+          get "relationships/skills", to: "occupation_standard_work_processes/relationships#skills"
+        end
+        resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
+      end
+
+      resources :occupation_standard_skills, path: "skills", only: [:show]
       resources :users, only: [:create]
 
       resources :sessions, only: [:create]

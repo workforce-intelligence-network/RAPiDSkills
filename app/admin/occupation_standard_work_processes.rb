@@ -14,6 +14,9 @@ ActiveAdmin.register OccupationStandardWorkProcess do
     column :work_process
     column :hours
     column :sort_order
+    column :skills_count do |oswp|
+      oswp.skills.count
+    end
     column :created_at
     column :updated_at
     actions
@@ -25,6 +28,9 @@ ActiveAdmin.register OccupationStandardWorkProcess do
       row :work_process
       row :hours
       row :sort_order
+      row :skills do |oswp|
+        oswp.occupation_standard_skills.includes(:skill).map{|oss| link_to(oss.skill.description, admin_occupation_standard_skill_path(oss)) }.join(", ").html_safe
+      end
       row :created_at
       row :updated_at
     end

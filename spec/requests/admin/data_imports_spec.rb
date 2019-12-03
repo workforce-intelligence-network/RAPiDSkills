@@ -55,10 +55,10 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os1.work_processes[1].description).to eq "Handle interactions with other dogs"
           expect(os1.occupation_standard_work_processes[1].hours).to eq 100
 
-          expect(os1.skills[0].description).to eq "Communicate with dog"
-          expect(os1.skills[1].description).to eq "Communicate with human"
-          expect(os1.skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
-          expect(os1.skills[3].description).to eq "Demonstrate ability to cross intersection"
+          expect(os1.flattened_skills[0].description).to eq "Communicate with dog"
+          expect(os1.flattened_skills[1].description).to eq "Communicate with human"
+          expect(os1.flattened_skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
+          expect(os1.flattened_skills[3].description).to eq "Demonstrate ability to cross intersection"
           expect(os1.occupation_standard_skills[0].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
           expect(os1.occupation_standard_skills[1].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
           expect(os1.occupation_standard_skills[2].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
@@ -75,7 +75,7 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os2.work_processes[0].description).to eq "Bill for services"
           expect(os2.occupation_standard_work_processes[0].hours).to eq 50
 
-          expect(os2.skills[0].description).to eq "Understand costs"
+          expect(os2.flattened_skills[0].description).to eq "Understand costs"
           expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
         end
       end
@@ -150,9 +150,9 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os1.work_processes[1].description).to eq "Communicate effectively with dog and human"
           expect(os1.occupation_standard_work_processes[1].hours).to eq 60
 
-          expect(os1.skills[0].description).to eq "Communicate with dog"
-          expect(os1.skills[1].description).to eq "Communicate with human"
-          expect(os1.skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
+          expect(os1.flattened_skills[0].description).to eq "Communicate with dog"
+          expect(os1.flattened_skills[1].description).to eq "Communicate with human"
+          expect(os1.flattened_skills[2].description).to eq "Demonstrate ability to walk by aggressive dogs"
           expect(os1.occupation_standard_skills[0].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
           expect(os1.occupation_standard_skills[1].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
           expect(os1.occupation_standard_skills[2].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[0]
@@ -168,7 +168,7 @@ RSpec.describe "Admin::DataImports", type: :request do
           expect(os2.work_processes[0].description).to eq "Bill for services"
           expect(os2.occupation_standard_work_processes[0].hours).to eq 50
 
-          expect(os2.skills[0].description).to eq "Understand costs"
+          expect(os2.flattened_skills[0].description).to eq "Understand costs"
           expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
         end
       end

@@ -8,24 +8,25 @@ class API::V1::DownloadsController < API::V1::APIController
 
     if object
       case object_type
-      when "occupation_standards"
+      when "occupation_standard"
         GenerateOccupationStandardPdfJob.perform_later(object_id)
         GenerateOccupationStandardExcelJob.perform_later(object_id)
+        head :accepted
+      else
+        error_scope = "errors.downloadable.not_acceptable"
+        render_error(
+          status: :not_acceptable,
+          title: I18n.t(:title, type: object_type, scope: error_scope),
+          detail: I18n.t(:detail, scope: error_scope),
+          source_pointer: I18n.t(:source_pointer, scope: error_scope),
+        )
       end
-      head :accepted
     else
       head :not_found
     end
 
   rescue ActionController::ParameterMissing => e
-    render json: {
-      errors: [
-        {
-          status: "422",
-          detail: e.message,
-        }
-      ]
-    }, status: :unprocessable_entity
+    render_error(status: :unprocessable_entity, detail: e.message)
   end
 
   private

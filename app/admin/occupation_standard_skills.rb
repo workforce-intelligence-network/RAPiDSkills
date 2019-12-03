@@ -38,7 +38,7 @@ ActiveAdmin.register OccupationStandardSkill do
         f.input :skill
         f.input :occupation_standard
       end
-      f.input :occupation_standard_work_process, collection: OccupationStandardWorkProcess.eager_load_associations.includes(occupation_standard: [:occupation, :organization])
+      f.input :occupation_standard_work_process, collection: OccupationStandardWorkProcess.includes(:work_process, occupation_standard: [:occupation, :organization])
       f.input :sort_order
     end
     f.actions
