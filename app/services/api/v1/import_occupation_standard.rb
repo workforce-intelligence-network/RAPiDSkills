@@ -9,7 +9,7 @@ class API::V1::ImportOccupationStandard
   def call
     DataImport.transaction do
       @count = 0
-      CSV.parse(data, headers: true) do |row|
+      data.each do |row|
         @count += 1
         occupation = Occupation.find_by(rapids_code: row["rapids_code"])
         occupation = Occupation.find_by(onet_code: row["onet_code"]) unless occupation

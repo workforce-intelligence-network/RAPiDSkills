@@ -7,7 +7,7 @@ RSpec.describe API::V1::ImportOccupationStandard do
   context "with valid data" do
     context "with rapids_code" do
       let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
-      let(:rows) { File.read(fixture_file_upload("files/dog_walking.csv", "text/csv")) }
+      let(:rows) { CSV.parse(File.read(fixture_file_upload("files/dog_walking.csv", "text/csv")), headers: true) }
 
       it "returns service object with success true" do
         sr = subject.call
@@ -70,7 +70,7 @@ RSpec.describe API::V1::ImportOccupationStandard do
     context "without rapids_code" do
       let!(:occupation1) { create(:occupation, title: "addictions counselor") }
       let!(:occupation2) { create(:occupation, onet_code: "0569CB") }
-      let(:rows) { File.read(fixture_file_upload("files/hcap.csv", "text/csv")) }
+      let(:rows) { CSV.parse(File.read(fixture_file_upload("files/hcap.csv", "text/csv")), headers: true) }
 
       it "saves data correctly" do
         expect{
@@ -94,7 +94,7 @@ RSpec.describe API::V1::ImportOccupationStandard do
 
   context "with invalid data" do
     context "with no work process nor skills" do
-      let(:rows) { File.read(fixture_file_upload("files/bad_occupation_type.csv", "text/csv")) }
+      let(:rows) { CSV.parse(File.read(fixture_file_upload("files/bad_occupation_type.csv", "text/csv")), headers: true) }
 
       it "returns service object with success false" do
         sr = subject.call
