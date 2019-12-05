@@ -114,9 +114,24 @@ RSpec.describe "Admin::DataImports", type: :request do
       end
 
       context "with invalid data" do
-        context "with missing occupation, work_process, and skills data" do
+        context "with partial invalid data" do
+          let(:file) { fixture_file_upload("files/data_import_invalid_row.csv", "text/csv") }
+
+          it "imports all but bad data" do
+            expect{
+              post path, params: params
+            }.to change(DataImport, :count).by(1)
+              .and change(OccupationStandard, :count).by(1)
+              .and change(WorkProcess, :count).by(2)
+              .and change(Skill, :count).by(4)
+              .and change(OccupationStandardWorkProcess, :count).by(2)
+              .and change(OccupationStandardSkill, :count).by(4)
+          end
+        end
+
+        context "with complete invalid data" do
           let(:file) { fixture_file_upload("files/bad_occupation_type.csv", "text/csv") }
-          it "does not save data" do
+          it "does not import bad data" do
             expect{
               post path, params: params
             }.to change(DataImport, :count).by(0)
