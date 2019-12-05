@@ -5,7 +5,6 @@ class OccupationStandardWorkProcess < ApplicationRecord
   has_many :skills, through: :occupation_standard_skills
 
   validates :occupation_standard, uniqueness: { scope: :work_process }
-  validates :hours, presence: true
 
   delegate :title, to: :work_process, prefix: true
   delegate :description, to: :work_process, prefix: true

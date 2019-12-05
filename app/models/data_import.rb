@@ -30,6 +30,23 @@ class DataImport < ApplicationRecord
           CSV.parse(file_data, headers: true) do |row|
             @count += 1
             occupation = Occupation.find_by(rapids_code: row["rapids_code"])
+            occupation = Occupation.find_by(onet_code: row["onet_code"]) unless occupation
+            unless occupation
+              # Determine Occupation Type
+              type = if row["work_process_hours"].present? && row["skill"].present?
+                       "HybridOccupation"
+                     elsif row["work_process_hours"].present?
+                       "TimeOccupation"
+                     elsif row["skill"].present?
+                       "CompetencyOccupation"
+                     else
+                       raise "Either work process or skill is required"
+                     end
+              occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create(
+                title: row["occupation_standard_title"],
+                type: type,
+              )
+            end
             organization = Organization.where(title: row["organization_title"]).first_or_create
             occupation_standard = OccupationStandard.where(
               type: "#{row["type"]}Standard",
@@ -37,15 +54,19 @@ class DataImport < ApplicationRecord
               occupation: occupation,
               title: row["occupation_standard_title"].presence || occupation.try(:title),
             ).first_or_create!(creator: user)
-            work_process = WorkProcess.where(
-              title: row["work_process_title"],
-              description: row["work_process_description"],
-            ).first_or_create!
-            oswp = OccupationStandardWorkProcess.where(
-              occupation_standard: occupation_standard,
-              work_process: work_process,
-              hours: row["work_process_hours"],
-            ).first_or_create!(sort_order: row["work_process_sort"])
+            if row["work_process_title"].present?
+              work_process = WorkProcess.where(
+                title: row["work_process_title"],
+                description: row["work_process_description"],
+              ).first_or_create!
+              oswp = OccupationStandardWorkProcess.where(
+                occupation_standard: occupation_standard,
+                work_process: work_process,
+                hours: row["work_process_hours"],
+              ).first_or_create!(sort_order: row["work_process_sort"])
+            else
+              oswp = nil
+            end
             skill = Skill.where(
               description: row["skill"],
             ).first_or_create!
