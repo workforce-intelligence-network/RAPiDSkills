@@ -4,5 +4,11 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     kind { 0 }
     user
+
+    after(:build) do |job|
+      class << job
+        def run_import; true; end
+      end
+    end
   end
 end

@@ -26,34 +26,40 @@ class DataImport < ApplicationRecord
       file_data = File.read(attachment_changes['file'].attachable)
       @count = 0
       rows = []
-      current_occupation_standard_title = nil
+      current_title = nil
       all_sections_invalid = true
       CSV.parse(file_data, headers: true) do |row|
         @count += 1
-        if row["occupation_standard_title"] != current_occupation_standard_title
-          current_occupation_standard_title = row["occupation_standard_title"]
+        if row["occupation_standard_title"] != current_title
+          current_title = row["occupation_standard_title"]
           unless rows.empty?
-            service_resp = API::V1::ImportOccupationStandard.new(data: rows, user: user).call
-            if service_resp.success?
-              all_sections_invalid = false
-            else
-              error_msg = "[Error on line #{@count}] #{service_resp.error}"
-              errors.add(:base, error_msg)
-            end
+            service_resp = API::V1::ImportOccupationStandard.new(
+              data: rows,
+              user: user,
+            ).call
+            all_sections_invalid = check_service_response(service_resp, all_sections_invalid)
           end
           rows = [row]
         else
           rows << row
         end
-        service_resp = API::V1::ImportOccupationStandard.new(data: rows, user: user).call
-        if service_resp.success?
-          all_sections_invalid = false
-        else
-          error_msg = "[Error on line #{@count}] #{service_resp.error}"
-          errors.add(:base, error_msg)
-        end
+        service_resp = API::V1::ImportOccupationStandard.new(
+          data: rows,
+          user: user,
+        ).call
+        check_service_response(service_resp, all_sections_invalid)
       end
-      throw(:abort) if all_sections_invalid && @count > 0
+      throw(:abort) if all_sections_invalid
+    end
+  end
+
+  def check_service_response(service_response, all_sections_invalid)
+    if service_response.success?
+      return false
+    else
+      error_msg = "[Error on line #{@count}] #{service_response.error}"
+      errors.add(:base, error_msg)
+      all_sections_invalid
     end
   end
 
