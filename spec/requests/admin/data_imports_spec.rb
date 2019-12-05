@@ -114,8 +114,8 @@ RSpec.describe "Admin::DataImports", type: :request do
       end
 
       context "with invalid data" do
-        context "with missing occupation" do
-          let!(:organization) { create(:organization, title: "Acme Dog Walking") }
+        context "with missing occupation, work_process, and skills data" do
+          let(:file) { fixture_file_upload("files/bad_occupation_type.csv", "text/csv") }
           it "does not save data" do
             expect{
               post path, params: params
@@ -139,7 +139,7 @@ RSpec.describe "Admin::DataImports", type: :request do
     let(:params) {
       {
         data_import: {
-          file: fixture_file_upload("files/dog_walking.csv", "text/csv"),
+          file: file,
           user_id: user.id,
           kind: "occupation_standards",
           description: "this is a description",
@@ -151,6 +151,7 @@ RSpec.describe "Admin::DataImports", type: :request do
 
     context "occupation_standards upload" do
       context "with valid data" do
+        let(:file) { fixture_file_upload("files/dog_walking.csv", "text/csv") }
         let(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
         let(:organization) { create(:organization, title: "Acme Dog Walking") }
         let!(:os1) { create(:occupation_standard, occupation: occupation, organization: organization, title: "Heeling") }
@@ -207,8 +208,9 @@ RSpec.describe "Admin::DataImports", type: :request do
       end
 
       context "with invalid data" do
-        context "with missing occupation" do
-          let!(:organization) { create(:organization, title: "Acme Dog Walking") }
+        context "with missing occupation, work process, and skills" do
+          let(:file) { fixture_file_upload("files/bad_occupation_type.csv", "text/csv") }
+
           it "does not save data" do
             expect{
               put path, params: params
