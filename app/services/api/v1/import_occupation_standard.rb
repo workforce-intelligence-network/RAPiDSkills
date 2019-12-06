@@ -52,14 +52,17 @@ class API::V1::ImportOccupationStandard
         else
           oswp = nil
         end
-        skill = Skill.where(
-          description: row["skill"],
-        ).first_or_create!
-        OccupationStandardSkill.where(
-          occupation_standard: occupation_standard,
-          skill: skill,
-          occupation_standard_work_process: oswp,
-        ).first_or_create!(sort_order: row["skill_sort"])
+
+        if row["skill"].present?
+          skill = Skill.where(
+            description: row["skill"],
+          ).first_or_create!
+          OccupationStandardSkill.where(
+            occupation_standard: occupation_standard,
+            skill: skill,
+            occupation_standard_work_process: oswp,
+          ).first_or_create!(sort_order: row["skill_sort"])
+        end
       end
     end
     ServiceResponse.new(success: true)
