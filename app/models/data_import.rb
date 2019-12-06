@@ -10,14 +10,10 @@ class DataImport < ApplicationRecord
 
   value :blob_key
 
-  before_save :run_import, if: :file_changed?
+#  before_save :run_import, if: :file_changed?
   after_save :set_blob_key
 
-  private
-
-  def file_changed?
-    new_record? || blob_key.value != file.blob.key
-  end
+  attr_accessor :all_sections_invalid
 
   def run_import
     case kind
@@ -27,7 +23,7 @@ class DataImport < ApplicationRecord
       @count = 0
       rows = []
       current_title = nil
-      all_sections_invalid = true
+      self.all_sections_invalid = true
       CSV.parse(file_data, headers: true) do |row|
         @count += 1
         if row["occupation_standard_title"] != current_title
@@ -37,7 +33,7 @@ class DataImport < ApplicationRecord
               data: rows,
               user: user,
             ).call
-            all_sections_invalid = check_service_response(service_resp, all_sections_invalid)
+            self.all_sections_invalid = check_service_response(service_resp)
           end
           rows = [row]
         else
@@ -47,13 +43,18 @@ class DataImport < ApplicationRecord
           data: rows,
           user: user,
         ).call
-        check_service_response(service_resp, all_sections_invalid)
+        self.all_sections_invalid = check_service_response(service_resp)
       end
-      throw(:abort) if all_sections_invalid
     end
   end
 
-  def check_service_response(service_response, all_sections_invalid)
+  private
+
+  def file_changed?
+    new_record? || blob_key.value != file.blob.key
+  end
+
+  def check_service_response(service_response)
     if service_response.success?
       return false
     else
