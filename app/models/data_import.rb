@@ -33,12 +33,12 @@ class DataImport < ApplicationRecord
         else
           rows << row
         end
-        service_resp = API::V1::ImportOccupationStandard.new(
-          data: rows,
-          user: user,
-        ).call
-        self.all_sections_invalid = check_service_response(service_resp)
       end
+      service_resp = API::V1::ImportOccupationStandard.new(
+        data: rows,
+        user: user,
+      ).call
+      self.all_sections_invalid = check_service_response(service_resp)
     end
   end
 
