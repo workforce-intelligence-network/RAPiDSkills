@@ -6,6 +6,7 @@ RSpec.describe API::V1::ImportOccupationStandard do
 
   context "with valid data" do
     context "with rapids_code" do
+      let!(:state) { create(:state, short_name: "CA") }
       let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
       let(:rows) { CSV.parse(File.read(fixture_file_upload("files/dog_walking.csv", "text/csv")), headers: true) }
 
@@ -34,6 +35,8 @@ RSpec.describe API::V1::ImportOccupationStandard do
         expect(os1.organization).to eq organization
         expect(os1.creator).to eq user
         expect(os1.type).to eq "FrameworkStandard"
+        expect(os1.registration_organization_name).to eq "CA Dept of Labor"
+        expect(os1.registration_state).to eq state
 
         expect(os1.work_processes[0].title).to eq "Communicate effectively"
         expect(os1.work_processes[0].description).to eq "Communicate effectively with dog and human"
@@ -57,6 +60,8 @@ RSpec.describe API::V1::ImportOccupationStandard do
         expect(os2.organization).to eq organization
         expect(os2.creator).to eq user
         expect(os2.type).to eq "UnregisteredStandard"
+        expect(os2.registration_organization_name).to be nil
+        expect(os2.registration_state).to be nil
 
         expect(os2.work_processes[0].title).to eq "Billing"
         expect(os2.work_processes[0].description).to eq "Bill for services"

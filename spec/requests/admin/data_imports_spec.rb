@@ -21,6 +21,7 @@ RSpec.describe "Admin::DataImports", type: :request do
     context "occupation_standards upload" do
       context "with valid data" do
         context "with rapids_code" do
+          let!(:state) { create(:state, short_name: "CA") }
           let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
           let(:file) { fixture_file_upload("files/dog_walking.csv", "text/csv") }
 
@@ -49,6 +50,8 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os1.organization).to eq organization
             expect(os1.creator).to eq user
             expect(os1.type).to eq "FrameworkStandard"
+            expect(os1.registration_organization_name).to eq "CA Dept of Labor"
+            expect(os1.registration_state).to eq state
 
             expect(os1.work_processes[0].title).to eq "Communicate effectively"
             expect(os1.work_processes[0].description).to eq "Communicate effectively with dog and human"
