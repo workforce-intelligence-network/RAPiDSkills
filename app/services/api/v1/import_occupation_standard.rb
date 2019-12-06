@@ -9,8 +9,12 @@ class API::V1::ImportOccupationStandard
   def call
     DataImport.transaction do
       data.each do |row|
-        occupation = Occupation.find_by(rapids_code: row["rapids_code"])
-        occupation = Occupation.find_by(onet_code: row["onet_code"]) unless occupation
+        if row["rapids_code"].present?
+          occupation = Occupation.find_by(rapids_code: row["rapids_code"])
+        elsif row["onet_code"].present?
+          occupation = Occupation.find_by(onet_code: row["onet_code"])
+        end
+
         unless occupation
           # Determine Occupation Type
           type = if row["work_process_hours"].present? && row["skill"].present?
@@ -22,12 +26,12 @@ class API::V1::ImportOccupationStandard
                  else
                    raise "Either work process or skill is required"
                  end
-          occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create(
+          occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
             title: row["occupation_standard_title"],
             type: type,
           )
         end
-        organization = Organization.where(title: row["organization_title"]).first_or_create
+        organization = Organization.where(title: row["organization_title"]).first_or_create!
         state = State.find_by(short_name: row["registration_state"])
         occupation_standard = OccupationStandard.where(
           type: "#{row["type"]}Standard",

@@ -1,6 +1,6 @@
 class Occupation < ApplicationRecord
-  validates :rapids_code, uniqueness: true
-  validates :onet_code, uniqueness: true
+  validates :rapids_code, uniqueness: true, allow_nil: true
+  validates :onet_code, uniqueness: true, allow_nil: true
   validates :type, presence: true
   has_many :occupation_standards
   has_many :industries, through: :occupation_standards
