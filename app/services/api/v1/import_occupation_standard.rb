@@ -59,6 +59,8 @@ class API::V1::ImportOccupationStandard
     end
     ServiceResponse.new(success: true)
   rescue Exception => e
-    ServiceResponse.new(success: false, error: e.message)
+    error_msg = e.respond_to?(:record) ? "#{e.record.class.name} " : ""
+    error_msg += e.message
+    ServiceResponse.new(success: false, error: error_msg)
   end
 end
