@@ -35,12 +35,14 @@ ActiveAdmin.register DataImport do
   end
 
   form do |f|
-    para "Do not modify headers of files for CSV imports", class: "info"
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
-      f.input :file, as: :file
-      f.input :user
-      f.input :kind
+      if f.object.new_record?
+        para "Do not modify headers of files for CSV imports", class: "info"
+        f.input :file, as: :file
+        f.input :user
+        f.input :kind
+      end
       f.input :description
     end
     f.actions
@@ -59,6 +61,8 @@ ActiveAdmin.register DataImport do
             error_msg += "<div>" + @data_import.errors.full_messages.join("</div><div>") + "</div>"
             flash[:notice] = error_msg
             @data_import.errors.clear
+          else
+            flash[:notice] = "File successfully imported"
           end
           @data_import.save
           redirect_to admin_data_import_path(@data_import)

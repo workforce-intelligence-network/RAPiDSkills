@@ -1,5 +1,4 @@
 class DataImport < ApplicationRecord
-  include Redis::Objects
 
   validates :file, :kind, presence: true
 
@@ -7,11 +6,6 @@ class DataImport < ApplicationRecord
   has_one_attached :file
 
   enum kind: [:occupation_standards]
-
-  value :blob_key
-
-#  before_save :run_import, if: :file_changed?
-  after_save :set_blob_key
 
   attr_accessor :all_sections_invalid
 
@@ -50,10 +44,6 @@ class DataImport < ApplicationRecord
 
   private
 
-  def file_changed?
-    new_record? || blob_key.value != file.blob.key
-  end
-
   def check_service_response(service_response)
     if service_response.success?
       return false
@@ -62,9 +52,5 @@ class DataImport < ApplicationRecord
       errors.add(:base, error_msg)
       all_sections_invalid
     end
-  end
-
-  def set_blob_key
-    self.blob_key = file.blob.key
   end
 end
