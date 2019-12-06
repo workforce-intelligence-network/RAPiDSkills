@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_06_163605) do
+ActiveRecord::Schema.define(version: 2019_12_06_164043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,11 +124,13 @@ ActiveRecord::Schema.define(version: 2019_12_06_163605) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "title"
     t.string "registration_organization_name"
+    t.bigint "registration_state_id"
     t.index ["creator_id"], name: "index_occupation_standards_on_creator_id"
     t.index ["industry_id"], name: "index_occupation_standards_on_industry_id"
     t.index ["occupation_id"], name: "index_occupation_standards_on_occupation_id"
     t.index ["organization_id"], name: "index_occupation_standards_on_organization_id"
     t.index ["parent_occupation_standard_id"], name: "index_occupation_standards_on_parent_occupation_standard_id"
+    t.index ["registration_state_id"], name: "index_occupation_standards_on_registration_state_id"
   end
 
   create_table "occupations", force: :cascade do |t|
@@ -233,6 +235,7 @@ ActiveRecord::Schema.define(version: 2019_12_06_163605) do
   add_foreign_key "occupation_standards", "occupation_standards", column: "parent_occupation_standard_id"
   add_foreign_key "occupation_standards", "occupations"
   add_foreign_key "occupation_standards", "organizations"
+  add_foreign_key "occupation_standards", "states", column: "registration_state_id"
   add_foreign_key "occupation_standards", "users", column: "creator_id"
   add_foreign_key "skills", "skills", column: "parent_skill_id"
   add_foreign_key "standards_registrations", "occupation_standards"
