@@ -8,9 +8,7 @@ class API::V1::ImportOccupationStandard
 
   def call
     DataImport.transaction do
-      @count = 0
       data.each do |row|
-        @count += 1
         occupation = Occupation.find_by(rapids_code: row["rapids_code"])
         occupation = Occupation.find_by(onet_code: row["onet_code"]) unless occupation
         unless occupation
@@ -61,7 +59,6 @@ class API::V1::ImportOccupationStandard
     end
     ServiceResponse.new(success: true)
   rescue Exception => e
-    error_msg = "[Error on line #{@count}] #{e.message}"
-    ServiceResponse.new(success: false, error: error_msg)
+    ServiceResponse.new(success: false, error: e.message)
   end
 end

@@ -100,7 +100,7 @@ RSpec.describe API::V1::ImportOccupationStandard do
         sr = subject.call
         expect(sr).to be_a(ServiceResponse)
         expect(sr.success?).to be false
-        expect(sr.error).to eq "[Error on line 1] Either work process or skill is required"
+        expect(sr.error).to eq "Either work process or skill is required"
       end
 
       it "does not save data" do
