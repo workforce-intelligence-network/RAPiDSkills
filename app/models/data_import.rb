@@ -14,12 +14,11 @@ class DataImport < ApplicationRecord
     when "occupation_standards"
       # https://github.com/rails/rails/issues/36994
       file_data = File.read(attachment_changes['file'].attachable)
-      @count = 0
+      @count = 2 # Account for header row
       rows = []
       current_title = nil
       self.all_sections_invalid = true
       CSV.parse(file_data, headers: true) do |row|
-        @count += 1
         if row["occupation_standard_title"] != current_title
           current_title = row["occupation_standard_title"]
           unless rows.empty?
@@ -28,6 +27,7 @@ class DataImport < ApplicationRecord
               user: user,
             ).call
             self.all_sections_invalid = check_service_response(service_resp)
+            @count += rows.count
           end
           rows = [row]
         else
