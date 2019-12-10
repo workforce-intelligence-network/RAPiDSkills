@@ -1,6 +1,37 @@
 require 'rails_helper'
 
 RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :request do
+  describe "GET #index" do
+    let(:path) { "/api/v1/users/#{user.id}/relationships/favorites" }
+    let(:user) { create(:user) }
+    let(:header) { auth_header(user) }
+    let(:params) { {} }
+
+    it_behaves_like "authorization", :get
+
+    context "when user requests own favorites" do
+      let(:os_list) { create_list(:occupation_standard, 2) }
+      before { user.favorites << os_list.first << os_list.last }
+
+      it "returns list of favorites ordered by most recent addition" do
+        get path, headers: header
+        expect(response).to have_http_status(:success)
+        expect(json["links"]["self"]).to eq relationships_favorites_api_v1_user_url(user)
+        expect(json["links"]["related"]).to eq api_v1_user_favorites_url(user)
+        expect(json["data"][0]["type"]).to eq "occupation_standard"
+        expect(json["data"][0]["id"]).to eq os_list.last.id.to_s
+        expect(json["data"][1]["type"]).to eq "occupation_standard"
+        expect(json["data"][1]["id"]).to eq os_list.first.id.to_s
+      end
+    end
+
+    context "when user requests someone else's favorites" do
+      it_behaves_like "unauthorized", :get do
+        let(:header) { auth_header(create(:user)) }
+      end
+    end
+  end
+
   describe "POST #create" do
     let(:path) { "/api/v1/users/#{user.id}/relationships/favorites" }
 

@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :data_imports
   has_many :client_sessions
   has_many :relationships
-  has_many :favorites, through: :relationships,
+  has_many :favorites, -> { order(id: :desc) }, through: :relationships,
     class_name: 'OccupationStandard', source: :occupation_standard
 
   class << self

@@ -35,8 +35,10 @@ Rails.application.routes.draw do
       resources :organizations, only: [:show]
       resources :users, only: [:create] do
         member do
+          get "relationships/favorites", to: "users/relationships/favorites#index"
           post "relationships/favorites", to: "users/relationships/favorites#create"
           delete "relationships/favorites", to: "users/relationships/favorites#destroy"
+          resources :favorites, controller: "users/favorites", only: [:index], as: :user_favorites
         end
       end
 
