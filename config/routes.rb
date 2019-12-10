@@ -35,8 +35,8 @@ Rails.application.routes.draw do
       resources :organizations, only: [:show]
       resources :users, only: [:create] do
         member do
-          post "relationships/favorites", to: "favorites#create"
-          delete "relationships/favorites", to: "favorites#destroy"
+          post "relationships/favorites", to: "users/relationships/favorites#create"
+          delete "relationships/favorites", to: "users/relationships/favorites#destroy"
         end
       end
 
