@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      standards: _times(16, key => ({
+      standards: _times(32, key => ({
         key,
         organization: {
           logo: LOGO_WIN,
@@ -44,14 +44,31 @@ export default {
 
 <style scoped lang="scss">
 @import '@/scss/page';
+@import '@/scss/mixins';
+@import '@/scss/standards';
+@import '@/scss/navbars';
+
+$card-column-gap: 2rem;
 
 .page--dashboard__cards {
   display: grid;
   flex-direction: row;
   flex-wrap: wrap;
-  grid-template-columns: auto auto auto auto;
   justify-content: center;
   row-gap: 2rem;
-  column-gap: 2rem;
+  column-gap: $card-column-gap;
+  grid-template-columns: auto auto auto auto;
+
+  @for $i from 2 through 12 {
+    @media (max-width: ($standard-width * ($i + 1) + $card-column-gap * $i + $nav-left-width)) and
+      (min-width: ($standard-width * $i + $card-column-gap * ($i - 1) + $nav-left-width))
+    {
+      grid-template-columns: repeat($i, auto);
+    }
+  }
+
+  @media (max-width: ($standard-width * 2 + $card-column-gap * 1 + $nav-left-width)) {
+    grid-template-columns: auto;
+  }
 }
 </style>

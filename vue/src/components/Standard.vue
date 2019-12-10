@@ -66,17 +66,19 @@ export default {
 
 <style scoped lang="scss">
 @import '@/scss/colors';
+@import '@/scss/standards';
 
 .standard {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: space-between;
-  max-width: 18rem;
-  width: 18rem;
-  border-radius: 4px;
+  max-width: $standard-width;
+  min-width: $standard-width;
+  width: $standard-width;
   background: $color-white;
   box-shadow: $color-nav-bar-top-box-shadow 0px 2px 4px 0px;
+  cursor: pointer;
 }
 
 .standard__label {
@@ -101,7 +103,12 @@ export default {
 
 .standard__occupation-name {
   font-size: 1.75rem;
+  line-height: 2.25rem;
   margin-bottom: .5rem;
+  padding: 0 1.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .standard__logo__logo {
