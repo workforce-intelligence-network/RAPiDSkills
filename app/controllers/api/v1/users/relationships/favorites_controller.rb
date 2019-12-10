@@ -1,4 +1,4 @@
-class API::V1::FavoritesController < API::V1::APIController
+class API::V1::Users::Relationships::FavoritesController < API::V1::APIController
   before_action :set_target_user
 
   def create

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe API::V1::FavoritesController, type: :request do
+RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :request do
   describe "POST #create" do
     let(:path) { "/api/v1/users/#{user.id}/relationships/favorites" }
 
@@ -111,3 +111,4 @@ RSpec.describe API::V1::FavoritesController, type: :request do
     end
   end
 end
+
