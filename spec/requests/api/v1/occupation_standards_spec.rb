@@ -130,12 +130,18 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           attributes: {
             description: oss2.skill.description,
           }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss2),
+          }.stringify_keys,
         }.stringify_keys,
         {
           type: "skill",
           id: oss1.id.to_s,
           attributes: {
             description: oss1.skill.description,
+          }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss1),
           }.stringify_keys,
         }.stringify_keys,
       ]

@@ -35,6 +35,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
       expect(json["data"]["id"]).to eq oss.id.to_s
       expect(json["data"]["type"]).to eq "skill"
       expect(json["data"]["attributes"]["description"]).to eq oss.skill.description
+      expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
     end
   end
 
@@ -83,6 +84,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(json["data"]["id"]).to eq oss.id.to_s
             expect(json["data"]["type"]).to eq "skill"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
           end
         end
 
@@ -106,6 +108,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(json["data"]["id"]).to eq oss.id.to_s
             expect(json["data"]["type"]).to eq "skill"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
           end
         end
       end
@@ -140,15 +143,6 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
 
     context "when user does not belong to occupation standard" do
       it_behaves_like "unauthorized", :patch
-    end
-
-    it "returns the correct data" do
-      get path
-      expect(response).to have_http_status(:success)
-      expect(json["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
-      expect(json["data"]["id"]).to eq oss.id.to_s
-      expect(json["data"]["type"]).to eq "skill"
-      expect(json["data"]["attributes"]["description"]).to eq oss.skill.description
     end
   end
 end
