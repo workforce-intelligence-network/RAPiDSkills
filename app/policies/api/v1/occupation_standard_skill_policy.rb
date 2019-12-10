@@ -1,4 +1,4 @@
-class OccupationStandardSkillPolicy < ApplicationPolicy
+class API::V1::OccupationStandardSkillPolicy < ApplicationPolicy
   attr_reader :user, :oss
 
   def initialize(user, oss)

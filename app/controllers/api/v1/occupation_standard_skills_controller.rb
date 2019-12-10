@@ -15,7 +15,7 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   end
 
   def update
-    authorize @oss
+    authorize [:api, :v1, @oss]
     skill = Skill.where(update_params).first_or_initialize(parent_skill: @oss.skill)
     if skill.save
       @oss.update(skill: skill)
