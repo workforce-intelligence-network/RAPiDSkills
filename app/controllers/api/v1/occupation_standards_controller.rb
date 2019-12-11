@@ -3,11 +3,11 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def index
     @oss = OccupationStandard
-             .includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment)
+             .includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes)
              .search(search_params.to_h)
              .order(id: :desc)
     options = { links: { self: api_v1_occupation_standards_url } }
-    render json: API::V1::OccupationStandardSerializer.new(@oss, options)
+    render_object(@oss, options)
   end
 
   def show
