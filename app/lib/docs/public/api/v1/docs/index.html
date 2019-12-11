@@ -241,6 +241,22 @@
               </ul>
           </li>
           <li>
+            <a href="#industries" class="toc-h1 toc-link" data-title="Industries">Industries</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#industry-object" class="toc-h2 toc-link" data-title="Industry object">Industry object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#locations" class="toc-h1 toc-link" data-title="Locations">Locations</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#location-object" class="toc-h2 toc-link" data-title="Location object">Location object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#occupations" class="toc-h1 toc-link" data-title="Occupations">Occupations</a>
               <ul class="toc-list-h2">
                   <li>
@@ -269,13 +285,10 @@
               </ul>
           </li>
           <li>
-            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+            <a href="#organizations" class="toc-h1 toc-link" data-title="Organizations">Organizations</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#user-object" class="toc-h2 toc-link" data-title="User object">User object</a>
-                  </li>
-                  <li>
-                    <a href="#create-user" class="toc-h2 toc-link" data-title="Create user">Create user</a>
+                    <a href="#organization-object" class="toc-h2 toc-link" data-title="Organization object">Organization object</a>
                   </li>
               </ul>
           </li>
@@ -293,6 +306,33 @@
                   </li>
                   <li>
                     <a href="#update-skill" class="toc-h2 toc-link" data-title="Update skill">Update skill</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#states" class="toc-h1 toc-link" data-title="States">States</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#state-object" class="toc-h2 toc-link" data-title="State object">State object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#user-object" class="toc-h2 toc-link" data-title="User object">User object</a>
+                  </li>
+                  <li>
+                    <a href="#create-user" class="toc-h2 toc-link" data-title="Create user">Create user</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#work-processes" class="toc-h1 toc-link" data-title="Work Processes">Work Processes</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#work-process-object" class="toc-h2 toc-link" data-title="Work Process object">Work Process object</a>
                   </li>
               </ul>
           </li>
@@ -422,7 +462,7 @@ resource passed in the relationships field.</p>
 </tbody></table>
 
 <p>Returns HTTP status 202, accepted.</p>
-<h1 id='occupations'>Occupations</h1><h2 id='occupation-object'>Occupation object</h2><h3 id='attributes'>Attributes</h3>
+<h1 id='industries'>Industries</h1><h2 id='industry-object'>Industry object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -436,12 +476,60 @@ resource passed in the relationships field.</p>
 <td></td>
 </tr>
 <tr>
-<td>rapids_code</td>
+<td>naics_code</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='locations'>Locations</h1><h2 id='location-object'>Location object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>city</td>
 <td>string</td>
 <td></td>
 </tr>
 <tr>
+<td>organization_id</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>state_id</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>street_address</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>zip_code</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='occupations'>Occupations</h1><h2 id='occupation-object'>Occupation object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
 <td>onet_code</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>rapids_code</td>
 <td>string</td>
 <td></td>
 </tr>
@@ -453,6 +541,11 @@ resource passed in the relationships field.</p>
 <tr>
 <td>term_length_max</td>
 <td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
 <td></td>
 </tr>
 <tr>
@@ -786,7 +879,7 @@ resource passed in the relationships field.</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='users'>Users</h1><h2 id='user-object'>User object</h2><h3 id='attributes'>Attributes</h3>
+</span></code></pre><h1 id='organizations'>Organizations</h1><h2 id='organization-object'>Organization object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -795,97 +888,22 @@ resource passed in the relationships field.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td>name</td>
+<td>logo_url</td>
 <td>string</td>
 <td></td>
 </tr>
 <tr>
-<td>email</td>
-<td>string</td>
+<td>registers_standards</td>
+<td>boolean</td>
 <td></td>
 </tr>
 <tr>
-<td>organization_name</td>
+<td>title</td>
 <td>string</td>
-<td>Employer name</td>
+<td></td>
 </tr>
 </tbody></table>
-<h2 id='create-user'>Create user</h2>
-<blockquote>
-<p>Example request</p>
-</blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
-  http://www.rapidskills.org/api/v1/users <span class="se">\</span>
-  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
-  -H <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
-  -d <span class="s1">'{
-    "data": {
-        "type": "user",
-        "attributes": {
-            "email": "mickey@example.com",
-            "name": "Mickey Mouse",
-            "organization_name": "Disneyland"
-        }
-    }
-}'</span>
-</code></pre><h3 id='http-request'>HTTP Request</h3>
-<p><code>POST http://www.rapidskills.org/api/v1/users</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>email<br /><em>required</em></td>
-<td>string</td>
-<td></td>
-</tr>
-<tr>
-<td>name</td>
-<td>string</td>
-<td></td>
-</tr>
-<tr>
-<td>organization_name</td>
-<td>string</td>
-<td>Employer name</td>
-</tr>
-</tbody></table>
-
-<blockquote>
-<p>Example response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mickey@example.com"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mickey Mouse"</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"employer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
-                </span><span class="p">}</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Disneyland"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='skills'>Skills</h1><h2 id='skill-object'>Skill object</h2><h3 id='attributes'>Attributes</h3>
+<h1 id='skills'>Skills</h1><h2 id='skill-object'>Skill object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -902,6 +920,11 @@ resource passed in the relationships field.</p>
 <td>parent_skill_id</td>
 <td>string</td>
 <td>ID of skill from which skill is derived</td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td>Ranking within occupation standard</td>
 </tr>
 </tbody></table>
 <h2 id='list-skills'>List skills</h2>
@@ -1023,7 +1046,154 @@ resource passed in the relationships field.</p>
         </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='errors'>Errors</h1>
+</span></code></pre><h1 id='states'>States</h1><h2 id='state-object'>State object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>long_name</td>
+<td>string</td>
+<td>name</td>
+</tr>
+<tr>
+<td>short_name</td>
+<td>integer</td>
+<td>abbreviation</td>
+</tr>
+</tbody></table>
+<h1 id='users'>Users</h1><h2 id='user-object'>User object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>organization_name</td>
+<td>string</td>
+<td>Employer name</td>
+</tr>
+</tbody></table>
+<h2 id='create-user'>Create user</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": {
+        "type": "user",
+        "attributes": {
+            "email": "mickey@example.com",
+            "name": "Mickey Mouse",
+            "organization_name": "Disneyland"
+        }
+    }
+}'</span>
+</code></pre><h3 id='http-request'>HTTP Request</h3>
+<p><code>POST http://www.rapidskills.org/api/v1/users</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email<br /><em>required</em></td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>organization_name</td>
+<td>string</td>
+<td>Employer name</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mickey@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mickey Mouse"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"employer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Disneyland"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h1 id='work-processes'>Work Processes</h1><h2 id='work-process-object'>Work Process object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>description</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>hours</td>
+<td>integer</td>
+<td>Number of required hours</td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td>Ranking within occupation standard</td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='errors'>Errors</h1>
 <p>Errors are returned as an array with the following attributes:</p>
 
 <table><thead>
