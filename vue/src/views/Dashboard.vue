@@ -2,12 +2,26 @@
   <div class="page page--dashboard">
     <div class="page--dashboard__cards">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" />
+      <div class="page--dashboard__cards__empty-state" v-if="showEmptyState">
+        <div class="page--dashboard__cards__empty-state__description">
+          <span>No standards found </span>
+          <span v-if="selectedOccupation">for occupation {{ selectedOccupation.title }}</span>
+        </div>
+        <div class="page--dashboard__cards__empty-state__action">
+          Please try searching for a different occupation
+        </div>
+        <div class="page--dashboard__cards__empty-state__button button button--link" @click="clearSelectedOccupation">
+          Clear selected occupation
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import _times from 'lodash/times';
+
+import { mapGetters, mapState } from 'vuex';
 
 import Standard from '@/components/Standard.vue';
 
@@ -18,10 +32,21 @@ export default {
   components: {
     Standard,
   },
+  methods: {
+    clearSelectedOccupation() {
+      (this as any).$store.dispatch('occupations/setSelectedOccupation');
+    },
+  },
   computed: {
+    ...mapGetters({
+      showEmptyState: 'standards/standardsListEmptyAndNotLoading',
+    }),
+    ...mapState({
+      selectedOccupation: (state: any) => state.occupations.selectedOccupation,
+    }),
     standards() {
       // TODO: remove fake data
-      this.$store.state.standards.list.forEach((standard) => {
+      (this as any).$store.state.standards.list.forEach((standard) => {
         Object.assign(standard, {
           organization: {
             logo: LOGO_WIN,
@@ -39,7 +64,7 @@ export default {
           })),
         });
       });
-      return this.$store.state.standards.list;
+      return (this as any).$store.state.standards.list;
     },
   },
 };
@@ -73,5 +98,15 @@ $card-column-gap: 2rem;
   @media (max-width: ($standard-width * 2 + $card-column-gap * 1 + $nav-left-width)) {
     grid-template-columns: auto;
   }
+}
+
+.page--dashboard__cards__empty-state__description {
+  font-weight: 600;
+  font-size: 1.25rem;
+  padding: 2rem 0;
+}
+
+.page--dashboard__cards__empty-state__action {
+  margin-bottom: 1rem;
 }
 </style>

@@ -65,6 +65,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/scss/colors';
 @import '@/scss/mixins';
 
 $nav-height: 4rem;
@@ -111,7 +112,7 @@ $hero-height: 50rem;
 .app__inner--landing__nav__link {
   font-size: 1.125rem;
   line-height: 2rem;
-  color: white;
+  color: $color-white;
   padding: 1rem 1rem;
 }
 

@@ -40,7 +40,7 @@ import {
   IsEmail, MinLength, validate, validateSync, ValidationError, IsDefined,
 } from 'class-validator';
 
-import { apiRaw } from '@/helpers/api';
+import { apiRaw } from '@/utilities/api';
 
 class CreateUserUser {
   @MinLength(1)
@@ -113,6 +113,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/scss/colors';
+
 .page--follow {
   padding-top: 6rem;
   min-height: 50rem;
@@ -125,7 +127,7 @@ export default {
 }
 
 .page--follow__form__text {
-  color: white;
+  color: $color-white;
 }
 
 .page--follow__form__submitted {
@@ -163,7 +165,7 @@ export default {
 }
 
 .page--follow__form__inputs__input__label {
-  color: white;
+  color: $color-white;
 }
 
 .page--follow__form__inputs__button--submit {

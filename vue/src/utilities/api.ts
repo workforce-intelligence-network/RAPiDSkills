@@ -4,7 +4,7 @@ import JsonApi from 'devour-client';
 import {
   recursivelyCamelCase,
   recursivelySnakeCase,
-} from '@/helpers/case';
+} from '@/utilities/case';
 
 export const { VUE_APP_API_BASE_URL } = process.env;
 export const API_NAMESPACE = '/api/v1';
@@ -20,7 +20,7 @@ const requestMiddleware = {
   name: 'snake-case-attributes',
   req: (payload) => {
     const updatedPayload = Object.assign({}, payload);
-    updatedPayload.req.data = recursivelySnakeCase(updatedPayload.req.data);
+    updatedPayload.req = recursivelySnakeCase(updatedPayload.req);
     return updatedPayload;
   },
 };

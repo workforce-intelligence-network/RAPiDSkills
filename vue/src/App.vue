@@ -5,6 +5,8 @@
 </template>
 
 <style lang="scss">
+@import '@/scss/colors';
+
 @import url('https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap');
 
@@ -47,7 +49,7 @@ a {
   padding: .7rem 1.5rem;
   font-weight: 600;
 
-  color: white;
+  color: $color-white;
   background: #459EFF;
 
   cursor: pointer;
@@ -70,7 +72,7 @@ a {
 }
 
 .button--inverted {
-  background: white;
+  background: $color-white;
   &:hover {
     background: darken(white, 10);
   }

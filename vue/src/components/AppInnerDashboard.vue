@@ -140,6 +140,10 @@ export default {
 .app__inner--dashboard__nav--top__link--logo {
   align-self: flex-start;
   flex-basis: 0;
+
+  @include breakpoint--mobile {
+    display: none;
+  }
 }
 
 .app__inner--dashboard__nav--top__link--support {

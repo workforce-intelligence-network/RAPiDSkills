@@ -1,13 +1,22 @@
-import jsonApi from '@/helpers/api';
+import _get from 'lodash/get';
 
-export const searchForStandards = async ({ commit, state }, query: string = state.query) => {
+import jsonApi from '@/utilities/api';
+
+export const fetchStandards = async (
+  { commit, rootState },
+  occupationId: number | undefined = _get(rootState, 'occupations.selectedOccupation.id'),
+) => {
   try {
-    commit('updateStandardsSearchQuery', query);
-    const { data } = await jsonApi.findAll('occupation_standards', { query });
+    commit('updateStandardsSearchLoading', true);
+
+    const { data } = await jsonApi.findAll('occupation_standards', { occupationId });
+
     commit('updateStandardsSearchList', data);
   } catch (e) {
     console.error(e);
   }
+
+  commit('updateStandardsSearchLoading', false);
 };
 
 export const getStandard = async ({ state }, id: string | number) => {

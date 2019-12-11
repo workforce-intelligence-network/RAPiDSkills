@@ -1,4 +1,4 @@
-import jsonApi from '@/helpers/api';
+import jsonApi from '@/utilities/api';
 
 jsonApi.define('skill', {
   description: '',

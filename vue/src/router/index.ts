@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import jsonApi from '@/helpers/api';
+import jsonApi from '@/utilities/api';
 
 import store from '@/store';
 
@@ -42,8 +42,8 @@ const routes = [
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
           search: Search,
         },
-        beforeEnter: async (to, from, next) => {
-          store.dispatch('standards/searchForStandards');
+        beforeEnter: (to, from, next) => {
+          store.dispatch('standards/fetchStandards');
           next();
         },
       },

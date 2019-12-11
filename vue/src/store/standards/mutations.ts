@@ -1,11 +1,11 @@
-export const updateStandardsSearchQuery = async (state, query) => {
-  state.query = query;
+export const updateStandardsSearchLoading = (state, loading: boolean) => {
+  state.loading = loading;
 };
 
-export const updateStandardsSearchList = async (state, list) => {
+export const updateStandardsSearchList = (state, list: []) => {
   state.list = list;
 };
 
-export const updateSelectedStandard = async (state, standard) => {
+export const updateSelectedStandard = (state, standard) => {
   state.selectedStandard = standard;
 };
