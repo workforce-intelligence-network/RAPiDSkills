@@ -1,20 +1,20 @@
 import jsonApi from '@/helpers/api';
 
 jsonApi.define('occupation_standard', {
-  excel_created_at: '',
-  excel_filename: '',
-  excel_url: '',
-  industry_title: '',
-  occupation_title: '',
-  organization_title: '',
-  pdf_created_at: '',
-  pdf_filename: '',
-  pdf_url: '',
-  should_generate_attachments: false,
+  excelCreatedAt: '',
+  excelFilename: '',
+  excelUrl: '',
+  industryTitle: '',
+  occupationTitle: '',
+  organizationTitle: '',
+  pdfCreatedAt: '',
+  pdfFilename: '',
+  pdfUrl: '',
+  shouldGenerateAttachments: false,
   title: '',
-  work_processes: {
+  workProcesses: {
     jsonApi: 'hasMany',
-    type: 'work_process',
+    type: 'workProcess',
   },
   skills: {
     jsonApi: 'hasMany',

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 import jsonApi from '@/helpers/api';
 
+import store from '@/store';
+
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import Search from '@/components/Search.vue';
@@ -41,9 +43,7 @@ const routes = [
           search: Search,
         },
         beforeEnter: async (to, from, next) => {
-          // TODO: call the action to fetch occupation standards
-          const { data } = await jsonApi.findAll('occupation_standards');
-          console.log('standards', data);
+          store.dispatch('standards/searchForStandards');
           next();
         },
       },

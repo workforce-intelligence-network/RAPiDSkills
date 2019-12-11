@@ -18,26 +18,30 @@ export default {
   components: {
     Standard,
   },
-  data() {
-    return {
-      standards: _times(32, key => ({
-        key,
-        organization: {
-          logo: LOGO_WIN,
-          name: 'WIN',
-        },
-        occupation: {
-          name: 'Mechatronics Technician',
-          type: 'Hybrid',
-          onet: '51-4012.00',
-          cb: '1100CB',
-        },
-        workProcesses: _times(18, () => ({
-          skills: _times(8, () => ({})),
-          hoursTotal: 334,
-        })),
-      })),
-    };
+  computed: {
+    standards() {
+      // TODO: remove fake data
+      this.$store.state.standards.list.forEach((standard) => {
+        Object.assign(standard, {
+          organization: {
+            logo: LOGO_WIN,
+            name: 'WIN',
+          },
+          occupation: {
+            name: 'Mechatronics Technician',
+            type: 'Hybrid',
+            onet: '51-4012.00',
+            cb: '1100CB',
+          },
+          workProcesses: _times(18, () => ({
+            skills: _times(8, () => ({})),
+            hoursTotal: 334,
+          })),
+        });
+        console.log(standard);
+      });
+      return this.$store.state.standards.list;
+    },
   },
 };
 </script>

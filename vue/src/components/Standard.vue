@@ -2,9 +2,9 @@
   <div class="standard">
     <div class="standard__label">{{ label }}</div>
     <div class="standard__logo">
-      <img :src="standard.organization.logo" :alt="standard.organization.name" class="standard__logo__logo" />
+      <img :src="standard.organization.logo" :alt="standard.organizationTitle" class="standard__logo__logo" />
     </div>
-    <div class="standard__occupation-name">{{ standard.occupation.name }}</div>
+    <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
       <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupation.type }}</div>
       <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onet }}</div>
@@ -104,7 +104,7 @@ export default {
 .standard__occupation-name {
   font-size: 1.75rem;
   line-height: 2.25rem;
-  margin-bottom: .5rem;
+  margin-bottom: 1rem;
   padding: 0 1.5rem;
   height: 4.5rem;
   overflow: hidden;
