@@ -40,9 +40,7 @@ import {
   IsEmail, MinLength, validate, validateSync, ValidationError, IsDefined,
 } from 'class-validator';
 
-const apiV1 = axios.create({
-  baseURL: `${(process.env.API_BASE_URL || 'https://rapid-skills.herokuapp.com')}/api/v1`,
-});
+import { apiRaw } from '@/helpers/api';
 
 class CreateUserUser {
   @MinLength(1)
@@ -60,7 +58,7 @@ class CreateUserUser {
   }
 }
 
-const createUser = async (user: CreateUserUser) => apiV1.post('users', {
+const createUser = async (user: CreateUserUser) => apiRaw.post('users', {
   data: {
     type: 'users',
     attributes: {
