@@ -38,7 +38,6 @@ export default {
             hoursTotal: 334,
           })),
         });
-        console.log(standard);
       });
       return this.$store.state.standards.list;
     },
