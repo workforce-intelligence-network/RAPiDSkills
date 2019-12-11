@@ -7,13 +7,13 @@ class API::V1::OccupationStandardsController < API::V1::APIController
              .search(search_params.to_h)
              .order(id: :desc)
     options = { links: { self: api_v1_occupation_standards_url } }
-    render_object(@oss, options)
+    render_resource(@oss, options)
   end
 
   def show
     @os = OccupationStandard.find(params[:id])
     options = { links: { self: @os.url } }
-    render_object(@os, options)
+    render_resource(@os, options)
   end
 
   def create
@@ -23,7 +23,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
         creator_id: current_user.id,
         organization_id: current_user.employer_id,
       )
-      render_object(@os)
+      render_resource(@os)
     else
       @os = OccupationStandard.new
       @os.errors.add(:parent_occupation_standard_id, :invalid)
@@ -41,7 +41,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
     params.require(:data).require(:attributes).permit(:parent_occupation_standard_id)
   end
 
-  def render_object(record, options={})
+  def render_resource(record, options={})
     options[:include] = [
       :"occupation_standard_work_processes.occupation_standard_skills",
       :occupation_standard_skills,
