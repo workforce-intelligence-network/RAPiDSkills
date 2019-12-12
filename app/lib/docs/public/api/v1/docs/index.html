@@ -241,6 +241,22 @@
               </ul>
           </li>
           <li>
+            <a href="#industries" class="toc-h1 toc-link" data-title="Industries">Industries</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#industry-object" class="toc-h2 toc-link" data-title="Industry object">Industry object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#locations" class="toc-h1 toc-link" data-title="Locations">Locations</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#location-object" class="toc-h2 toc-link" data-title="Location object">Location object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#occupations" class="toc-h1 toc-link" data-title="Occupations">Occupations</a>
               <ul class="toc-list-h2">
                   <li>
@@ -269,6 +285,39 @@
               </ul>
           </li>
           <li>
+            <a href="#organizations" class="toc-h1 toc-link" data-title="Organizations">Organizations</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#organization-object" class="toc-h2 toc-link" data-title="Organization object">Organization object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#skills" class="toc-h1 toc-link" data-title="Skills">Skills</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#skill-object" class="toc-h2 toc-link" data-title="Skill object">Skill object</a>
+                  </li>
+                  <li>
+                    <a href="#list-skills" class="toc-h2 toc-link" data-title="List skills">List skills</a>
+                  </li>
+                  <li>
+                    <a href="#retrieve-skill" class="toc-h2 toc-link" data-title="Retrieve skill">Retrieve skill</a>
+                  </li>
+                  <li>
+                    <a href="#update-skill" class="toc-h2 toc-link" data-title="Update skill">Update skill</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#states" class="toc-h1 toc-link" data-title="States">States</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#state-object" class="toc-h2 toc-link" data-title="State object">State object</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
               <ul class="toc-list-h2">
                   <li>
@@ -276,6 +325,14 @@
                   </li>
                   <li>
                     <a href="#create-user" class="toc-h2 toc-link" data-title="Create user">Create user</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#work-processes" class="toc-h1 toc-link" data-title="Work Processes">Work Processes</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#work-process-object" class="toc-h2 toc-link" data-title="Work Process object">Work Process object</a>
                   </li>
               </ul>
           </li>
@@ -405,7 +462,7 @@ resource passed in the relationships field.</p>
 </tbody></table>
 
 <p>Returns HTTP status 202, accepted.</p>
-<h1 id='occupations'>Occupations</h1><h2 id='occupation-object'>Occupation object</h2><h3 id='attributes'>Attributes</h3>
+<h1 id='industries'>Industries</h1><h2 id='industry-object'>Industry object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -419,12 +476,60 @@ resource passed in the relationships field.</p>
 <td></td>
 </tr>
 <tr>
-<td>rapids_code</td>
+<td>naics_code</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='locations'>Locations</h1><h2 id='location-object'>Location object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>city</td>
 <td>string</td>
 <td></td>
 </tr>
 <tr>
+<td>organization_id</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>state_id</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>street_address</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>zip_code</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='occupations'>Occupations</h1><h2 id='occupation-object'>Occupation object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
 <td>onet_code</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>rapids_code</td>
 <td>string</td>
 <td></td>
 </tr>
@@ -436,6 +541,11 @@ resource passed in the relationships field.</p>
 <tr>
 <td>term_length_max</td>
 <td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
 <td></td>
 </tr>
 <tr>
@@ -769,7 +879,193 @@ resource passed in the relationships field.</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='users'>Users</h1><h2 id='user-object'>User object</h2><h3 id='attributes'>Attributes</h3>
+</span></code></pre><h1 id='organizations'>Organizations</h1><h2 id='organization-object'>Organization object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>logo_url</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>registers_standards</td>
+<td>boolean</td>
+<td></td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='skills'>Skills</h1><h2 id='skill-object'>Skill object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>description</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>parent_skill_id</td>
+<td>string</td>
+<td>ID of skill from which skill is derived</td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td>Ranking within occupation standard</td>
+</tr>
+</tbody></table>
+<h2 id='list-skills'>List skills</h2>
+<p>This endpoint returns only skills that have no associated Work Process.</p>
+
+<blockquote>
+<p>Example requests</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/occupation_standards/1/skills <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span>
+</code></pre><h3 id='http-request'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/occupation_standards/:occupation_standard_id/skills</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Work under pressure"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Technical savvy"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/skills"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='retrieve-skill'>Retrieve skill</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/skills/9 <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span>
+</code></pre><h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/skills/:skill_id</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Work under pressure"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='update-skill'>Update skill</h2>
+<p>User must be authorized to update the skill.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X PATCH <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/skills/9 <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGYvSlBlSjhsVDZ1YkhETFBiTVdBZ3VLZ1RQRWlLRHo2V3R4eHpyeVZJRVRaN3FCTmRUbHFlIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoianE3MmV0T1p2Yzd6SEdMdXF0ZHg1USJ9.RKLaV3yfDs5czwBEuVr-gZtUatCfZTJOkmzEkYCLhcA'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": {
+        "attributes": {
+            "description": "Assess client needs"
+        }
+    }
+}'</span>
+</code></pre><h3 id='http-request-3'>HTTP Request</h3>
+<p><code>PATCH http://www.rapidskills.org/api/v1/skills/:skill_id</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>description</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Assess client needs"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h1 id='states'>States</h1><h2 id='state-object'>State object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>long_name</td>
+<td>string</td>
+<td>name</td>
+</tr>
+<tr>
+<td>short_name</td>
+<td>integer</td>
+<td>abbreviation</td>
+</tr>
+</tbody></table>
+<h1 id='users'>Users</h1><h2 id='user-object'>User object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -868,7 +1164,36 @@ resource passed in the relationships field.</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='errors'>Errors</h1>
+</span></code></pre><h1 id='work-processes'>Work Processes</h1><h2 id='work-process-object'>Work Process object</h2><h3 id='attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>description</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>hours</td>
+<td>integer</td>
+<td>Number of required hours</td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td>Ranking within occupation standard</td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='errors'>Errors</h1>
 <p>Errors are returned as an array with the following attributes:</p>
 
 <table><thead>

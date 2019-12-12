@@ -37,6 +37,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][2]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][2]["attributes"]["industry_title"]).to be nil
       expect(json["data"][2]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+      expect(json["included"]).to_not be nil
 
       # With occupation_id parameter, returns matches
       get path, params: { occupation_id: occupation.id }
@@ -57,11 +58,13 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][1]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][1]["attributes"]["industry_title"]).to be nil
       expect(json["data"][1]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+      expect(json["included"]).to_not be nil
 
       # With bad occupation_id parameter, returns none
       get path, params: { occupation_id: 9999 }
       expect(response).to have_http_status(:success)
       expect(json["data"]).to be_empty
+      expect(json["included"]).to be_empty
     end
   end
 
@@ -130,12 +133,18 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           attributes: {
             description: oss2.skill.description,
           }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss2),
+          }.stringify_keys,
         }.stringify_keys,
         {
           type: "skill",
           id: oss1.id.to_s,
           attributes: {
             description: oss1.skill.description,
+          }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss1),
           }.stringify_keys,
         }.stringify_keys,
       ]

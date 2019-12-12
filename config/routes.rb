@@ -29,7 +29,7 @@ Rails.application.routes.draw do
         resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
       end
 
-      resources :occupation_standard_skills, path: "skills", only: [:show]
+      resources :occupation_standard_skills, path: "skills", only: [:show, :update]
       resources :users, only: [:create]
 
       resources :sessions, only: [:create]

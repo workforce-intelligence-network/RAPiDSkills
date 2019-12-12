@@ -50,8 +50,24 @@ class OccupationStandard < ApplicationRecord
           parent_occupation_standard: self,
         )
 
-        os.occupation_standard_work_processes = occupation_standard_work_processes.map(&:dup)
-        os.occupation_standard_skills = occupation_standard_skills.map(&:dup)
+        occupation_standard_work_processes.each do |oswp|
+          new_oswp = oswp.dup
+          new_oswp.update!(occupation_standard: os)
+
+          oswp.occupation_standard_skills.each do |oss|
+            new_oss = oss.dup
+            new_oss.update!(
+              occupation_standard: os,
+              occupation_standard_work_process: new_oswp,
+            )
+          end
+        end
+
+        # Catch any skills that are not linked to work processes
+        skills.each do |skill|
+          # Fail silently if occupation_standard_skill already exists
+          os.occupation_standard_skills.create(skill: skill)
+        end
 
         os
       end
