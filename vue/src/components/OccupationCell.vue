@@ -38,8 +38,6 @@ export default {
   display: flex;
   justify-content: flex-start;
   flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
   text-align: left;
   font-weight: 500;
 }

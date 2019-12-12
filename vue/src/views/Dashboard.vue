@@ -1,18 +1,21 @@
 <template>
   <div class="page page--dashboard">
-    <div class="page--dashboard__cards">
+    <div class="page--dashboard__cards" v-if="!showLoadingState && !showEmptyState">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" />
-      <div class="page--dashboard__cards__empty-state" v-if="showEmptyState">
-        <div class="page--dashboard__cards__empty-state__description">
-          <span>No standards found </span>
-          <span v-if="selectedOccupation">for occupation {{ selectedOccupation.title }}</span>
-        </div>
-        <div class="page--dashboard__cards__empty-state__action">
-          Please try searching for a different occupation
-        </div>
-        <div class="page--dashboard__cards__empty-state__button button button--link" @click="clearSelectedOccupation">
-          Clear selected occupation
-        </div>
+    </div>
+    <div class="page--dashboard__state--loading" v-if="showLoadingState">
+      <Loading />
+    </div>
+    <div class="page--dashboard__state--empty" v-if="showEmptyState">
+      <div class="page--dashboard__state--empty__description">
+        <span>No standards found </span>
+        <span v-if="selectedOccupation">for occupation {{ selectedOccupation.title }}</span>
+      </div>
+      <div class="page--dashboard__state--empty__action">
+        Please try searching for a different occupation
+      </div>
+      <div class="page--dashboard__state--empty__button button button--link" @click="clearSelectedOccupation">
+        Clear selected occupation
       </div>
     </div>
   </div>
@@ -24,6 +27,7 @@ import _times from 'lodash/times';
 import { mapGetters, mapState } from 'vuex';
 
 import Standard from '@/components/Standard.vue';
+import Loading from '@/components/Loading.vue';
 
 import LOGO_WIN from '@/assets/win.png';
 
@@ -31,6 +35,7 @@ export default {
   name: 'dashboard',
   components: {
     Standard,
+    Loading,
   },
   methods: {
     clearSelectedOccupation() {
@@ -43,6 +48,7 @@ export default {
     }),
     ...mapState({
       selectedOccupation: (state: any) => state.occupations.selectedOccupation,
+      showLoadingState: (state: any) => state.standards.loading,
     }),
     standards() {
       // TODO: remove fake data
@@ -100,13 +106,13 @@ $card-column-gap: 2rem;
   }
 }
 
-.page--dashboard__cards__empty-state__description {
+.page--dashboard__state--empty__description {
   font-weight: 600;
   font-size: 1.25rem;
   padding: 2rem 0;
 }
 
-.page--dashboard__cards__empty-state__action {
+.page--dashboard__state--empty__action {
   margin-bottom: 1rem;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="search">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="onSearchChange" />
+  <form class="search" @submit.prevent="onSearchChange">
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="onSearchChange" ref="searchInput" />
     <a class="search__button" href="javascript:void(0)" @click="onSearchChange">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
     <div class="search__dropdown" v-if="showList">
       <div class="search__dropdown__loading" v-if="listLoading">
-        Loading...
+        <Loading />
       </div>
       <div class="search__dropdown__list" v-if="!listLoading">
         <div class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click="selectItem(item)">
@@ -14,29 +14,35 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script lang="ts">
 import _get from 'lodash/get';
-import _throttle from 'lodash/throttle';
+import _debounce from 'lodash/debounce';
 
 import { mapGetters, mapState } from 'vuex';
 
 import ICON_TOP_NAV_SEARCH from '@/assets/top-nav-icon-search.svg';
 
+import Loading from '@/components/Loading.vue';
 import OccupationCell from '@/components/OccupationCell.vue';
 
 export default {
   components: {
     OccupationCell,
+    Loading,
   },
   created() {
-    (this as any).onSearchChange = _throttle((this as any).onSearchChange, 500).bind(this);
+    (this as any).submitSearch = _debounce((this as any).submitSearch, 500).bind(this);
   },
   methods: {
-    onSearchChange(e) {
-      (this as any).$store.dispatch('occupations/searchForOccupations', _get(e, 'target.value'));
+    onSearchChange() {
+      (this as any).$store.dispatch('occupations/setOccupationSearchQuery', ((this as any).$refs.searchInput as any).value);
+      this.submitSearch();
+    },
+    submitSearch() {
+      (this as any).$store.dispatch('occupations/searchForOccupations');
     },
     selectItem(item) {
       (this as any).$store.dispatch('occupations/setSelectedOccupation', item);

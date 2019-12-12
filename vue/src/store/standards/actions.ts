@@ -13,7 +13,7 @@ export const fetchStandards = async (
 
     commit('updateStandardsSearchList', data);
   } catch (e) {
-    console.error(e);
+    //
   }
 
   commit('updateStandardsSearchLoading', false);

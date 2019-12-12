@@ -1,3 +1,7 @@
+import _get from 'lodash/get';
+import _set from 'lodash/set';
+import _isFunction from 'lodash/isFunction';
+
 import axios from 'axios';
 import JsonApi from 'devour-client';
 
@@ -20,7 +24,10 @@ const requestMiddleware = {
   name: 'snake-case-attributes',
   req: (payload) => {
     const updatedPayload = Object.assign({}, payload);
-    updatedPayload.req = recursivelySnakeCase(updatedPayload.req);
+    updatedPayload.req.cancelToken = _get(updatedPayload, 'req.params.cancelToken');
+    _set(updatedPayload, 'req.params.cancelToken', undefined);
+    updatedPayload.req.params = recursivelySnakeCase(updatedPayload.req.params);
+    updatedPayload.req.data = recursivelySnakeCase(updatedPayload.req.data);
     return updatedPayload;
   },
 };
@@ -36,5 +43,23 @@ const responseMiddleware = {
 
 jsonApi.insertMiddlewareBefore('axios-request', requestMiddleware);
 jsonApi.insertMiddlewareBefore('response', responseMiddleware);
+
+const axiosRequest = {
+  name: 'custom-axios-request',
+  req(payload) {
+    let promise;
+
+    try {
+      promise = payload.jsonApi.axios(payload.req);
+    } catch (e) {
+      //
+    }
+
+    return promise;
+  },
+};
+
+jsonApi.removeMiddleware('axios-request');
+jsonApi.insertMiddlewareAfter('snake-case-attributes', axiosRequest);
 
 export default jsonApi;
