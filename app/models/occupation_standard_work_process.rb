@@ -4,8 +4,8 @@ class OccupationStandardWorkProcess < ApplicationRecord
   has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
   has_many :skills, through: :occupation_standard_skills
 
-  validates :occupation_standard, uniqueness: { scope: :work_process }
   validates :hours, presence: true
+  validates :work_process, uniqueness: { scope: :occupation_standard }
 
   delegate :title, to: :work_process, prefix: true
   delegate :description, to: :work_process, prefix: true
