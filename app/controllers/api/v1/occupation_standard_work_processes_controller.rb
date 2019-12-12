@@ -3,7 +3,7 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
 
   def index
     @os = OccupationStandard.find(params[:occupation_standard_id])
-    @oswps = @os.occupation_standard_work_processes
+    @oswps = @os.occupation_standard_work_processes.with_eager_loading
     options = { links: { self: @os.related_url("occupation_standard_work_processes") } }
     options[:include] = [:occupation_standard_skills]
     render json: API::V1::OccupationStandardWorkProcessSerializer.new(@oswps, options)
