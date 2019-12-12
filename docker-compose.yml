@@ -9,6 +9,8 @@ services:
       - .:/usr/src/app
     env_file:
       - config/docker.env
+    tty: true
+    stdin_open: true
 
   database:
     image: postgres:11.5
