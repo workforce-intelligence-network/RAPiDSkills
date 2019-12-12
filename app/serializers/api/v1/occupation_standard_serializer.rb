@@ -27,6 +27,12 @@ class API::V1::OccupationStandardSerializer
       related: ->(object) { Rails.application.routes.url_helpers.api_v1_occupation_url(object.occupation) },
     }
 
+  belongs_to :organization,
+    links: {
+      self: ->(object) { object.relationships_url('organization') },
+      related: ->(object) { Rails.application.routes.url_helpers.api_v1_organization_url(object.organization) },
+    }
+
   attributes :title,
              :organization_title,
              :occupation_title,

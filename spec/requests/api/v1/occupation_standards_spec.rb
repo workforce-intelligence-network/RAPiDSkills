@@ -115,6 +115,11 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
       expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq os.occupation_id.to_s
 
+      expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(os)
+      expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(os.organization)
+      expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
+      expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq os.organization_id.to_s
+
       included_array = [
         {
           type: "work_process",
@@ -183,6 +188,18 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
             self: api_v1_occupation_url(os.occupation),
           }.stringify_keys,
         }.stringify_keys,
+        {
+          type: "organization",
+          id: os.organization_id.to_s,
+          attributes: {
+            title: os.organization.title,
+            logo_url: os.organization.logo_url,
+            registers_standards: os.organization.registers_standards,
+          }.stringify_keys,
+          links: {
+            self: api_v1_organization_url(os.organization),
+          }.stringify_keys,
+        }.stringify_keys,
       ]
       expect(json["included"]).to match_array included_array
     end
@@ -240,6 +257,11 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(new_os.occupation)
         expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
         expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq new_os.occupation_id.to_s
+
+        expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(new_os)
+        expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(new_os.organization)
+        expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
+        expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq new_os.organization_id.to_s
 
         expect(json["included"]).to_not be_empty
       end
