@@ -109,6 +109,11 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
       expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss2.id.to_s
 
+      expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(os)
+      expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(os.occupation)
+      expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
+      expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq os.occupation_id.to_s
+
       included_array = [
         {
           type: "work_process",
@@ -145,6 +150,23 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           }.stringify_keys,
           links: {
             self: api_v1_occupation_standard_skill_url(oss1),
+          }.stringify_keys,
+        }.stringify_keys,
+        {
+          type: "occupation",
+          id: os.occupation_id.to_s,
+          attributes: {
+            title: os.occupation.title,
+            kind: "hybrid",
+            rapids_code: os.occupation.rapids_code,
+            onet_code: os.occupation.onet_code,
+            onet_page_url: os.occupation.onet_page_url,
+            term_length_min: os.occupation.term_length_min,
+            term_length_max: os.occupation.term_length_max,
+            title_aliases: "",
+          }.stringify_keys,
+          links: {
+            self: api_v1_occupation_url(os.occupation),
           }.stringify_keys,
         }.stringify_keys,
       ]
@@ -199,7 +221,13 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(new_os)
         expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(new_os)
         expect(json["data"]["relationships"]["skills"]["data"]).to be_empty
-        expect(json["included"]).to be_empty
+
+        expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(new_os)
+        expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(new_os.occupation)
+        expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
+        expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq new_os.occupation_id.to_s
+
+        expect(json["included"]).to_not be_empty
       end
     end
 

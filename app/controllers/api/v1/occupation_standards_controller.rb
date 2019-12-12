@@ -43,6 +43,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def render_resource(record, options={})
     options[:include] = [
+      :occupation,
       :"occupation_standard_work_processes.occupation_standard_skills",
       :occupation_standard_skills,
     ]

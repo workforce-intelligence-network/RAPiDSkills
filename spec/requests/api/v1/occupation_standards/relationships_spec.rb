@@ -51,7 +51,7 @@ RSpec.describe API::V1::OccupationStandards::RelationshipsController, type: :req
       expect(response).to have_http_status(:success)
       expect(json["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(os)
       expect(json["links"]["related"]).to eq api_v1_occupation_url(occupation)
-      expect(json["data"]["type"]).to eq "hybrid_occupation"
+      expect(json["data"]["type"]).to eq "occupation"
       expect(json["data"]["id"]).to eq occupation.id.to_s
     end
   end

@@ -33,7 +33,7 @@ class API::V1::OccupationStandards::RelationshipsController < API::V1::APIContro
         related: api_v1_occupation_url(@occupation),
       }
     }
-    render json: "API::V1::OccupationStandard::Relationships::#{@occupation.class.name}Serializer".constantize.new(@occupation, options)
+    render json: API::V1::OccupationStandard::Relationships::OccupationSerializer.new(@occupation, options)
   end
 
   private
