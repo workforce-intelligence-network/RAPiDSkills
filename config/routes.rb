@@ -39,13 +39,13 @@ Rails.application.routes.draw do
           post "relationships/favorites", to: "users/relationships/favorites#create"
           delete "relationships/favorites", to: "users/relationships/favorites#destroy"
         end
+        resources :favorites, only: [:index], controller: "users/favorites"
       end
 
       resources :sessions, only: [:create]
       delete "sessions", to: "sessions#destroy"
 
       resources :downloads, only: [:create]
-      resources :user_favorites, only: [:index], controller: "favorites", path: "favorites"
 
       authenticate :user, lambda { |u| u.admin? } do
         mount Docs::API, at: '/docs'

@@ -28,6 +28,8 @@ class OccupationStandard < ApplicationRecord
 
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
 
+  scope :with_eager_loading, -> { includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes) }
+
   CSV_HEADERS = %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort).freeze
 
   def occupation_standard_skills_with_no_work_process_ids
