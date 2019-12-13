@@ -2,8 +2,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   skip_before_action :authenticate, except: [:create]
 
   def index
-    @oss = OccupationStandard
-             .includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes)
+    @oss = OccupationStandard.with_eager_loading
              .search(search_params.to_h)
              .order(id: :desc)
     options = { links: { self: api_v1_occupation_standards_url } }
