@@ -30,6 +30,14 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
         let(:header) { auth_header(create(:user)) }
       end
     end
+
+    # Per {json:api} spec should probably return not found, but don't want to
+    # expose which users exist or not at this point.
+    context "when requesting non-existent user" do
+      it_behaves_like "unauthorized", :get do
+        let(:path) { "/api/v1/users/999/relationships/favorites" }
+      end
+    end
   end
 
   describe "POST #create" do

@@ -30,7 +30,7 @@ class API::V1::Users::Relationships::FavoritesController < API::V1::APIControlle
   private
 
   def set_target_user
-    @target_user = User.find(params[:id])
+    @target_user = User.where(id: params[:id]).first_or_initialize
   end
 
   def object_params
