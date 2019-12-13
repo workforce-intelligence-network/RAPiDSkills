@@ -47,10 +47,12 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       let(:os) { create(:occupation_standard) }
       let(:params) {
         {
-          data: {
-            type: "occupation_standard",
-            id: os.id.to_s,
-          }
+          data: [
+            {
+              type: "occupation_standard",
+              id: os.id.to_s,
+            }
+          ]
         }
       }
       let(:user) { create(:user) }
@@ -102,10 +104,12 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       let(:os) { create(:occupation_standard) }
       let(:params) {
         {
-          data: {
-            type: "occupation_standard",
-            id: os.id.to_s,
-          }
+          data: [
+            {
+              type: "occupation_standard",
+              id: os.id.to_s,
+            }
+          ]
         }
       }
       let(:user) { create(:user) }
