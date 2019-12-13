@@ -15,15 +15,19 @@ class API::V1::Users::Relationships::FavoritesController < API::V1::APIControlle
 
   def create
     authorize [:api, :v1, @target_user], :favorite?
-    os = OccupationStandard.find(object_params[:id])
-    Relationship.create(user: @target_user, occupation_standard: os)
+    object_params.each do |object_param|
+      os = OccupationStandard.find(object_param[:id])
+      Relationship.create(user: @target_user, occupation_standard: os)
+    end
     head :ok
   end
 
   def destroy
     authorize [:api, :v1, @target_user], :favorite?
-    os = OccupationStandard.find(object_params[:id])
-    Relationship.where(user: @target_user, occupation_standard: os).destroy_all
+    object_params.each do |object_param|
+      os = OccupationStandard.find(object_param[:id])
+      Relationship.where(user: @target_user, occupation_standard: os).destroy_all
+    end
     head :ok
   end
 
@@ -34,6 +38,6 @@ class API::V1::Users::Relationships::FavoritesController < API::V1::APIControlle
   end
 
   def object_params
-    params.require(:data).permit(:type, :id)
+    params.require(:data)
   end
 end
