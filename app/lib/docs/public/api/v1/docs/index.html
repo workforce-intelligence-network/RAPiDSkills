@@ -249,6 +249,20 @@
               </ul>
           </li>
           <li>
+            <a href="#favorites" class="toc-h1 toc-link" data-title="Favorites">Favorites</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-favorites" class="toc-h2 toc-link" data-title="List favorites">List favorites</a>
+                  </li>
+                  <li>
+                    <a href="#create-favorite" class="toc-h2 toc-link" data-title="Create favorite">Create favorite</a>
+                  </li>
+                  <li>
+                    <a href="#delete-favorite" class="toc-h2 toc-link" data-title="Delete favorite">Delete favorite</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#locations" class="toc-h1 toc-link" data-title="Locations">Locations</a>
               <ul class="toc-list-h2">
                   <li>
@@ -481,6 +495,284 @@ resource passed in the relationships field.</p>
 <td></td>
 </tr>
 </tbody></table>
+<h1 id='favorites'>Favorites</h1><h2 id='list-favorites'>List favorites</h2><h3 id='relationships-request'>Relationships request</h3>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users/1/relationships/favorites <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+</code></pre><h3 id='http-request'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/users/:user_id/relationships/favorites</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"22"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/relationships/favorites"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/favorites"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h3 id='full-request'>Full request</h3>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users/1/favorites <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+</code></pre><h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/users/:user_id/favorites</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"22"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Community Health Nurse"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"organization_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Care New England - VNA of Care New England"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"occupation_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Community Health Nurse"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"industry_title"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_filename"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_created_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_filename"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_created_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"should_generate_attachments"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"work_processes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22/relationships/work_processes"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22/work_processes"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"326"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"327"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22/relationships/skills"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22/skills"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"occupation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"401"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22/relationships/occupation"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupations/401"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"organization"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22/relationships/organization"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/organizations/9"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/22"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"International Associate"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"organization_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acme Computing"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"occupation_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABLE SEAMAN"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"industry_title"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_filename"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_created_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_filename"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_created_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"should_generate_attachments"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"work_processes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/relationships/work_processes"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/work_processes"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/relationships/skills"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/skills"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"occupation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/relationships/occupation"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupations/1"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"organization"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1/relationships/organization"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/organizations/1"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/1"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/favorites"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='create-favorite'>Create favorite</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users/1/relationships/favorites <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGVtS0t3alFaTGVWcS5ScEtIUlpmUi5yWFY5WDcyYm5wc2VjaHhqeHVnNVY1Q1B1VXJ4cDhpIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiUEs4b2wwMzN3SlNmOF9VTHN2Z3A5dyJ9.mMmT03mUF8h1L7tlZ-MRXv0pO1YW7ta0wgRtaq3unJU'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": [
+        {
+            "type": "occupation_standard",
+            "id": "3"
+        }
+    ]
+}'</span>
+</code></pre><h3 id='http-request-3'>HTTP Request</h3>
+<p><code>POST http://www.rapidskills.org/api/v1/users/:user_id/relationships/favorites</code></p>
+<h3 id='query-parameters'>Query parameters</h3>
+<p>Array specifying type and id must be passed.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type<br /><em>required</em></td>
+<td>string</td>
+<td>&quot;occupation_standard&quot;</td>
+</tr>
+<tr>
+<td>id<br /><em>required</em></td>
+<td>string</td>
+<td>ID of occupation standard to add as favorite</td>
+</tr>
+</tbody></table>
+
+<p>Returns HTTP status 200, OK.</p>
+<h2 id='delete-favorite'>Delete favorite</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X DELETE <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/users/1/relationships/favorites <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGVtS0t3alFaTGVWcS5ScEtIUlpmUi5yWFY5WDcyYm5wc2VjaHhqeHVnNVY1Q1B1VXJ4cDhpIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiUEs4b2wwMzN3SlNmOF9VTHN2Z3A5dyJ9.mMmT03mUF8h1L7tlZ-MRXv0pO1YW7ta0wgRtaq3unJU'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+  -d <span class="s1">'{
+    "data": [
+        {
+            "type": "occupation_standard",
+            "id": "3"
+        }
+    ]
+}'</span>
+</code></pre><h3 id='http-request-4'>HTTP Request</h3>
+<p><code>DELETE http://www.rapidskills.org/api/v1/users/:user_id/relationships/favorites</code></p>
+<h3 id='query-parameters-2'>Query parameters</h3>
+<p>Array specifying type and id must be passed.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type<br /><em>required</em></td>
+<td>string</td>
+<td>&quot;occupation_standard&quot;</td>
+</tr>
+<tr>
+<td>id<br /><em>required</em></td>
+<td>string</td>
+<td>ID of occupation standard to delete from favorites</td>
+</tr>
+</tbody></table>
+
+<p>Returns HTTP status 200, OK.</p>
 <h1 id='locations'>Locations</h1><h2 id='location-object'>Location object</h2><h3 id='attributes'>Attributes</h3>
 <table><thead>
 <tr>
