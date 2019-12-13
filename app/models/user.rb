@@ -21,7 +21,7 @@ class User < ApplicationRecord
 
   def create_api_access_token!
     client_session = create_session!
-    client_session.create_api_access_token!
+    client_session.token
   end
 
   def destroy_session!(session_identifier)

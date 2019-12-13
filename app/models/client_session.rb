@@ -1,7 +1,7 @@
 class ClientSession < ApplicationRecord
   belongs_to :user
 
-  def create_api_access_token!
+  def token
     JsonWebToken.encode(authentication_payload)
   end
 

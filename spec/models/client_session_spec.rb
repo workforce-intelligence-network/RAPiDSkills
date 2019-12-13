@@ -6,7 +6,7 @@ RSpec.describe ClientSession, type: :model do
     expect(client_session.valid?).to be true
   end
 
-  describe "#create_api_access_token!" do
+  describe "#token" do
     let(:client_session) { create(:client_session) }
     let(:user) { client_session.user }
 
@@ -15,7 +15,7 @@ RSpec.describe ClientSession, type: :model do
     end
 
     it "returns jwt token" do
-      jwt = client_session.create_api_access_token!
+      jwt = client_session.token
       expect(jwt).to eq "jwt123"
     end
   end
