@@ -20,9 +20,8 @@ class User < ApplicationRecord
   end
 
   def create_api_access_token!
-    session_identifier = User.new_token
-    client_sessions.create(identifier: session_identifier)
-    JsonWebToken.encode(authentication_payload(session_identifier))
+    client_session = create_session!
+    client_session.create_api_access_token!
   end
 
   def destroy_session!(session_identifier)
