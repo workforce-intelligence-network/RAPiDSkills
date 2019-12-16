@@ -29,7 +29,8 @@
       <div class="page--standard__body__work-process" v-for="workProcess in standard.workProcesses" :key="workProcess.id" :class="{ 'page--standard__body__work-process--expanded': workProcess.expanded }">
         <div class="page--standard__body__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
           <div class="page--standard__body__work-process__wrapper__icon--folder">
-            <img :src="ICON_FOLDER" alt="Work Process icon" />
+            <img :src="ICON_FOLDER" alt="Work Process icon" v-if="workProcess.expanded" />
+            <img :src="ICON_FOLDER_CLOSED" alt="Work Process icon" v-if="!workProcess.expanded" />
           </div>
           <div class="page--standard__body__work-process__wrapper__vertical-group">
             <div class="page--standard__body__work-process__wrapper__vertical-group__label">
@@ -70,6 +71,7 @@ import { mapState } from 'vuex';
 
 import LOGO_WIN from '@/assets/win.png';
 import ICON_FOLDER from '@/assets/folder.svg';
+import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
 import Loading from '@/components/Loading.vue';
 
@@ -86,6 +88,7 @@ export default {
   data() {
     return {
       ICON_FOLDER,
+      ICON_FOLDER_CLOSED,
     };
   },
   computed: {
