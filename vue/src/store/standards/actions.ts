@@ -35,8 +35,6 @@ export const getStandard = async ({ state, commit }, id: string | number | undef
 
     standard.workProcesses = _uniqBy(standard.workProcesses, (workProcess: any) => workProcess.id);
 
-    console.log(standard);
-
     commit('updateSelectedStandard', standard);
   } catch (e) {
     //
