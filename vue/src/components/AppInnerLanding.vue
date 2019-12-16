@@ -18,7 +18,7 @@
         <router-view />
       </div>
       <div class="app__inner--landing__footer">
-        <router-link to="/">
+        <router-link to="/standards">
           <div class="app__inner--landing__footer__icon">
             <img :src="ICON_NO_LOGO" alt="RapidSkills" />
           </div>
