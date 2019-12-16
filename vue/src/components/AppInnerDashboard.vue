@@ -35,7 +35,7 @@
           </span>
         </span>
       </router-link>
-      <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'favorites' }" active-class="app__inner--dashboard__nav--left__link--active">
+      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'favorites' }" active-class="app__inner--dashboard__nav--left__link--active">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_HEART" alt="Favorites Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
         </span>
@@ -64,7 +64,7 @@
             Settings
           </span>
         </span>
-      </router-link> -->
+      </router-link>
     </div>
   </div>
 </template>
@@ -98,7 +98,12 @@ export default {
 <style scoped lang="scss">
 @import '@/scss/mixins';
 @import '@/scss/colors';
-@import '@/scss/navbars';
+
+$nav-top-height: 4rem;
+$nav-left-width: 4rem;
+$nav-left-width-expanded: 16rem;
+
+$nav-top-link-padding-sides: 1rem;
 
 .app__inner--dashboard__nav--top,
 .app__inner--dashboard__nav--left,
@@ -140,10 +145,6 @@ export default {
 .app__inner--dashboard__nav--top__link--logo {
   align-self: flex-start;
   flex-basis: 0;
-
-  @include breakpoint--mobile {
-    display: none;
-  }
 }
 
 .app__inner--dashboard__nav--top__link--support {

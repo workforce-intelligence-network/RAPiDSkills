@@ -1,10 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-import jsonApi from '@/utilities/api';
-
-import store from '@/store';
-
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import Search from '@/components/Search.vue';
@@ -41,10 +36,6 @@ const routes = [
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
           search: Search,
-        },
-        beforeEnter: (to, from, next) => {
-          store.dispatch('standards/fetchStandards');
-          next();
         },
       },
       {
