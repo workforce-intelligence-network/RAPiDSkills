@@ -108,7 +108,8 @@ export default {
       loading: (state: any) => state.standards.selectedStandardLoading,
     }),
     totalNumberOfCompetencies() {
-      return (((this as any).standard as any).skills || []).length;
+      return ((this as any).standard as any).workProcesses
+        .reduce((total, workProcess) => total + (workProcess.skills || []).length, 0);
     },
     totalNumberOfHours() {
       return ((this as any).standard as any).workProcesses
