@@ -13,19 +13,17 @@ class User < ApplicationRecord
   has_many :favorites, -> { order(id: :desc) }, through: :relationships,
     class_name: 'OccupationStandard', source: :occupation_standard
 
-  class << self
-    def new_token
-      SecureRandom.urlsafe_base64
-    end
-  end
-
   def create_api_access_token!
     client_session = create_session!
     client_session.token
   end
 
+  def create_session!
+    client_sessions.create
+  end
+
   def destroy_session!(session_identifier)
-    client_sessions.where(identifier: session_identifier).destroy_all
+    client_sessions.where(id: session_identifier).destroy_all
   end
 
   private

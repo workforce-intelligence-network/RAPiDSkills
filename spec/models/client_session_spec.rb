@@ -11,7 +11,7 @@ RSpec.describe ClientSession, type: :model do
     let(:user) { client_session.user }
 
     before do
-      allow(JsonWebToken).to receive(:encode).with(id: user.id, encrypted_password: user.encrypted_password, session_identifier: client_session.identifier).and_return("jwt123")
+      allow(JsonWebToken).to receive(:encode).with(id: user.id, encrypted_password: user.encrypted_password, session_identifier: client_session.id).and_return("jwt123")
     end
 
     it "returns jwt token" do

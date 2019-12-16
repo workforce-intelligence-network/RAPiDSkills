@@ -11,7 +11,7 @@ class ClientSession < ApplicationRecord
     {
       id: user_id,
       encrypted_password: user.encrypted_password,
-      session_identifier: identifier,
+      session_identifier: id,
     }
   end
 end

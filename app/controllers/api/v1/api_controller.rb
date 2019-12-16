@@ -18,7 +18,7 @@ class API::V1::APIController < ApplicationController
         @user = User
                   .joins(:client_sessions)
                   .where(payload)
-                  .where(client_sessions: { identifier: @session_identifier })
+                  .where(client_sessions: { id: @session_identifier })
                   .first
       end
     end

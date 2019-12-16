@@ -42,8 +42,12 @@ Rails.application.routes.draw do
         resources :favorites, only: [:index], controller: "users/favorites"
       end
 
-      resources :sessions, only: [:create]
-      delete "sessions", to: "sessions#destroy"
+      resources :client_sessions, path: "sessions", only: [:create, :destroy, :show], controller: "sessions" do
+        member do
+          get "relationships/user", to: "sessions/relationships#user"
+        end
+        resource :user, only: [:show], controller: "sessions/user"
+      end
 
       resources :downloads, only: [:create]
 
