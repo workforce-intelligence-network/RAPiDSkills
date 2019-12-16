@@ -37,6 +37,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][2]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][2]["attributes"]["industry_title"]).to be nil
       expect(json["data"][2]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+      expect(json["included"]).to_not be nil
 
       # With occupation_id parameter, returns matches
       get path, params: { occupation_id: occupation.id }
@@ -57,11 +58,13 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][1]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][1]["attributes"]["industry_title"]).to be nil
       expect(json["data"][1]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+      expect(json["included"]).to_not be nil
 
       # With bad occupation_id parameter, returns none
       get path, params: { occupation_id: 9999 }
       expect(response).to have_http_status(:success)
       expect(json["data"]).to be_empty
+      expect(json["included"]).to be_empty
     end
   end
 
@@ -74,7 +77,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     let(:os) { create(:occupation_standard, :with_attachments) }
     let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
     let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
-    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
 
     it "returns the correct data" do
       get path
@@ -104,7 +108,17 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(os)
       expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
-      expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss2.id.to_s
+      expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss3.id.to_s
+
+      expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(os)
+      expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(os.occupation)
+      expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
+      expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq os.occupation_id.to_s
+
+      expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(os)
+      expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(os.organization)
+      expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
+      expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq os.organization_id.to_s
 
       included_array = [
         {
@@ -120,8 +134,31 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
                 self: relationships_skills_api_v1_occupation_standard_work_process_url(oswp),
                 related: api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp),
               }.stringify_keys,
-              data: [ { type: "skill", id: oss1.id.to_s }.stringify_keys ],
+              data: [
+                { type: "skill", id: oss1.id.to_s }.stringify_keys,
+                { type: "skill", id: oss2.id.to_s }.stringify_keys,
+              ],
             }.stringify_keys,
+          }.stringify_keys,
+        }.stringify_keys,
+        {
+          type: "skill",
+          id: oss3.id.to_s,
+          attributes: {
+            description: oss3.skill.description,
+          }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss3),
+          }.stringify_keys,
+        }.stringify_keys,
+        {
+          type: "skill",
+          id: oss1.id.to_s,
+          attributes: {
+            description: oss1.skill.description,
+          }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss1),
           }.stringify_keys,
         }.stringify_keys,
         {
@@ -130,12 +167,37 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           attributes: {
             description: oss2.skill.description,
           }.stringify_keys,
+          links: {
+            self: api_v1_occupation_standard_skill_url(oss2),
+          }.stringify_keys,
         }.stringify_keys,
         {
-          type: "skill",
-          id: oss1.id.to_s,
+          type: "occupation",
+          id: os.occupation_id.to_s,
           attributes: {
-            description: oss1.skill.description,
+            title: os.occupation.title,
+            kind: "hybrid",
+            rapids_code: os.occupation.rapids_code,
+            onet_code: os.occupation.onet_code,
+            onet_page_url: os.occupation.onet_page_url,
+            term_length_min: os.occupation.term_length_min,
+            term_length_max: os.occupation.term_length_max,
+            title_aliases: "",
+          }.stringify_keys,
+          links: {
+            self: api_v1_occupation_url(os.occupation),
+          }.stringify_keys,
+        }.stringify_keys,
+        {
+          type: "organization",
+          id: os.organization_id.to_s,
+          attributes: {
+            title: os.organization.title,
+            logo_url: os.organization.logo_url,
+            registers_standards: os.organization.registers_standards,
+          }.stringify_keys,
+          links: {
+            self: api_v1_organization_url(os.organization),
           }.stringify_keys,
         }.stringify_keys,
       ]
@@ -190,7 +252,18 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(new_os)
         expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(new_os)
         expect(json["data"]["relationships"]["skills"]["data"]).to be_empty
-        expect(json["included"]).to be_empty
+
+        expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(new_os)
+        expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(new_os.occupation)
+        expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
+        expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq new_os.occupation_id.to_s
+
+        expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(new_os)
+        expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(new_os.organization)
+        expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
+        expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq new_os.organization_id.to_s
+
+        expect(json["included"]).to_not be_empty
       end
     end
 

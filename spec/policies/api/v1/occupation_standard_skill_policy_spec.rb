@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe OccupationStandardSkillPolicy, type: :policy do
+RSpec.describe API::V1::OccupationStandardSkillPolicy, type: :policy do
   let(:os) { create(:occupation_standard) }
   let(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
 

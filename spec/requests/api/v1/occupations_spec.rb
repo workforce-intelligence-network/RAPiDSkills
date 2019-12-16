@@ -12,31 +12,31 @@ RSpec.describe API::V1::OccupationsController, type: :request do
       get path
       expect(response).to have_http_status(:success)
       expect(json["data"].count).to eq 3
-      expect(json["data"][0]["id"]).to eq occupation3.id.to_s
+      expect(json["data"][0]["id"]).to eq occupation2.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation"
-      expect(json["data"][0]["attributes"]["title"]).to eq "Moo Bar"
-      expect(json["data"][0]["attributes"]["title_aliases"]).to eq "Foo, Mar"
-      expect(json["data"][1]["id"]).to eq occupation2.id.to_s
+      expect(json["data"][0]["attributes"]["title"]).to eq "Bar Baz"
+      expect(json["data"][0]["attributes"]["title_aliases"]).to eq ""
+      expect(json["data"][1]["id"]).to eq occupation1.id.to_s
       expect(json["data"][1]["type"]).to eq "occupation"
-      expect(json["data"][1]["attributes"]["title"]).to eq "Bar Baz"
+      expect(json["data"][1]["attributes"]["title"]).to eq "Foo Bar"
       expect(json["data"][1]["attributes"]["title_aliases"]).to eq ""
-      expect(json["data"][2]["id"]).to eq occupation1.id.to_s
+      expect(json["data"][2]["id"]).to eq occupation3.id.to_s
       expect(json["data"][2]["type"]).to eq "occupation"
-      expect(json["data"][2]["attributes"]["title"]).to eq "Foo Bar"
-      expect(json["data"][2]["attributes"]["title_aliases"]).to eq ""
+      expect(json["data"][2]["attributes"]["title"]).to eq "Moo Bar"
+      expect(json["data"][2]["attributes"]["title_aliases"]).to eq "Foo, Mar"
 
       # With search query, returns matches
       get path, params: { q: "Foo" }
       expect(response).to have_http_status(:success)
       expect(json["data"].count).to eq 2
-      expect(json["data"][0]["id"]).to eq occupation3.id.to_s
+      expect(json["data"][0]["id"]).to eq occupation1.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation"
-      expect(json["data"][0]["attributes"]["title"]).to eq "Moo Bar"
-      expect(json["data"][0]["attributes"]["title_aliases"]).to eq "Foo, Mar"
-      expect(json["data"][1]["id"]).to eq occupation1.id.to_s
+      expect(json["data"][0]["attributes"]["title"]).to eq "Foo Bar"
+      expect(json["data"][0]["attributes"]["title_aliases"]).to eq ""
+      expect(json["data"][1]["id"]).to eq occupation3.id.to_s
       expect(json["data"][1]["type"]).to eq "occupation"
-      expect(json["data"][1]["attributes"]["title"]).to eq "Foo Bar"
-      expect(json["data"][1]["attributes"]["title_aliases"]).to eq ""
+      expect(json["data"][1]["attributes"]["title"]).to eq "Moo Bar"
+      expect(json["data"][1]["attributes"]["title_aliases"]).to eq "Foo, Mar"
 
       get path, params: { q: "Moo Mar" }
       expect(response).to have_http_status(:success)

@@ -1,22 +1,22 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5b462359fe3660789f7a",
+    "revision": "1f307f19d197cadacb30",
     "url": "/css/app.0698f31f.css"
   },
   {
-    "revision": "2f1be84966f01030bd50",
+    "revision": "1e6855e89381842a6efc",
     "url": "/css/dashboard.90951d30.css"
   },
   {
-    "revision": "65ec7b83a59a1fea4ca1",
+    "revision": "7b21ac2a505841500d0a",
     "url": "/css/follow.096fdeee.css"
   },
   {
-    "revision": "03dba63cfad64279f064",
+    "revision": "084da5dda48977ebe2d1",
     "url": "/css/home.718c0ef7.css"
   },
   {
-    "revision": "aa62a62272a0f563855b",
+    "revision": "7175c0760348b2381c20",
     "url": "/css/standard.e1cee301.css"
   },
   {
@@ -112,44 +112,44 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/win.a1c57495.png"
   },
   {
-    "revision": "b0bf209064af0fa2d92691406718dbf8",
+    "revision": "427dd9abea9a2fbf6e0bc3764eae9efe",
     "url": "/index.html"
   },
   {
-    "revision": "5b462359fe3660789f7a",
-    "url": "/js/app.bd693301.js"
+    "revision": "1f307f19d197cadacb30",
+    "url": "/js/app.ef6536d8.js"
   },
   {
     "revision": "8255d16a6197fb82baba",
     "url": "/js/chunk-vendors.a436fb72.js"
   },
   {
-    "revision": "2f1be84966f01030bd50",
-    "url": "/js/dashboard.7d0c79af.js"
+    "revision": "1e6855e89381842a6efc",
+    "url": "/js/dashboard.77c54cc0.js"
   },
   {
-    "revision": "096aa8cc1a1b955c3b76",
-    "url": "/js/favorites.23924601.js"
+    "revision": "709234a56168c1c60cd3",
+    "url": "/js/favorites.37f757a7.js"
   },
   {
-    "revision": "65ec7b83a59a1fea4ca1",
-    "url": "/js/follow.94f9e518.js"
+    "revision": "7b21ac2a505841500d0a",
+    "url": "/js/follow.f63d73ba.js"
   },
   {
-    "revision": "03dba63cfad64279f064",
-    "url": "/js/home.ce573f1f.js"
+    "revision": "084da5dda48977ebe2d1",
+    "url": "/js/home.befac671.js"
   },
   {
-    "revision": "1571099110d50e8223cb",
-    "url": "/js/reports.fcce803c.js"
+    "revision": "0530466870e885ad5a52",
+    "url": "/js/reports.5adcb694.js"
   },
   {
-    "revision": "a300c8af344ca7b8d48a",
-    "url": "/js/settings.c933dcbf.js"
+    "revision": "5a48f9a6be8bf2fe2f65",
+    "url": "/js/settings.74e511c1.js"
   },
   {
-    "revision": "aa62a62272a0f563855b",
-    "url": "/js/standard.7a53b1cc.js"
+    "revision": "7175c0760348b2381c20",
+    "url": "/js/standard.bdc264a0.js"
   },
   {
     "revision": "b942b517f9bd486e8cc7edf3a86090ff",

@@ -109,7 +109,7 @@ ActiveAdmin.register OccupationStandard do
             span "Skills", class: "header"
           end
         end
-        os.occupation_standard_work_processes.each do |oswp|
+        os.occupation_standard_work_processes.with_eager_loading.includes(:skills).each do |oswp|
           columns do
             column do
               link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)

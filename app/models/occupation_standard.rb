@@ -4,10 +4,11 @@ class OccupationStandard < ApplicationRecord
   belongs_to :industry, optional: true
   belongs_to :creator, class_name: 'User'
   belongs_to :parent_occupation_standard, class_name: 'OccupationStandard', optional: true
+  belongs_to :registration_state, class_name: 'State', optional: true
   has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
   has_many :flattened_skills, through: :occupation_standard_skills,
     class_name: 'Skill', source: :skill
-  has_many :occupation_standard_work_processes, -> { includes(:work_process, :occupation_standard_skills).order(:sort_order) }
+  has_many :occupation_standard_work_processes, -> { order(:sort_order) }
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
   has_many :skills, through: :occupation_standard_skills_with_no_work_process
@@ -50,8 +51,24 @@ class OccupationStandard < ApplicationRecord
           parent_occupation_standard: self,
         )
 
-        os.occupation_standard_work_processes = occupation_standard_work_processes.map(&:dup)
-        os.occupation_standard_skills = occupation_standard_skills.map(&:dup)
+        occupation_standard_work_processes.each do |oswp|
+          new_oswp = oswp.dup
+          new_oswp.update!(occupation_standard: os)
+
+          oswp.occupation_standard_skills.each do |oss|
+            new_oss = oss.dup
+            new_oss.update!(
+              occupation_standard: os,
+              occupation_standard_work_process: new_oswp,
+            )
+          end
+        end
+
+        # Catch any skills that are not linked to work processes
+        skills.each do |skill|
+          # Fail silently if occupation_standard_skill already exists
+          os.occupation_standard_skills.create(skill: skill)
+        end
 
         os
       end

@@ -9,6 +9,7 @@ services:
       - .:/usr/src/app
     env_file:
       - config/docker.env
+<<<<<<< HEAD
     depends_on:
       - database
   vue:
@@ -19,6 +20,10 @@ services:
       - ./vue:/usr/src/app
     depends_on:
       - web
+=======
+    tty: true
+    stdin_open: true
+>>>>>>> master
 
   database:
     image: postgres:11.5

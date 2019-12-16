@@ -7,12 +7,13 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 
-admin = User.where(email: 'admin@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :admin, name: 'Admin')
-user = User.where(email: 'foo@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :basic, name: 'Foo Bob')
+organization = Organization.where(title: "Acme Computing").first_or_create!
+
+admin = User.where(email: 'admin@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :admin, name: 'Admin', employer: organization)
+user = User.where(email: 'foo@example.com').first_or_create!(password: 'password', password_confirmation: 'password', role: :basic, name: 'Foo Bob', employer: organization)
 
 Rake::Task['occupations:import'].invoke
 
-organization = Organization.where(title: "Acme Computing").first_or_create!
 
 occupation_standard = FrameworkStandard.create(
   creator: user,
