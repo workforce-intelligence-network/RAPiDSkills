@@ -1,9 +1,6 @@
 # vue
 
 ## Project setup
-
-`VUE_APP_API_BASE_URL` is the environment variable responsible for setting the API base URL
-
 ```
 yarn install
 ```

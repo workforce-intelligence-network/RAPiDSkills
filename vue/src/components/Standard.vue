@@ -2,9 +2,9 @@
   <div class="standard">
     <div class="standard__label">{{ label }}</div>
     <div class="standard__logo">
-      <img :src="standard.organization.logo" :alt="standard.organizationTitle" class="standard__logo__logo" />
+      <img :src="standard.organization.logo" :alt="standard.organization.name" class="standard__logo__logo" />
     </div>
-    <div class="standard__occupation-name">{{ standard.title }}</div>
+    <div class="standard__occupation-name">{{ standard.occupation.name }}</div>
     <div class="standard__occupation-metadata">
       <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupation.type }}</div>
       <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onet }}</div>
@@ -66,19 +66,17 @@ export default {
 
 <style scoped lang="scss">
 @import '@/scss/colors';
-@import '@/scss/standards';
 
 .standard {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: space-between;
-  max-width: $standard-width;
-  min-width: $standard-width;
-  width: $standard-width;
+  max-width: 18rem;
+  width: 18rem;
+  border-radius: 4px;
   background: $color-white;
   box-shadow: $color-nav-bar-top-box-shadow 0px 2px 4px 0px;
-  cursor: pointer;
 }
 
 .standard__label {
@@ -103,12 +101,7 @@ export default {
 
 .standard__occupation-name {
   font-size: 1.75rem;
-  line-height: 2.25rem;
-  margin-bottom: 1rem;
-  padding: 0 1.5rem;
-  height: 4.5rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: .5rem;
 }
 
 .standard__logo__logo {

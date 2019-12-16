@@ -137,7 +137,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/colors';
 @import '@/scss/mixins';
 
 .page--home {
@@ -161,13 +160,13 @@ export default {
 
 .page--home__follow__logo,
 .page--home__hero__logo {
-  color: $color-white;
+  color: white;
   font-size: 2rem;
   margin-bottom: 2rem;
 }
 
 .page--home__hero__text {
-  color: $color-white;
+  color: white;
 }
 
 .page--home__hero__text--title {
@@ -231,7 +230,7 @@ export default {
 }
 
 .page--home__how-it-works__cards__card {
-  background: $color-white;
+  background: white;
   border: 1px solid #F2F2F2;
   box-shadow: 0 10px 20px 0 transparentize(#459EFF, .9);
   flex-direction: column;
@@ -263,7 +262,7 @@ export default {
 }
 
 .page--home__follow__text {
-  color: $color-white;
+  color: white;
 }
 
 .page--home__follow__text--call-to-action {

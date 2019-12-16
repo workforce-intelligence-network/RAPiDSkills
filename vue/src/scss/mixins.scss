@@ -4,9 +4,3 @@ $breakpoint-mobile: 32rem;
     @content;
   }
 }
-
-@mixin breakpoint--above-mobile {
-  @media (min-width: $breakpoint-mobile) {
-    @content;
-  }
-}
