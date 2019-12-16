@@ -3,14 +3,27 @@ version: '3'
 services:
   web:
     build: .
+    entrypoint: /usr/src/app/docker-entrypoint.sh
+    command: ["rails", "s", "-b", "0.0.0.0"]
     ports:
       - '3000:3000'
     volumes:
       - .:/usr/src/app
     env_file:
       - config/docker.env
+    depends_on:
+      - database
     tty: true
     stdin_open: true
+
+  vue:
+    build: ./vue
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./vue:/usr/src/app
+    depends_on:
+      - web
 
   database:
     image: postgres:11.5
