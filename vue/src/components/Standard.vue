@@ -1,5 +1,5 @@
 <template>
-  <div class="standard">
+  <router-link class="standard" :to="routerLink">
     <div class="standard__label">{{ label }}</div>
     <div class="standard__logo">
       <img :src="standard.organization.logo" :alt="standard.organizationTitle" class="standard__logo__logo" />
@@ -34,7 +34,7 @@
         X
       </button>
     </div> -->
-  </div>
+  </router-link>
 </template>
 
 <script lang="ts">
@@ -52,12 +52,19 @@ export default {
   },
   computed: {
     totalNumberOfCompetencies() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + workProcess.skills.length, 0);
+      return (((this as any).standard as any).skills || []).length;
     },
     totalNumberOfHours() {
       return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + workProcess.hoursTotal, 0);
+        .reduce((total, workProcess) => total + workProcess.hoursTotal || 0, 0);
+    },
+    routerLink() {
+      return {
+        name: 'standard',
+        params: {
+          id: (this as any).standard.id,
+        },
+      };
     },
   },
 };
@@ -65,8 +72,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/colors';
-@import '@/scss/standards';
+@import "@/scss/colors";
+@import "@/scss/standards";
 
 .standard {
   display: flex;
@@ -79,6 +86,7 @@ export default {
   background: $color-white;
   box-shadow: $color-nav-bar-top-box-shadow 0px 2px 4px 0px;
   cursor: pointer;
+  color: initial;
 }
 
 .standard__label {
@@ -90,7 +98,7 @@ export default {
   align-self: center;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  font-size: .7rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1ch;
 }
 
@@ -123,10 +131,10 @@ export default {
 }
 
 .standard__occupation-metadata__item {
-  opacity: .5;
+  opacity: 0.5;
 
   &:not(:last-child) {
-    margin-right: .75rem;
+    margin-right: 0.75rem;
   }
 }
 
@@ -148,11 +156,11 @@ export default {
 
 .standard__work-process-data__stat__number {
   font-weight: 700;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .standard__work-process-data__stat__text {
-  opacity: .6;
+  opacity: 0.6;
 }
 
 .standard__divider {
@@ -164,7 +172,7 @@ export default {
 .standard__actions {
   display: flex;
   flex-direction: row;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .standard__actions__button--save {

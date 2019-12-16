@@ -9,6 +9,16 @@ services:
       - .:/usr/src/app
     env_file:
       - config/docker.env
+    depends_on:
+      - database
+  vue:
+    build: ./vue
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./vue:/usr/src/app
+    depends_on:
+      - web
 
   database:
     image: postgres:11.5

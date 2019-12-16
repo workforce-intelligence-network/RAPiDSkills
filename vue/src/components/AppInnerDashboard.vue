@@ -17,7 +17,7 @@
       </a>
     </div>
     <div class="app__inner--dashboard__nav--left">
-      <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--icon" :to="{ name: 'dashboard' }">
+      <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--icon" :to="{ name: 'standards' }">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_WHITE" alt="RapidSkills White Icon" class="app__inner--dashboard__nav--left__link--icon__icon" />
         </span>
@@ -25,7 +25,7 @@
           <img :src="LOGO_ALT_FULL_NO_ICON_WHITE" alt="RapidSkills Logo White" class="app__inner--dashboard__nav--left__link__name__logo" />
         </span>
       </router-link>
-      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'dashboard' }" active-class="app__inner--dashboard__nav--left__link--active">
+      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'standards' }" active-class="app__inner--dashboard__nav--left__link--active">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_DASHBOARD" alt="Dashboard Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
         </span>
@@ -96,9 +96,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/mixins';
-@import '@/scss/colors';
-@import '@/scss/navbars';
+@import "@/scss/mixins";
+@import "@/scss/colors";
+@import "@/scss/navbars";
 
 .app__inner--dashboard__nav--top,
 .app__inner--dashboard__nav--left,
@@ -162,10 +162,10 @@ export default {
   left: 0;
   width: 100%;
   max-width: $nav-left-width;
-  background: #002E58;
+  background: #002e58;
   flex-direction: column;
   align-content: flex-start;
-  transition: max-width .25s ease;
+  transition: max-width 0.25s ease;
   overflow-x: hidden;
 
   &:hover {
@@ -177,7 +177,7 @@ export default {
   display: flex;
   height: $nav-top-height;
   justify-content: flex-start;
-  opacity: .5;
+  opacity: 0.5;
 
   &:hover {
     background: $color-black-darkened;
@@ -241,5 +241,4 @@ export default {
   width: 100%;
   overflow-x: hidden;
 }
-
 </style>

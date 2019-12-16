@@ -10,6 +10,7 @@ export default {
     query: '',
     page: 1,
     selectedStandard: undefined,
+    selectedStandardLoading: false,
   },
   mutations,
   actions,
