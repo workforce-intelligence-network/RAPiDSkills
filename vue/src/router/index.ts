@@ -36,14 +36,23 @@ const routes = [
     component: AppInnerDashboard,
     children: [
       {
-        path: 'dashboard',
-        name: 'dashboard',
+        path: 'standards',
+        name: 'standards',
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
           search: Search,
         },
         beforeEnter: (to, from, next) => {
           store.dispatch('standards/fetchStandards');
+          next();
+        },
+      },
+      {
+        path: 'standards/:id',
+        name: 'standard',
+        component: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
+        beforeEnter: (to, from, next) => {
+          store.dispatch('standards/getStandard', to.params.id);
           next();
         },
       },
@@ -66,6 +75,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue'),
       },
     ],
+  },
+  {
+    path: '/*',
+    redirect: {
+      name: 'home',
+    },
   },
 ];
 
