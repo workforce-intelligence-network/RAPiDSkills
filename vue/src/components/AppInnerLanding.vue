@@ -27,7 +27,7 @@
           © {{ currentYear }} all rights reserved.
         </div>
         <div class="app__inner--landing__footer__links">
-          <a class="app__inner--landing__footer__links__link" href="https://facebook.com" target="_blank">
+          <!-- <a class="app__inner--landing__footer__links__link" href="https://facebook.com" target="_blank">
             <FontAwesomeIcon
               :icon="['fab', 'facebook-f']"
               class="app__inner--landing__footer__links__icon"
@@ -38,7 +38,7 @@
               :icon="['fab', 'twitter']"
               class="app__inner--landing__footer__links__icon"
             />
-          </a>
+          </a> -->
         </div>
       </div>
     </div>
@@ -65,8 +65,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/colors';
-@import '@/scss/mixins';
+@import "@/scss/colors";
+@import "@/scss/mixins";
 
 $nav-height: 4rem;
 
@@ -90,7 +90,7 @@ $hero-height: 50rem;
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .app__inner--landing__nav,
@@ -137,7 +137,7 @@ $hero-height: 50rem;
   left: 0;
   right: 0;
   height: $hero-height;
-  background-image: url('../assets/home-hero-background.svg');
+  background-image: url("../assets/home-hero-background.svg");
   background-position: left;
   background-size: cover;
 }
@@ -157,7 +157,7 @@ $hero-height: 50rem;
 }
 
 .app__inner--landing__footer__icon {
-  padding-top: .5rem;
+  padding-top: 0.5rem;
 }
 
 .app__inner--landing__footer__links {
@@ -170,7 +170,8 @@ $hero-height: 50rem;
 }
 
 .app__inner--landing__footer__links__icon {
-  &, &:hover {
+  &,
+  &:hover {
     color: initial;
     background: none;
   }

@@ -26,13 +26,34 @@
     </div>
     <div class="page--standard__body">
       <Loading v-if="loading" />
-      <div class="page--standard__body__work-process" v-for="workProcess in standard.workProcesses" :key="workProcess.id">
-        <div class="page--standard__body__work-process__vertical-group">
-          <div class="page--standard__body__work-process__vertical-group__label">
-            Work Process
+      <div class="page--standard__body__work-process" v-for="workProcess in standard.workProcesses" :key="workProcess.id" :class="{ 'page--standard__body__work-process--expanded': workProcess.expanded }">
+        <div class="page--standard__body__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
+          <div class="page--standard__body__work-process__wrapper__icon--folder">
+            <img :src="ICON_FOLDER" alt="Work Process icon" />
           </div>
-          <div class="page--standard__body__work-process__vertical-group__title">
-            {{ workProcess.title }}
+          <div class="page--standard__body__work-process__wrapper__vertical-group">
+            <div class="page--standard__body__work-process__wrapper__vertical-group__label">
+              Work Process
+            </div>
+            <div class="page--standard__body__work-process__wrapper__vertical-group__title">
+              {{ workProcess.title }}
+            </div>
+          </div>
+          <div class="page--standard__body__work-process__wrapper__icon--caret">
+            <FontAwesomeIcon :icon="['fas', 'caret-down']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="workProcess.expanded" />
+            <FontAwesomeIcon :icon="['fas', 'caret-right']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="!workProcess.expanded" />
+          </div>
+        </div>
+        <div class="page--standard__body__work-process__skills">
+          <div class="page--standard__body__work-process__skills__skill" v-for="skill in workProcess.skills" :key="`${workProcess.id}-${skill.id}`">
+            <div class="page--standard__body__work-process__skills__skill__vertical-group">
+              <div class="page--standard__body__work-process__skills__skill__vertical-group__label">
+                Skill Description
+              </div>
+              <div class="page--standard__body__work-process__skills__skill__vertical-group__description">
+                {{ skill.description }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -43,9 +64,12 @@
 <script lang="ts">
 import _times from 'lodash/times';
 
+import Vue from 'vue';
+
 import { mapState } from 'vuex';
 
 import LOGO_WIN from '@/assets/win.png';
+import ICON_FOLDER from '@/assets/folder.svg';
 
 import Loading from '@/components/Loading.vue';
 
@@ -53,6 +77,16 @@ export default {
   name: 'standard',
   components: {
     Loading,
+  },
+  methods: {
+    toggleWorkProcess(workProcess: any) {
+      Vue.set(workProcess, 'expanded', !workProcess.expanded);
+    },
+  },
+  data() {
+    return {
+      ICON_FOLDER,
+    };
   },
   computed: {
     ...mapState({
@@ -87,6 +121,8 @@ export default {
 
 $sidebar-left-width: 20rem;
 
+$work-process-height: 5rem;
+
 .page--standard {
   display: flex;
   flex-direction: row;
@@ -100,6 +136,7 @@ $sidebar-left-width: 20rem;
   min-height: calc(100vh - #{$nav-top-height});
   height: 100%;
   padding: 1rem 1.5rem;
+  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
 }
 
 .page--standard__sidebar--left__logo {
@@ -147,30 +184,99 @@ $sidebar-left-width: 20rem;
 }
 
 .page--standard__body__work-process {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background: $color-white;
+  min-height: $work-process-height;
+  &:not(.page--standard__body__work-process--expanded) {
+    max-height: $work-process-height;
+  }
+  overflow: hidden;
   width: 100%;
-  border: 1px solid $color-gray-light;
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid $color-blue;
 }
 
-.page--standard__body__work-process__vertical-group {
+.page--standard__body__work-process__wrapper {
+  display: flex;
+  flex-direction: row;
+  // justify-content: space-between;
+  height: $work-process-height;
+  background: $color-white;
+  cursor: pointer;
+  border-bottom: 1px solid $color-gray-light;
+}
+
+.page--standard__body__work-process__wrapper__vertical-group {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 }
 
-.page--standard__body__work-process__vertical-group__label {
+.page--standard__body__work-process__wrapper__vertical-group__label {
   font-size: 0.9rem;
   color: gray;
+  margin-bottom: 0.25rem;
 }
 
-.page--standard__body__work-process__vertical-group__title {
+.page--standard__body__work-process__wrapper__vertical-group__title {
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+.page--standard__body__work-process__wrapper__icon--folder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+}
+
+.page--standard__body__work-process__wrapper__icon--caret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  width: 3.5rem;
+  color: $color-blue;
+}
+
+.page--standard__body__work-process__skills {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.page--standard__body__work-process__skills__skill {
+  display: flex;
+  flex-direction: row;
+  // justify-content: space-between;
+  background: $color-white;
+  width: 100%;
+  border: 1px solid $color-gray-light;
+  &:not(:last-of-type) {
+    margin-bottom: 0.5rem;
+  }
+  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  min-height: $work-process-height;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 2rem;
+}
+
+.page--standard__body__work-process__skills__skill__vertical-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.page--standard__body__work-process__skills__skill__vertical-group__label {
+  font-size: 0.9rem;
+  color: gray;
+  margin-bottom: 0.25rem;
+}
+
+.page--standard__body__work-process__skills__skill__vertical-group__description {
+  font-size: 1rem;
 }
 </style>

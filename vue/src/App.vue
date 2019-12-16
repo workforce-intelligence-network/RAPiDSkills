@@ -5,12 +5,13 @@
 </template>
 
 <style lang="scss">
-@import '@/scss/colors';
+@import "@/scss/colors";
 
-@import url('https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap");
 
-html, body {
+html,
+body {
   font-size: 16px;
   margin: 0;
   padding: 0;
@@ -18,12 +19,12 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: 'Livvic', 'Heebo', Helvetica, Arial, sans-serif;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background: #FAFBFC;
+  color: $color-body-text;
+  background: $color-body-background;
 }
 
 body * {
@@ -31,7 +32,8 @@ body * {
 }
 
 a {
-  &, &:hover {
+  &,
+  &:hover {
     text-decoration: none;
   }
 }
@@ -46,28 +48,29 @@ a {
 .button {
   border-radius: 25px;
   font-size: 1rem;
-  padding: .7rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   font-weight: 600;
 
   color: $color-white;
-  background: #459EFF;
+  background: #459eff;
 
   cursor: pointer;
 
   &:hover {
-    background: #0073FF;
+    background: #0073ff;
   }
 
-  &, &:hover {
+  &,
+  &:hover {
     text-decoration: none;
   }
 }
 
 .button--link,
 .button--inverted {
-  color: #459EFF;
+  color: #459eff;
   &:hover {
-    color: #0073FF;
+    color: #0073ff;
   }
 }
 
@@ -80,7 +83,8 @@ a {
 
 .button--link {
   padding: 0;
-  &, &:hover {
+  &,
+  &:hover {
     background: none;
   }
 }
@@ -124,20 +128,20 @@ a {
 
 .input__label {
   font-size: 1rem;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
 }
 
 .input__input {
   border-radius: 4px;
   margin: 0;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   font-size: 1rem;
   outline: none;
   border: 1px solid #f2f2f2;
-  font-family: 'Livvic', 'Heebo', Helvetica, Arial, sans-serif;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   &:focus {
-    outline: dashed 1px #459EFF;
+    outline: dashed 1px #459eff;
     outline-offset: 4px;
   }
 }
