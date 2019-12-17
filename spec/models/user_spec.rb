@@ -21,35 +21,32 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe ".new_token" do
-    it "returns url safe base64 string" do
-      expect(User.new_token).to be_a(String)
-    end
-  end
-
   describe "#create_api_access_token!" do
-    let(:user) { create(:user) }
+    let(:user) { build_stubbed(:user) }
+    let(:client_session) { build_stubbed(:client_session) }
 
     before do
-      allow(User).to receive(:new_token).and_return("id123")
-      allow(JsonWebToken).to receive(:encode).with(id: user.id, encrypted_password: user.encrypted_password, session_identifier: "id123").and_return("jwt123")
-    end
-
-    it "creates new client_session record" do
-      expect{
-        user.create_api_access_token!
-      }.to change(user.client_sessions, :count).by(1)
-    end
-
-    it "sets identifier on client_session record" do
-      user.create_api_access_token!
-      client_session = user.client_sessions.last
-      expect(client_session.identifier).to eq "id123"
+      allow(user).to receive(:create_session!).and_return(client_session)
+      allow(client_session).to receive(:token).and_return("jwt123")
     end
 
     it "returns jwt token" do
       jwt = user.create_api_access_token!
       expect(jwt).to eq "jwt123"
+    end
+  end
+
+  describe "#create_session!" do
+    let(:user) { create(:user) }
+
+    it "creates new client_session record" do
+      expect{
+        user.create_session!
+      }.to change(user.client_sessions, :count).by(1)
+    end
+
+    it "returns session" do
+      expect(user.create_session!).to be_a(ClientSession)
     end
   end
 
@@ -59,7 +56,7 @@ RSpec.describe User, type: :model do
 
     it "deletes client session" do
       expect{
-        user.destroy_session!(client_session.identifier)
+        user.destroy_session!(client_session.id)
       }.to change(user.client_sessions, :count).by(-1)
     end
   end
