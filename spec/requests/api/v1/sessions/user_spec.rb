@@ -7,8 +7,11 @@ RSpec.describe API::V1::Sessions::UserController, type: :request do
     let(:user) { cs.user }
     let(:params) { {} }
     let(:header) { auth_header(user) }
+    let(:os) { create(:occupation_standard) }
 
     context "when session belongs to user" do
+      before { user.favorites << os }
+
       it_behaves_like "authorization", :get
 
       it "returns the correct data" do
@@ -20,6 +23,12 @@ RSpec.describe API::V1::Sessions::UserController, type: :request do
         expect(json["data"]["attributes"]["email"]).to eq user.email
         expect(json["data"]["attributes"]["name"]).to eq user.name
         expect(json["data"]["attributes"]["role"]).to eq "lead"
+        expect(json["data"]["relationships"]["employer"]["data"]).to be nil
+        expect(json["data"]["relationships"]["favorites"]["data"].count).to eq 1
+        expect(json["data"]["relationships"]["favorites"]["data"][0]["type"]).to eq "occupation_standard"
+        expect(json["data"]["relationships"]["favorites"]["data"][0]["id"]).to eq os.id.to_s
+        expect(json["data"]["relationships"]["favorites"]["links"]["self"]).to eq relationships_favorites_api_v1_user_url(user)
+        expect(json["data"]["relationships"]["favorites"]["links"]["related"]).to eq api_v1_user_favorites_url(user)
       end
     end
 
