@@ -85,6 +85,27 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
 
           it_behaves_like "success", :post
         end
+
+        context "with bad occupation standard id" do
+          let(:params) {
+            {
+              data: [
+                {
+                  type: "occupation_standard",
+                  id: "999",
+                }
+              ]
+            }
+          }
+
+          it "does not create a new relationship record" do
+            expect{
+              post path, params: params, headers: header
+            }.to_not change(Relationship, :count)
+          end
+
+          it_behaves_like "success", :post
+        end
       end
 
       context "when adding favorite for someone else" do
@@ -141,6 +162,27 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
           end
 
           it_behaves_like "success", :delete
+        end
+
+        context "with bad occupation standard id" do
+          let(:params) {
+            {
+              data: [
+                {
+                  type: "occupation_standard",
+                  id: "999",
+                }
+              ]
+            }
+          }
+
+          it "does not create a new relationship record" do
+            expect{
+              delete path, params: params, headers: header
+            }.to_not change(Relationship, :count)
+          end
+
+          it_behaves_like "success", :post
         end
       end
 
