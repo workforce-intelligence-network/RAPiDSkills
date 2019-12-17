@@ -1,0 +1,24 @@
+FROM ruby:2.6.3
+
+LABEL maintainer="jeanine@littleforestconsulting.com"
+
+ARG RAILS_ENV=production
+ARG RAILS_LOG_TO_STDOUT=true
+ARG RAILS_SERVE_STATIC_FILES=true
+
+COPY . /usr/src/app/
+
+WORKDIR /usr/src/app
+
+# Ensure we install an up-to-date version of Node
+# See https://github.com/yarnpkg/yarn/issues/2888
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
+
+RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
+  nodejs \
+  vim
+
+RUN bundle install
+
+RUN bin/rails assets:precompile
+ENTRYPOINT ["./docker-entrypoint.sh"]
