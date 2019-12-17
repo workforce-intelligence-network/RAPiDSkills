@@ -230,6 +230,9 @@
                   <li>
                     <a href="#sign-out" class="toc-h2 toc-link" data-title="Sign out">Sign out</a>
                   </li>
+                  <li>
+                    <a href="#session-user" class="toc-h2 toc-link" data-title="Session user">Session user</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -441,14 +444,67 @@ changing the user password will invalidate the token.</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code>curl -X DELETE <span class="se">\</span>
   http://www.rapidskills.org/api/v1/sessions/ba204a5c-7f28-4d7f-9913-d2216e629364 <span class="se">\</span>
-  -H <span class="s1">'Accept: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
   -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGVtS0t3alFaTGVWcS5ScEtIUlpmUi5yWFY5WDcyYm5wc2VjaHhqeHVnNVY1Q1B1VXJ4cDhpIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiYmEyMDRhNWMtN2YyOC00ZDdmLTk5MTMtZDIyMTZlNjI5MzY0In0.JIuA_iuNrBkKlHBPB_FIptso2Es0P85WkIaLPVwiusM'</span> <span class="se">\</span>
   -H <span class="s1">'Content-Type: application/json'</span>
 </code></pre><h3 id='http-request-2'>HTTP Request</h3>
 <p><code>DELETE http://www.rapidskills.org/api/v1/sessions/:session_id</code></p>
 
 <p>Returns HTTP status 204, no content.</p>
-<h1 id='downloads'>Downloads</h1><h2 id='pdf-excel-generation'>PDF/Excel generation</h2>
+<h2 id='session-user'>Session user</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET <span class="se">\</span>
+  http://www.rapidskills.org/api/v1/sessions/e016b27d-ada5-4691-b23b-059bdd616086/user <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGVtS0t3alFaTGVWcS5ScEtIUlpmUi5yWFY5WDcyYm5wc2VjaHhqeHVnNVY1Q1B1VXJ4cDhpIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiZTAxNmIyN2QtYWRhNS00NjkxLWIyM2ItMDU5YmRkNjE2MDg2In0.n4GrMeFezg1gYXh7TOn9Ra55viPHx6UTS2e8JD4z_UE'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span>
+</code></pre><h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/sessions/:session_id/user</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"foo@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Foo Bar"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lead"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"employer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"favorites"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"22"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/relationships/favorites"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/favorites"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/sessions/e016b27d-ada5-4691-b23b-059bdd616086/user"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h1 id='downloads'>Downloads</h1><h2 id='pdf-excel-generation'>PDF/Excel generation</h2>
 <p>This endpoint will trigger the PDF and/or Excel document generation for the
 resource passed in the relationships field.</p>
 
