@@ -31,10 +31,8 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       end
     end
 
-    # Per {json:api} spec should probably return not found, but don't want to
-    # expose which users exist or not at this point.
     context "when requesting non-existent user" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "not found", :get do
         let(:path) { "/api/v1/users/999/relationships/favorites" }
       end
     end
@@ -154,4 +152,3 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
     end
   end
 end
-

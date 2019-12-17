@@ -19,6 +19,13 @@ RSpec.shared_examples "unauthorized" do |method|
   end
 end
 
+RSpec.shared_examples "not found" do |method|
+  it "has not found status" do
+    send(method, path, params: params, headers: header)
+    expect(response).to have_http_status(:not_found)
+  end
+end
+
 RSpec.shared_examples "success" do |method|
   it "has success status" do
     send(method, path, params: params, headers: header)
