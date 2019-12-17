@@ -9,4 +9,8 @@ class API::V1::ClientSessionPolicy < ApplicationPolicy
   def user?
     client_session.user == user
   end
+
+  def show?
+    user?
+  end
 end
