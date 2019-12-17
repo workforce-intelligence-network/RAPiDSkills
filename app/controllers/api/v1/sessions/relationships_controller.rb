@@ -1,4 +1,4 @@
-class API::V1::Sessions::RelationshipsController < API::V1::APIController
+class API::V1::Sessions::RelationshipsController < API::V1::SessionsController
   before_action :set_client_session
 
   def user
@@ -10,12 +10,5 @@ class API::V1::Sessions::RelationshipsController < API::V1::APIController
       }
     }
     render json: API::V1::Session::Relationships::UserSerializer.new(@user, options)
-  end
-
-  private
-
-  def set_client_session
-    @session = ClientSession.find_by(id: params[:id])
-    head :not_found and return unless @session
   end
 end

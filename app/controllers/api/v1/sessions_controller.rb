@@ -1,5 +1,6 @@
 class API::V1::SessionsController < API::V1::APIController
   skip_before_action :authenticate, only: :create
+  before_action :set_client_session, only: :show
 
   def create
     @user = User.find_by(email: create_params[:email])
@@ -19,7 +20,7 @@ class API::V1::SessionsController < API::V1::APIController
   end
 
   def show
-    @session = ClientSession.find(@session_identifier)
+    authorize [:api, :v1, @session]
     render json: API::V1::SessionSerializer.new(@session, render_options)
   end
 
@@ -32,6 +33,11 @@ class API::V1::SessionsController < API::V1::APIController
 
   def create_params
     params.require(:data).require(:attributes).permit(:email, :password)
+  end
+
+  def set_client_session
+    @session = ClientSession.find_by(id: params[:id])
+    head :not_found and return unless @session
   end
 
   def render_options
