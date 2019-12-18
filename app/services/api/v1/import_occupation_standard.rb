@@ -7,42 +7,10 @@ class API::V1::ImportOccupationStandard
   end
 
   def call
-    DataImport.transaction do
-      data.each do |row|
-        if row["rapids_code"].present?
-          occupation = Occupation.find_by(rapids_code: row["rapids_code"])
-        elsif row["onet_code"].present?
-          occupation = Occupation.find_by(onet_code: row["onet_code"])
-        end
+    occupation_standard = find_or_create_occupation_standard(data.first)
 
-        unless occupation
-          # Determine Occupation Type
-          type = if row["work_process_hours"].present? && row["skill"].present?
-                   "HybridOccupation"
-                 elsif row["work_process_hours"].present?
-                   "TimeOccupation"
-                 elsif row["skill"].present?
-                   "CompetencyOccupation"
-                 else
-                   raise "Either work process or skill is required"
-                 end
-          occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
-            title: row["occupation_standard_title"],
-            type: type,
-          )
-        end
-        organization = Organization.where(title: row["organization_title"]).first_or_create!
-        state = State.find_by(short_name: row["registration_state"])
-        occupation_standard = OccupationStandard.where(
-          type: "#{row["type"]}Standard",
-          organization: organization,
-          occupation: occupation,
-          title: row["occupation_standard_title"].presence || occupation.try(:title),
-        ).first_or_create!(
-          creator: user,
-          registration_organization_name: row["registration_organization_name"],
-          registration_state: state,
-          )
+    data.each do |row|
+      DataImport.transaction do
         if row["work_process_title"].present?
           work_process = WorkProcess.where(
             title: row["work_process_title"],
@@ -74,5 +42,46 @@ class API::V1::ImportOccupationStandard
     error_msg = e.respond_to?(:record) ? "#{e.record.class.name} " : ""
     error_msg += e.message
     ServiceResponse.new(success: false, error: error_msg)
+  end
+
+  private
+
+  def find_or_create_occupation_standard(row)
+    DataImport.transaction do
+      if row["rapids_code"].present?
+        occupation = Occupation.find_by(rapids_code: row["rapids_code"])
+      elsif row["onet_code"].present?
+        occupation = Occupation.find_by(onet_code: row["onet_code"])
+      end
+
+      unless occupation
+        # Determine Occupation Type
+        type = if row["work_process_hours"].present? && row["skill"].present?
+                 "HybridOccupation"
+               elsif row["work_process_hours"].present?
+                 "TimeOccupation"
+               elsif row["skill"].present?
+                 "CompetencyOccupation"
+               else
+                 raise "Either work process or skill is required"
+               end
+        occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
+          title: row["occupation_standard_title"],
+          type: type,
+        )
+      end
+      organization = Organization.where(title: row["organization_title"]).first_or_create!
+      state = State.find_by(short_name: row["registration_state"])
+      occupation_standard = OccupationStandard.where(
+        type: "#{row["type"]}Standard",
+        organization: organization,
+        occupation: occupation,
+        title: row["occupation_standard_title"].presence || occupation.try(:title),
+      ).first_or_create!(
+        creator: user,
+        registration_organization_name: row["registration_organization_name"],
+        registration_state: state,
+        )
+    end
   end
 end
