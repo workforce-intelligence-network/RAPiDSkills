@@ -26,7 +26,7 @@ development:
   database: <%= ENV.fetch("POSTGRES_DB") { 'rapidskills_development' } %>
   host: <%= ENV.fetch("DATABASE_HOST") { 'localhost' } %>
   username: <%= ENV.fetch("POSTGRES_USER") { 'postgres' } %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { '' } %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -63,7 +63,7 @@ test:
   database: <%= ENV.fetch("POSTGRES_DB_TEST") { 'rapidskills_test' } %>
   host: <%= ENV.fetch("DATABASE_HOST") { 'localhost' } %>
   username: <%= ENV.fetch("POSTGRES_USER") { 'postgres' } %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { '' }%>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
