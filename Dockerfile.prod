@@ -20,5 +20,6 @@ RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
 
 RUN bundle install
 
-RUN bin/rails assets:precompile
+# https://github.com/rails/rails/issues/32947#issuecomment-511532631
+RUN SECRET_KEY_BASE=dummy RAILS_ENV=production bin/rails assets:precompile
 ENTRYPOINT ["./docker-entrypoint.sh"]
