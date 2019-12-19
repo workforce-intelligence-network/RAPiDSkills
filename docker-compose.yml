@@ -23,8 +23,8 @@ services:
     volumes:
       - ./vue:/usr/src/app
       - /usr/src/app/node_modules
-    # depends_on:
-    #   - web
+    depends_on:
+      - web
 
   database:
     image: postgres:11.5
