@@ -6,7 +6,7 @@ COPY . /usr/src/app/
 
 WORKDIR /usr/src/app
 
-RUN npm install -g yarn
+RUN npm install -g yarn --force
 RUN yarn
 
 CMD ["yarn", "serve"]
