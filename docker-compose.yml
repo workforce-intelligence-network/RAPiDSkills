@@ -22,8 +22,9 @@ services:
       - '8080:8080'
     volumes:
       - ./vue:/usr/src/app
-    depends_on:
-      - web
+      - /usr/src/app/node_modules
+    # depends_on:
+    #   - web
 
   database:
     image: postgres:11.5
