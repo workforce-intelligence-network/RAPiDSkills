@@ -17,6 +17,8 @@ RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
 RUN npm install -g yarn
 RUN yarn install
 
+RUN gem install bundler -v '< 2'
+
 COPY Gemfile* /usr/src/app/
 COPY yarn.lock /usr/src/app/
 
