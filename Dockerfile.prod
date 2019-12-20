@@ -1,4 +1,4 @@
-FROM ruby:2.6.5
+FROM ruby:2.6.5 as builder
 
 LABEL maintainer="jeanine@littleforestconsulting.com"
 
@@ -36,4 +36,6 @@ COPY . /usr/src/app/
 # https://github.com/rails/rails/issues/32947#issuecomment-511532631
 RUN SECRET_KEY_BASE=dummy bin/rails assets:precompile
 
+FROM ruby:2.6.5 as production
+COPY --from=builder /usr/src/app /usr/src/app
 RUN mkdir -p tmp/pids

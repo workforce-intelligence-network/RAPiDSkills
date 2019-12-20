@@ -6,6 +6,9 @@ setup:
     - plan: heroku-redis
 build:
   docker:
+    release:
+      dockerfile: Dockerfile.prod
+      target: builder
     web: Dockerfile.prod
   config:
     RAILS_ENV: production
