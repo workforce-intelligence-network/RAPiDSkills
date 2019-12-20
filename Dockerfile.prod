@@ -33,4 +33,3 @@ COPY . /usr/src/app/
 
 # https://github.com/rails/rails/issues/32947#issuecomment-511532631
 RUN SECRET_KEY_BASE=dummy RAILS_ENV=production bin/rails assets:precompile
-ENTRYPOINT ["./docker-entrypoint.sh"]
