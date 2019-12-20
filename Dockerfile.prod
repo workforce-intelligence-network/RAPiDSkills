@@ -23,7 +23,7 @@ COPY Gemfile* /usr/src/app/
 COPY yarn.lock /usr/src/app/
 
 WORKDIR /usr/src/app
-RUN bundle install
+RUN bundle install --without development test
 
 COPY . /usr/src/app/
 
