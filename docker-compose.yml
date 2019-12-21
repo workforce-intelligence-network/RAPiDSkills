@@ -9,6 +9,7 @@ services:
       - '3000:3000'
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/tmp # https://github.com/Shopify/bootsnap/issues/177#issuecomment-491711481
     env_file:
       - config/docker.env
     depends_on:
