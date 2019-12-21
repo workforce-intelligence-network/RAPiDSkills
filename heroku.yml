@@ -1,0 +1,20 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+    - plan: mailgun
+    - plan: heroku-redis
+build:
+  docker:
+    release:
+      dockerfile: Dockerfile.prod
+      target: builder
+    web: Dockerfile.prod
+  config:
+    RAILS_ENV: production
+run:
+  web: bundle exec puma -C config/puma.rb
+  worker: 
+    command:
+      - bundle exec sidekiq -C config/sidekiq.yml
+    image: web

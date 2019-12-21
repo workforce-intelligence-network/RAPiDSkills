@@ -18,7 +18,6 @@
 !/tmp/.keep
 
 # Config files
-/config/database.yml
 /config/docker.env
 
 # Ignore uploaded files in development.
