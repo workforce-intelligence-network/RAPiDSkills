@@ -12,5 +12,6 @@ build:
 run:
   web: bundle exec puma -C config/puma.rb
   worker: 
-    command: bundle exec sidekiq -C config/sidekiq.yml
+    command:
+      - bundle exec sidekiq -C config/sidekiq.yml
     image: web
