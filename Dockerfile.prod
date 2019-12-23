@@ -33,7 +33,15 @@ RUN bundle install --without development test
 
 COPY . /usr/src/app/
 
+# For ActiveAdmin assets
 # https://github.com/rails/rails/issues/32947#issuecomment-511532631
 RUN SECRET_KEY_BASE=dummy bin/rails assets:precompile
 
+# For puma server
 RUN mkdir -p tmp/pids
+
+# Build vue files
+WORKDIR /usr/src/app/vue
+RUN yarn
+RUN yarn build
+WORKDIR /usr/src/app
