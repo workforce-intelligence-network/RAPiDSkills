@@ -1,8 +1,8 @@
 # RAPiDSkills
 
-The RAPiDSkills API is a Ruby on Rails
-application hosted on Heroku.  It is written using Ruby 2.6.3
-and Rails 6.0.  Postgres 11.5 is used for the database.
+The RAPiDSkills API is a Ruby on Rails application hosted on Heroku.  It is
+written using Ruby 2.6.5 and Rails 6.0.1.  Postgres 11.5 is used for the
+database.
 
 ## Development setup
 The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading, if there are changes to the Dockerfile, or if new gems have been added.
@@ -14,7 +14,8 @@ The following commands should just be run for the initial setup only. Rebuilding
 4. Run `docker-compose up -d database` to start the database service.
 4. Run `docker-compose run --rm web rails db:reset` to create the dev and test databases, load the schema, and run the seeds file.
 4. Run `docker-compose up -d` to start all the remaining services.
-5. The web application will be available at http://localhost:3000
+5. The server application (including the admin dashboard) will be available at http://localhost:3000.
+5. The client application will be available at http://localhost:8080.
 
 If you cloned the directory without the documentation submodule, you must initialize and update the submodule in order to have the `middleman` service start correctly:
 1. Change into the documentation directory: `cd documentation`
@@ -80,7 +81,7 @@ The API Documentation is generated from [Slate](https://github.com/slatedocs/sla
 1. Start the middleman service if it is not already running: `docker-compose up -d middleman`
 2. Change into the documentation directory: `cd documentation`. You will now be working in a git submodule, which has its own separate git repository.
 3. Edit files in the `/source` directory. The changes can be viewed at http://localhost:4567.
-4. Commit files and merge to master.
+4. Commit files, merge to master, and push to Github.
 5. Return to main app repository: `cd ..`
 6. Run `docker-compose run --rm middleman bin/generate_static_pages.rb` to generate the static html pages that will get saved in the main repo.
 6. Run `git status`. You will see that the `documentation` directory has modifications, as well as updates to the `app/lib/docs` files.
