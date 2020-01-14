@@ -348,6 +348,7 @@ DEPENDENCIES
   faker
   fast_jsonapi
   jwt
+  kaminari
   pg
   prawn
   pry-nav
