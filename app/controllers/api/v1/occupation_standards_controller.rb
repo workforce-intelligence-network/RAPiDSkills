@@ -2,9 +2,13 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   skip_before_action :authenticate, except: [:create]
 
   def index
+    params[:page] ||= {}
     @oss = OccupationStandard.with_eager_loading
              .search(search_params.to_h)
              .order(id: :desc)
+             .page(params[:page][:number])
+             .per(params[:page][:size])
+
     options = { links: { self: api_v1_occupation_standards_url } }
     render_resource(@oss, options)
   end
