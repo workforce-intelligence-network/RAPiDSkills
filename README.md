@@ -9,7 +9,6 @@ The following commands should just be run for the initial setup only. Rebuilding
 1. Install [Docker Community Edition](https://docs.docker.com/install/) if it
    is not already installed.
 1. Clone the repository: `git clone --recurse-submodules git@github.com:WorkHands/RAPiDSkills.git`
-2. Copy `config/database.yml.example` to `config/database.yml`: `cp config/database.yml.example config/database.yml`.
 2. Copy `config/docker.env.example` to `config/docker.env`:  `cp config/docker.env.example config/docker.env`. It is not necessary to change any of the values.
 3. Run `docker-compose build` to build images for all services.
 4. Run `docker-compose up -d database` to start the database service.
