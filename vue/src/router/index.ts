@@ -1,13 +1,14 @@
+import _get from 'lodash/get';
+
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-import jsonApi from '@/utilities/api';
 
 import store from '@/store';
 
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import Search from '@/components/Search.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 Vue.use(VueRouter);
 
@@ -40,7 +41,7 @@ const routes = [
         name: 'standards',
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-          search: Search,
+          navbarActions: Search,
         },
         beforeEnter: (to, from, next) => {
           store.dispatch('standards/fetchStandards');
@@ -50,10 +51,16 @@ const routes = [
       {
         path: 'standards/:id',
         name: 'standard',
-        component: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
+        components: {
+          default: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
+          navbarActions: PageTitle,
+        },
         beforeEnter: (to, from, next) => {
           store.dispatch('standards/getStandard', to.params.id);
           next();
+        },
+        meta: {
+          pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
         },
       },
       {
@@ -61,7 +68,7 @@ const routes = [
         name: 'favorites',
         components: {
           default: () => import(/* webpackChunkName: "favorites" */ '@/views/Favorites.vue'),
-          search: Search,
+          navbarActions: Search,
         },
       },
       {

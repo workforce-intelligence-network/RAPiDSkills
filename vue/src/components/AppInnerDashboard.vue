@@ -10,21 +10,21 @@
         <img :src="LOGO_ALT_FULL_NO_ICON" alt="RapidSkills Logo" class="app__inner--dashboard__nav--top__link--logo__logo" />
       </router-link>
       <div class="app__inner--dashboard__nav--top__search">
-        <router-view name="search" />
+        <router-view name="navbarActions" />
       </div>
       <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
         <img :src="ICON_TOP_NAV_SUPPORT" alt="Support Icon" class="app__inner--dashboard__nav--top__link__icon" />
       </a>
     </div>
     <div class="app__inner--dashboard__nav--left">
-      <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--icon" :to="{ name: 'standards' }">
+      <a class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--icon" href="javascript:void(0)">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_WHITE" alt="RapidSkills White Icon" class="app__inner--dashboard__nav--left__link--icon__icon" />
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <img :src="LOGO_ALT_FULL_NO_ICON_WHITE" alt="RapidSkills Logo White" class="app__inner--dashboard__nav--left__link__name__logo" />
         </span>
-      </router-link>
+      </a>
       <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'standards' }" active-class="app__inner--dashboard__nav--left__link--active">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_DASHBOARD" alt="Dashboard Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
@@ -128,6 +128,8 @@ export default {
   align-self: center;
   flex-grow: 1;
   justify-content: center;
+  padding-left: 0.5rem;
+  max-width: calc(100% - 4rem);
 }
 
 .app__inner--dashboard__nav--top__link {
@@ -141,7 +143,7 @@ export default {
   align-self: flex-start;
   flex-basis: 0;
 
-  @include breakpoint--mobile {
+  @include breakpoint--sm {
     display: none;
   }
 }
@@ -150,6 +152,7 @@ export default {
   align-self: flex-end;
   flex-basis: 0;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .app__inner--dashboard__nav--top__link__icon {

@@ -68,8 +68,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/mixins';
-@import '@/scss/colors';
+@import "@/scss/mixins";
+@import "@/scss/colors";
 
 $search-button-width: 3rem;
 
@@ -81,8 +81,8 @@ $search-button-width: 3rem;
   width: 25rem;
   padding-right: $search-button-width;
 
-  @include breakpoint--mobile {
-    width: auto;
+  @include breakpoint--sm {
+    width: 100%;
   }
 }
 
@@ -106,7 +106,7 @@ $search-button-width: 3rem;
   background: $color-white;
   overflow: auto;
   border: 1px solid #f2f2f2;
-  box-shadow: 0 10px 20px 0 transparentize(#459EFF, .9);
+  box-shadow: 0 10px 20px 0 transparentize(#459eff, 0.9);
 }
 
 .search__dropdown__list__item {

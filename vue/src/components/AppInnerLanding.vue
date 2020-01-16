@@ -104,7 +104,7 @@ $hero-height: 50rem;
 }
 
 .app__inner--landing__nav__link__icon {
-  @include breakpoint--mobile {
+  @include breakpoint--sm {
     max-width: 8rem;
   }
 }
