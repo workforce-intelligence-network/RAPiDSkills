@@ -106,7 +106,7 @@ $search-button-width: 3rem;
   background: $color-white;
   overflow: auto;
   border: 1px solid #f2f2f2;
-  box-shadow: 0 10px 20px 0 transparentize(#459eff, 0.9);
+  box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
 }
 
 .search__dropdown__list__item {

@@ -188,7 +188,7 @@ export default {
 }
 
 .page--home__how-it-works__text--title {
-  color: #459eff;
+  color: $color-link-blue;
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -223,7 +223,7 @@ export default {
 .page--home__how-it-works__cards__card {
   background: $color-white;
   border: 1px solid #f2f2f2;
-  box-shadow: 0 10px 20px 0 transparentize(#459eff, 0.9);
+  box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;

@@ -52,12 +52,12 @@ a {
   font-weight: 600;
 
   color: $color-white;
-  background: #459eff;
+  background: $color-link-blue;
 
   cursor: pointer;
 
   &:hover {
-    background: #0073ff;
+    background: $color-button-hover-blue;
   }
 
   &,
@@ -68,9 +68,9 @@ a {
 
 .button--link,
 .button--inverted {
-  color: #459eff;
+  color: $color-link-blue;
   &:hover {
-    color: #0073ff;
+    color: $color-button-hover-blue;
   }
 }
 
@@ -141,7 +141,7 @@ a {
   border: 1px solid #f2f2f2;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   &:focus {
-    outline: dashed 1px #459eff;
+    outline: dashed 1px $color-link-blue;
     outline-offset: 4px;
   }
 }

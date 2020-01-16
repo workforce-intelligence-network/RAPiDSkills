@@ -165,7 +165,7 @@ export default {
   left: 0;
   width: 100%;
   max-width: $nav-left-width;
-  background: #002e58;
+  background: $color-nav-left-background-blue;
   flex-direction: column;
   align-content: flex-start;
   transition: max-width 0.25s ease;
