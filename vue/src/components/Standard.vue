@@ -75,6 +75,7 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/colors";
 @import "@/scss/standards";
+@import "@/scss/mixins";
 
 .standard {
   display: flex;
@@ -82,8 +83,17 @@ export default {
   justify-content: space-between;
   align-content: space-between;
   max-width: $standard-width;
-  min-width: $standard-width;
-  width: $standard-width;
+
+  @include breakpoint--xs {
+    max-width: 100%;
+    min-width: auto;
+  }
+
+  @include breakpoint--above-xs {
+    min-width: $standard-width;
+    width: $standard-width;
+  }
+
   background: $color-white;
   box-shadow: $color-nav-bar-top-box-shadow 0px 2px 4px 0px;
   cursor: pointer;

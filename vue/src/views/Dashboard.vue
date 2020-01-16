@@ -79,6 +79,7 @@ export default {
 @import "@/scss/navbars";
 
 $card-column-gap: 2rem;
+$card-column-padding: 2rem;
 
 .page--dashboard__cards {
   display: grid;
@@ -90,12 +91,12 @@ $card-column-gap: 2rem;
   grid-template-columns: auto auto auto auto;
 
   @for $i from 2 through 12 {
-    @media (max-width: ($standard-width * ($i + 1) + $card-column-gap * $i + $nav-left-width)) and (min-width: ($standard-width * $i + $card-column-gap * ($i - 1) + $nav-left-width)) {
+    @media (max-width: ($standard-width * ($i + 1) + $card-column-gap * $i + $nav-left-width + $card-column-padding)) and (min-width: ($standard-width * $i + $card-column-gap * ($i - 1) + $nav-left-width + $card-column-padding)) {
       grid-template-columns: repeat($i, auto);
     }
   }
 
-  @media (max-width: ($standard-width * 2 + $card-column-gap * 1 + $nav-left-width)) {
+  @media (max-width: ($standard-width * 2 + $card-column-gap * 1 + $nav-left-width + $card-column-padding)) {
     grid-template-columns: auto;
   }
 }
