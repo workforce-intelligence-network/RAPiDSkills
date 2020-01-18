@@ -30,6 +30,18 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "follow" */ '@/views/Follow.vue'),
       },
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          return next();
+        },
+      },
     ],
   },
   {
@@ -43,7 +55,7 @@ const routes = [
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
           navbarActions: Search,
         },
-        beforeEnter: (to, from, next) => {
+        beforeEnter(to, from, next) {
           store.dispatch('standards/fetchStandards');
           next();
         },
@@ -55,7 +67,7 @@ const routes = [
           default: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
           navbarActions: PageTitle,
         },
-        beforeEnter: (to, from, next) => {
+        beforeEnter(to, from, next) {
           store.dispatch('standards/getStandard', to.params.id);
           next();
         },

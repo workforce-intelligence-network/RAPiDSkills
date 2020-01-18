@@ -116,14 +116,15 @@ a {
 }
 
 .input--error .input__input {
-  border-color: salmon;
+  border-color: $color-salmon;
   &::placeholder {
-    color: salmon;
+    color: $color-salmon;
   }
 }
 
 .input--error .input__label {
-  color: salmon;
+  color: $color-salmon;
+  font-weight: bold;
 }
 
 .input__label {

@@ -29,8 +29,6 @@ import { mapGetters, mapState } from 'vuex';
 import Standard from '@/components/Standard.vue';
 import Loading from '@/components/Loading.vue';
 
-import LOGO_WIN from '@/assets/win.png';
-
 export default {
   name: 'dashboard',
   components: {
@@ -49,25 +47,8 @@ export default {
     ...mapState({
       selectedOccupation: (state: any) => state.occupations.selectedOccupation,
       showLoadingState: (state: any) => state.standards.loading,
+      standards: (state: any) => state.standards.list,
     }),
-    standards() {
-      // TODO: remove fake data
-      (this as any).$store.state.standards.list.forEach((standard) => {
-        Object.assign(standard, {
-          organization: {
-            logo: LOGO_WIN,
-            name: 'WIN',
-          },
-          occupation: {
-            name: 'Mechatronics Technician',
-            type: 'Hybrid',
-            onet: '51-4012.00',
-            cb: '1100CB',
-          },
-        });
-      });
-      return (this as any).$store.state.standards.list;
-    },
   },
 };
 </script>

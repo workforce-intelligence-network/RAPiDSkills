@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import jsonApi from '@/utilities/api';
+import Occupation, { OccupationCollection } from '@/models/Occupation';
 
 export const setOccupationSearchQuery = async ({ commit, state }, query: string = state.query) => {
   commit('updateOccupationsSearchQuery', query);
@@ -8,11 +6,10 @@ export const setOccupationSearchQuery = async ({ commit, state }, query: string 
 
 export const searchForOccupations = async ({ commit, state }, query: string = state.query) => {
   try {
-    commit('resetOccupationsSearchCancelToken');
     commit('updateOccupationsSearchLoading', true);
     commit('updateOccupationsSearchQuery', query);
-    const { data } = await jsonApi.findAll('occupations', { q: query, cancelToken: state.cancelToken });
-    commit('updateOccupationsSearchList', data);
+    const { model } = await OccupationCollection.get({ q: query }, Occupation);
+    commit('updateOccupationsSearchList', model);
     commit('updateOccupationsSearchLoading', false);
   } catch (e) {
     //

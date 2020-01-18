@@ -24,8 +24,6 @@ const requestMiddleware = {
   name: 'snake-case-attributes',
   req: (payload) => {
     const updatedPayload = Object.assign({}, payload);
-    updatedPayload.req.cancelToken = _get(updatedPayload, 'req.params.cancelToken');
-    _set(updatedPayload, 'req.params.cancelToken', undefined);
     updatedPayload.req.params = recursivelySnakeCase(updatedPayload.req.params);
     updatedPayload.req.data = recursivelySnakeCase(updatedPayload.req.data);
     return updatedPayload;

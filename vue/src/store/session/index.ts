@@ -5,11 +5,8 @@ import * as getters from './getters';
 export default {
   namespaced: true,
   state: {
-    list: [],
-    loading: false,
-    query: '',
-    freshSearch: true,
-    selectedOccupation: undefined,
+    token: undefined,
+    initialized: false,
   },
   mutations,
   actions,

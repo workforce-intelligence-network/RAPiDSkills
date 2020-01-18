@@ -2,7 +2,7 @@
   <div class="page--standard">
     <div class="page--standard__sidebar--left" v-if="!loading">
       <div class="page--standard__sidebar--left__logo">
-        <img :src="standard.organization.logo" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
+        <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
       <div class="page--standard__sidebar--left__occupation-name">{{ standard.title }}</div>
       <div class="page--standard__sidebar--left__divider--stats" />
@@ -13,12 +13,12 @@
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Processes</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat">
-          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ totalNumberOfCompetencies }}</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.skills.length }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Competencies</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat">
-          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ totalNumberOfHours }}</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfHours }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Hours</div>
         </div>
@@ -69,7 +69,6 @@ import Vue from 'vue';
 
 import { mapState } from 'vuex';
 
-import LOGO_WIN from '@/assets/win.png';
 import ICON_FOLDER from '@/assets/folder.svg';
 import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
@@ -93,28 +92,9 @@ export default {
   },
   computed: {
     ...mapState({
-      standard: (state: any) => Object.assign({}, state.standards.selectedStandard, {
-        organization: {
-          logo: LOGO_WIN,
-          name: 'WIN',
-        },
-        occupation: {
-          name: 'Mechatronics Technician',
-          type: 'Hybrid',
-          onet: '51-4012.00',
-          cb: '1100CB',
-        },
-      }),
+      standard: (state: any) => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
     }),
-    totalNumberOfCompetencies() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + (workProcess.skills || []).length, 0);
-    },
-    totalNumberOfHours() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + workProcess.hoursTotal || 0, 0);
-    },
   },
 };
 </script>

@@ -2,16 +2,6 @@ import axios from 'axios';
 
 import _isFunction from 'lodash/isFunction';
 
-export const resetOccupationsSearchCancelToken = (state) => {
-  if (_isFunction(state.cancel)) {
-    state.cancel();
-  }
-
-  state.cancelToken = new axios.CancelToken((cancel) => {
-    state.cancel = cancel;
-  });
-};
-
 export const updateOccupationsSearchLoading = (state, loading: boolean) => {
   state.loading = loading;
 };
