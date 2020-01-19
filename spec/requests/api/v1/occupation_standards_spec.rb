@@ -12,6 +12,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # With no occupation_id parameter, returns all data
       get path
       expect(response).to have_http_status(:success)
+      expect(json["meta"]["total_pages"]).to eq 1
+      expect(json["meta"]["current_page"]).to eq 1
       expect(json["links"]["self"]).to eq api_v1_occupation_standards_url
       expect(json["data"].count).to eq 3
       expect(json["data"][0]["id"]).to eq os3.id.to_s
@@ -64,6 +66,12 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # Page 1
       get path, params: { page: { number: 1, size: 2 } }
       expect(response).to have_http_status(:success)
+      expect(json["meta"]["total_pages"]).to eq 2
+      expect(json["meta"]["current_page"]).to eq 1
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["next"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
       expect(json["data"].count).to eq 2
       expect(json["data"][0]["id"]).to eq os3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
@@ -84,7 +92,13 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
       # Page 2
       get path, params: { page: { number: 2, size: 2 } }
+      expect(json["meta"]["total_pages"]).to eq 2
+      expect(json["meta"]["current_page"]).to eq 2
       expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number:  1, size: 2 })
+      expect(json["links"]["prev"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
       expect(json["data"].count).to eq 1
       expect(json["data"][0]["id"]).to eq os1.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
@@ -98,6 +112,9 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # Page 1
       get path, params: { occupation_id: occupation.id, page: { number: 1, size: 2 } }
       expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
       expect(json["data"].count).to eq 2
       expect(json["data"][0]["id"]).to eq os3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
@@ -119,6 +136,9 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # Page 2
       get path, params: { occupation_id: occupation.id, page: { number: 2, size: 2 } }
       expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
       expect(json["data"]).to be_empty
       expect(json["included"]).to be_empty
 
