@@ -10,8 +10,8 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
     options = API::V1::PaginationLinkGenerator.new(
       request: request,
+      query_params: query_params,
       total_pages: @oss.total_pages,
-      page_params:  page_params,
     ).call()
     render_resource(@oss, options)
   end
@@ -49,6 +49,10 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def page_params
     params.fetch(:page, {}).permit(:number, :size)
+  end
+
+  def query_params
+    params.permit(:occupation_id, page: {})
   end
 
   def render_resource(record, options={})

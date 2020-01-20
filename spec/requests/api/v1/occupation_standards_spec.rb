@@ -112,9 +112,9 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # Page 1
       get path, params: { occupation_id: occupation.id, page: { number: 1, size: 2 } }
       expect(response).to have_http_status(:success)
-      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
-      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
-      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
       expect(json["data"].count).to eq 2
       expect(json["data"][0]["id"]).to eq os3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
@@ -136,9 +136,9 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # Page 2
       get path, params: { occupation_id: occupation.id, page: { number: 2, size: 2 } }
       expect(response).to have_http_status(:success)
-      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
-      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
-      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 2, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
       expect(json["data"]).to be_empty
       expect(json["included"]).to be_empty
 
