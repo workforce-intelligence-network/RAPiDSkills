@@ -33,10 +33,21 @@ Rails.application.routes.draw do
 
       resources :occupation_standard_skills, path: "skills", only: [:show, :update]
       resources :organizations, only: [:show]
-      resources :users, only: [:create]
+      resources :users, only: [:create] do
+        member do
+          get "relationships/favorites", to: "users/relationships/favorites#index"
+          post "relationships/favorites", to: "users/relationships/favorites#create"
+          delete "relationships/favorites", to: "users/relationships/favorites#destroy"
+        end
+        resources :favorites, only: [:index], controller: "users/favorites"
+      end
 
-      resources :sessions, only: [:create]
-      delete "sessions", to: "sessions#destroy"
+      resources :client_sessions, path: "sessions", only: [:create, :destroy, :show], controller: "sessions" do
+        member do
+          get "relationships/user", to: "sessions/relationships#user"
+        end
+        resource :user, only: [:show], controller: "sessions/user"
+      end
 
       resources :downloads, only: [:create]
 

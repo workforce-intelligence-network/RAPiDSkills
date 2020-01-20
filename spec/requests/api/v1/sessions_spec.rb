@@ -5,7 +5,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     let(:path) { "/api/v1/sessions" }
 
     before do
-      allow(User).to receive(:new_token).and_return("abc123")
+      allow_any_instance_of(ClientSession).to receive(:id).and_return("abc123")
       allow(JsonWebToken).to receive(:encode).and_return("jwt456")
     end
 
@@ -27,13 +27,16 @@ RSpec.describe API::V1::SessionsController, type: :request do
         expect{
           post path, params: params
         }.to change(user.client_sessions, :count).by(1)
-        client_session = ClientSession.last
-        expect(client_session.identifier).to eq "abc123"
       end
 
-      it "returns access token" do
+      it "returns session data with access token" do
         post path, params: params
         expect(response).to have_http_status(:created)
+        expect(json["links"]["self"]).to eq api_v1_client_session_url("abc123")
+        expect(json["data"]["type"]).to eq "session"
+        expect(json["data"]["id"]).to eq "abc123"
+        expect(json["data"]["relationships"]["user"]["links"]["self"]).to eq relationships_user_api_v1_client_session_url("abc123")
+        expect(json["data"]["relationships"]["user"]["links"]["related"]).to eq api_v1_client_session_user_url("abc123")
         expect(json["meta"]["access_token"]).to eq "jwt456"
         expect(json["meta"]["token_type"]).to eq "Bearer"
       end
@@ -90,9 +93,41 @@ RSpec.describe API::V1::SessionsController, type: :request do
     end
   end
 
+  describe "GET #show" do
+    let(:user) { create(:user) }
+    let!(:client_session) { create(:client_session, user: user) }
+    let(:uuid) { client_session.id }
+    let(:path) { "/api/v1/sessions/#{uuid}" }
+    let(:token) { JsonWebToken.encode(id: user.id, encrypted_password: user.encrypted_password, session_identifier: uuid) }
+    let(:header) { { "HTTP_AUTHORIZATION" => "Bearer #{token}" } }
+    let(:params) { {} }
+
+    context "when viewed by owning user" do
+      it_behaves_like "authorization", :get
+
+      it "returns session data" do
+        get path, headers: header
+        expect(response).to have_http_status(:success)
+        expect(json["links"]["self"]).to eq api_v1_client_session_url(uuid)
+        expect(json["data"]["type"]).to eq "session"
+        expect(json["data"]["id"]).to eq uuid
+        expect(json["data"]["relationships"]["user"]["links"]["self"]).to eq relationships_user_api_v1_client_session_url(uuid)
+        expect(json["data"]["relationships"]["user"]["links"]["related"]).to eq api_v1_client_session_user_url(uuid)
+        expect(json["meta"]["access_token"]).to eq token
+        expect(json["meta"]["token_type"]).to eq "Bearer"
+      end
+    end
+
+    context "when viewed by non-owning user" do
+      it_behaves_like "unauthorized", :get do
+        let(:header) { auth_header(create(:user)) }
+      end
+    end
+  end
+
   describe "DELETE #destroy" do
     let(:user) { create(:user) }
-    let(:path) { "/api/v1/sessions" }
+    let(:path) { "/api/v1/sessions/abc123" }
     let(:params) { {} }
     let!(:header) { auth_header(user) }
 
