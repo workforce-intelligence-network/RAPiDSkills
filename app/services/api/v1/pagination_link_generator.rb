@@ -21,15 +21,12 @@ class API::V1::PaginationLinkGenerator
   def call
     options[:links][:self] = generate_url(page)
 
-    # If page is 0, it means pagination info has not been passed. Skip
-    # displaying the first, last page links in that case.
-    if page > 0
+    if include_pagination?
       options[:links][:first] = generate_url(1)
       options[:links][:last] = generate_url(total_pages)
+      options[:links][:prev] = generate_url(page - 1) if page > 1
+      options[:links][:next] = generate_url(page + 1) if page < total_pages
     end
-
-    options[:links][:prev] = generate_url(page - 1) if page > 1
-    options[:links][:next] = generate_url(page + 1) if page < total_pages
 
     options
   end

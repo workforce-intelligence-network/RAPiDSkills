@@ -15,6 +15,10 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["meta"]["total_pages"]).to eq 1
       expect(json["meta"]["current_page"]).to eq 1
       expect(json["links"]["self"]).to eq api_v1_occupation_standards_url
+      expect(json["links"]).to_not have_key("prev")
+      expect(json["links"]).to_not have_key("next")
+      expect(json["links"]).to_not have_key("first")
+      expect(json["links"]).to_not have_key("last")
       expect(json["data"].count).to eq 3
       expect(json["data"][0]["id"]).to eq os3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
