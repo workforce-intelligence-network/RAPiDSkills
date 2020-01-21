@@ -12,8 +12,11 @@
           <label for="password" class="input__label page--login__form__inputs__input__label">Password</label>
           <input type="password" id="password" name="password" :placeholder="passwordPlaceholder" class="input__input page--login__form__inputs__input__input" v-model="session.password" />
         </div>
+        <div>
+          <router-link class="page--login__form__inputs__link--forgot-password" :to="{ name: 'forgot' }" v-html="forgotPasswordText" />
+        </div>
         <div class="page--login__form__inputs__error" v-if="submitError" v-html="errorMessage" />
-        <button type="submit" class="button button--inverted page--login__form__inputs__button--submit" :disabled="loading">
+        <button type="submit" class="button button--inverted page--login__form__inputs__button--submit" :disabled="session.loading">
           {{ submitButtonText }}
         </button>
       </form>
@@ -26,22 +29,21 @@ import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
 import {
-  ValidationError,
+  ValidatorOptions,
 } from 'class-validator';
 
-import Session from '@/models/Session';
+import Session, { VALIDATION_GROUP_NAME_LOGIN } from '@/models/Session';
 
-import { apiRaw } from '@/utilities/api';
+const validatorOptions: ValidatorOptions = {
+  groups: [VALIDATION_GROUP_NAME_LOGIN],
+  whitelist: true,
+};
 
 @Component
 export default class Login extends Vue {
-  submitted: boolean = false
-
   submitError: boolean = false
 
-  loading: boolean = false
-
-  session: Session = new Session()
+  session: Session = new Session({ validatorOptions })
 
   formTitle: string = 'Login'
 
@@ -53,33 +55,23 @@ export default class Login extends Vue {
 
   errorMessage: string = 'Incorrect email or password, please try again.'
 
+  forgotPasswordText: string = 'Forgot your password?'
+
   sessionPropertyInvalid(property: string) {
-    return this.submitError || (this.submitted && this.session.propertyInvalid(property));
+    return this.submitError || (this.session.validating && this.session.propertyInvalid(property));
   }
 
   async submit() {
-    this.submitted = true;
-
-    if (this.session.invalid) {
-      return;
-    }
-
-    this.submitted = false;
-    this.submitError = false;
-    this.loading = true;
-
     try {
       await this.session.save();
       this.$router.push({ name: 'standards' }); // TODO: define a "go to home" method?
     } catch (e) {
-      this.submitError = true;
+      this.submitError = this.session.valid;
     }
-
-    this.loading = false;
   }
 
   get submitButtonText(): string {
-    return this.loading ? 'Submitting...' : 'Submit';
+    return this.session.loading ? 'Submitting...' : 'Submit';
   }
 }
 </script>
@@ -141,12 +133,25 @@ export default class Login extends Vue {
 }
 
 .page--login__form__inputs__button--submit {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 .page--login__form__inputs__error {
   padding-top: .5rem;
   color: $color-salmon;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.page--login__form__inputs__link--forgot-password {
+  display: block;
+  font-size: 1.125rem;
+  color: $color-white;
+  font-weight: 600;
+  text-align: left;
+  padding-top: .25rem;
+  margin-bottom: 1rem;
+  &:hover {
+    opacity: .8;
+  }
 }
 </style>

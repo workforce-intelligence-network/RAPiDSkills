@@ -57,7 +57,7 @@ class CreateUserUser {
   }
 }
 
-const createUser = async (user: CreateUserUser) => apiRaw.post('users', {
+const createUser = async (user: CreateUserUser) => apiRaw.post('users', { // TODO: create User model
   data: {
     type: 'users',
     attributes: {
@@ -166,6 +166,6 @@ export default {
 }
 
 .page--follow__form__inputs__button--submit {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 </style>

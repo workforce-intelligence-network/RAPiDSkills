@@ -1,7 +1,7 @@
 <template>
-  <form class="search" @submit.prevent="onSearchChange">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="onSearchChange" ref="searchInput" />
-    <a class="search__button" href="javascript:void(0)" @click="onSearchChange">
+  <form class="search" @submit.prevent="submitSearch">
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="submitSearch" @keyup.esc="closeSearch" ref="searchInput" />
+    <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
     <div class="search__dropdown" v-if="showList">
@@ -9,7 +9,7 @@
         <Loading />
       </div>
       <div class="search__dropdown__list" v-if="!listLoading">
-        <div class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click="selectItem(item)">
+        <div class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="selectItem(item)">
           <OccupationCell :occupation="item" />
         </div>
       </div>
@@ -34,15 +34,21 @@ export default {
     Loading,
   },
   created() {
-    (this as any).submitSearch = _debounce((this as any).submitSearch, 500).bind(this);
+    (this as any).submitSearch = _debounce((this as any).submitSearch, 500, { leading: true }).bind(this);
   },
   methods: {
-    onSearchChange() {
-      (this as any).$store.dispatch('occupations/setOccupationSearchQuery', ((this as any).$refs.searchInput as any).value);
-      this.submitSearch();
+    closeSearch() {
+      (this as any).$store.dispatch('occupations/hideOccupationsList');
+    },
+    onClickSearchButton() {
+      if ((this as any).showList) {
+        return (this as any).closeSearch();
+      }
+
+      return (this as any).submitSearch();
     },
     submitSearch() {
-      (this as any).$store.dispatch('occupations/searchForOccupations');
+      (this as any).$store.dispatch('occupations/searchForOccupations', ((this as any).$refs.searchInput as any).value);
     },
     selectItem(item) {
       (this as any).$store.dispatch('occupations/setSelectedOccupation', item);

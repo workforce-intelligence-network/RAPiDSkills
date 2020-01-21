@@ -1,5 +1,8 @@
 <template>
   <div class="page page--dashboard">
+    <div class="page--dashboard__state__button button button--link" @click="clearSelectedOccupation" v-if="selectedOccupation">
+      Clear selected occupation
+    </div>
     <div class="page--dashboard__cards" v-if="!showLoadingState && !showEmptyState">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" />
     </div>
@@ -13,9 +16,6 @@
       </div>
       <div class="page--dashboard__state--empty__action">
         Please try searching for a different occupation
-      </div>
-      <div class="page--dashboard__state--empty__button button button--link" @click="clearSelectedOccupation">
-        Clear selected occupation
       </div>
     </div>
   </div>
@@ -90,5 +90,10 @@ $card-column-padding: 2rem;
 
 .page--dashboard__state--empty__action {
   margin-bottom: 1rem;
+}
+
+.page--dashboard__state__button {
+  padding: 1rem;
+  margin-bottom: 2rem;
 }
 </style>

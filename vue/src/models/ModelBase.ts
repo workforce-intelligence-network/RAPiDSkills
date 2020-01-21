@@ -1,9 +1,11 @@
 import _set from 'lodash/set';
 import _pick from 'lodash/pick';
+import _omit from 'lodash/omit';
+import _flatten from 'lodash/flatten';
 import _isUndefined from 'lodash/isUndefined';
 
 import {
-  validateSync, ValidationError,
+  validateSync, ValidationError, ValidatorOptions,
 } from 'class-validator';
 
 import _zipObject from 'lodash/zipObject';
@@ -28,6 +30,14 @@ export default class ModelBase {
   links?: {}
 
   classDefinition!: Function
+
+  validatorOptions?: ValidatorOptions
+
+  validating: boolean = false
+
+  loading: boolean = false
+
+  apiErrors?: []
 
   static jsonApiClassName: string
 
@@ -60,12 +70,36 @@ export default class ModelBase {
   }
 
   async save(params: object = {}): Promise<any> {
-    const apiMethod: Function = (_isUndefined(this.id)
-      ? jsonApi.create
-      : jsonApi.update
-    ).bind(jsonApi);
+    this.validating = true;
 
-    return apiMethod(this.staticType.jsonApiClassName, this.jsonApiObject, params);
+    if (this.invalid) {
+      throw this.validationErrors; // TODO: reformat to standard format?
+    }
+
+    this.validating = false;
+    this.apiErrors = undefined;
+    this.loading = true;
+
+    let result: any;
+
+    try {
+      const apiMethod: Function = (_isUndefined(this.id)
+        ? jsonApi.create
+        : jsonApi.update
+      ).bind(jsonApi);
+
+      result = await apiMethod(this.staticType.jsonApiClassName, this.jsonApiObject, params);
+    } catch (errors) {
+      this.apiErrors = _flatten([errors]);
+    }
+
+    this.loading = false;
+
+    if (this.apiErrors) {
+      throw this.apiErrors; // TODO: reformat to standard format?
+    }
+
+    return result;
   }
 
   propertyInvalid(property: string): boolean {
@@ -81,11 +115,21 @@ export default class ModelBase {
   }
 
   get propertyKeys() {
-    return Object.keys(this).filter(key => !_isFunction(this[key]) && ['type', 'links'].indexOf(key) === -1);
+    return Object.keys(this).filter(key => !_isFunction(this[key]) && [
+      'type',
+      'links',
+      'classDefinition',
+      'validatorOptions',
+      'validating',
+      'loading',
+      'apiErrors',
+    ].indexOf(key) === -1);
   }
 
   get jsonApiObject() {
-    return _pick(this, this.propertyKeys);
+    const modifiableDuplicate = new (this.classDefinition as any)(this);
+    validateSync(modifiableDuplicate, this.validatorOptions || {});
+    return _pick(modifiableDuplicate, this.propertyKeys);
   }
 
   get staticType() {
@@ -109,7 +153,7 @@ export default class ModelBase {
   }
 
   get validationErrors(): ValidationError[] {
-    return validateSync(this) || [];
+    return validateSync(this, _omit(this.validatorOptions || {}, ['whitelist', 'forbidUnknownValues', 'forbidNonWhitelisted']));
   }
 
   get valid(): boolean {

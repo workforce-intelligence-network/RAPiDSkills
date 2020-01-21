@@ -42,6 +42,46 @@ const routes = [
           return next();
         },
       },
+      {
+        path: 'signup',
+        name: 'signup',
+        component: () => import(/* webpackChunkName: "signup" */ '@/views/SignUp.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          return next();
+        },
+      },
+      {
+        path: 'forgot',
+        name: 'forgot',
+        component: () => import(/* webpackChunkName: "forgot" */ '@/views/ForgotPassword.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          return next();
+        },
+      },
+      {
+        path: 'reset',
+        name: 'reset',
+        component: () => import(/* webpackChunkName: "reset" */ '@/views/ResetPassword.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          if (!_get(to, 'query.resetToken')) {
+            return next({ name: 'login' });
+          }
+
+          return next();
+        },
+      },
     ],
   },
   {
@@ -107,6 +147,19 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+      };
+    }
+
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    return { x: 0, y: 0 };
+  },
 });
 
 export default router;

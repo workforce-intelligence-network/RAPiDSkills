@@ -1,3 +1,5 @@
+import _capitalize from 'lodash/capitalize';
+
 import ModelBase, { ModelCollection } from '@/models/ModelBase';
 
 export default class Occupation extends ModelBase {
@@ -8,8 +10,10 @@ export default class Occupation extends ModelBase {
     this.titleAliases = occupation.titleAliases || '';
     this.onetCode = occupation.onetCode || '';
     this.rapidsCode = occupation.rapidsCode || '';
-    this.termLengthMin = occupation.termLengthMin || 3000;
-    this.termLengthMax = occupation.termLengthMax || 3445;
+    this.termLengthMin = occupation.termLengthMin || 3000; // TODO: better defaults
+    this.termLengthMax = occupation.termLengthMax || 3445; // TODO: better defaults
+    this.onetPageUrl = occupation.onetPageUrl || '';
+    this.kind = _capitalize(occupation.kind || '');
   }
 
   static jsonApiClassName: string = 'occupation'
@@ -27,6 +31,10 @@ export default class Occupation extends ModelBase {
   termLengthMin: number
 
   termLengthMax: number
+
+  onetPageUrl: string
+
+  kind: string
 }
 
 Occupation.registerWithJsonApi();

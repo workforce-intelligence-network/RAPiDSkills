@@ -1,5 +1,4 @@
 import _get from 'lodash/get';
-import _uniqBy from 'lodash/uniqBy';
 import _isUndefined from 'lodash/isUndefined';
 
 import OccupationStandard, { OccupationStandardCollection } from '@/models/OccupationStandard';

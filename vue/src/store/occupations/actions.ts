@@ -1,10 +1,11 @@
 import Occupation, { OccupationCollection } from '@/models/Occupation';
 
-export const setOccupationSearchQuery = async ({ commit, state }, query: string = state.query) => {
-  commit('updateOccupationsSearchQuery', query);
-};
+export const searchForOccupations = async ({ commit, state }, query: string) => {
+  if (query === state.query && state.list.length) {
+    commit('updateOccupationsSearchQuery', query);
+    return;
+  }
 
-export const searchForOccupations = async ({ commit, state }, query: string = state.query) => {
   try {
     commit('updateOccupationsSearchLoading', true);
     commit('updateOccupationsSearchQuery', query);
@@ -19,4 +20,8 @@ export const searchForOccupations = async ({ commit, state }, query: string = st
 export function setSelectedOccupation({ commit, dispatch }, occupation?: any) {
   commit('updateSelectedOccupation', occupation);
   dispatch('standards/fetchStandards', undefined, { root: true });
+}
+
+export function hideOccupationsList({ commit }) {
+  commit('hideOccupationsList');
 }
