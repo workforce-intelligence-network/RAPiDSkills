@@ -7,6 +7,7 @@ gem 'rails', '~> 6.0.1'
 # API
 gem 'fast_jsonapi'
 gem 'jwt'
+gem 'kaminari'
 gem 'rack-cors'
 
 # Database

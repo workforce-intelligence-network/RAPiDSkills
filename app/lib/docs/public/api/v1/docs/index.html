@@ -236,6 +236,14 @@
               </ul>
           </li>
           <li>
+            <a href="#pagination" class="toc-h1 toc-link" data-title="Pagination">Pagination</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#query-parameters" class="toc-h2 toc-link" data-title="Query Parameters">Query Parameters</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#downloads" class="toc-h1 toc-link" data-title="Downloads">Downloads</a>
               <ul class="toc-list-h2">
                   <li>
@@ -504,7 +512,78 @@ changing the user password will invalidate the token.</p>
         </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/sessions/e016b27d-ada5-4691-b23b-059bdd616086/user"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='downloads'>Downloads</h1><h2 id='pdf-excel-generation'>PDF/Excel generation</h2>
+</span></code></pre><h1 id='pagination'>Pagination</h1>
+<p>Pagination is available for the <a href="#list-occupation-standards">List Occupation standards</a>
+endpoint.  Page number and size can be passed as parameters. The current page
+and total number of pages are returned in the meta data, and links for the
+first, previous, next, and last pages are also displayed when applicable.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET http://www.rapidskills.org/api/v1/occupation_standards?page[number]<span class="o">=</span>3&amp;page[size]<span class="o">=</span>10 <span class="se">\</span>
+  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+  -H <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+</code></pre>
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation_standard"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Central Sterile Processing Technician"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"organization_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1199SEIU Training and Upgrading Fund MD/DC"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"occupation_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CENTRAL STERILE PROCESSING TECHNICIAN"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"industry_title"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_filename"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pdf_created_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_filename"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"excel_created_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"should_generate_attachments"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="err">...</span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"total_pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards?page%5Bnumber%5D=2&amp;page%5Bsize%5D=5"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"first"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards?page%5Bnumber%5D=1&amp;page%5Bsize%5D=5"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"last"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards?page%5Bnumber%5D=3&amp;page%5Bsize%5D=5"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"prev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards?page%5Bnumber%5D=1&amp;page%5Bsize%5D=5"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"next"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards?page%5Bnumber%5D=3&amp;page%5Bsize%5D=5"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page[number]<br /><em>optional, default 1</em></td>
+<td>integer</td>
+<td>Page number</td>
+</tr>
+<tr>
+<td>page[size]<br /><em>optional, default 25</em></td>
+<td>integer</td>
+<td>Number of records to be returned per page</td>
+</tr>
+</tbody></table>
+
+<p>Note that the example URI shows unencoded [ and ] characters for readability.
+In practice, these characters should be percent-encoded.</p>
+<h1 id='downloads'>Downloads</h1><h2 id='pdf-excel-generation'>PDF/Excel generation</h2>
 <p>This endpoint will trigger the PDF and/or Excel document generation for the
 resource passed in the relationships field.</p>
 
