@@ -1,6 +1,8 @@
 import Occupation, { OccupationCollection } from '@/models/Occupation';
 
 export const searchForOccupations = async ({ commit, state }, query: string) => {
+  commit('updateSelectedOccupation');
+
   if (query === state.query && state.list.length) {
     commit('updateOccupationsSearchQuery', query);
     return;
@@ -18,6 +20,7 @@ export const searchForOccupations = async ({ commit, state }, query: string) => 
 };
 
 export function setSelectedOccupation({ commit, dispatch }, occupation?: any) {
+  commit('updateOccupationsSearchQuery', '');
   commit('updateSelectedOccupation', occupation);
   dispatch('standards/fetchStandards', undefined, { root: true });
 }

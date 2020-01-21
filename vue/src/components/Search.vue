@@ -1,6 +1,6 @@
 <template>
   <form class="search" @submit.prevent="submitSearch" @keyup.esc="closeSearch">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="submitSearch" ref="searchInput" />
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="onFocus" ref="searchInput" :value="inputValue" />
     <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
@@ -41,6 +41,13 @@ export default {
       ((this as any).$refs.searchInput as any).blur();
       (this as any).$store.dispatch('occupations/hideOccupationsList');
     },
+    onFocus() {
+      ((this as any).$refs.searchInput as any).value = '';
+      if ((this as any).selectedOccupation) {
+        (this as any).$store.dispatch('occupations/setSelectedOccupation');
+      }
+      (this as any).submitSearch();
+    },
     onClickSearchButton() {
       if ((this as any).showList) {
         return (this as any).closeSearch();
@@ -68,7 +75,12 @@ export default {
       list: (state: any) => state.occupations.list,
       listLoading: (state: any) => state.occupations.loading,
       listEmpty: (state: any) => !state.occupations.list.length,
+      selectedOccupation: (state: any) => state.occupations.selectedOccupation,
+      query: (state: any) => state.occupations.query,
     }),
+    inputValue() {
+      return ((this as any).selectedOccupation || {}).title || (this as any).query;
+    },
   },
 };
 
