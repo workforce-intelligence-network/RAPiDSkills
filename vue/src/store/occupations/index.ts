@@ -10,8 +10,6 @@ export default {
     query: '',
     freshSearch: true,
     selectedOccupation: undefined,
-    cancel: undefined,
-    cancelToken: undefined,
   },
   mutations,
   actions,

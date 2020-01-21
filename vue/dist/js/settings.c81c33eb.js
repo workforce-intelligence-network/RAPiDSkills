@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["settings"],{"26d3":function(t,n,s){"use strict";s.r(n);var e=function(){var t=this,n=t.$createElement,s=t._self._c||n;return s("div",{staticClass:"page page--settings"},[t._v(" Your settings stuff! ")])},c=[],a={name:"settings"},i=a,u=(s("c850"),s("2877")),r=Object(u["a"])(i,e,c,!1,null,"166badce",null);n["default"]=r.exports},c850:function(t,n,s){"use strict";var e=s("dcf5"),c=s.n(e);c.a},dcf5:function(t,n,s){}}]);
+//# sourceMappingURL=settings.c81c33eb.js.map

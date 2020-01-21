@@ -1,18 +1,18 @@
-import axios from 'axios';
+import Occupation from '@/models/Occupation';
 
-import jsonApi from '@/utilities/api';
+export const searchForOccupations = async ({ commit, state }, query: string) => {
+  commit('updateSelectedOccupation');
 
-export const setOccupationSearchQuery = async ({ commit, state }, query: string = state.query) => {
-  commit('updateOccupationsSearchQuery', query);
-};
+  if (query === state.query && state.list.length) {
+    commit('updateOccupationsSearchQuery', query);
+    return;
+  }
 
-export const searchForOccupations = async ({ commit, state }, query: string = state.query) => {
   try {
-    commit('resetOccupationsSearchCancelToken');
     commit('updateOccupationsSearchLoading', true);
     commit('updateOccupationsSearchQuery', query);
-    const { data } = await jsonApi.findAll('occupations', { q: query, cancelToken: state.cancelToken });
-    commit('updateOccupationsSearchList', data);
+    const { model } = await Occupation.getAll({ q: query });
+    commit('updateOccupationsSearchList', model);
     commit('updateOccupationsSearchLoading', false);
   } catch (e) {
     //
@@ -20,6 +20,11 @@ export const searchForOccupations = async ({ commit, state }, query: string = st
 };
 
 export function setSelectedOccupation({ commit, dispatch }, occupation?: any) {
+  commit('updateOccupationsSearchQuery', '');
   commit('updateSelectedOccupation', occupation);
   dispatch('standards/fetchStandards', undefined, { root: true });
+}
+
+export function hideOccupationsList({ commit }) {
+  commit('hideOccupationsList');
 }

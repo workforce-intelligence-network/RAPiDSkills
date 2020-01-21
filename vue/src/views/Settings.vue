@@ -1,5 +1,5 @@
 <template>
-  <div class="page--settings">
+  <div class="page page--settings">
     Your settings stuff!
   </div>
 </template>
@@ -11,4 +11,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/scss/page";
 </style>

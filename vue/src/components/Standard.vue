@@ -2,13 +2,13 @@
   <router-link class="standard" :to="routerLink">
     <div class="standard__label">{{ label }}</div>
     <div class="standard__logo">
-      <img :src="standard.organization.logo" :alt="standard.organizationTitle" class="standard__logo__logo" />
+      <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="standard__logo__logo" />
     </div>
     <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupation.type }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onet }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupation.cb }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupation.kind }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onetCode || 'ONET' }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupation.rapidsCode || 'Rapid' }}</div>
     </div>
     <div class="standard__divider--stats" />
     <div class="standard__work-process-data">
@@ -18,12 +18,12 @@
         <div class="standard__work-process-data__stat__text">Processes</div>
       </div>
       <div class="standard__work-process-data__stat">
-        <div class="standard__work-process-data__stat__number">{{ totalNumberOfCompetencies }}</div>
+        <div class="standard__work-process-data__stat__number">{{ standard.totalNumberOfSkills }}</div>
         <div class="standard__work-process-data__stat__text">Total</div>
-        <div class="standard__work-process-data__stat__text">Competencies</div>
+        <div class="standard__work-process-data__stat__text">Skills</div>
       </div>
       <div class="standard__work-process-data__stat">
-        <div class="standard__work-process-data__stat__number">{{ totalNumberOfHours }}</div>
+        <div class="standard__work-process-data__stat__number">{{ standard.totalNumberOfHours }}</div>
         <div class="standard__work-process-data__stat__text">Total</div>
         <div class="standard__work-process-data__stat__text">Hours</div>
       </div>
@@ -51,14 +51,6 @@ export default {
     };
   },
   computed: {
-    totalNumberOfCompetencies() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + (workProcess.skills || []).length, 0);
-    },
-    totalNumberOfHours() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + workProcess.hoursTotal || 0, 0);
-    },
     routerLink() {
       return {
         name: 'standard',

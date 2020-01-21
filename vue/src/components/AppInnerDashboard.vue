@@ -9,11 +9,16 @@
       <router-link class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--logo" :to="{ name: 'home' }">
         <img :src="LOGO_ALT_FULL_NO_ICON" alt="RapidSkills Logo" class="app__inner--dashboard__nav--top__link--logo__logo" />
       </router-link>
-      <div class="app__inner--dashboard__nav--top__search">
+      <div class="app__inner--dashboard__nav--top__navbar-actions" :class="{ 'app__inner--dashboard__nav--top__navbar-actions--session-active': sessionActive }">
         <router-view name="navbarActions" />
       </div>
       <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
         <img :src="ICON_TOP_NAV_SUPPORT" alt="Support Icon" class="app__inner--dashboard__nav--top__link__icon" />
+      </a>
+      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)">
+        <div class="app__inner--dashboard__nav--top__link--user__button">
+          ?
+        </div>
       </a>
     </div>
     <div class="app__inner--dashboard__nav--left">
@@ -35,17 +40,17 @@
           </span>
         </span>
       </router-link>
-      <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'favorites' }" active-class="app__inner--dashboard__nav--left__link--active">
+      <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'saved' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <img :src="ICON_LEFT_NAV_HEART" alt="Favorites Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
+          <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
             Saved Standards
           </span>
         </span>
-      </router-link>
-      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'reports' }" active-class="app__inner--dashboard__nav--left__link--active">
+      </router-link> -->
+      <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'reports' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_PIE_CHART" alt="Reports Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
         </span>
@@ -55,7 +60,7 @@
           </span>
         </span>
       </router-link>
-      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'settings' }" active-class="app__inner--dashboard__nav--left__link--active">
+      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'settings' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_SETTINGS" alt="Settings Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
         </span>
@@ -70,6 +75,11 @@
 </template>
 
 <script scoped lang="ts">
+import Vue from 'vue';
+import {
+  Component, Provide,
+} from 'vue-property-decorator';
+
 import ICON_WHITE from '@/assets/icon-white.svg';
 import ICON_LEFT_NAV_DASHBOARD from '@/assets/left-nav-icon-dashboard.svg';
 import ICON_LEFT_NAV_HEART from '@/assets/left-nav-icon-heart.svg';
@@ -79,20 +89,29 @@ import LOGO_ALT_FULL_NO_ICON from '@/assets/logo-alt-full-no-icon.svg';
 import LOGO_ALT_FULL_NO_ICON_WHITE from '@/assets/logo-alt-full-no-icon-white.svg';
 import ICON_TOP_NAV_SUPPORT from '@/assets/top-nav-icon-support.svg';
 
-export default {
-  data() {
-    return {
-      ICON_WHITE,
-      ICON_LEFT_NAV_DASHBOARD,
-      ICON_LEFT_NAV_HEART,
-      ICON_LEFT_NAV_PIE_CHART,
-      ICON_LEFT_NAV_SETTINGS,
-      LOGO_ALT_FULL_NO_ICON,
-      LOGO_ALT_FULL_NO_ICON_WHITE,
-      ICON_TOP_NAV_SUPPORT,
-    };
-  },
-};
+
+@Component
+export default class AppInnerDashboard extends Vue {
+  @Provide('ICON_WHITE') ICON_WHITE = ICON_WHITE
+
+  @Provide('ICON_LEFT_NAV_DASHBOARD') ICON_LEFT_NAV_DASHBOARD = ICON_LEFT_NAV_DASHBOARD
+
+  @Provide('ICON_LEFT_NAV_HEART') ICON_LEFT_NAV_HEART = ICON_LEFT_NAV_HEART
+
+  @Provide('ICON_LEFT_NAV_PIE_CHART') ICON_LEFT_NAV_PIE_CHART = ICON_LEFT_NAV_PIE_CHART
+
+  @Provide('ICON_LEFT_NAV_SETTINGS') ICON_LEFT_NAV_SETTINGS = ICON_LEFT_NAV_SETTINGS
+
+  @Provide('LOGO_ALT_FULL_NO_ICON') LOGO_ALT_FULL_NO_ICON = LOGO_ALT_FULL_NO_ICON
+
+  @Provide('LOGO_ALT_FULL_NO_ICON_WHITE') LOGO_ALT_FULL_NO_ICON_WHITE = LOGO_ALT_FULL_NO_ICON_WHITE
+
+  @Provide('ICON_TOP_NAV_SUPPORT') ICON_TOP_NAV_SUPPORT = ICON_TOP_NAV_SUPPORT
+
+  protected get sessionActive() {
+    return this.$store.getters['session/isActive'];
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -122,7 +141,7 @@ export default {
   align-content: space-between;
 }
 
-.app__inner--dashboard__nav--top__search {
+.app__inner--dashboard__nav--top__navbar-actions {
   display: flex;
   flex-basis: auto;
   align-self: center;
@@ -130,6 +149,9 @@ export default {
   justify-content: center;
   padding-left: 0.5rem;
   max-width: calc(100% - 4rem);
+  &.app__inner--dashboard__nav--top__navbar-actions--session-active {
+    max-width: calc(100% - 8rem);
+  }
 }
 
 .app__inner--dashboard__nav--top__link {
@@ -243,5 +265,20 @@ export default {
   min-height: 100%;
   width: 100%;
   overflow-x: hidden;
+}
+
+.app__inner--dashboard__nav--top__link--user {
+  padding: 0.75rem;
+  border-left: 1px solid $color-gray-light;
+}
+
+.app__inner--dashboard__nav--top__link--user__button {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  color: $color-white;
+  background-color: $color-blue;
+  font-weight: 600;
+  line-height: 2.5rem;
 }
 </style>

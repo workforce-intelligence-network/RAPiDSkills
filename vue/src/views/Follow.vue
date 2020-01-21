@@ -2,7 +2,7 @@
   <div class="page--follow">
     <div class="page--follow__form">
       <div class="page--follow__text page--follow__form__text page--follow__title">
-        Follow Us
+        Follow us
       </div>
       <div class="page--follow__text page--follow__form__text page--follow__subtitle">
         Please enter your information so that we can keep you up to date on what is happening with RapidSkills.
@@ -11,16 +11,16 @@
         <div>Your information has been submitted!</div>
         <div>Keep your eyes peeled for some updates.</div>
       </div>
-      <form class="page--follow__form__inputs" @submit="submitUser($event)" v-if="!successful">
-        <div class="input input--spaced page--follow__form__inputs__input" :class="{ 'input--error': submitted && !user.parameterValid('name') }">
+      <form class="page--follow__form__inputs" @submit.prevent="submitUser" v-if="!successful">
+        <div class="input input--spaced page--follow__form__inputs__input" :class="{ 'input--error': submitted && !user.propertyValid('name') }">
           <label for="name" class="input__label page--follow__form__inputs__input__label">Name</label>
           <input type="text" id="name" name="name" placeholder="Your full name" class="input__input page--follow__form__inputs__input__input" v-model="user.name" />
         </div>
-        <div class="input input--spaced page--follow__form__inputs__input" :class="{ 'input--error': submitted && !user.parameterValid('email') }">
+        <div class="input input--spaced page--follow__form__inputs__input" :class="{ 'input--error': submitted && !user.propertyValid('email') }">
           <label for="email" class="input__label page--follow__form__inputs__input__label">Email</label>
           <input type="email" id="email" name="email" placeholder="Your email" class="input__input page--follow__form__inputs__input__input" v-model="user.email" />
         </div>
-        <div class="input input--spaced page--follow__form__inputs__input" :class="{ 'input--error': submitted && !user.parameterValid('organizationName') }">
+        <div class="input input--spaced page--follow__form__inputs__input" :class="{ 'input--error': submitted && !user.propertyValid('organizationName') }">
           <label for="organization" class="input__label page--follow__form__inputs__input__label">Organization</label>
           <input type="text" id="organization" name="organization" placeholder="Your organization's name" class="input__input page--follow__form__inputs__input__input" v-model="user.organizationName" />
         </div>
@@ -34,7 +34,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import axios from 'axios';
 
 import {
   IsEmail, MinLength, validate, validateSync, ValidationError, IsDefined,
@@ -52,13 +51,13 @@ class CreateUserUser {
   @MinLength(1)
   organizationName: string = '';
 
-  parameterValid(parameter: string): boolean {
+  propertyValid(property: string): boolean {
     const paramErrors: ValidationError[] = validateSync(this);
-    return !paramErrors.filter(error => error.property === parameter).length;
+    return !paramErrors.filter(error => error.property === property).length;
   }
 }
 
-const createUser = async (user: CreateUserUser) => apiRaw.post('users', {
+const createUser = async (user: CreateUserUser) => apiRaw.post('users', { // TODO: create User model
   data: {
     type: 'users',
     attributes: {
@@ -75,9 +74,7 @@ export default {
       const errors: ValidationError[] = await validate((this as any).user);
       return !errors.length;
     },
-    async submitUser(event: any) {
-      event.preventDefault();
-
+    async submitUser() {
       (this as any).submitted = true;
       (this as any).invalid = !(await this.userValid());
 
@@ -169,6 +166,6 @@ export default {
 }
 
 .page--follow__form__inputs__button--submit {
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 </style>

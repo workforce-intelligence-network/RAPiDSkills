@@ -9,11 +9,18 @@
         <span>Finally an easy-to-use application that takes the pain out of</span>
         <span> creating new apprenticeship standards from scratch.</span>
       </div>
-      <router-link to="/follow">
-        <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
-          Follow Us
-        </button>
-      </router-link>
+      <div>
+        <router-link :to="{ name: 'follow' }">
+          <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
+            Follow us
+          </button>
+        </router-link>
+        <router-link :to="{ name: 'standards' }">
+          <button class="button button--link page--home__hero__button page--home__hero__button--follow button--link--alternative">
+            Browse Standards
+          </button>
+        </router-link>
+      </div>
       <LaptopPreview class="page--home__hero__laptop-preview" />
     </div>
     <div class="page--home__how-it-works">
@@ -82,14 +89,21 @@
           <span> signed up for early-access Beta.</span>
         </div>
         <div class="page--home__follow__text--call-to-action__bold">
-          Get Started Today
+          Get started today
         </div>
       </div>
-      <router-link to="/follow">
-        <button class="button button--inverted page--home__follow__button page--home__follow__button--follow">
-          Follow Us
-        </button>
-      </router-link>
+      <div>
+        <router-link :to="{ name: 'follow' }">
+          <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
+            Follow us
+          </button>
+        </router-link>
+        <router-link :to="{ name: 'standards' }">
+          <button class="button button--link page--home__hero__button page--home__hero__button--follow button--link--alternative">
+            Browse Standards
+          </button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -185,6 +199,9 @@ export default {
 
 .page--home__how-it-works {
   padding-bottom: 6rem;
+  @include breakpoint--sm {
+    padding-bottom: 2rem;
+  }
 }
 
 .page--home__how-it-works__text--title {

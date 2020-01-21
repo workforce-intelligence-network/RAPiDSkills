@@ -10,6 +10,7 @@ module.exports = {
   ],
   plugins: [
     '@typescript-eslint',
+    'html',
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
