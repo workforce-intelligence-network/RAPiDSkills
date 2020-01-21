@@ -1,6 +1,6 @@
 <template>
-  <form class="search" @submit.prevent="submitSearch">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="submitSearch" @keyup.esc="closeSearch" ref="searchInput" />
+  <form class="search" @submit.prevent="submitSearch" @keyup.esc="closeSearch">
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="submitSearch" ref="searchInput" />
     <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     closeSearch() {
+      ((this as any).$refs.searchInput as any).blur();
       (this as any).$store.dispatch('occupations/hideOccupationsList');
     },
     onClickSearchButton() {
