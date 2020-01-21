@@ -1,7 +1,7 @@
 import _get from 'lodash/get';
 import _isUndefined from 'lodash/isUndefined';
 
-import OccupationStandard, { OccupationStandardCollection } from '@/models/OccupationStandard';
+import OccupationStandard from '@/models/OccupationStandard';
 
 export const fetchStandards = async (
   { commit, rootState },
@@ -10,7 +10,7 @@ export const fetchStandards = async (
   try {
     commit('updateStandardsSearchLoading', true);
 
-    const { model } = await OccupationStandardCollection.get({ occupationId }, OccupationStandard);
+    const { model } = await OccupationStandard.getAll({ occupationId });
 
     commit('updateStandardsSearchList', model);
   } catch (e) {

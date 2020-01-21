@@ -18,9 +18,9 @@
         <div class="standard__work-process-data__stat__text">Processes</div>
       </div>
       <div class="standard__work-process-data__stat">
-        <div class="standard__work-process-data__stat__number">{{ standard.skills.length }}</div>
+        <div class="standard__work-process-data__stat__number">{{ standard.totalNumberOfSkills }}</div>
         <div class="standard__work-process-data__stat__text">Total</div>
-        <div class="standard__work-process-data__stat__text">Competencies</div>
+        <div class="standard__work-process-data__stat__text">Skills</div>
       </div>
       <div class="standard__work-process-data__stat">
         <div class="standard__work-process-data__stat__number">{{ standard.totalNumberOfHours }}</div>

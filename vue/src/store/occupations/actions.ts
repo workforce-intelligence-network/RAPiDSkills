@@ -1,4 +1,4 @@
-import Occupation, { OccupationCollection } from '@/models/Occupation';
+import Occupation from '@/models/Occupation';
 
 export const searchForOccupations = async ({ commit, state }, query: string) => {
   commit('updateSelectedOccupation');
@@ -11,7 +11,7 @@ export const searchForOccupations = async ({ commit, state }, query: string) => 
   try {
     commit('updateOccupationsSearchLoading', true);
     commit('updateOccupationsSearchQuery', query);
-    const { model } = await OccupationCollection.get({ q: query }, Occupation);
+    const { model } = await Occupation.getAll({ q: query });
     commit('updateOccupationsSearchList', model);
     commit('updateOccupationsSearchLoading', false);
   } catch (e) {

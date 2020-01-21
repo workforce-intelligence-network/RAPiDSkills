@@ -62,7 +62,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Component, Prop, Provide, ProvideReactive,
+  Component, Provide,
 } from 'vue-property-decorator';
 
 import ICON_WITH_LOGO from '@/assets/icon-with-logo.svg';

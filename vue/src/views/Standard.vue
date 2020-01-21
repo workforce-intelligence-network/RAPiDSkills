@@ -13,9 +13,9 @@
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Processes</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat">
-          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.skills.length }}</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfSkills }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
-          <div class="page--standard__sidebar--left__work-process-data__stat__text">Competencies</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__text">Skills</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat">
           <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfHours }}</div>
@@ -49,11 +49,23 @@
           <div class="page--standard__body__work-process__skills__skill" v-for="skill in workProcess.skills" :key="`${workProcess.id}-${skill.id}`">
             <div class="page--standard__body__work-process__skills__skill__vertical-group">
               <div class="page--standard__body__work-process__skills__skill__vertical-group__label">
-                Skill Description
+                Skill
               </div>
               <div class="page--standard__body__work-process__skills__skill__vertical-group__description">
                 {{ skill.description }}
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page--standard__body__skill" v-for="skill in standard.skills" :key="skill.id">
+        <div class="page--standard__body__skill__wrapper">
+          <div class="page--standard__body__skill__wrapper__vertical-group">
+            <div class="page--standard__body__skill__wrapper__vertical-group__label">
+              Skill
+            </div>
+            <div class="page--standard__body__skill__wrapper__vertical-group__title">
+              {{ skill.description }}
             </div>
           </div>
         </div>
@@ -107,6 +119,7 @@ export default {
 $sidebar-left-width: 20rem;
 
 $work-process-height: 6rem;
+$skill-height: 5rem;
 
 .page--standard {
   display: flex;
@@ -292,5 +305,49 @@ $work-process-height: 6rem;
 
 .page--standard__body__work-process__skills__skill__vertical-group__description {
   font-size: 1rem;
+}
+
+.page--standard__body__skill {
+  min-height: $skill-height;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid $color-blue;
+}
+
+.page--standard__body__skill__wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: $skill-height;
+  background: $color-white;
+  cursor: pointer;
+  border-bottom: 1px solid $color-gray-light;
+  overflow: hidden;
+  padding-left: 2rem;
+}
+
+.page--standard__body__skill__wrapper__vertical-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+}
+
+.page--standard__body__skill__wrapper__vertical-group__label {
+  font-size: 0.9rem;
+  color: gray;
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.page--standard__body__skill__wrapper__vertical-group__title {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  overflow: hidden;
+  // font-weight: 500;
+  text-align: left;
 }
 </style>

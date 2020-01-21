@@ -1,14 +1,15 @@
 <template>
-  <div class="page--favorites">
-    Your favorite stuff!
+  <div class="page page--saved">
+    Your saved stuff!
   </div>
 </template>
 
 <script>
 export default {
-  name: 'favorites',
+  name: 'saved',
 };
 </script>
 
 <style scoped lang="scss">
+@import "@/scss/page";
 </style>

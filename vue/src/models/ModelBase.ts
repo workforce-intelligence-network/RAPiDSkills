@@ -3,15 +3,14 @@ import _pick from 'lodash/pick';
 import _omit from 'lodash/omit';
 import _flatten from 'lodash/flatten';
 import _isUndefined from 'lodash/isUndefined';
-
-import {
-  validateSync, ValidationError, ValidatorOptions,
-} from 'class-validator';
-
 import _zipObject from 'lodash/zipObject';
 import _isObject from 'lodash/isObject';
 import _isArray from 'lodash/isArray';
 import _isFunction from 'lodash/isFunction';
+
+import {
+  validateSync, ValidationError, ValidatorOptions,
+} from 'class-validator';
 import jsonApi from '@/utilities/api';
 
 interface ValidationErrorMap {
@@ -41,7 +40,7 @@ export default class ModelBase {
 
   static jsonApiClassName: string
 
-  static jsonApiRelationship: string = 'hasOne'
+  static jsonApiClassDefinition: object
 
   static jsonApiClassOptions: object = {}
 
@@ -62,11 +61,37 @@ export default class ModelBase {
     return Object.assign(apiResponse, { model: new this(data) });
   }
 
+  static async getAll(params: object = {}): Promise<any> {
+    const apiResponse = await jsonApi.findAll(this.jsonApiClassName, params);
+
+    const { data } = apiResponse;
+
+    (data as []).forEach((object: any, key) => {
+      data[key] = new this(object);
+    });
+
+    return Object.assign(apiResponse, { model: data });
+  }
+
   get generatedJsonApiClassDefinition() {
-    return _zipObject(this.propertyKeys, this.propertyKeys.map(key => (this[key].classDefinition ? {
-      jsonApi: (<typeof ModelBase> this[key].classDefinition).jsonApiRelationship,
-      type: (<typeof ModelBase> this[key].classDefinition).jsonApiClassName,
-    } : this[key])));
+    return _zipObject(this.propertyKeys, this.propertyKeys.map((key) => {
+      if (
+        (!this.staticType.jsonApiClassDefinition || !this.staticType.jsonApiClassDefinition[key])
+        && !(this[key] instanceof ModelBase)
+        && (_isArray(this[key]) || _isObject(this[key]))
+      ) {
+        throw new Error('JSON API class definition required for any sub-type that does not extend ModelBase');
+      }
+
+      if (this[key] instanceof ModelBase) {
+        return {
+          jsonApi: 'hasOne',
+          type: (this[key] as ModelBase).staticType.jsonApiClassName,
+        };
+      }
+
+      return (this.staticType.jsonApiClassDefinition || {})[key] || this[key];
+    }));
   }
 
   async save(params: object = {}): Promise<any> {
@@ -163,28 +188,4 @@ export default class ModelBase {
   get invalid(): boolean {
     return !this.valid;
   }
-}
-
-export class ModelCollection<T> extends Array<T> {
-  constructor(collection: Array<T>, ClassConstructor: any) {
-    super(...collection);
-
-    this.forEach((object, key) => {
-      _set(this, key, new ClassConstructor(object));
-    });
-  }
-
-  static jsonApiClassName: string
-
-  static jsonApiRelationship: string = 'hasMany'
-
-  static async get(params: object = {}, ClassConstructor: any): Promise<any> {
-    const apiResponse = await jsonApi.findAll(this.jsonApiClassName, params);
-
-    const { data } = apiResponse;
-
-    return Object.assign(apiResponse, { model: new this(data, ClassConstructor) });
-  }
-
-  classDefinition!: Function
 }

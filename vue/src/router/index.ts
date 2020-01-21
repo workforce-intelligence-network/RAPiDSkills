@@ -7,7 +7,7 @@ import store from '@/store';
 
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
-import Search from '@/components/Search.vue';
+import SearchOccupations from '@/components/SearchOccupations.vue';
 import PageTitle from '@/components/PageTitle.vue';
 
 Vue.use(VueRouter);
@@ -93,7 +93,7 @@ const routes = [
         name: 'standards',
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-          navbarActions: Search,
+          navbarActions: SearchOccupations,
         },
         beforeEnter(to, from, next) {
           store.dispatch('standards/fetchStandards');
@@ -116,12 +116,9 @@ const routes = [
         },
       },
       {
-        path: 'favorites',
-        name: 'favorites',
-        components: {
-          default: () => import(/* webpackChunkName: "favorites" */ '@/views/Favorites.vue'),
-          navbarActions: Search,
-        },
+        path: 'saved',
+        name: 'saved',
+        component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
       },
       {
         path: 'reports',

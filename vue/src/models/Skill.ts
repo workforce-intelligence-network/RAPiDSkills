@@ -1,4 +1,4 @@
-import ModelBase, { ModelCollection } from '@/models/ModelBase';
+import ModelBase from '@/models/ModelBase';
 
 export default class Skill extends ModelBase {
   constructor(skill: Partial<Skill> = {}) {
@@ -15,13 +15,3 @@ export default class Skill extends ModelBase {
 }
 
 Skill.registerWithJsonApi();
-
-export class SkillCollection<Skill> extends ModelCollection<Skill> {
-  constructor(collection: Array<Skill> = []) {
-    super(collection, Skill);
-  }
-
-  static jsonApiClassName: string = 'skill'
-
-  classDefinition: Function = SkillCollection
-}

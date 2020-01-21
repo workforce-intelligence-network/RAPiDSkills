@@ -1,5 +1,5 @@
-import ModelBase, { ModelCollection } from '@/models/ModelBase';
-import Skill, { SkillCollection } from '@/models/Skill';
+import ModelBase from '@/models/ModelBase';
+import Skill from '@/models/Skill';
 
 export default class WorkProcess extends ModelBase {
   constructor(workProcess: Partial<WorkProcess> = {}) {
@@ -7,10 +7,20 @@ export default class WorkProcess extends ModelBase {
 
     this.description = workProcess.description || '';
     this.title = workProcess.title || '';
-    this.skills = new SkillCollection((workProcess.skills || []) as Array<Skill>);
+    this.skills = workProcess.skills || [];
+    this.skills.forEach((skill, key) => {
+      this.skills[key] = new Skill(skill);
+    });
   }
 
   static jsonApiClassName: string = 'work_process'
+
+  static jsonApiClassDefinition: object = {
+    skills: {
+      jsonApi: 'hasMany',
+      type: 'skill',
+    },
+  }
 
   classDefinition: Function = WorkProcess
 
@@ -18,17 +28,7 @@ export default class WorkProcess extends ModelBase {
 
   title: string
 
-  skills: SkillCollection<Skill>
+  skills: Skill[]
 }
 
 WorkProcess.registerWithJsonApi();
-
-export class WorkProcessCollection<WorkProcess> extends ModelCollection<WorkProcess> {
-  constructor(collection: Array<WorkProcess> = []) {
-    super(collection, WorkProcess);
-  }
-
-  static jsonApiClassName: string = 'work_process'
-
-  classDefinition: Function = WorkProcessCollection
-}

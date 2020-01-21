@@ -1,8 +1,8 @@
-import ModelBase, { ModelCollection } from '@/models/ModelBase';
+import ModelBase from '@/models/ModelBase';
 
-import WorkProcess, { WorkProcessCollection } from '@/models/WorkProcess';
+import WorkProcess from '@/models/WorkProcess';
 
-import Skill, { SkillCollection } from '@/models/Skill';
+import Skill from '@/models/Skill';
 import Organization from '@/models/Organization';
 import Occupation from '@/models/Occupation';
 
@@ -21,13 +21,30 @@ export default class OccupationStandard extends ModelBase {
     this.pdfUrl = standard.pdfUrl || '';
     this.shouldGenerateAttachments = standard.shouldGenerateAttachments || false;
     this.title = standard.title || '';
-    this.workProcesses = new WorkProcessCollection((standard.workProcesses || []) as Array<WorkProcess>);
-    this.skills = new SkillCollection((standard.skills || []) as Array<Skill>);
+    this.workProcesses = standard.workProcesses || [];
+    this.workProcesses.forEach((workProcess, key) => {
+      this.workProcesses[key] = new WorkProcess(workProcess);
+    });
+    this.skills = standard.skills || [];
+    this.skills.forEach((skill, key) => {
+      this.skills[key] = new Skill(skill);
+    });
     this.occupation = new Occupation(standard.occupation || {});
     this.organization = new Organization(standard.organization || {});
   }
 
   static jsonApiClassName: string = 'occupation_standard'
+
+  static jsonApiClassDefinition: object = {
+    skills: {
+      jsonApi: 'hasMany',
+      type: 'skill',
+    },
+    workProcesses: {
+      jsonApi: 'hasMany',
+      type: 'work_process',
+    },
+  }
 
   classDefinition: Function = OccupationStandard
 
@@ -53,13 +70,20 @@ export default class OccupationStandard extends ModelBase {
 
   title: string
 
-  workProcesses: WorkProcessCollection<WorkProcess>
+  workProcesses: WorkProcess[]
 
-  skills: SkillCollection<Skill>
+  skills: Skill[]
 
   occupation: Occupation
 
   organization: Organization
+
+  get totalNumberOfSkills() {
+    return this.skills.length + this.workProcesses.reduce(
+      (total: number, workProcess: WorkProcess) => total + workProcess.skills.length,
+      0,
+    );
+  }
 
   get totalNumberOfHours() {
     return this.workProcesses
@@ -71,13 +95,3 @@ export default class OccupationStandard extends ModelBase {
 }
 
 OccupationStandard.registerWithJsonApi();
-
-export class OccupationStandardCollection<OccupationStandard> extends ModelCollection<OccupationStandard> {
-  constructor(collection: Array<OccupationStandard> = []) {
-    super(collection, OccupationStandard);
-  }
-
-  static jsonApiClassName: string = 'occupation_standard'
-
-  classDefinition: Function = OccupationStandardCollection
-}

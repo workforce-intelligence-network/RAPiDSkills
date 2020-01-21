@@ -1,6 +1,6 @@
 import _capitalize from 'lodash/capitalize';
 
-import ModelBase, { ModelCollection } from '@/models/ModelBase';
+import ModelBase from '@/models/ModelBase';
 
 export default class Occupation extends ModelBase {
   constructor(occupation: Partial<Occupation> = {}) {
@@ -38,13 +38,3 @@ export default class Occupation extends ModelBase {
 }
 
 Occupation.registerWithJsonApi();
-
-export class OccupationCollection<Occupation> extends ModelCollection<Occupation> {
-  constructor(collection: Array<Occupation> = []) {
-    super(collection, Occupation);
-  }
-
-  static jsonApiClassName: string = 'occupation'
-
-  classDefinition: Function = OccupationCollection
-}
