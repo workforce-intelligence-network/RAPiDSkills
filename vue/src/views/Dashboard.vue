@@ -9,7 +9,8 @@
     <div class="page--dashboard__state--empty" v-if="showEmptyState">
       <div class="page--dashboard__state--empty__description">
         <span>No standards found </span>
-        <span v-if="selectedOccupation">for occupation {{ selectedOccupation.title }}</span>
+        <span v-if="selectedOccupation">for occupation:</span>
+        <div v-if="selectedOccupation" class="page--dashboard__state--empty__description__occupation">{{ selectedOccupation.title }}</div>
       </div>
       <div class="page--dashboard__state--empty__action">
         Please try searching for a different occupation
@@ -95,5 +96,10 @@ $card-column-padding: 2rem;
 .page--dashboard__state--empty__button {
   padding: 1rem;
   margin-bottom: 2rem;
+}
+
+.page--dashboard__state--empty__description__occupation {
+  font-size: 1.5rem;
+  padding-top: .5rem;
 }
 </style>
