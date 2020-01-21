@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe API::V1::UsersController, type: :request do
+RSpec.describe API::V1::LeadsController, type: :request do
   describe "POST #create" do
-    let(:path) { "/api/v1/users" }
+    let(:path) { "/api/v1/leads" }
 
     before { allow(SecureRandom).to receive(:uuid).and_return("password") }
 

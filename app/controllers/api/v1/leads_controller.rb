@@ -1,4 +1,4 @@
-class API::V1::UsersController < API::V1::APIController
+class API::V1::LeadsController < API::V1::APIController
   skip_before_action :authenticate, only: :create
 
   def create

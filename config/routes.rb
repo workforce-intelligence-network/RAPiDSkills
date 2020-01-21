@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
       resources :occupation_standard_skills, path: "skills", only: [:show, :update]
       resources :organizations, only: [:show]
+      resources :leads, only: [:create]
       resources :users, only: [:create] do
         member do
           get "relationships/favorites", to: "users/relationships/favorites#index"
