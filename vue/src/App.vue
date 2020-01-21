@@ -51,6 +51,7 @@ a {
   font-weight: 600;
   border: none;
   white-space: nowrap;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
 
   @include breakpoint--xs {
     padding: 0.7rem 0.75rem;

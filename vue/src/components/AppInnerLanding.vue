@@ -7,7 +7,7 @@
         </div>
       </router-link>
       <div class="app__inner--landing__nav__right" v-if="sessionActive">
-        <router-link :to="{ name: 'signup' }" active-class="app__inner--landing__nav__button--active">
+        <router-link :to="{ name: 'standards' }" active-class="app__inner--landing__nav__button--active">
           <div class="app__inner--landing__nav__button button button--inverted">
             Dashboard
           </div>
@@ -19,11 +19,16 @@
             Login
           </div>
         </router-link>
-        <router-link :to="{ name: 'signup' }" active-class="app__inner--landing__nav__button--active">
+        <router-link :to="{ name: 'follow' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--inverted">
+            Follow us
+          </div>
+        </router-link>
+        <!-- <router-link :to="{ name: 'signup' }" active-class="app__inner--landing__nav__button--active">
           <div class="app__inner--landing__nav__button button button--inverted">
             Sign up
           </div>
-        </router-link>
+        </router-link> -->
       </div>
     </div>
     <div class="app__inner--landing__body">

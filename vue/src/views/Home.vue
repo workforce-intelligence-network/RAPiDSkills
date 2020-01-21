@@ -10,9 +10,9 @@
         <span> creating new apprenticeship standards from scratch.</span>
       </div>
       <div>
-        <router-link :to="{ name: 'signup' }">
+        <router-link :to="{ name: 'follow' }">
           <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
-            Get started
+            Follow us
           </button>
         </router-link>
         <router-link :to="{ name: 'standards' }">
@@ -93,9 +93,9 @@
         </div>
       </div>
       <div>
-        <router-link :to="{ name: 'signup' }">
+        <router-link :to="{ name: 'follow' }">
           <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
-            Get started
+            Follow us
           </button>
         </router-link>
         <router-link :to="{ name: 'standards' }">

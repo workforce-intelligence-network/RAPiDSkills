@@ -7,8 +7,8 @@
     <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
       <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupation.kind }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onetCode }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupation.rapidsCode }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onetCode || 'ONET' }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupation.rapidsCode || 'Rapid' }}</div>
     </div>
     <div class="standard__divider--stats" />
     <div class="standard__work-process-data">

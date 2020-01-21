@@ -2,7 +2,7 @@
   <div class="page--follow">
     <div class="page--follow__form">
       <div class="page--follow__text page--follow__form__text page--follow__title">
-        Follow Us
+        Follow us
       </div>
       <div class="page--follow__text page--follow__form__text page--follow__subtitle">
         Please enter your information so that we can keep you up to date on what is happening with RapidSkills.
