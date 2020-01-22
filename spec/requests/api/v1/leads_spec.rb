@@ -194,6 +194,25 @@ RSpec.describe API::V1::LeadsController, type: :request do
           expect(json["errors"][0]["detail"]).to eq "Email can't be blank"
         end
       end
+
+      context "when missing attributes data" do
+        let(:params) {
+          {
+            data: {
+              type: "user",
+              attributes: {
+              }
+            }
+          }
+        }
+
+        it "returns 422 http status" do
+          post path, params: params
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to match "empty: attributes"
+        end
+      end
     end
   end
 end
