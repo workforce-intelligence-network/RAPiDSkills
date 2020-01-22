@@ -45,8 +45,10 @@ RSpec.describe API::V1::LeadsController, type: :request do
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
             expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+            expect(json["data"]["attributes"]["role"]).to eq "lead"
             expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
             expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+            expect(json["data"]["relationships"]).to_not have_key("favorites")
             expect(json["included"][0]["id"]).to eq organization.id.to_s
             expect(json["included"][0]["type"]).to eq "organization"
             expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
@@ -54,7 +56,7 @@ RSpec.describe API::V1::LeadsController, type: :request do
         end
 
         context "with email already in use" do
-          let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar", role: :basic) }
+          let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar", role: :basic, password: "supersecret") }
 
           it "does not create new user record but updates some fields" do
             expect {
@@ -77,8 +79,10 @@ RSpec.describe API::V1::LeadsController, type: :request do
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
             expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+            expect(json["data"]["attributes"]["role"]).to eq "basic"
             expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
             expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+            expect(json["data"]["relationships"]).to have_key("favorites")
             expect(json["included"][0]["id"]).to eq organization.id.to_s
             expect(json["included"][0]["type"]).to eq "organization"
             expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
@@ -118,8 +122,10 @@ RSpec.describe API::V1::LeadsController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+          expect(json["data"]["attributes"]["role"]).to eq "lead"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+          expect(json["data"]["relationships"]).to_not have_key("favorites")
           expect(json["included"][0]["id"]).to eq organization.id.to_s
           expect(json["included"][0]["type"]).to eq "organization"
           expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
