@@ -15,6 +15,9 @@ class API::V1::UsersController < API::V1::APIController
     else
       render_resource_error(@user)
     end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
   end
 
   private
