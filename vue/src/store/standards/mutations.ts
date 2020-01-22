@@ -13,3 +13,7 @@ export const updateSelectedStandard = (state, standard: object) => {
 export const updateSelectedStandardLoading = (state, loading: boolean) => {
   state.selectedStandardLoading = loading;
 };
+
+export const updateStandardsSearchOccupationId = (state, occupationId: number | undefined) => {
+  state.occupationId = occupationId;
+};

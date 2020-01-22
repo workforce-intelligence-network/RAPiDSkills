@@ -1,12 +1,13 @@
 import _get from 'lodash/get';
 
 import {
-  IsEmail, MinLength, ValidatorOptions,
+  IsEmail, MinLength,
 } from 'class-validator';
 
 import store from '@/store';
 
 import ModelBase from '@/models/ModelBase';
+import User from '@/models/User';
 
 import EqualsOtherProperty from '@/validation/EqualsOtherProperty';
 
@@ -20,6 +21,7 @@ export default class Session extends ModelBase {
     this.resetToken = session.resetToken || '';
     this.email = session.email || '';
     this.password = session.password || '';
+    this.user = new User();
   }
 
   static jsonApiClassName = 'session'
@@ -51,8 +53,11 @@ export default class Session extends ModelBase {
   })
   resetToken: string;
 
+  user: User
+
   async save() {
-    const { meta } = await super.save();
+    const response = await super.save();
+    const { meta } = response;
     await store.dispatch('session/setToken', `${meta.tokenType} ${meta.accessToken}`);
   }
 }
