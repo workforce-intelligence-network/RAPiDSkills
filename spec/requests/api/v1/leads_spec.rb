@@ -56,17 +56,18 @@ RSpec.describe API::V1::LeadsController, type: :request do
         end
 
         context "with email already in use" do
-          let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar", role: :basic, password: "supersecret") }
+          let(:old_org) { create(:organization, title: "Acme Dog Walking") }
+          let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar", role: :basic, password: "supersecret", employer: old_org) }
 
-          it "does not create new user record but updates some fields" do
+          it "does not create new user record, does not update any fields" do
             expect {
               post path, params: params
             }.to_not change(User, :count)
 
             user.reload
             expect(user.email).to eq "foo@example.com"
-            expect(user.name).to eq "Mickey Mouse"
-            expect(user.employer).to eq organization
+            expect(user.name).to eq "Foo Bar"
+            expect(user.employer).to eq old_org
             expect(user.basic?).to be true
             expect(user.valid_password?("supersecret")).to be true
           end
@@ -78,14 +79,14 @@ RSpec.describe API::V1::LeadsController, type: :request do
             expect(json["data"]["id"]).to eq user.id.to_s
             expect(json["data"]["type"]).to eq "user"
             expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
-            expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+            expect(json["data"]["attributes"]["name"]).to eq "Foo Bar"
             expect(json["data"]["attributes"]["role"]).to eq "basic"
-            expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
+            expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq old_org.id.to_s
             expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
             expect(json["data"]["relationships"]).to have_key("favorites")
-            expect(json["included"][0]["id"]).to eq organization.id.to_s
+            expect(json["included"][0]["id"]).to eq old_org.id.to_s
             expect(json["included"][0]["type"]).to eq "organization"
-            expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
+            expect(json["included"][0]["attributes"]["title"]).to eq "Acme Dog Walking"
           end
         end
       end
