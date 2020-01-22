@@ -43,6 +43,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+          expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
           expect(json["included"][0]["id"]).to eq organization.id.to_s
@@ -84,6 +85,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+          expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
           expect(json["included"][0]["id"]).to eq organization.id.to_s
@@ -120,6 +122,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["type"]).to eq "user"
           expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+          expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]).to be nil
           expect(json.has_key?("included")).to be false
         end
