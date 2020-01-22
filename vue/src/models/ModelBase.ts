@@ -18,11 +18,13 @@ interface ValidationErrorMap {
 }
 
 export default class ModelBase {
-  constructor(object: object = {}) {
+  constructor(object: any = {}) {
     Object.assign(this, object);
+
+    this.id = object.id || '';
   }
 
-  id?: number | string
+  id: number | string
 
   type?: string
 
@@ -108,9 +110,9 @@ export default class ModelBase {
     let result: any;
 
     try {
-      const apiMethod: Function = (_isUndefined(this.id)
-        ? jsonApi.create
-        : jsonApi.update
+      const apiMethod: Function = (this.synced
+        ? jsonApi.update
+        : jsonApi.create
       ).bind(jsonApi);
 
       result = await apiMethod(this.staticType.jsonApiClassName, this.jsonApiObject, params);
@@ -137,6 +139,10 @@ export default class ModelBase {
 
   propertyValidationErrors(property: string): ValidationError[] {
     return this.validationErrorMap[property] || [];
+  }
+
+  get synced() {
+    return this.id === 0 || !!String(this.id || '').length;
   }
 
   get propertyKeys() {
