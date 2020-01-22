@@ -42,6 +42,7 @@ class API::V1::SessionsController < API::V1::APIController
 
   def render_options
     {
+      include: [:user],
       links: { self: @session.url },
       meta: { access_token: @session.token, token_type: "Bearer" },
     }

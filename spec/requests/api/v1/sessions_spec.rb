@@ -37,6 +37,9 @@ RSpec.describe API::V1::SessionsController, type: :request do
         expect(json["data"]["id"]).to eq "abc123"
         expect(json["data"]["relationships"]["user"]["links"]["self"]).to eq relationships_user_api_v1_client_session_url("abc123")
         expect(json["data"]["relationships"]["user"]["links"]["related"]).to eq api_v1_client_session_user_url("abc123")
+        expect(json["included"][0]["type"]).to eq "user"
+        expect(json["included"][0]["id"]).to eq user.id.to_s
+        expect(json["included"][0]["attributes"]["email"]).to eq user.email
         expect(json["meta"]["access_token"]).to eq "jwt456"
         expect(json["meta"]["token_type"]).to eq "Bearer"
       end
@@ -113,6 +116,9 @@ RSpec.describe API::V1::SessionsController, type: :request do
         expect(json["data"]["id"]).to eq uuid
         expect(json["data"]["relationships"]["user"]["links"]["self"]).to eq relationships_user_api_v1_client_session_url(uuid)
         expect(json["data"]["relationships"]["user"]["links"]["related"]).to eq api_v1_client_session_user_url(uuid)
+        expect(json["included"][0]["type"]).to eq "user"
+        expect(json["included"][0]["id"]).to eq user.id.to_s
+        expect(json["included"][0]["attributes"]["email"]).to eq user.email
         expect(json["meta"]["access_token"]).to eq token
         expect(json["meta"]["token_type"]).to eq "Bearer"
       end
