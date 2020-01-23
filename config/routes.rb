@@ -38,8 +38,11 @@ Rails.application.routes.draw do
           get "relationships/favorites", to: "users/relationships/favorites#index"
           post "relationships/favorites", to: "users/relationships/favorites#create"
           delete "relationships/favorites", to: "users/relationships/favorites#destroy"
+
+          get "relationships/occupation_standards", to: "users/relationships/occupation_standards#index"
         end
         resources :favorites, only: [:index], controller: "users/favorites"
+        resources :occupation_standards, only: [:index], controller: "users/occupation_standards"
       end
 
       resources :client_sessions, path: "sessions", only: [:create, :destroy, :show], controller: "sessions" do

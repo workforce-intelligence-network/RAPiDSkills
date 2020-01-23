@@ -9,4 +9,8 @@ class API::V1::UserPolicy < ApplicationPolicy
   def favorite?
     user == target_user
   end
+
+  def occupation_standard?
+    user == target_user
+  end
 end
