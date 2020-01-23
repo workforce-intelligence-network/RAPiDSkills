@@ -1,24 +1,23 @@
 require 'rails_helper'
 
-RSpec.describe API::V1::Users::FavoritesController, type: :request do
+RSpec.describe API::V1::Users::OccupationStandardsController, type: :request do
   describe "GET #index" do
-    let(:path) { "/api/v1/users/#{user.id}/favorites" }
+    let(:path) { "/api/v1/users/#{user.id}/occupation_standards" }
     let(:user) { create(:user) }
     let(:header) { auth_header(user) }
     let(:params) { {} }
 
-    context "when user viewing own favorites" do
-      let(:os1) { create(:occupation_standard) }
-      let(:os2) { create(:occupation_standard) }
-
-      before { user.favorites << os1 << os2 }
+    context "when user viewing own occupation_standards" do
+      let!(:os1) { create(:occupation_standard, creator: user) }
+      let!(:os2) { create(:occupation_standard, creator: user) }
+      let!(:os3) { create(:occupation_standard) }
 
       it_behaves_like "authorization", :get
 
-      it "returns favorites by most recently added" do
+      it "returns occupation_standards by id desc" do
         get path, headers: header
         expect(response).to have_http_status(:success)
-        expect(json["links"]["self"]).to eq api_v1_user_favorites_url(user)
+        expect(json["links"]["self"]).to eq api_v1_user_occupation_standards_url(user)
         expect(json["data"][0]["type"]).to eq "occupation_standard"
         expect(json["data"][0]["id"]).to eq os2.id.to_s
         expect(json["data"][0]["attributes"]["title"]).to eq os2.title
@@ -38,7 +37,7 @@ RSpec.describe API::V1::Users::FavoritesController, type: :request do
       end
     end
 
-    context "when user viewing someone else's favorites" do
+    context "when user viewing someone else's occupation_standards" do
       it_behaves_like "unauthorized", :get do
         let(:header) { auth_header(create(:user)) }
       end
@@ -46,7 +45,7 @@ RSpec.describe API::V1::Users::FavoritesController, type: :request do
 
     context "when requesting non-existent user" do
       it_behaves_like "not found", :get do
-        let(:path) { "/api/v1/users/999/favorites" }
+        let(:path) { "/api/v1/users/999/occupation_standards" }
       end
     end
   end
