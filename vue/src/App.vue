@@ -6,6 +6,7 @@
 
 <style lang="scss">
 @import "@/scss/colors";
+@import "@/scss/mixins";
 
 @import url("https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap");
@@ -17,8 +18,6 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,22 +41,29 @@ a {
   position: relative;
   height: 100%;
   width: 100%;
-  overflow: auto;
 }
 
 .button {
   border-radius: 25px;
   font-size: 1rem;
+  line-height: 1rem;
   padding: 0.7rem 1.5rem;
   font-weight: 600;
+  border: none;
+  white-space: nowrap;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
+
+  @include breakpoint--xs {
+    padding: 0.7rem 0.75rem;
+  }
 
   color: $color-white;
-  background: #459eff;
+  background: $color-link-blue;
 
   cursor: pointer;
 
   &:hover {
-    background: #0073ff;
+    background: $color-button-hover-blue;
   }
 
   &,
@@ -68,9 +74,9 @@ a {
 
 .button--link,
 .button--inverted {
-  color: #459eff;
+  color: $color-link-blue;
   &:hover {
-    color: #0073ff;
+    color: $color-button-hover-blue;
   }
 }
 
@@ -82,10 +88,20 @@ a {
 }
 
 .button--link {
-  padding: 0;
+  padding: 0 1rem;
   &,
   &:hover {
     background: none;
+  }
+}
+
+.button--link--alternative {
+  &,
+  &:hover {
+    color: $color-white;
+  }
+  &:hover {
+    opacity: .8;
   }
 }
 
@@ -116,14 +132,15 @@ a {
 }
 
 .input--error .input__input {
-  border-color: salmon;
+  border-color: $color-salmon;
   &::placeholder {
-    color: salmon;
+    color: $color-salmon;
   }
 }
 
 .input--error .input__label {
-  color: salmon;
+  color: $color-salmon;
+  font-weight: 700;
 }
 
 .input__label {
@@ -141,7 +158,7 @@ a {
   border: 1px solid #f2f2f2;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   &:focus {
-    outline: dashed 1px #459eff;
+    outline: dashed 1px $color-link-blue;
     outline-offset: 4px;
   }
 }

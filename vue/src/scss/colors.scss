@@ -7,9 +7,17 @@ $color-black-darkened: darken($color: $color-black, $amount: 10);
 $color-blue: #0077FF;
 $color-blue-darkened: darken($color: $color-blue, $amount: 10);
 
+$color-link-blue: #459eff;
+
+$color-button-hover-blue: #0073ff;
+
+$color-nav-left-background-blue: #002e58;
+
 $color-nav-bar-top-box-shadow: rgba($color: #080606, $alpha: 0.04);
 
 $color-gray-light: #E6EAEE;
 
 $color-body-background: #FAFBFC;
 $color-body-text: #2c3e50;
+
+$color-salmon: salmon;

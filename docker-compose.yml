@@ -12,6 +12,8 @@ services:
       - config/docker.env
     depends_on:
       - database
+      - redis
+      - sidekiq
     tty: true
     stdin_open: true
 

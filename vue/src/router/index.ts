@@ -1,13 +1,14 @@
+import _get from 'lodash/get';
+
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-import jsonApi from '@/utilities/api';
 
 import store from '@/store';
 
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
-import Search from '@/components/Search.vue';
+import SearchOccupations from '@/components/SearchOccupations.vue';
+import PageTitle from '@/components/PageTitle.vue';
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,58 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "follow" */ '@/views/Follow.vue'),
       },
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          return next();
+        },
+      },
+      {
+        path: 'signup',
+        name: 'signup',
+        component: () => import(/* webpackChunkName: "signup" */ '@/views/SignUp.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          return next();
+        },
+      },
+      {
+        path: 'forgot',
+        name: 'forgot',
+        component: () => import(/* webpackChunkName: "forgot" */ '@/views/ForgotPassword.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          return next();
+        },
+      },
+      {
+        path: 'reset',
+        name: 'reset',
+        component: () => import(/* webpackChunkName: "reset" */ '@/views/ResetPassword.vue'),
+        beforeEnter(to, from, next) {
+          if (store.getters['session/isActive']) {
+            return next({ name: 'standards' }); // TODO: go home method?
+          }
+
+          if (!_get(to, 'query.resetToken')) {
+            return next({ name: 'login' });
+          }
+
+          return next();
+        },
+      },
     ],
   },
   {
@@ -40,9 +93,9 @@ const routes = [
         name: 'standards',
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-          search: Search,
+          navbarActions: SearchOccupations,
         },
-        beforeEnter: (to, from, next) => {
+        beforeEnter(to, from, next) {
           store.dispatch('standards/fetchStandards');
           next();
         },
@@ -50,19 +103,22 @@ const routes = [
       {
         path: 'standards/:id',
         name: 'standard',
-        component: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
-        beforeEnter: (to, from, next) => {
+        components: {
+          default: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
+          navbarActions: PageTitle,
+        },
+        beforeEnter(to, from, next) {
           store.dispatch('standards/getStandard', to.params.id);
           next();
         },
+        meta: {
+          pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
+        },
       },
       {
-        path: 'favorites',
-        name: 'favorites',
-        components: {
-          default: () => import(/* webpackChunkName: "favorites" */ '@/views/Favorites.vue'),
-          search: Search,
-        },
+        path: 'saved',
+        name: 'saved',
+        component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
       },
       {
         path: 'reports',
@@ -88,6 +144,19 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+      };
+    }
+
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    return { x: 0, y: 0 };
+  },
 });
 
 export default router;

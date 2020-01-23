@@ -1,19 +1,22 @@
 import _get from 'lodash/get';
-import _uniqBy from 'lodash/uniqBy';
-import _isUndefined from 'lodash/isUndefined';
 
-import jsonApi from '@/utilities/api';
+import OccupationStandard from '@/models/OccupationStandard';
 
 export const fetchStandards = async (
-  { commit, rootState },
+  { commit, state, rootState },
   occupationId: number | undefined = _get(rootState, 'occupations.selectedOccupation.id'),
 ) => {
+  if (state.list.length && occupationId === state.occupationId) {
+    return;
+  }
+
   try {
+    commit('updateStandardsSearchOccupationId', occupationId);
     commit('updateStandardsSearchLoading', true);
 
-    const { data } = await jsonApi.findAll('occupation_standards', { occupationId });
+    const { model } = await OccupationStandard.getAll({ occupationId });
 
-    commit('updateStandardsSearchList', data);
+    commit('updateStandardsSearchList', model);
   } catch (e) {
     //
   }
@@ -21,21 +24,19 @@ export const fetchStandards = async (
   commit('updateStandardsSearchLoading', false);
 };
 
-export const getStandard = async ({ state, commit }, id: string | number | undefined = _get(state, 'selectedStandard.id')) => {
-  if (_isUndefined(id)) {
+export const getStandard = async ({ state, commit }, id: string | number) => {
+  if (id === _get(state, 'selectedStandard.id')) {
     return;
   }
 
   try {
+    commit('updateSelectedStandard');
+
     commit('updateSelectedStandardLoading', true);
 
-    const { data } = await jsonApi.find('occupation_standards', Number(id));
+    const { model } = await OccupationStandard.get(Number(id));
 
-    const standard = data.id === _get(state, 'selectedStandard.id') ? Object.assign({}, state.selectedStandard, data) : data;
-
-    standard.workProcesses = _uniqBy(standard.workProcesses, (workProcess: any) => workProcess.id);
-
-    commit('updateSelectedStandard', standard);
+    commit('updateSelectedStandard', model);
   } catch (e) {
     //
   }

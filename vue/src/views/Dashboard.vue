@@ -9,12 +9,13 @@
     <div class="page--dashboard__state--empty" v-if="showEmptyState">
       <div class="page--dashboard__state--empty__description">
         <span>No standards found </span>
-        <span v-if="selectedOccupation">for occupation {{ selectedOccupation.title }}</span>
+        <span v-if="selectedOccupation">for occupation:</span>
+        <div v-if="selectedOccupation" class="page--dashboard__state--empty__description__occupation">{{ selectedOccupation.title }}</div>
       </div>
       <div class="page--dashboard__state--empty__action">
         Please try searching for a different occupation
       </div>
-      <div class="page--dashboard__state--empty__button button button--link" @click="clearSelectedOccupation">
+      <div class="page--dashboard__state--empty__button button button--link" @click="clearSelectedOccupation" v-if="selectedOccupation">
         Clear selected occupation
       </div>
     </div>
@@ -28,8 +29,6 @@ import { mapGetters, mapState } from 'vuex';
 
 import Standard from '@/components/Standard.vue';
 import Loading from '@/components/Loading.vue';
-
-import LOGO_WIN from '@/assets/win.png';
 
 export default {
   name: 'dashboard',
@@ -49,25 +48,8 @@ export default {
     ...mapState({
       selectedOccupation: (state: any) => state.occupations.selectedOccupation,
       showLoadingState: (state: any) => state.standards.loading,
+      standards: (state: any) => state.standards.list,
     }),
-    standards() {
-      // TODO: remove fake data
-      (this as any).$store.state.standards.list.forEach((standard) => {
-        Object.assign(standard, {
-          organization: {
-            logo: LOGO_WIN,
-            name: 'WIN',
-          },
-          occupation: {
-            name: 'Mechatronics Technician',
-            type: 'Hybrid',
-            onet: '51-4012.00',
-            cb: '1100CB',
-          },
-        });
-      });
-      return (this as any).$store.state.standards.list;
-    },
   },
 };
 </script>
@@ -79,6 +61,7 @@ export default {
 @import "@/scss/navbars";
 
 $card-column-gap: 2rem;
+$card-column-padding: 2rem;
 
 .page--dashboard__cards {
   display: grid;
@@ -90,12 +73,12 @@ $card-column-gap: 2rem;
   grid-template-columns: auto auto auto auto;
 
   @for $i from 2 through 12 {
-    @media (max-width: ($standard-width * ($i + 1) + $card-column-gap * $i + $nav-left-width)) and (min-width: ($standard-width * $i + $card-column-gap * ($i - 1) + $nav-left-width)) {
+    @media (max-width: ($standard-width * ($i + 1) + $card-column-gap * $i + $nav-left-width + $card-column-padding)) and (min-width: ($standard-width * $i + $card-column-gap * ($i - 1) + $nav-left-width + $card-column-padding)) {
       grid-template-columns: repeat($i, auto);
     }
   }
 
-  @media (max-width: ($standard-width * 2 + $card-column-gap * 1 + $nav-left-width)) {
+  @media (max-width: ($standard-width * 2 + $card-column-gap * 1 + $nav-left-width + $card-column-padding)) {
     grid-template-columns: auto;
   }
 }
@@ -108,5 +91,15 @@ $card-column-gap: 2rem;
 
 .page--dashboard__state--empty__action {
   margin-bottom: 1rem;
+}
+
+.page--dashboard__state--empty__button {
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.page--dashboard__state--empty__description__occupation {
+  font-size: 1.5rem;
+  padding-top: .5rem;
 }
 </style>

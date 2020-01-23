@@ -9,30 +9,29 @@
         <span>Finally an easy-to-use application that takes the pain out of</span>
         <span> creating new apprenticeship standards from scratch.</span>
       </div>
-      <router-link to="/follow">
-        <button
-          class="button button--inverted page--home__hero__button page--home__hero__button--follow"
-        >
-          Follow Us
-        </button>
-      </router-link>
+      <div>
+        <router-link :to="{ name: 'follow' }">
+          <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
+            Follow us
+          </button>
+        </router-link>
+        <router-link :to="{ name: 'standards' }">
+          <button class="button button--link page--home__hero__button page--home__hero__button--follow button--link--alternative">
+            Browse Standards
+          </button>
+        </router-link>
+      </div>
       <LaptopPreview class="page--home__hero__laptop-preview" />
     </div>
     <div class="page--home__how-it-works">
-      <div
-        class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--title"
-      >
+      <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--title">
         How it works
       </div>
-      <div
-        class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--appeal"
-      >
+      <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--appeal">
         <span>Stop starting from scratch and start</span>
         <span> leveraging content from approved standards!</span>
       </div>
-      <div
-        class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--description"
-      >
+      <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--description">
         <span>RapidSkills uses smart technology to help you streamline</span>
         <span> your process saving you time and the frustration of</span>
         <span> having to create new standards from scratch.</span>
@@ -90,16 +89,21 @@
           <span> signed up for early-access Beta.</span>
         </div>
         <div class="page--home__follow__text--call-to-action__bold">
-          Get Started Today
+          Get started today
         </div>
       </div>
-      <router-link to="/follow">
-        <button
-          class="button button--inverted page--home__follow__button page--home__follow__button--follow"
-        >
-          Follow Us
-        </button>
-      </router-link>
+      <div>
+        <router-link :to="{ name: 'follow' }">
+          <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
+            Follow us
+          </button>
+        </router-link>
+        <router-link :to="{ name: 'standards' }">
+          <button class="button button--link page--home__hero__button page--home__hero__button--follow button--link--alternative">
+            Browse Standards
+          </button>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -137,8 +141,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/colors';
-@import '@/scss/mixins';
+@import "@/scss/colors";
+@import "@/scss/mixins";
 
 .page--home {
   text-align: center;
@@ -188,17 +192,20 @@ export default {
 .page--home__hero__laptop-preview {
   margin-bottom: 3rem;
   min-height: 20rem;
-  @include breakpoint--mobile {
+  @include breakpoint--sm {
     min-height: auto;
   }
 }
 
 .page--home__how-it-works {
   padding-bottom: 6rem;
+  @include breakpoint--sm {
+    padding-bottom: 2rem;
+  }
 }
 
 .page--home__how-it-works__text--title {
-  color: #459EFF;
+  color: $color-link-blue;
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -232,8 +239,8 @@ export default {
 
 .page--home__how-it-works__cards__card {
   background: $color-white;
-  border: 1px solid #F2F2F2;
-  box-shadow: 0 10px 20px 0 transparentize(#459EFF, .9);
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
@@ -241,7 +248,7 @@ export default {
   padding: 0 1.5rem;
   padding-bottom: 1.5rem;
   height: 24rem;
-  margin: 1rem .5rem;
+  margin: 1rem 0.5rem;
 }
 
 .page--home__how-it-works__cards__card__title {
@@ -257,7 +264,7 @@ export default {
 
 .page--home__follow {
   padding: 5rem 0;
-  background-image: url('../assets/home-hero-background.svg');
+  background-image: url("../assets/home-hero-background.svg");
   background-position: left;
   background-size: cover;
 }

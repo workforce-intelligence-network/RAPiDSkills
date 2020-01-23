@@ -2,7 +2,7 @@
   <div class="page--standard">
     <div class="page--standard__sidebar--left" v-if="!loading">
       <div class="page--standard__sidebar--left__logo">
-        <img :src="standard.organization.logo" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
+        <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
       <div class="page--standard__sidebar--left__occupation-name">{{ standard.title }}</div>
       <div class="page--standard__sidebar--left__divider--stats" />
@@ -13,12 +13,12 @@
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Processes</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat">
-          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ totalNumberOfCompetencies }}</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfSkills }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
-          <div class="page--standard__sidebar--left__work-process-data__stat__text">Competencies</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__text">Skills</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat">
-          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ totalNumberOfHours }}</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfHours }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Hours</div>
         </div>
@@ -49,11 +49,23 @@
           <div class="page--standard__body__work-process__skills__skill" v-for="skill in workProcess.skills" :key="`${workProcess.id}-${skill.id}`">
             <div class="page--standard__body__work-process__skills__skill__vertical-group">
               <div class="page--standard__body__work-process__skills__skill__vertical-group__label">
-                Skill Description
+                Skill
               </div>
               <div class="page--standard__body__work-process__skills__skill__vertical-group__description">
                 {{ skill.description }}
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page--standard__body__skill" v-for="skill in standard.skills" :key="skill.id">
+        <div class="page--standard__body__skill__wrapper">
+          <div class="page--standard__body__skill__wrapper__vertical-group">
+            <div class="page--standard__body__skill__wrapper__vertical-group__label">
+              Skill
+            </div>
+            <div class="page--standard__body__skill__wrapper__vertical-group__title">
+              {{ skill.description }}
             </div>
           </div>
         </div>
@@ -69,7 +81,6 @@ import Vue from 'vue';
 
 import { mapState } from 'vuex';
 
-import LOGO_WIN from '@/assets/win.png';
 import ICON_FOLDER from '@/assets/folder.svg';
 import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
@@ -93,28 +104,9 @@ export default {
   },
   computed: {
     ...mapState({
-      standard: (state: any) => Object.assign({}, state.standards.selectedStandard, {
-        organization: {
-          logo: LOGO_WIN,
-          name: 'WIN',
-        },
-        occupation: {
-          name: 'Mechatronics Technician',
-          type: 'Hybrid',
-          onet: '51-4012.00',
-          cb: '1100CB',
-        },
-      }),
+      standard: (state: any) => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
     }),
-    totalNumberOfCompetencies() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + (workProcess.skills || []).length, 0);
-    },
-    totalNumberOfHours() {
-      return ((this as any).standard as any).workProcesses
-        .reduce((total, workProcess) => total + workProcess.hoursTotal || 0, 0);
-    },
   },
 };
 </script>
@@ -122,15 +114,18 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/colors";
 @import "@/scss/navbars";
+@import "@/scss/mixins";
 
 $sidebar-left-width: 20rem;
 
-$work-process-height: 5rem;
+$work-process-height: 6rem;
+$skill-height: 5rem;
 
 .page--standard {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: stretch;
   min-height: 100%;
 }
 
@@ -138,9 +133,12 @@ $work-process-height: 5rem;
   width: $sidebar-left-width;
   background: $color-white;
   min-height: calc(100vh - #{$nav-top-height});
-  height: 100%;
   padding: 1rem 1.5rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  flex-shrink: 0;
+  @include breakpoint--sm {
+    display: none;
+  }
 }
 
 .page--standard__sidebar--left__logo {
@@ -185,6 +183,9 @@ $work-process-height: 5rem;
 .page--standard__body {
   flex-grow: 1;
   padding: 2rem;
+  @include breakpoint--sm {
+    padding: 1rem;
+  }
 }
 
 .page--standard__body__work-process {
@@ -200,14 +201,24 @@ $work-process-height: 5rem;
   border-left: 3px solid $color-blue;
 }
 
+.page--standard__body__work-process:not(.page--standard__body__work-process--expanded) {
+  .page--standard__body__work-process__wrapper {
+    max-height: $work-process-height;
+  }
+  .page--standard__body__work-process__wrapper__vertical-group__title {
+    max-height: 3rem;
+  }
+}
+
 .page--standard__body__work-process__wrapper {
   display: flex;
   flex-direction: row;
   // justify-content: space-between;
-  height: $work-process-height;
+  min-height: $work-process-height;
   background: $color-white;
   cursor: pointer;
   border-bottom: 1px solid $color-gray-light;
+  overflow: hidden;
 }
 
 .page--standard__body__work-process__wrapper__vertical-group {
@@ -215,16 +226,20 @@ $work-process-height: 5rem;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  padding: 0.5rem 0;
 }
 
 .page--standard__body__work-process__wrapper__vertical-group__label {
   font-size: 0.9rem;
   color: gray;
   margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 .page--standard__body__work-process__wrapper__vertical-group__title {
   font-size: 1.25rem;
+  line-height: 1.5rem;
+  overflow: hidden;
   font-weight: 500;
 }
 
@@ -232,6 +247,7 @@ $work-process-height: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 3.5rem;
 }
 
@@ -239,6 +255,7 @@ $work-process-height: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   margin-left: auto;
   width: 3.5rem;
   color: $color-blue;
@@ -272,6 +289,7 @@ $work-process-height: 5rem;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  padding: 1rem 0;
 }
 
 .page--standard__body__work-process__skills__skill__vertical-group__label {
@@ -280,7 +298,56 @@ $work-process-height: 5rem;
   margin-bottom: 0.25rem;
 }
 
+.page--standard__body__work-process__wrapper__vertical-group__title,
+.page--standard__body__work-process__skills__skill__vertical-group__description {
+  text-align: left;
+}
+
 .page--standard__body__work-process__skills__skill__vertical-group__description {
   font-size: 1rem;
+}
+
+.page--standard__body__skill {
+  min-height: $skill-height;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid $color-blue;
+}
+
+.page--standard__body__skill__wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: $skill-height;
+  background: $color-white;
+  cursor: pointer;
+  border-bottom: 1px solid $color-gray-light;
+  overflow: hidden;
+  padding-left: 2rem;
+}
+
+.page--standard__body__skill__wrapper__vertical-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem 0;
+}
+
+.page--standard__body__skill__wrapper__vertical-group__label {
+  font-size: 0.9rem;
+  color: gray;
+  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.page--standard__body__skill__wrapper__vertical-group__title {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  overflow: hidden;
+  // font-weight: 500;
+  text-align: left;
 }
 </style>

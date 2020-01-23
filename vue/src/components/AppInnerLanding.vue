@@ -6,11 +6,30 @@
           <img :src="ICON_WITH_LOGO" alt="RapidSkills Icon" class="app__inner--landing__nav__link__icon" />
         </div>
       </router-link>
-      <router-link to="/follow" active-class="app__inner--landing__nav__button--active">
-        <div class="app__inner--landing__nav__button button button--inverted">
-          Follow Us
-        </div>
-      </router-link>
+      <div class="app__inner--landing__nav__right" v-if="sessionActive">
+        <router-link :to="{ name: 'standards' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--inverted">
+            Dashboard
+          </div>
+        </router-link>
+      </div>
+      <div class="app__inner--landing__nav__right" v-if="!sessionActive">
+        <router-link :to="{ name: 'login' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--link">
+            Login
+          </div>
+        </router-link>
+        <router-link :to="{ name: 'follow' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--inverted">
+            Follow us
+          </div>
+        </router-link>
+        <!-- <router-link :to="{ name: 'signup' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--inverted">
+            Sign up
+          </div>
+        </router-link> -->
+      </div>
     </div>
     <div class="app__inner--landing__body">
       <div class="app__inner--landing__body__hero" />
@@ -18,7 +37,7 @@
         <router-view />
       </div>
       <div class="app__inner--landing__footer">
-        <router-link to="/standards">
+        <router-link to="">
           <div class="app__inner--landing__footer__icon">
             <img :src="ICON_NO_LOGO" alt="RapidSkills" />
           </div>
@@ -46,22 +65,26 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
+import {
+  Component, Provide,
+} from 'vue-property-decorator';
+
 import ICON_WITH_LOGO from '@/assets/icon-with-logo.svg';
 import ICON_NO_LOGO from '@/assets/icon-no-logo.svg';
 
-export default {
-  data() {
-    return {
-      ICON_WITH_LOGO,
-      ICON_NO_LOGO,
-    };
-  },
-  computed: {
-    currentYear() {
-      return (new Date()).getFullYear();
-    },
-  },
-};
+@Component
+export default class AppInnerLanding extends Vue {
+  @Provide('ICON_WITH_LOGO') ICON_WITH_LOGO = ICON_WITH_LOGO
+
+  @Provide('ICON_NO_LOGO') ICON_NO_LOGO = ICON_NO_LOGO
+
+  @Provide('currentYear') currentYear = (new Date()).getFullYear()
+
+  protected get sessionActive() {
+    return this.$store.getters['session/isActive'];
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -91,6 +114,15 @@ $hero-height: 50rem;
   align-items: center;
   padding: 0 1rem;
   margin-top: 0.5rem;
+
+  @include breakpoint--xs {
+    padding: 0.25rem;
+  }
+}
+
+.app__inner--landing__nav__right {
+  display: flex;
+  justify-content: space-between;
 }
 
 .app__inner--landing__nav,
@@ -99,12 +131,31 @@ $hero-height: 50rem;
   display: flex;
 }
 
+.app__inner--landing__nav__button {
+  white-space: nowrap;
+}
+
+.app__inner--landing__nav__button.button--link {
+  display: flex;
+  padding: .7rem 2rem;
+
+  @include breakpoint--xs {
+    padding: .7rem .75rem;
+  }
+
+  color: $color-white;
+  &:hover {
+    opacity: .8;
+  }
+}
+
+
 .app__inner--landing__nav__button--active {
   display: none;
 }
 
 .app__inner--landing__nav__link__icon {
-  @include breakpoint--mobile {
+  @include breakpoint--sm {
     max-width: 8rem;
   }
 }

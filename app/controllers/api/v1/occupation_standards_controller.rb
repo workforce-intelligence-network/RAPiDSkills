@@ -2,11 +2,17 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   skip_before_action :authenticate, except: [:create]
 
   def index
-    @oss = OccupationStandard
-             .includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes)
+    @oss = OccupationStandard.with_eager_loading
              .search(search_params.to_h)
              .order(id: :desc)
-    options = { links: { self: api_v1_occupation_standards_url } }
+             .page(page_params[:number])
+             .per(page_params[:size])
+
+    options = API::V1::PaginationLinkGenerator.new(
+      request: request,
+      query_params: query_params,
+      total_pages: @oss.total_pages,
+    ).call()
     render_resource(@oss, options)
   end
 
@@ -39,6 +45,14 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def create_params
     params.require(:data).require(:attributes).permit(:parent_occupation_standard_id)
+  end
+
+  def page_params
+    params.fetch(:page, {}).permit(:number, :size)
+  end
+
+  def query_params
+    params.permit(:occupation_id, page: {})
   end
 
   def render_resource(record, options={})

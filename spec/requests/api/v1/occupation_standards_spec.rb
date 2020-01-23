@@ -12,7 +12,13 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       # With no occupation_id parameter, returns all data
       get path
       expect(response).to have_http_status(:success)
+      expect(json["meta"]["total_pages"]).to eq 1
+      expect(json["meta"]["current_page"]).to eq 1
       expect(json["links"]["self"]).to eq api_v1_occupation_standards_url
+      expect(json["links"]).to_not have_key("prev")
+      expect(json["links"]).to_not have_key("next")
+      expect(json["links"]).to_not have_key("first")
+      expect(json["links"]).to_not have_key("last")
       expect(json["data"].count).to eq 3
       expect(json["data"][0]["id"]).to eq os3.id.to_s
       expect(json["data"][0]["type"]).to eq "occupation_standard"
@@ -59,6 +65,86 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][1]["attributes"]["industry_title"]).to be nil
       expect(json["data"][1]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
       expect(json["included"]).to_not be nil
+
+      # With pagination
+      # Page 1
+      get path, params: { page: { number: 1, size: 2 } }
+      expect(response).to have_http_status(:success)
+      expect(json["meta"]["total_pages"]).to eq 2
+      expect(json["meta"]["current_page"]).to eq 1
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["next"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["data"].count).to eq 2
+      expect(json["data"][0]["id"]).to eq os3.id.to_s
+      expect(json["data"][0]["type"]).to eq "occupation_standard"
+      expect(json["data"][0]["attributes"]["title"]).to eq os3.title
+      expect(json["data"][0]["attributes"]["organization_title"]).to eq os3.organization.title
+      expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
+      expect(json["data"][0]["attributes"]["industry_title"]).to be nil
+      expect(json["data"][0]["links"]["self"]).to eq api_v1_occupation_standard_url(os3)
+
+      expect(json["data"][1]["id"]).to eq os2.id.to_s
+      expect(json["data"][1]["type"]).to eq "occupation_standard"
+      expect(json["data"][1]["attributes"]["title"]).to eq os2.title
+      expect(json["data"][1]["attributes"]["organization_title"]).to eq os2.organization.title
+      expect(json["data"][1]["attributes"]["occupation_title"]).to eq os2.occupation.title
+      expect(json["data"][1]["attributes"]["industry_title"]).to be nil
+      expect(json["data"][1]["links"]["self"]).to eq api_v1_occupation_standard_url(os2)
+      expect(json["included"]).to_not be nil
+
+      # Page 2
+      get path, params: { page: { number: 2, size: 2 } }
+      expect(json["meta"]["total_pages"]).to eq 2
+      expect(json["meta"]["current_page"]).to eq 2
+      expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(page: { number:  1, size: 2 })
+      expect(json["links"]["prev"]).to eq api_v1_occupation_standards_url(page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(page: { number: 2, size: 2 })
+      expect(json["data"].count).to eq 1
+      expect(json["data"][0]["id"]).to eq os1.id.to_s
+      expect(json["data"][0]["type"]).to eq "occupation_standard"
+      expect(json["data"][0]["attributes"]["title"]).to eq os1.title
+      expect(json["data"][0]["attributes"]["organization_title"]).to eq os1.organization.title
+      expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
+      expect(json["data"][0]["attributes"]["industry_title"]).to be nil
+      expect(json["data"][0]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+
+      # With occupation_id and pagination
+      # Page 1
+      get path, params: { occupation_id: occupation.id, page: { number: 1, size: 2 } }
+      expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["data"].count).to eq 2
+      expect(json["data"][0]["id"]).to eq os3.id.to_s
+      expect(json["data"][0]["type"]).to eq "occupation_standard"
+      expect(json["data"][0]["attributes"]["title"]).to eq os3.title
+      expect(json["data"][0]["attributes"]["organization_title"]).to eq os3.organization.title
+      expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
+      expect(json["data"][0]["attributes"]["industry_title"]).to be nil
+      expect(json["data"][0]["links"]["self"]).to eq api_v1_occupation_standard_url(os3)
+
+      expect(json["data"][1]["id"]).to eq os1.id.to_s
+      expect(json["data"][1]["type"]).to eq "occupation_standard"
+      expect(json["data"][1]["attributes"]["title"]).to eq os1.title
+      expect(json["data"][1]["attributes"]["organization_title"]).to eq os1.organization.title
+      expect(json["data"][1]["attributes"]["occupation_title"]).to eq occupation.title
+      expect(json["data"][1]["attributes"]["industry_title"]).to be nil
+      expect(json["data"][1]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+      expect(json["included"]).to_not be nil
+
+      # Page 2
+      get path, params: { occupation_id: occupation.id, page: { number: 2, size: 2 } }
+      expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 2, size: 2 })
+      expect(json["links"]["first"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["links"]["last"]).to eq api_v1_occupation_standards_url(occupation_id: occupation.id, page: { number: 1, size: 2 })
+      expect(json["data"]).to be_empty
+      expect(json["included"]).to be_empty
 
       # With bad occupation_id parameter, returns none
       get path, params: { occupation_id: 9999 }

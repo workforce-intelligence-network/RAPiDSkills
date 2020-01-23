@@ -1,5 +1,5 @@
 <template>
-  <div class="page--reports">
+  <div class="page page--reports">
     Your reports!
   </div>
 </template>
@@ -11,4 +11,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/scss/page";
 </style>
