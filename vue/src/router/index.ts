@@ -10,6 +10,8 @@ import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import SearchOccupations from '@/components/SearchOccupations.vue';
 import PageTitle from '@/components/PageTitle.vue';
 
+import { duplicateComponentName } from '@/modal';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -99,6 +101,16 @@ const routes = [
           store.dispatch('standards/fetchStandards');
           next();
         },
+        children: [
+          {
+            path: ':id/duplicate',
+            name: 'duplicate',
+            async beforeEnter(to, from, next) {
+              store.dispatch('modal/updateContent', duplicateComponentName);
+              next();
+            },
+          },
+        ],
       },
       {
         path: 'standards/:id',

@@ -1,12 +1,31 @@
 <template>
   <div id="app" class="app">
-    <router-view />
+    <router-view :class="{ 'app__inner--blurred': !!modalComponent }" />
+    <Modal :class="{ 'modal--visible': !!modalComponent }" :component="modalComponent" />
   </div>
 </template>
+
+<script lang="tsx">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import Modal from '@/components/Modal.vue';
+
+@Component({
+  components: {
+    Modal,
+  },
+})
+export default class App extends Vue {
+  protected get modalComponent() {
+    return this.$store.state.modal.content;
+  }
+}
+</script>
 
 <style lang="scss">
 @import "@/scss/colors";
 @import "@/scss/mixins";
+@import "@/scss/modal";
 
 @import url("https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap");
@@ -41,6 +60,14 @@ a {
   position: relative;
   height: 100%;
   width: 100%;
+}
+
+.app__inner {
+  transition: $modal-transition-time filter ease;
+}
+
+.app__inner--blurred {
+  filter: blur(2px);
 }
 
 .button {
@@ -88,7 +115,7 @@ a {
 }
 
 .button--link {
-  padding: 0 1rem;
+  padding: 0;
   &,
   &:hover {
     background: none;
@@ -102,16 +129,6 @@ a {
   }
   &:hover {
     opacity: .8;
-  }
-}
-
-.button--secondary {
-  background: lightgray;
-  color: darkgray;
-
-  &:hover {
-    background: darken($color: lightgray, $amount: 20);
-    color: black;
   }
 }
 

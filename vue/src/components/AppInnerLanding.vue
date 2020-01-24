@@ -1,5 +1,5 @@
 <template>
-  <div class="app__inner app__inner--landing">
+  <div class="app__inner--landing">
     <div class="app__inner--landing__nav">
       <router-link to="/">
         <div class="app__inner--landing__nav__link app__inner--landing__nav__link--logo">
@@ -15,7 +15,7 @@
       </div>
       <div class="app__inner--landing__nav__right" v-if="!sessionActive">
         <router-link :to="{ name: 'login' }" active-class="app__inner--landing__nav__button--active">
-          <div class="app__inner--landing__nav__button button button--link">
+          <div class="app__inner--landing__nav__button button button--link button--link--alternative">
             Login
           </div>
         </router-link>
@@ -141,11 +141,6 @@ $hero-height: 50rem;
 
   @include breakpoint--xs {
     padding: .7rem .75rem;
-  }
-
-  color: $color-white;
-  &:hover {
-    opacity: .8;
   }
 }
 

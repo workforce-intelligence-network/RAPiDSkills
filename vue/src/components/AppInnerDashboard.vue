@@ -1,5 +1,5 @@
 <template>
-  <div class="app__inner app__inner--dashboard">
+  <div class="app__inner--dashboard">
     <div class="app__inner--dashboard__body">
       <div class="app__inner--dashboard__body__content">
         <router-view />
@@ -15,7 +15,7 @@
       <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
         <img :src="ICON_TOP_NAV_SUPPORT" alt="Support Icon" class="app__inner--dashboard__nav--top__link__icon" />
       </a>
-      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)">
+      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)" v-if="sessionActive">
         <div class="app__inner--dashboard__nav--top__link--user__button">
           ?
         </div>
@@ -185,8 +185,9 @@ export default class AppInnerDashboard extends Vue {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 100%;
+  min-width: $nav-left-width;
   max-width: $nav-left-width;
+  height: 100vh;
   background: $color-nav-left-background-blue;
   flex-direction: column;
   align-content: flex-start;
@@ -255,6 +256,8 @@ export default class AppInnerDashboard extends Vue {
 .app__inner--dashboard__body {
   top: $nav-top-height;
   left: $nav-left-width;
+  min-width: calc(100vw - #{$nav-left-width});
+  min-height: calc(100vh - #{$nav-top-height});
   right: 0;
   bottom: 0;
   overflow: auto;

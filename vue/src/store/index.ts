@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import modal from '@/store/modal';
 import session from '@/store/session';
 import standards from '@/store/standards';
 import occupations from '@/store/occupations';
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    modal,
     session,
     standards,
     occupations,

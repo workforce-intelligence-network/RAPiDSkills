@@ -88,7 +88,7 @@ export default class SignUp extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/scss/colors';
 
 .page--signup {
