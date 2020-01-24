@@ -41,15 +41,15 @@ RSpec.describe OccupationStandard, type: :model do
       end
 
       it "returns all objects if creator_id is blank" do
-        expect(OccupationStandard.search(creator_id: nil)).to contain_exactly os1, os2, os3
+        expect(OccupationStandard.search(creator: nil)).to contain_exactly os1, os2, os3
       end
 
       it "returns filtered objects for valid creator_id" do
-        expect(OccupationStandard.search(creator_id: user.id)).to contain_exactly os1, os2
+        expect(OccupationStandard.search(creator: user.id)).to contain_exactly os1, os2
       end
 
       it "returns no objects for invalid creator_id" do
-        expect(OccupationStandard.search(creator_id: 9999)).to be_empty
+        expect(OccupationStandard.search(creator: 9999)).to be_empty
       end
     end
 
@@ -65,15 +65,15 @@ RSpec.describe OccupationStandard, type: :model do
       end
 
       it "returns occupation objects if creator_id is blank" do
-        expect(OccupationStandard.search(occupation_id: occupation.id, creator_id: nil)).to contain_exactly os1, os3
+        expect(OccupationStandard.search(occupation_id: occupation.id, creator: nil)).to contain_exactly os1, os3
       end
 
       it "returns filtered objects for valid creator_id, occupation_id" do
-        expect(OccupationStandard.search(occupation_id: occupation.id, creator_id: user.id)).to eq [os1]
+        expect(OccupationStandard.search(occupation_id: occupation.id, creator: user.id)).to eq [os1]
       end
 
       it "returns no objects for invalid creator_id, valid  occupation" do
-        expect(OccupationStandard.search(occupation_id: occupation.id, creator_id: 9999)).to be_empty
+        expect(OccupationStandard.search(occupation_id: occupation.id, creator: 9999)).to be_empty
       end
     end
   end

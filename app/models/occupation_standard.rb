@@ -40,7 +40,7 @@ class OccupationStandard < ApplicationRecord
   class << self
     def search(args={})
       occupation(args[:occupation_id])
-        .creator(args[:creator_id])
+        .creator(args[:creator])
     end
   end
 
