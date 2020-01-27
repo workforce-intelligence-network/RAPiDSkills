@@ -5,14 +5,16 @@ class OccupationStandard < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :parent_occupation_standard, class_name: 'OccupationStandard', optional: true
   belongs_to :registration_state, class_name: 'State', optional: true
-  has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
+  has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }, dependent: :destroy
   has_many :flattened_skills, through: :occupation_standard_skills,
     class_name: 'Skill', source: :skill
-  has_many :occupation_standard_work_processes, -> { order(:sort_order) }
+  has_many :occupation_standard_work_processes, -> { order(:sort_order) },
+    dependent: :destroy
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
   has_many :skills, through: :occupation_standard_skills_with_no_work_process
-  has_many :standards_registrations
+  has_many :standards_registrations, dependent: :destroy
+  has_many :relationships, dependent: :destroy
 
   has_one_attached :pdf
   has_one_attached :excel

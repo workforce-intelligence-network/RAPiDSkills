@@ -378,4 +378,45 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    let(:path) { "/api/v1/occupation_standards/#{os.id}" }
+    let!(:os) { create(:occupation_standard, creator: user) }
+    let(:user) { create(:user) }
+    let(:params) { {} }
+    let(:header) { auth_header(user) }
+
+    it_behaves_like "authorization", :delete
+
+    context "when user owns occupation standard" do
+      let!(:relationship) { create(:relationship, occupation_standard: os) }
+      let!(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
+      let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let!(:standards_registration) { create(:standards_registration, occupation_standard: os) }
+
+      it "deletes standard, skill, work_process, and relationship records" do
+        expect{
+          delete path, headers: header
+        }.to change(user.occupation_standards, :count).by(-1)
+          .and change(Relationship, :count).by(-1)
+          .and change(OccupationStandardSkill, :count).by(-1)
+          .and change(OccupationStandardWorkProcess, :count).by(-1)
+          .and change(StandardsRegistration, :count).by(-1)
+      end
+    end
+
+    context "when user does not own occupation standard" do
+      let!(:os) { create(:occupation_standard) }
+      let!(:relationship) { create(:relationship, occupation_standard: os) }
+
+      it_behaves_like "unauthorized", :delete
+
+      it "does not change occupation standard count or relationship count" do
+        expect{
+          delete path, headers: header
+        }.to change(user.occupation_standards, :count).by(0)
+          .and change(Relationship, :count).by(0)
+      end
+    end
+  end
 end

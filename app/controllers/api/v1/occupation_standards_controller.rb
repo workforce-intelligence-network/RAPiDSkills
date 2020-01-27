@@ -1,5 +1,6 @@
 class API::V1::OccupationStandardsController < API::V1::APIController
-  skip_before_action :authenticate, except: [:create]
+  skip_before_action :authenticate, except: [:create, :destroy]
+  before_action :set_occupation_standard, only: [:show, :destroy]
 
   def index
     @oss = OccupationStandard.with_eager_loading
@@ -17,7 +18,6 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def show
-    @os = OccupationStandard.find(params[:id])
     options = { links: { self: @os.url } }
     render_resource(@os, options)
   end
@@ -37,7 +37,18 @@ class API::V1::OccupationStandardsController < API::V1::APIController
     end
   end
 
+  def destroy
+    authorize @os, policy_class: API::V1::OccupationStandardPolicy
+    @os.destroy
+    head :no_content
+  end
+
   private
+
+  def set_occupation_standard
+    @os = OccupationStandard.find_by(id: params[:id])
+    head :not_found and return unless @os
+  end
 
   def search_params
     params.permit(:occupation_id)
