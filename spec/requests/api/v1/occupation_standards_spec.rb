@@ -390,12 +390,18 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
     context "when user owns occupation standard" do
       let!(:relationship) { create(:relationship, occupation_standard: os) }
+      let!(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
+      let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let!(:standards_registration) { create(:standards_registration, occupation_standard: os) }
 
-      it "deletes standard and relationship records" do
+      it "deletes standard, skill, work_process, and relationship records" do
         expect{
           delete path, headers: header
         }.to change(user.occupation_standards, :count).by(-1)
           .and change(Relationship, :count).by(-1)
+          .and change(OccupationStandardSkill, :count).by(-1)
+          .and change(OccupationStandardWorkProcess, :count).by(-1)
+          .and change(StandardsRegistration, :count).by(-1)
       end
     end
 
