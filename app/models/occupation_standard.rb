@@ -13,6 +13,7 @@ class OccupationStandard < ApplicationRecord
   has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
   has_many :skills, through: :occupation_standard_skills_with_no_work_process
   has_many :standards_registrations
+  has_many :relationships, dependent: :destroy
 
   has_one_attached :pdf
   has_one_attached :excel
