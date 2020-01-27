@@ -14,5 +14,5 @@ class API::V1::UserSerializer
     links: {
       self: ->(object) { object.relationships_url('favorites') },
       related: ->(object) { object.related_url('favorites') },
-    }
+    }, if: Proc.new { |user| !user.lead? }
 end
