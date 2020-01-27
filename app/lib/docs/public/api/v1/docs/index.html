@@ -307,6 +307,9 @@
                   <li>
                     <a href="#occupation-standards-clone-occupation-standard" class="toc-h2 toc-link" data-title="Clone occupation standard">Clone occupation standard</a>
                   </li>
+                  <li>
+                    <a href="#occupation-standards-delete-occupation-standard" class="toc-h2 toc-link" data-title="Delete occupation standard">Delete occupation standard</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -1640,7 +1643,19 @@ standard.</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre><h1 id='organizations'>Organizations</h1><h2 id='organizations-organization-object'>Organization object</h2><h3 id='organizations-organization-object-attributes'>Attributes</h3>
+</span></code></pre><h2 id='occupation-standards-delete-occupation-standard'>Delete occupation standard</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request DELETE <span class="s1">'http://www.rapidskills.org/api/v1/occupation_standards/18'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type:  application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGVtS0t3alFaTGVWcS5ScEtIUlpmUi5yWFY5WDcyYm5wc2VjaHhqeHVnNVY1Q1B1VXJ4cDhpIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiYThmNzNjYjQtYWJkMC00MGMyLWI2YzUtMWZmYjFmNWQxZWJkIn0.8mCXehQHFMVV8-D5yk0uFyN_FzCEz81qDmcEwT-h5Ew'</span>
+</code></pre><h3 id='occupation-standards-delete-occupation-standard-http-request'>HTTP Request</h3>
+<p><code>DELETE http://www.rapidskills.org/api/v1/occupation_standards/:occupation_standard_id</code></p>
+
+<p>Returns HTTP status 204, no content.</p>
+<h1 id='organizations'>Organizations</h1><h2 id='organizations-organization-object'>Organization object</h2><h3 id='organizations-organization-object-attributes'>Attributes</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -1869,9 +1884,9 @@ standard.</p>
         }
     }
 }'</span>
-</code></pre><h3 id='http-request'>HTTP Request</h3>
+</code></pre><h3 id='users-create-lead-http-request'>HTTP Request</h3>
 <p><code>POST http://www.rapidskills.org/api/v1/leads</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
+<h3 id='users-create-lead-query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
