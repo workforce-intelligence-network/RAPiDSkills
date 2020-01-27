@@ -27,6 +27,7 @@ class OccupationStandard < ApplicationRecord
   delegate :name, to: :creator, prefix: true
 
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
+  scope :creator, ->(creator_id) { where(creator_id: creator_id) if creator_id.present? }
 
   scope :with_eager_loading, -> { includes(:organization, :occupation, :industry, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes) }
 
@@ -39,6 +40,7 @@ class OccupationStandard < ApplicationRecord
   class << self
     def search(args={})
       occupation(args[:occupation_id])
+        .creator(args[:creator])
     end
   end
 

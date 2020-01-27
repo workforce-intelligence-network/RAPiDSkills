@@ -7,6 +7,16 @@ class API::V1::UserPolicy < ApplicationPolicy
   end
 
   def favorite?
+    owned_by_user?
+  end
+
+  def occupation_standard?
+    owned_by_user?
+  end
+
+  private
+
+  def owned_by_user?
     user == target_user
   end
 end
