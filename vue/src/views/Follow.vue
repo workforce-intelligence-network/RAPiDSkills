@@ -63,7 +63,7 @@ const createUser = async (user: CreateUserUser) => apiRaw.post('leads', { // TOD
     attributes: {
       name: user.name,
       email: user.email,
-      organization_name: user.organizationName,
+      organization_title: user.organizationName,
     },
   },
 });

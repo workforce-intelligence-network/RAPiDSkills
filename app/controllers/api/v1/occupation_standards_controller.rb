@@ -39,9 +39,9 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def update
     authorize @os, policy_class: API::V1::OccupationStandardPolicy
-    if organization_params[:organization_name].present?
+    if organization_params[:organization_title].present?
       @os.organization = Organization.where(
-        title: organization_params[:organization_name]
+        title: organization_params[:organization_title]
       ).first_or_initialize
     end
     if @os.update(update_params)
@@ -81,7 +81,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def organization_params
-    params.require(:data).require(:attributes).permit(:organization_name)
+    params.require(:data).require(:attributes).permit(:organization_title)
   end
 
   def page_params

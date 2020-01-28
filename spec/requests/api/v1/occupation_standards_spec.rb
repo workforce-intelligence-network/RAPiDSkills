@@ -442,7 +442,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
                 title: "new title",
                 registration_organization_name: "new reg org name",
                 registration_state_id: state.id,
-                organization_name: "new org name",
+                organization_title: "new org name",
                 occupation_id: occupation.id,
                 industry_id: industry.id,
               },

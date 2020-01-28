@@ -13,7 +13,7 @@ RSpec.describe API::V1::UsersController, type: :request do
               email: "foo@example.com",
               password: "supersecret",
               name: "Mickey Mouse",
-              organization_name: "Acme Computing",
+              organization_title: "Acme Computing",
             }
           }
         }
@@ -61,7 +61,7 @@ RSpec.describe API::V1::UsersController, type: :request do
                 email: "foo@example.com",
                 password: "supersecret",
                 name: "Mickey Mouse",
-                organization_name: "Acme Computing",
+                organization_title: "Acme Computing",
               }
             }
           }
@@ -169,7 +169,7 @@ RSpec.describe API::V1::UsersController, type: :request do
                 email: "foo@example.com",
                 password: "supersecret",
                 name: "Mickey Mouse",
-                organization_name: "Acme Computing",
+                organization_title: "Acme Computing",
               }
             }
           }
