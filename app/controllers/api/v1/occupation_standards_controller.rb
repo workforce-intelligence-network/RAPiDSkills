@@ -80,11 +80,16 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def update_params
-    params.require(:data).require(:attributes).permit(:title, :registration_organization_name, :registration_state_id, :occupation_id, :industry_id)
+    relationships = {}
+    relationship_params = params.require(:data).fetch(:relationships, {})
+    relationship_params.each do |key, data_hash|
+      relationships["#{key}_id"] = data_hash["data"]["id"]
+    end
+    params.require(:data).fetch(:attributes, {}).permit(:title, :registration_organization_name).merge(relationships)
   end
 
   def organization_params
-    params.require(:data).require(:attributes).permit(:organization_title)
+    params.require(:data).fetch(:attributes, {}).permit(:organization_title)
   end
 
   def page_params
@@ -101,6 +106,8 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :"occupation_standard_work_processes.occupation_standard_skills",
       :occupation_standard_skills,
       :organization,
+      :industry,
+      :registration_state,
     ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end

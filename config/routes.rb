@@ -17,8 +17,10 @@ Rails.application.routes.draw do
         member do
           get "relationships/work_processes", to: "occupation_standards/relationships#work_processes"
           get "relationships/skills", to: "occupation_standards/relationships#skills"
+          get "relationships/industry", to: "occupation_standards/relationships#industry"
           get "relationships/occupation", to: "occupation_standards/relationships#occupation"
           get "relationships/organization", to: "occupation_standards/relationships#organization"
+          get "relationships/registration_state", to: "occupation_standards/relationships#registration_state"
         end
         resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
         resources :occupation_standard_skills, path: "skills", only: [:index]
@@ -32,7 +34,9 @@ Rails.application.routes.draw do
       end
 
       resources :occupation_standard_skills, path: "skills", only: [:show, :update]
+      resources :industry, only: [:show]
       resources :organizations, only: [:show]
+      resources :states, only: [:show]
       resources :leads, only: [:create]
       resources :users, only: [:create] do
         member do
