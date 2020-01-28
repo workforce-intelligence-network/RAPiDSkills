@@ -14,7 +14,7 @@ RSpec.describe API::V1::LeadsController, type: :request do
             attributes: {
               email: "foo@example.com",
               name: "Mickey Mouse",
-              organization_name: "Acme Computing",
+              organization_title: "Acme Computing",
             }
           }
         }
@@ -99,7 +99,7 @@ RSpec.describe API::V1::LeadsController, type: :request do
               attributes: {
                 email: "foo@example.com",
                 name: "Mickey Mouse",
-                organization_name: "Acme Computing",
+                organization_title: "Acme Computing",
               }
             }
           }

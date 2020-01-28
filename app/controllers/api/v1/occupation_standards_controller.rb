@@ -1,6 +1,6 @@
 class API::V1::OccupationStandardsController < API::V1::APIController
-  skip_before_action :authenticate, except: [:create, :destroy]
-  before_action :set_occupation_standard, only: [:show, :destroy]
+  skip_before_action :authenticate, only: [:index, :show]
+  before_action :set_occupation_standard, only: [:show, :update, :destroy]
 
   def index
     @oss = OccupationStandard.with_eager_loading
@@ -18,7 +18,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def show
-    options = { links: { self: @os.url } }
+    options = { links: { self: request.original_url } }
     render_resource(@os, options)
   end
 
@@ -35,6 +35,27 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       @os.errors.add(:parent_occupation_standard_id, :invalid)
       render_resource_error(@os)
     end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
+  def update
+    authorize @os, policy_class: API::V1::OccupationStandardPolicy
+    if organization_params[:organization_title].present?
+      @os.organization = Organization.where(
+        title: organization_params[:organization_title]
+      ).first_or_initialize
+    end
+    if @os.update(update_params)
+      options = { links: { self: request.original_url } }
+      render_resource(@os, options)
+    else
+      render_resource_error(@os)
+    end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
   end
 
   def destroy
@@ -56,6 +77,14 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def create_params
     params.require(:data).require(:attributes).permit(:parent_occupation_standard_id)
+  end
+
+  def update_params
+    params.require(:data).require(:attributes).permit(:title, :registration_organization_name, :registration_state_id, :occupation_id, :industry_id)
+  end
+
+  def organization_params
+    params.require(:data).require(:attributes).permit(:organization_title)
   end
 
   def page_params

@@ -201,4 +201,23 @@ RSpec.describe OccupationStandard, type: :model do
       expect(os.to_csv).to be_a(String)
     end
   end
+
+  describe "#registration_state_name" do
+    context "when registration state exists" do
+      let(:rs) { build_stubbed(:state, short_name: "short") }
+      let(:os) { build_stubbed(:occupation_standard, registration_state: rs) }
+
+      it "returns short name" do
+        expect(os.registration_state_name).to eq "short"
+      end
+    end
+
+    context "when registration state does not exist" do
+      let(:os) { build_stubbed(:occupation_standard) }
+
+      it "returns short name" do
+        expect(os.registration_state_name).to be nil
+      end
+    end
+  end
 end

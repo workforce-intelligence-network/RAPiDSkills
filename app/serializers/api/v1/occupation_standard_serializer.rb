@@ -34,9 +34,11 @@ class API::V1::OccupationStandardSerializer
     }
 
   attributes :title,
+             :industry_title,
              :organization_title,
              :occupation_title,
-             :industry_title
+             :registration_organization_name,
+             :registration_state_name
 
   attribute :pdf_filename do |object|
     object.pdf.filename if object.pdf.attached?
