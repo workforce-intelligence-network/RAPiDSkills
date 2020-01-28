@@ -84,6 +84,10 @@ class OccupationStandard < ApplicationRecord
     end
   end
 
+  def registration_state_name
+    registration_state&.short_name
+  end
+
   def should_generate_attachment?(kind)
     # Occupation standard updated_at timestamp gets set milliseconds after
     # attachment created_at timestamp.
