@@ -354,27 +354,48 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     end
 
     context "with invalid parent occupation standard" do
-      let(:params) {
-        {
-          data: {
-            type: "occupation_standard",
-            attributes: {
-              parent_occupation_standard_id: 999,
-            },
+      context "with bad standard id" do
+        let(:params) {
+          {
+            data: {
+              type: "occupation_standard",
+              attributes: {
+                parent_occupation_standard_id: 999,
+              },
+            }
           }
         }
-      }
 
-      it "does not call clone method" do
-        expect_any_instance_of(OccupationStandard).to_not receive(:clone_as_unregistered!)
-        post path, params: params, headers: header
+        it "does not call clone method" do
+          expect_any_instance_of(OccupationStandard).to_not receive(:clone_as_unregistered!)
+          post path, params: params, headers: header
+        end
+
+        it "returns 422 http status" do
+          post path, params: params, headers: header
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to match "is invalid"
+        end
       end
 
-      it "returns 422 http status" do
-        post path, params: params, headers: header
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(json["errors"][0]["status"]).to eq "422"
-        expect(json["errors"][0]["detail"]).to match "is invalid"
+      context "when missing attributes data" do
+        let(:params) {
+          {
+            data: {
+              type: "occupation_standard",
+                attributes: {
+              }
+            }
+          }
+        }
+
+        it "returns 422 http status" do
+          post path, params: params, headers: header
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to match "empty: attributes"
+        end
       end
     end
   end

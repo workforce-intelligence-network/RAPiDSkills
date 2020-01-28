@@ -35,6 +35,9 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       @os.errors.add(:parent_occupation_standard_id, :invalid)
       render_resource_error(@os)
     end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
   end
 
   def update
