@@ -16,6 +16,8 @@ RSpec.shared_examples "unauthorized" do |method|
   it "has unauthorized status" do
     send(method, path, params: params, headers: header)
     expect(response).to have_http_status(:unauthorized)
+    expect(json["errors"]["status"]).to eq "401"
+    expect(json["errors"]["detail"]).to eq "User is not authorized to perform this action"
   end
 end
 
