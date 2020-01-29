@@ -1,12 +1,19 @@
-class API::V1::UsersController < API::V1::APIController
+class API::V1::LeadsController < API::V1::APIController
   skip_before_action :authenticate, only: :create
 
   def create
-    @user = User.new(user_params)
-    @user.employer = Organization.where(
-      title: organization_params[:organization_title]
-    ).first_or_initialize
-    @user.role = :basic
+    @user = User.where(
+      email: user_params[:email]
+    ).first_or_initialize(
+      name: user_params[:name],
+      password: SecureRandom.uuid,
+    )
+
+    if @user.new_record?
+      @user.employer = Organization.where(
+        title: organization_params[:organization_title]
+      ).first_or_initialize
+    end
 
     if @user.save
       options = {}
@@ -23,7 +30,7 @@ class API::V1::UsersController < API::V1::APIController
   private
 
   def user_params
-    params.require(:data).require(:attributes).permit(:name, :email, :password)
+    params.require(:data).require(:attributes).permit(:email, :name)
   end
 
   def organization_params

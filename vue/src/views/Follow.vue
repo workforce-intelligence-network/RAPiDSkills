@@ -57,13 +57,13 @@ class CreateUserUser {
   }
 }
 
-const createUser = async (user: CreateUserUser) => apiRaw.post('users', { // TODO: create User model
+const createUser = async (user: CreateUserUser) => apiRaw.post('leads', { // TODO: create User model
   data: {
     type: 'users',
     attributes: {
       name: user.name,
       email: user.email,
-      organization_name: user.organizationName,
+      organization_title: user.organizationName,
     },
   },
 });

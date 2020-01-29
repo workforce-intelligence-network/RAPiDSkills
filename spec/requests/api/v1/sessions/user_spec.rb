@@ -22,7 +22,7 @@ RSpec.describe API::V1::Sessions::UserController, type: :request do
         expect(json["data"]["id"]).to eq user.id.to_s
         expect(json["data"]["attributes"]["email"]).to eq user.email
         expect(json["data"]["attributes"]["name"]).to eq user.name
-        expect(json["data"]["attributes"]["role"]).to eq "lead"
+        expect(json["data"]["attributes"]["role"]).to eq "basic"
         expect(json["data"]["relationships"]["employer"]["data"]).to be nil
         expect(json["data"]["relationships"]["favorites"]["data"].count).to eq 1
         expect(json["data"]["relationships"]["favorites"]["data"][0]["type"]).to eq "occupation_standard"

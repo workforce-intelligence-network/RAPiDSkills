@@ -9,6 +9,7 @@ class User < ApplicationRecord
   belongs_to :employer, class_name: 'Organization', optional: true
   has_many :data_imports
   has_many :client_sessions
+  has_many :occupation_standards, foreign_key: :creator_id
   has_many :relationships
   has_many :favorites, -> { order(id: :desc) }, through: :relationships,
     class_name: 'OccupationStandard', source: :occupation_standard

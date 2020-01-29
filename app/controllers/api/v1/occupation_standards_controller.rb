@@ -1,5 +1,6 @@
 class API::V1::OccupationStandardsController < API::V1::APIController
-  skip_before_action :authenticate, except: [:create]
+  skip_before_action :authenticate, only: [:index, :show]
+  before_action :set_occupation_standard, only: [:show, :update, :destroy]
 
   def index
     @oss = OccupationStandard.with_eager_loading
@@ -17,8 +18,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def show
-    @os = OccupationStandard.find(params[:id])
-    options = { links: { self: @os.url } }
+    options = { links: { self: request.original_url } }
     render_resource(@os, options)
   end
 
@@ -35,9 +35,41 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       @os.errors.add(:parent_occupation_standard_id, :invalid)
       render_resource_error(@os)
     end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
+  def update
+    authorize @os, policy_class: API::V1::OccupationStandardPolicy
+    if organization_params[:organization_title].present?
+      @os.organization = Organization.where(
+        title: organization_params[:organization_title]
+      ).first_or_initialize
+    end
+    if @os.update(update_params)
+      options = { links: { self: request.original_url } }
+      render_resource(@os, options)
+    else
+      render_resource_error(@os)
+    end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
+  def destroy
+    authorize @os, policy_class: API::V1::OccupationStandardPolicy
+    @os.destroy
+    head :no_content
   end
 
   private
+
+  def set_occupation_standard
+    @os = OccupationStandard.find_by(id: params[:id])
+    head :not_found and return unless @os
+  end
 
   def search_params
     params.permit(:occupation_id)
@@ -45,6 +77,19 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def create_params
     params.require(:data).require(:attributes).permit(:parent_occupation_standard_id)
+  end
+
+  def update_params
+    relationships = {}
+    relationship_params = params.require(:data).fetch(:relationships, {})
+    relationship_params.each do |key, data_hash|
+      relationships["#{key}_id"] = data_hash["data"]["id"]
+    end
+    params.require(:data).fetch(:attributes, {}).permit(:title, :registration_organization_name).merge(relationships)
+  end
+
+  def organization_params
+    params.require(:data).fetch(:attributes, {}).permit(:organization_title)
   end
 
   def page_params
@@ -61,6 +106,8 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :"occupation_standard_work_processes.occupation_standard_skills",
       :occupation_standard_skills,
       :organization,
+      :industry,
+      :registration_state,
     ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end

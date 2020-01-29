@@ -1,5 +1,4 @@
-class API::V1::Users::Relationships::FavoritesController < API::V1::APIController
-  before_action :set_target_user
+class API::V1::Users::Relationships::FavoritesController < API::V1::Users::Relationships::BaseController
 
   def index
     authorize [:api, :v1, @target_user], :favorite?
