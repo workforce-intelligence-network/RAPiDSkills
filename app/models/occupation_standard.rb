@@ -46,14 +46,15 @@ class OccupationStandard < ApplicationRecord
     end
   end
 
-  def clone_as_unregistered!(creator_id:, organization_id:)
+  def clone_as_unregistered!(creator_id:, organization_id:, new_title: nil)
     begin
+      new_title ||= "#{title} COPY"
       OccupationStandard.transaction do
         os = UnregisteredStandard.create!(
           creator_id: creator_id,
           organization_id: organization_id,
           occupation: occupation,
-          title: "#{title} COPY",
+          title: new_title,
           parent_occupation_standard: self,
         )
 

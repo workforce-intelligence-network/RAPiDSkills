@@ -119,19 +119,28 @@ RSpec.describe OccupationStandard, type: :model do
     let(:organization) { create(:organization) }
 
     context "when successful" do
-      it "creates UnregisteredStandard" do
-        os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
-        expect(os).to be_a(UnregisteredStandard)
-        expect(os.work_processes).to match_array [oswp1.work_process, oswp2.work_process]
-        expect(os.occupation_standard_work_processes.flat_map(&:skills)).to match_array [oss1a.skill, oss1b.skill]
-        expect(os.skills).to match_array [oss.skill]
-        expect(os.title).to eq "OS Title COPY"
-        expect(os.occupation).to eq os.occupation
-        expect(os.parent_occupation_standard).to eq occupation_standard
-        expect(os.creator).to eq user
-        expect(os.organization).to eq organization
-        expect(os.completed_at).to be nil
-        expect(os.published_at).to be nil
+      context "when no title is passed" do
+        it "creates UnregisteredStandard" do
+          os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
+          expect(os).to be_a(UnregisteredStandard)
+          expect(os.work_processes).to match_array [oswp1.work_process, oswp2.work_process]
+          expect(os.occupation_standard_work_processes.flat_map(&:skills)).to match_array [oss1a.skill, oss1b.skill]
+          expect(os.skills).to match_array [oss.skill]
+          expect(os.title).to eq "OS Title COPY"
+          expect(os.occupation).to eq os.occupation
+          expect(os.parent_occupation_standard).to eq occupation_standard
+          expect(os.creator).to eq user
+          expect(os.organization).to eq organization
+          expect(os.completed_at).to be nil
+          expect(os.published_at).to be nil
+        end
+      end
+
+      context "when title is passed" do
+        it "sets title" do
+          os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id, new_title: "New Title")
+          expect(os.title).to eq "New Title"
+        end
       end
     end
 

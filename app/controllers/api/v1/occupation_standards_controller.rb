@@ -28,6 +28,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       @os = parent.clone_as_unregistered!(
         creator_id: current_user.id,
         organization_id: current_user.employer_id,
+        new_title: create_params[:title],
       )
       if @os.valid?
         render_resource(@os)
@@ -80,7 +81,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def create_params
-    params.require(:data).require(:attributes).permit(:parent_occupation_standard_id)
+    params.require(:data).require(:attributes).permit(:parent_occupation_standard_id, :title)
   end
 
   def update_params
