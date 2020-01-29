@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     duplicateStandard() {
-      this.$router.push({
+      (this as any).$router.push({
         name: 'duplicate',
         params: {
           id: (this as any).standard.id,

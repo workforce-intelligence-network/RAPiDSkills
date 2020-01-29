@@ -92,7 +92,11 @@ export default class ModelBase {
         };
       }
 
-      return (this.staticType.jsonApiClassDefinition || {})[key] || this[key];
+      if (!_isUndefined((this.staticType.jsonApiClassDefinition || {})[key])) {
+        return (this.staticType.jsonApiClassDefinition || {})[key];
+      }
+
+      return this[key];
     }));
   }
 

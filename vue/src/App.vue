@@ -85,12 +85,12 @@ a {
   }
 
   color: $color-white;
-  background: $color-link-blue;
+  background: $color-button-blue;
 
   cursor: pointer;
 
   &:hover {
-    background: $color-button-hover-blue;
+    background: $color-link-blue;
   }
 
   &,
@@ -101,9 +101,9 @@ a {
 
 .button--link,
 .button--inverted {
-  color: $color-link-blue;
+  color: $color-button-blue;
   &:hover {
-    color: $color-button-hover-blue;
+    color: $color-link-blue;
   }
 }
 
@@ -135,6 +135,14 @@ a {
 .button--round {
   padding: 0.5rem;
   border-radius: 50%;
+}
+
+.button--square {
+  border-radius: 4px;
+}
+
+.button--tall {
+  line-height: 2rem;
 }
 
 .input {

@@ -106,6 +106,7 @@ const routes = [
             path: ':id/duplicate',
             name: 'duplicate',
             async beforeEnter(to, from, next) {
+              store.dispatch('standards/getStandard', to.params.id);
               store.dispatch('modal/updateContent', duplicateComponentName);
               next();
             },

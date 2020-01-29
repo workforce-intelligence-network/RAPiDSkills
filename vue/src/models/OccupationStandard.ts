@@ -1,3 +1,9 @@
+import _pick from 'lodash/pick';
+
+import { MinLength } from 'class-validator';
+
+import jsonApi from '@/utilities/api';
+
 import ModelBase from '@/models/ModelBase';
 
 import WorkProcess from '@/models/WorkProcess';
@@ -10,6 +16,7 @@ export default class OccupationStandard extends ModelBase {
   constructor(standard: Partial<OccupationStandard> = {}) {
     super(standard);
 
+    this.parentOccupationStandardId = this.id || '';
     this.excelCreatedAt = standard.excelCreatedAt || '';
     this.excelFilename = standard.excelFilename || '';
     this.excelUrl = standard.excelUrl || '';
@@ -68,6 +75,7 @@ export default class OccupationStandard extends ModelBase {
 
   shouldGenerateAttachments: boolean
 
+  @MinLength(1)
   title: string
 
   workProcesses: WorkProcess[]
@@ -77,6 +85,8 @@ export default class OccupationStandard extends ModelBase {
   occupation: Occupation
 
   organization: Organization
+
+  parentOccupationStandardId: string | number
 
   get totalNumberOfSkills() {
     return this.skills.length + this.workProcesses.reduce(
@@ -91,6 +101,21 @@ export default class OccupationStandard extends ModelBase {
         (total, workProcess) => total + (workProcess as any).hoursTotal || 0,
         0,
       );
+  }
+
+  async clone(params: object = {}): Promise<any> {
+    const apiResponse = await jsonApi.create(
+      this.staticType.jsonApiClassName,
+      _pick(this.jsonApiObject, [
+        'parentOccupationStandardId',
+        'title',
+      ]),
+      params,
+    );
+
+    const { data } = apiResponse;
+
+    return Object.assign(apiResponse, { model: new OccupationStandard(data) });
   }
 }
 

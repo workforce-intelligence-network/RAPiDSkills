@@ -185,17 +185,16 @@ export default class AppInnerDashboard extends Vue {
   top: 0;
   bottom: 0;
   left: 0;
-  min-width: $nav-left-width;
-  max-width: $nav-left-width;
+  width: $nav-left-width;
   height: 100vh;
   background: $color-nav-left-background-blue;
   flex-direction: column;
   align-content: flex-start;
-  transition: max-width 0.25s ease;
+  transition: width 0.25s ease;
   overflow-x: hidden;
 
   &:hover {
-    max-width: $nav-left-width-expanded;
+    width: $nav-left-width-expanded;
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
-  <div class="modal" @click="close">
+  <div class="modal" @click="onBackdropClick">
     <div class="modal__backdrop" />
-    <div class="modal__content" v-if="component" @click.stop="">
+    <div class="modal__content" v-if="component" @click.stop="" @mousedown="onMouseDownInsideContent">
       <div class="button button--link modal__content__button--close" @click="close">
         <img :src="ICON_CLOSE" alt="Close" class="modal__content__button--close__icon" />
       </div>
@@ -23,6 +23,21 @@ export default class Modal extends Vue {
   @Prop(String) readonly component?: string
 
   @Provide('ICON_CLOSE') ICON_CLOSE = ICON_CLOSE
+
+  mouseDownInsideContent: boolean = false
+
+  onMouseDownInsideContent() {
+    this.mouseDownInsideContent = true;
+  }
+
+  onBackdropClick() {
+    if (this.mouseDownInsideContent) {
+      this.mouseDownInsideContent = false;
+      return;
+    }
+
+    this.close();
+  }
 
   close() {
     this.$store.dispatch('modal/close');
@@ -76,15 +91,14 @@ $modal-content-desktop-width: 50rem;
 .modal__content {
   position: relative;
   width: $modal-content-desktop-width;
-  min-height: 20rem;
   background: $color-white;
   border-radius: 8px;
   pointer-events: all;
   border-top: 11px solid $color-blue;
   @media (max-width: $modal-content-desktop-width) {
     width: 100vw;
-    min-height: 100%;
     border-radius: 0;
+    flex-grow: 1;
   }
 }
 

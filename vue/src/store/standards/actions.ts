@@ -43,3 +43,8 @@ export const getStandard = async ({ state, commit }, id: string | number) => {
 
   commit('updateSelectedStandardLoading', false);
 };
+
+export const duplicateSelectedStandard = async ({ state }) => {
+  const { model } = await (state.selectedStandard as OccupationStandard).clone();
+  console.log('copy', model);
+};
