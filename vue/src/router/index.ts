@@ -10,6 +10,8 @@ import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import SearchOccupations from '@/components/SearchOccupations.vue';
 import PageTitle from '@/components/PageTitle.vue';
 
+import Standard from '@/views/Standard.vue';
+
 import { duplicateComponentName } from '@/modal';
 
 Vue.use(VueRouter);
@@ -117,12 +119,15 @@ const routes = [
         path: 'standards/:id',
         name: 'standard',
         components: {
-          default: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
+          default: Standard,
           navbarActions: PageTitle,
         },
         beforeEnter(to, from, next) {
           store.dispatch('standards/getStandard', to.params.id);
           next();
+        },
+        beforeLeave() {
+          store.dispatch('standards/editSelectedStandard', false);
         },
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),

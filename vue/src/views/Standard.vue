@@ -26,11 +26,11 @@
     </div>
     <div class="page--standard__body">
       <Loading v-if="loading" />
-      <div class="page--standard__body__work-process" v-for="workProcess in standard.workProcesses" :key="workProcess.id" :class="{ 'page--standard__body__work-process--expanded': workProcess.expanded }">
+      <div class="page--standard__body__work-process" v-for="workProcess in standard.workProcesses" :key="workProcess.id" :class="{ 'page--standard__body__work-process--expanded': workProcessExpanded(workProcess) }">
         <div class="page--standard__body__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
           <div class="page--standard__body__work-process__wrapper__icon--folder">
-            <img :src="ICON_FOLDER" alt="Work Process icon" v-if="workProcess.expanded" />
-            <img :src="ICON_FOLDER_CLOSED" alt="Work Process icon" v-if="!workProcess.expanded" />
+            <img :src="ICON_FOLDER" alt="Work Process icon" v-if="workProcessExpanded(workProcess)" />
+            <img :src="ICON_FOLDER_CLOSED" alt="Work Process icon" v-if="!workProcessExpanded(workProcess)" />
           </div>
           <div class="page--standard__body__work-process__wrapper__vertical-group">
             <div class="page--standard__body__work-process__wrapper__vertical-group__label">
@@ -95,6 +95,14 @@ export default {
     toggleWorkProcess(workProcess: any) {
       Vue.set(workProcess, 'expanded', !workProcess.expanded);
     },
+    workProcessExpanded(workProcess) {
+      return workProcess && !!workProcess.expanded;
+    },
+  },
+  beforeDestroy() {
+    this.standard.workProcesses.forEach((workProcess, key) => {
+      delete this.standard.workProcesses[key].expanded;
+    });
   },
   data() {
     return {
@@ -106,6 +114,7 @@ export default {
     ...mapState({
       standard: (state: any) => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
+      editing: (state: any) => state.standards.selectedStandardEditing,
     }),
   },
 };

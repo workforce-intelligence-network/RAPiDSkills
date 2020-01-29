@@ -47,6 +47,7 @@ body {
 
 body * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 a {

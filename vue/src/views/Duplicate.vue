@@ -9,9 +9,9 @@
       <div class="page--duplicate__body__text page--duplicate__body__text--question" v-html="textQuestion" />
       <div class="page--duplicate__body__text page--duplicate__body__text--explanation" v-html="textExplanation" />
       <div class="input page--duplicate__body__input" :class="{ 'input--error': validating && standard.propertyInvalid('title') }">
-        <input class="input__input page--duplicate__body__input__input" :placeholder="textStandardNamePlaceholder" type="text" name="title" v-model="standard.title" ref="standardTitleInput" />
+        <input class="input__input page--duplicate__body__input__input" :placeholder="textStandardNamePlaceholder" type="text" name="title" v-model="standard.title" ref="standardTitleInput" :disabled="saving" />
       </div>
-      <button class="button button--square button--tall page--duplicate__body__button" role="button" @click="createDuplicateStandardAndEdit" v-html="textButtonDuplicate" />
+      <button class="button button--square button--tall page--duplicate__body__button" role="button" @click="createDuplicateStandardAndEdit" v-html="textButtonDuplicate" :disabled="saving" />
     </div>
   </div>
 </template>
@@ -45,6 +45,8 @@ export default class Duplicate extends Vue {
 
   validating: boolean = false
 
+  saving: boolean = false
+
   protected get standard(): OccupationStandard {
     return this.$store.state.standards.selectedStandard || {};
   }
@@ -68,10 +70,14 @@ export default class Duplicate extends Vue {
   }
 
   beforeDestroy() {
+    if (this.saving) {
+      return;
+    }
+
     this.$router.push({ name: 'standards' });
   }
 
-  createDuplicateStandardAndEdit() {
+  async createDuplicateStandardAndEdit() {
     this.validating = true;
 
     if (this.standard.propertyInvalid('title')) {
@@ -79,8 +85,20 @@ export default class Duplicate extends Vue {
     }
 
     this.validating = false;
+    this.saving = true;
 
-    this.$store.dispatch('standards/duplicateSelectedStandard');
+    await this.$store.dispatch('standards/duplicateSelectedStandard');
+
+    await this.$store.dispatch('standards/editSelectedStandard', true);
+
+    await this.$store.dispatch('modal/close');
+
+    await this.$router.push({
+      name: 'standard',
+      params: {
+        id: String(this.standard.id),
+      },
+    });
   }
 }
 </script>
