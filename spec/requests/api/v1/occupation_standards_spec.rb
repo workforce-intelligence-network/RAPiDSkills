@@ -412,6 +412,28 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
         end
       end
 
+      context "when user is missing employer" do
+        let(:user) { create(:user, employer: nil) }
+        let(:os) { create(:occupation_standard) }
+        let(:params) {
+          {
+            data: {
+              type: "occupation_standard",
+              attributes: {
+                parent_occupation_standard_id: os.id,
+              },
+            }
+          }
+        }
+
+        it "returns 422 http status" do
+          post path, params: params, headers: header
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to match "Organization must exist"
+        end
+      end
+
       context "when missing attributes data" do
         let(:params) {
           {

@@ -79,8 +79,9 @@ class OccupationStandard < ApplicationRecord
         os
       end
     rescue Exception => e
-      errors.add(:base, e.message)
-      OccupationStandard.new
+      os = OccupationStandard.new
+      os.errors.add(:base, e.message)
+      os
     end
   end
 

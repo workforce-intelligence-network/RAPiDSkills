@@ -142,7 +142,7 @@ RSpec.describe OccupationStandard, type: :model do
         allow(UnregisteredStandard).to receive(:create!).and_raise(error)
         os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
         expect(os).to be_new_record
-        expect(occupation_standard.errors.full_messages.to_sentence).to eq "error msg"
+        expect(os.errors.full_messages.to_sentence).to eq "error msg"
       end
     end
   end

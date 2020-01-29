@@ -29,7 +29,11 @@ class API::V1::OccupationStandardsController < API::V1::APIController
         creator_id: current_user.id,
         organization_id: current_user.employer_id,
       )
-      render_resource(@os)
+      if @os.valid?
+        render_resource(@os)
+      else
+        render_resource_error(@os)
+      end
     else
       @os = OccupationStandard.new
       @os.errors.add(:parent_occupation_standard_id, :invalid)
