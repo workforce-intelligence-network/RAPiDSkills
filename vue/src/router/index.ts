@@ -126,9 +126,6 @@ const routes = [
           store.dispatch('standards/getStandard', to.params.id);
           next();
         },
-        beforeLeave() {
-          store.dispatch('standards/editSelectedStandard', false);
-        },
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
         },

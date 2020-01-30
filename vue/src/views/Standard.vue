@@ -81,6 +81,9 @@
               <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" />
             </div>
           </div>
+          <button class="button button--link page--standard__body__work-process__wrapper__icon--delete" v-if="editing" @click.stop="deleteWorkProcess(workProcess)">
+            <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__work-process__wrapper__icon--delete__icon" />
+          </button>
           <div class="page--standard__body__work-process__wrapper__icon--caret">
             <FontAwesomeIcon :icon="['fas', 'caret-down']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="workProcess.expanded" />
             <FontAwesomeIcon :icon="['fas', 'caret-right']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="!workProcess.expanded" />
@@ -105,10 +108,21 @@
                 <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" />
               </div>
             </div>
+            <button class="button button--link page--standard__body__work-process__skills__skill__icon--delete" v-if="editing" @click.stop="deleteWorkProcessSkill(workProcess, skill)">
+              <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__work-process__skills__skill__icon--delete__icon" />
+            </button>
           </div>
         </div>
       </div>
-      <div class="page--standard__body__skill" v-for="(skill, skillIndex) in standard.skills" :key="`skill-${skillIndex}`" :class="{ 'page--standard__body__skill--error': skill.invalid }">
+      <div
+        class="page--standard__body__skill"
+        v-for="(skill, skillIndex) in standard.skills"
+        :key="`skill-${skillIndex}`"
+        :class="{
+          'page--standard__body__skill--error': skill.invalid,
+          'page--standard__body__skill--editing': editing
+        }"
+      >
         <div class="page--standard__body__skill__wrapper">
           <div class="page--standard__body__skill__wrapper__vertical-group">
             <div class="page--standard__body__skill__wrapper__vertical-group__label">
@@ -121,6 +135,9 @@
               <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" />
             </div>
           </div>
+          <button class="button button--link page--standard__body__skill__wrapper__icon--delete" v-if="editing" @click.stop="deleteSkill(skill)">
+            <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__skill__wrapper__icon--delete__icon" />
+          </button>
         </div>
       </div>
     </div>
@@ -205,11 +222,24 @@ export default {
     addNewWorkProcessSkillDisabled(workProcess: WorkProcess) {
       return _get(workProcess, 'skills[0].invalid');
     },
+    deleteWorkProcess(workProcess) {
+      this.standard.workProcesses.splice(this.standard.workProcesses.indexOf(workProcess), 1); // TODO: move to action
+    },
+    deleteWorkProcessSkill(workProcess, skill) {
+      workProcess.skills.splice(workProcess.skills.indexOf(skill), 1); // TODO: move to action
+    },
+    deleteSkill(skill) {
+      this.standard.skills.splice(this.standard.skills.indexOf(skill), 1); // TODO: move to action
+    },
   },
   beforeDestroy() {
     this.standard.workProcesses.forEach((workProcess, key) => {
       delete this.standard.workProcesses[key].expanded;
     });
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch('standards/editSelectedStandard', false);
+    next();
   },
   data() {
     return {
@@ -222,7 +252,7 @@ export default {
     ...mapState({
       standard: (state: any): OccupationStandard => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
-      editing: (state: any) => true || state.standards.selectedStandardEditing,
+      editing: (state: any) => state.standards.selectedStandardEditing,
     }),
     addNewWorkProcessDisabled() {
       const workProcess: WorkProcess | undefined = _get(this.standard, 'workProcesses[0]');
@@ -349,6 +379,10 @@ $skill-height: 5rem;
   }
 }
 
+.page--standard__body__work-process--editing .page--standard__body__work-process__skills__skill {
+  padding-right: 0;
+}
+
 .page--standard__body__work-process:not(.page--standard__body__work-process--expanded) {
   .page--standard__body__work-process__wrapper__vertical-group__title {
     max-height: 3rem;
@@ -406,6 +440,19 @@ $skill-height: 5rem;
   margin-left: auto;
   width: 3.5rem;
   color: $color-blue;
+}
+
+.page--standard__body__skill__wrapper__icon--delete,
+.page--standard__body__work-process__skills__skill__icon--delete,
+.page--standard__body__work-process__wrapper__icon--delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  width: 3.5rem;
+  color: $color-salmon;
+  font-size: 1.125rem;
 }
 
 .page--standard__body__work-process__skills {
@@ -496,6 +543,10 @@ $skill-height: 5rem;
   border-bottom: 1px solid $color-gray-light;
   overflow: hidden;
   padding: 0 2rem;
+}
+
+.page--standard__body__skill--editing .page--standard__body__skill__wrapper {
+  padding-right: 0;
 }
 
 .page--standard__body__skill__wrapper__vertical-group {
