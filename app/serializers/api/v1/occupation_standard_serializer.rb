@@ -21,6 +21,14 @@ class API::V1::OccupationStandardSerializer
       related: ->(object) { object.related_url('occupation_standard_skills') },
     }
 
+  belongs_to :creator,
+    serializer: API::V1::UserSerializer,
+    record_type: :user,
+    links: {
+      self: ->(object) { object.relationships_url('creator') },
+      related: ->(object) { Rails.application.routes.url_helpers.api_v1_user_url(object.creator) },
+    }
+
   belongs_to :industry,
     links: {
       self: ->(object) { object.relationships_url('industry') },
