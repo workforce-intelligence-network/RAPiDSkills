@@ -1,3 +1,4 @@
+import { MinLength } from 'class-validator';
 import ModelBase from '@/models/ModelBase';
 
 export default class Skill extends ModelBase {
@@ -11,6 +12,7 @@ export default class Skill extends ModelBase {
 
   classDefinition: Function = Skill
 
+  @MinLength(1)
   description: string
 }
 

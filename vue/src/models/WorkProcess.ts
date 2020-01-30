@@ -1,3 +1,6 @@
+import _every from 'lodash/every';
+
+import { MinLength } from 'class-validator';
 import ModelBase from '@/models/ModelBase';
 import Skill from '@/models/Skill';
 
@@ -26,11 +29,17 @@ export default class WorkProcess extends ModelBase {
 
   description: string
 
+  @MinLength(1)
   title: string
 
   skills: Skill[]
 
   expanded?: boolean
+
+  get valid() {
+    return super.valid
+      && _every(this.skills, skill => skill.valid);
+  }
 }
 
 WorkProcess.registerWithJsonApi();

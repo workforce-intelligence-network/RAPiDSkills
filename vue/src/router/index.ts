@@ -169,7 +169,9 @@ const router = new VueRouter({
       };
     }
 
-    if (savedPosition) {
+    if (![
+      'standard',
+    ].includes(to.name || '') && savedPosition) {
       return savedPosition;
     }
 

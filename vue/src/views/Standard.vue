@@ -7,10 +7,10 @@
       <div class="page--standard__sidebar--left__occupation-name">{{ standard.title }}</div>
       <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
       <div class="page--standard__sidebar--left__actions">
-        <button role="button" class="button button--square page--standard__sidebar--left__actions__action">
+        <button role="button" class="button button--square page--standard__sidebar--left__actions__action" :disabled="true">
           Share
         </button>
-        <button role="button" class="button button--square page--standard__sidebar--left__actions__action">
+        <button role="button" class="button button--square page--standard__sidebar--left__actions__action" :disabled="true">
           Download
         </button>
       </div>
@@ -38,18 +38,33 @@
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
           <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Standard Title</label>
-          <input class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" />
+          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" />
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
         </div>
       </div>
     </div>
     <div class="page--standard__body">
       <Loading v-if="loading" />
-      <button role="button" class="button button--square button--alternative page--standard__body__button--add-work-process" @click="addNewWorkProcess" v-if="editing">
-        <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__button--add-work-process__icon" />
-        <span>New Work Process</span>
-      </button>
-      <div class="page--standard__body__work-process" v-for="(workProcess, workProcessIndex) in standard.workProcesses" :key="workProcess.id || workProcessIndex" :class="{ 'page--standard__body__work-process--expanded': workProcessExpanded(workProcess) }">
+      <div class="page--standard__body__actions" v-if="editing">
+        <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addNewWorkProcess" :disabled="addNewWorkProcessDisabled">
+          <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
+          <span>New Work Process</span>
+        </button>
+        <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addNewWorkSkill()" :disabled="addNewSkillDisabled">
+          <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
+          <span>New Skill</span>
+        </button>
+      </div>
+      <div
+        class="page--standard__body__work-process"
+        v-for="(workProcess, workProcessIndex) in standard.workProcesses"
+        :key="`work-process-${workProcessIndex}`"
+        :class="{
+          'page--standard__body__work-process--error': workProcess.invalid,
+          'page--standard__body__work-process--expanded': workProcessExpanded(workProcess),
+          'page--standard__body__work-process--editing': editing
+        }"
+      >
         <div class="page--standard__body__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
           <div class="page--standard__body__work-process__wrapper__icon--folder">
             <img :src="ICON_FOLDER" alt="Work Process icon" v-if="workProcessExpanded(workProcess)" />
@@ -59,8 +74,11 @@
             <div class="page--standard__body__work-process__wrapper__vertical-group__label">
               Work Process
             </div>
-            <div class="page--standard__body__work-process__wrapper__vertical-group__title">
+            <div class="page--standard__body__work-process__wrapper__vertical-group__title" v-if="!editing">
               {{ workProcess.title }}
+            </div>
+            <div class="input input--subtle page--standard__body__work-process__wrapper__vertical-group__input" @click.stop="" v-if="editing" :class="{ 'input--error': workProcess.propertyInvalid('title') }">
+              <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" />
             </div>
           </div>
           <div class="page--standard__body__work-process__wrapper__icon--caret">
@@ -68,27 +86,39 @@
             <FontAwesomeIcon :icon="['fas', 'caret-right']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="!workProcess.expanded" />
           </div>
         </div>
-        <div class="page--standard__body__work-process__skills">
-          <div class="page--standard__body__work-process__skills__skill" v-for="(skill, skillIndex) in workProcess.skills" :key="`${workProcess.id || workProcessIndex}-${skill.id || skillIndex}`">
+        <div class="page--standard__body__work-process__skills" v-if="workProcess.expanded">
+          <div class="page--standard__body__work-process__skills__actions" v-if="editing">
+            <button role="button" class="button button--square button--alternative page--standard__body__work-process__skills__actions__action" @click="addNewWorkSkill(workProcess)" :disabled="addNewWorkProcessSkillDisabled(workProcess)">
+              <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__work-process__skills__actions__action__icon" />
+              <span>New Skill</span>
+            </button>
+          </div>
+          <div class="page--standard__body__work-process__skills__skill" v-for="(skill, skillIndex) in workProcess.skills" :key="`work-process-${workProcessIndex}-skill-${skillIndex}`">
             <div class="page--standard__body__work-process__skills__skill__vertical-group">
               <div class="page--standard__body__work-process__skills__skill__vertical-group__label">
                 Skill
               </div>
-              <div class="page--standard__body__work-process__skills__skill__vertical-group__description">
+              <div class="page--standard__body__work-process__skills__skill__vertical-group__description" v-if="!editing">
                 {{ skill.description }}
+              </div>
+              <div class="input input--subtle page--standard__body__work-process__skills__skill__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
+                <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="page--standard__body__skill" v-for="skill in standard.skills" :key="skill.id || skillIndex">
+      <div class="page--standard__body__skill" v-for="(skill, skillIndex) in standard.skills" :key="`skill-${skillIndex}`" :class="{ 'page--standard__body__skill--error': skill.invalid }">
         <div class="page--standard__body__skill__wrapper">
           <div class="page--standard__body__skill__wrapper__vertical-group">
             <div class="page--standard__body__skill__wrapper__vertical-group__label">
               Skill
             </div>
-            <div class="page--standard__body__skill__wrapper__vertical-group__title">
+            <div class="page--standard__body__skill__wrapper__vertical-group__description" v-if="!editing">
               {{ skill.description }}
+            </div>
+            <div class="input input--subtle page--standard__body__skill__wrapper__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
+              <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" />
             </div>
           </div>
         </div>
@@ -98,7 +128,10 @@
 </template>
 
 <script lang="ts">
+import _flatten from 'lodash/flatten';
 import _times from 'lodash/times';
+import _some from 'lodash/some';
+import _get from 'lodash/get';
 
 import Vue from 'vue';
 
@@ -109,23 +142,68 @@ import ICON_FOLDER from '@/assets/folder.svg';
 import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
 import Loading from '@/components/Loading.vue';
-import OccupationStandard from '../models/OccupationStandard';
-import WorkProcess from '../models/WorkProcess';
+import OccupationStandard from '@/models/OccupationStandard';
+import WorkProcess from '@/models/WorkProcess';
+import Skill from '@/models/Skill';
+
+import TextArea from '@/components/TextArea.vue';
+
+const NEW_WORK_PROCESS_TITLE = 'New Work Process';
+const NEW_SKILL_TITLE = 'New Skill';
 
 export default {
   name: 'standard',
   components: {
     Loading,
+    TextArea,
   },
   methods: {
     toggleWorkProcess(workProcess: any) {
       Vue.set(workProcess, 'expanded', !workProcess.expanded);
     },
     workProcessExpanded(workProcess) {
-      return workProcess && !!workProcess.expanded;
+      return (workProcess && !!workProcess.expanded);
+    },
+    addNewWorkSkill(workProcess?: WorkProcess) {
+      const freshSkill: Skill = new Skill({ description: NEW_SKILL_TITLE });
+      (workProcess || this.standard).skills.unshift(freshSkill); // TODO: move to action?
+
+      setTimeout(() => {
+        _some(_flatten([workProcess
+          ? this.$refs.workProcessSkillDescription
+          : this.$refs.skillDescription,
+        ]), (ref) => {
+          if (ref.$el.value === NEW_SKILL_TITLE) {
+            Vue.set(freshSkill, 'description', '');
+            ref.$el.focus();
+            if (!workProcess) {
+              ref.$el.scrollIntoView();
+            }
+            return true;
+          }
+
+          return false;
+        });
+      });
     },
     addNewWorkProcess() {
-      this.standard.workProcesses.unshift(new WorkProcess());
+      const freshWorkProcess: WorkProcess = new WorkProcess({ title: NEW_WORK_PROCESS_TITLE });
+      this.standard.workProcesses.unshift(freshWorkProcess); // TODO: move to action?
+
+      setTimeout(() => {
+        _some(_flatten([this.$refs.workProcessTitle]), (ref) => {
+          if (ref.$el.value === NEW_WORK_PROCESS_TITLE) {
+            Vue.set(freshWorkProcess, 'title', '');
+            ref.$el.focus();
+            return true;
+          }
+
+          return false;
+        });
+      });
+    },
+    addNewWorkProcessSkillDisabled(workProcess: WorkProcess) {
+      return _get(workProcess, 'skills[0].invalid');
     },
   },
   beforeDestroy() {
@@ -144,8 +222,15 @@ export default {
     ...mapState({
       standard: (state: any): OccupationStandard => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
-      editing: (state: any) => state.standards.selectedStandardEditing,
+      editing: (state: any) => true || state.standards.selectedStandardEditing,
     }),
+    addNewWorkProcessDisabled() {
+      const workProcess: WorkProcess | undefined = _get(this.standard, 'workProcesses[0]');
+      return workProcess && workProcess.propertyInvalid('title');
+    },
+    addNewSkillDisabled() {
+      return _get(this.standard, 'skills[0].invalid');
+    },
   },
 };
 </script>
@@ -252,21 +337,19 @@ $skill-height: 5rem;
 
 .page--standard__body__work-process {
   min-height: $work-process-height;
-  &:not(.page--standard__body__work-process--expanded) {
-    max-height: $work-process-height;
-  }
   overflow: hidden;
   width: 100%;
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   border-radius: 4px;
   border-left: 3px solid $color-blue;
+
+  &.page--standard__body__work-process--error {
+    border-color: $color-salmon;
+  }
 }
 
 .page--standard__body__work-process:not(.page--standard__body__work-process--expanded) {
-  .page--standard__body__work-process__wrapper {
-    max-height: $work-process-height;
-  }
   .page--standard__body__work-process__wrapper__vertical-group__title {
     max-height: 3rem;
   }
@@ -289,6 +372,7 @@ $skill-height: 5rem;
   justify-content: center;
   align-items: flex-start;
   padding: 0.5rem 0;
+  flex-grow: 1;
 }
 
 .page--standard__body__work-process__wrapper__vertical-group__label {
@@ -298,6 +382,7 @@ $skill-height: 5rem;
   margin-top: 0.5rem;
 }
 
+.page--standard__body__work-process__wrapper__vertical-group__input__input,
 .page--standard__body__work-process__wrapper__vertical-group__title {
   font-size: 1.25rem;
   line-height: 1.5rem;
@@ -326,7 +411,7 @@ $skill-height: 5rem;
 .page--standard__body__work-process__skills {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
 }
 
 .page--standard__body__work-process__skills__skill {
@@ -336,8 +421,9 @@ $skill-height: 5rem;
   background: $color-white;
   width: 100%;
   border: 1px solid $color-gray-light;
-  &:not(:last-of-type) {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  &:first-child {
+    margin-top: .5rem;
   }
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   min-height: $work-process-height;
@@ -352,6 +438,19 @@ $skill-height: 5rem;
   justify-content: center;
   align-items: flex-start;
   padding: 1rem 0;
+  align-items: stretch;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.page--standard__body__skill__wrapper__vertical-group__input__input,
+.page--standard__body__skill__wrapper__vertical-group__input {
+  width: 100%;
+}
+
+.page--standard__body__work-process__skills__skill__vertical-group__input__input,
+.page--standard__body__work-process__skills__skill__vertical-group__input {
+  width: 100%;
 }
 
 .page--standard__body__work-process__skills__skill__vertical-group__label {
@@ -369,6 +468,11 @@ $skill-height: 5rem;
   font-size: 1rem;
 }
 
+.page--standard__body__work-process__wrapper__vertical-group__input,
+.page--standard__body__work-process__wrapper__vertical-group__input__input {
+  width: 100%;
+}
+
 .page--standard__body__skill {
   min-height: $skill-height;
   overflow: hidden;
@@ -377,6 +481,10 @@ $skill-height: 5rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   border-radius: 4px;
   border-left: 3px solid $color-blue;
+
+  &.page--standard__body__skill--error {
+    border-color: $color-salmon;
+  }
 }
 
 .page--standard__body__skill__wrapper {
@@ -387,7 +495,7 @@ $skill-height: 5rem;
   cursor: pointer;
   border-bottom: 1px solid $color-gray-light;
   overflow: hidden;
-  padding-left: 2rem;
+  padding: 0 2rem;
 }
 
 .page--standard__body__skill__wrapper__vertical-group {
@@ -396,6 +504,7 @@ $skill-height: 5rem;
   justify-content: center;
   align-items: flex-start;
   padding: 0.5rem 0;
+  flex-grow: 1;
 }
 
 .page--standard__body__skill__wrapper__vertical-group__label {
@@ -405,7 +514,8 @@ $skill-height: 5rem;
   margin-top: 0.5rem;
 }
 
-.page--standard__body__skill__wrapper__vertical-group__title {
+.page--standard__body__skill__wrapper__vertical-group__input__input,
+.page--standard__body__skill__wrapper__vertical-group__description {
   font-size: 1.125rem;
   line-height: 1.5rem;
   overflow: hidden;
@@ -428,6 +538,7 @@ $skill-height: 5rem;
 .page--standard__sidebar--left__about__input__label {
   font-size: .9rem;
   color: $color-text-light;
+  margin-bottom: 0.25rem;
 }
 
 .page--standard__sidebar--left__about__input__input {
@@ -442,15 +553,38 @@ $skill-height: 5rem;
   word-break: break-word;
 }
 
-.page--standard__body__button--add-work-process {
+.page--standard__body__work-process__skills__actions,
+.page--standard__body__actions {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+}
+
+.page--standard__body__actions__action {
   margin-bottom: 1.5rem;
 }
 
-.page--standard__body__button--add-work-process__icon {
+.page--standard__body__work-process__skills__actions__action {
+  margin-bottom: .5rem;
+}
+
+.page--standard__body__work-process__skills__actions__action,
+.page--standard__body__actions__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.page--standard__body__work-process__skills__actions__action__icon,
+.page--standard__body__actions__action__icon {
   height: .9rem;
   margin-right: .5rem;
+}
+
+.page--standard__body__work-process__skills__actions {
+  padding: 1rem .5rem;
 }
 </style>

@@ -1,4 +1,5 @@
 import _pick from 'lodash/pick';
+import _every from 'lodash/every';
 
 import { MinLength } from 'class-validator';
 
@@ -116,6 +117,12 @@ export default class OccupationStandard extends ModelBase {
     const { data } = apiResponse;
 
     return Object.assign(apiResponse, { model: new OccupationStandard(data) });
+  }
+
+  get valid() {
+    return super.valid
+      && _every(this.workProcesses, workProcess => workProcess.valid)
+      && _every(this.skills, skill => skill.valid);
   }
 }
 

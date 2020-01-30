@@ -81,6 +81,11 @@ a {
   white-space: nowrap;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
 
+  &[disabled] {
+    opacity: .5;
+    pointer-events: none;
+  }
+
   @include breakpoint--xs {
     padding: 0.7rem 0.75rem;
   }
