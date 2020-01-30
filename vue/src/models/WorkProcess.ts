@@ -29,6 +29,8 @@ export default class WorkProcess extends ModelBase {
   title: string
 
   skills: Skill[]
+
+  expanded?: boolean
 }
 
 WorkProcess.registerWithJsonApi();

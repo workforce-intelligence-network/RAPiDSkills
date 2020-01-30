@@ -5,6 +5,15 @@
         <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
       <div class="page--standard__sidebar--left__occupation-name">{{ standard.title }}</div>
+      <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
+      <div class="page--standard__sidebar--left__actions">
+        <button role="button" class="button button--square page--standard__sidebar--left__actions__action">
+          Share
+        </button>
+        <button role="button" class="button button--square page--standard__sidebar--left__actions__action">
+          Download
+        </button>
+      </div>
       <div class="page--standard__sidebar--left__divider--stats" />
       <div class="page--standard__sidebar--left__work-process-data">
         <div class="page--standard__sidebar--left__work-process-data__stat">
@@ -23,10 +32,24 @@
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Hours</div>
         </div>
       </div>
+      <div class="page--standard__sidebar--left__about">
+        <div class="page--standard__sidebar--left__about__title">
+          About this standard
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
+          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Standard Title</label>
+          <input class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" />
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
+        </div>
+      </div>
     </div>
     <div class="page--standard__body">
       <Loading v-if="loading" />
-      <div class="page--standard__body__work-process" v-for="workProcess in standard.workProcesses" :key="workProcess.id" :class="{ 'page--standard__body__work-process--expanded': workProcessExpanded(workProcess) }">
+      <button role="button" class="button button--square button--alternative page--standard__body__button--add-work-process" @click="addNewWorkProcess" v-if="editing">
+        <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__button--add-work-process__icon" />
+        <span>New Work Process</span>
+      </button>
+      <div class="page--standard__body__work-process" v-for="(workProcess, workProcessIndex) in standard.workProcesses" :key="workProcess.id || workProcessIndex" :class="{ 'page--standard__body__work-process--expanded': workProcessExpanded(workProcess) }">
         <div class="page--standard__body__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
           <div class="page--standard__body__work-process__wrapper__icon--folder">
             <img :src="ICON_FOLDER" alt="Work Process icon" v-if="workProcessExpanded(workProcess)" />
@@ -46,7 +69,7 @@
           </div>
         </div>
         <div class="page--standard__body__work-process__skills">
-          <div class="page--standard__body__work-process__skills__skill" v-for="skill in workProcess.skills" :key="`${workProcess.id}-${skill.id}`">
+          <div class="page--standard__body__work-process__skills__skill" v-for="(skill, skillIndex) in workProcess.skills" :key="`${workProcess.id || workProcessIndex}-${skill.id || skillIndex}`">
             <div class="page--standard__body__work-process__skills__skill__vertical-group">
               <div class="page--standard__body__work-process__skills__skill__vertical-group__label">
                 Skill
@@ -58,7 +81,7 @@
           </div>
         </div>
       </div>
-      <div class="page--standard__body__skill" v-for="skill in standard.skills" :key="skill.id">
+      <div class="page--standard__body__skill" v-for="skill in standard.skills" :key="skill.id || skillIndex">
         <div class="page--standard__body__skill__wrapper">
           <div class="page--standard__body__skill__wrapper__vertical-group">
             <div class="page--standard__body__skill__wrapper__vertical-group__label">
@@ -81,10 +104,13 @@ import Vue from 'vue';
 
 import { mapState } from 'vuex';
 
+import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
 import ICON_FOLDER from '@/assets/folder.svg';
 import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
 import Loading from '@/components/Loading.vue';
+import OccupationStandard from '../models/OccupationStandard';
+import WorkProcess from '../models/WorkProcess';
 
 export default {
   name: 'standard',
@@ -98,6 +124,9 @@ export default {
     workProcessExpanded(workProcess) {
       return workProcess && !!workProcess.expanded;
     },
+    addNewWorkProcess() {
+      this.standard.workProcesses.unshift(new WorkProcess());
+    },
   },
   beforeDestroy() {
     this.standard.workProcesses.forEach((workProcess, key) => {
@@ -106,13 +135,14 @@ export default {
   },
   data() {
     return {
+      ICON_PLUS_BLUE,
       ICON_FOLDER,
       ICON_FOLDER_CLOSED,
     };
   },
   computed: {
     ...mapState({
-      standard: (state: any) => state.standards.selectedStandard || {},
+      standard: (state: any): OccupationStandard => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
       editing: (state: any) => state.standards.selectedStandardEditing,
     }),
@@ -131,22 +161,27 @@ $work-process-height: 6rem;
 $skill-height: 5rem;
 
 .page--standard {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
+  @include breakpoint--above-sm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+  }
   min-height: 100%;
 }
 
 .page--standard__sidebar--left {
   width: $sidebar-left-width;
   background: $color-white;
-  min-height: calc(100vh - #{$nav-top-height});
   padding: 1rem 1.5rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   flex-shrink: 0;
+  @include breakpoint--above-sm {
+    min-height: calc(100vh - #{$nav-top-height});
+  }
   @include breakpoint--sm {
-    display: none;
+    // display: none;
+    width: 100%;
   }
 }
 
@@ -162,6 +197,24 @@ $skill-height: 5rem;
   line-height: 2rem;
   margin-bottom: 1rem;
   padding: 0 1.5rem;
+  word-break: break-word;
+}
+
+.page--standard__sidebar--left__organization-name {
+  color: $color-text-light;
+  word-break: break-word;
+  margin-bottom: 1.5rem;
+}
+
+.page--standard__sidebar--left__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.page--standard__sidebar--left__actions__action {
+  &:not(:last-child) {
+    margin-right: .75rem;
+  }
 }
 
 .page--standard__sidebar--left__divider--stats {
@@ -175,7 +228,7 @@ $skill-height: 5rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .page--standard__sidebar--left__work-process-data__stat__number {
@@ -358,5 +411,46 @@ $skill-height: 5rem;
   overflow: hidden;
   // font-weight: 500;
   text-align: left;
+}
+
+.page--standard__sidebar--left__about {
+  padding-top: 1rem;
+  border-top: 1px solid $color-gray-light;
+  text-align: left;
+}
+
+.page--standard__sidebar--left__about__title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.page--standard__sidebar--left__about__input__label {
+  font-size: .9rem;
+  color: $color-text-light;
+}
+
+.page--standard__sidebar--left__about__input__input {
+  font-size: 1rem;
+  width: 100%;
+}
+
+.page--standard__sidebar--left__about__input__text {
+  font-size: 1rem;
+  padding-top: .25rem;
+  line-height: 1.25rem;
+  word-break: break-word;
+}
+
+.page--standard__body__button--add-work-process {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page--standard__body__button--add-work-process__icon {
+  height: .9rem;
+  margin-right: .5rem;
 }
 </style>

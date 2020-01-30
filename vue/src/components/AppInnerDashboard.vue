@@ -150,7 +150,10 @@ export default class AppInnerDashboard extends Vue {
   padding-left: 0.5rem;
   max-width: calc(100% - 4rem);
   &.app__inner--dashboard__nav--top__navbar-actions--session-active {
-    max-width: calc(100% - 8rem);
+    max-width: calc(100% - 8.0625rem - 9.5rem);
+    @include breakpoint--sm {
+      max-width: calc(100% - 8.0625rem);
+    }
   }
 }
 
@@ -172,9 +175,6 @@ export default class AppInnerDashboard extends Vue {
 
 .app__inner--dashboard__nav--top__link--support {
   align-self: flex-end;
-  flex-basis: 0;
-  margin-left: auto;
-  flex-shrink: 0;
 }
 
 .app__inner--dashboard__nav--top__link__icon {

@@ -89,11 +89,11 @@ export default class Duplicate extends Vue {
 
     await this.$store.dispatch('standards/duplicateSelectedStandard');
 
-    await this.$store.dispatch('standards/editSelectedStandard', true);
+    this.$store.dispatch('standards/editSelectedStandard', true);
 
-    await this.$store.dispatch('modal/close');
+    this.$store.dispatch('modal/close');
 
-    await this.$router.push({
+    this.$router.push({
       name: 'standard',
       params: {
         id: String(this.standard.id),

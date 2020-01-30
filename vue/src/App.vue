@@ -146,6 +146,16 @@ a {
   line-height: 2rem;
 }
 
+.button--alternative {
+  background: $color-button-alternative-blue;
+  color: $color-blue;
+  border: 1px solid $color-blue;
+
+  &:hover {
+    background: fade-in($color-button-alternative-blue, .125);
+  }
+}
+
 .input {
   width: 100%;
   display: flex;
@@ -187,9 +197,49 @@ a {
     outline: dashed 1px $color-link-blue;
     outline-offset: 4px;
   }
+  &[disabled] {
+    background: none;
+    color: $color-text-light;
+  }
 }
 
 .input__input:not(textarea) {
   height: 2.75rem;
+}
+
+.input--subtle {
+  .input__label {
+    margin-bottom: 0;
+  }
+
+  .input__input {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid $color-gray-light;
+    padding: 0;
+    height: 2rem;
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid $color-blue;
+    }
+
+    &[disabled] {
+      background: none;
+    }
+  }
+
+  &.input--error {
+    .input__label {
+      color: $color-salmon;
+      font-weight: 400;
+    }
+
+    .input__input {
+      border-color: $color-salmon;
+      &::placeholder {
+        color: $color-text-light;
+      }
+    }
+  }
 }
 </style>

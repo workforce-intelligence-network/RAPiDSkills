@@ -47,7 +47,7 @@ export const getStandard = async ({ state, commit }, id: string | number) => {
 export const duplicateSelectedStandard = async ({ state, commit }) => {
   try {
     const { model } = await (state.selectedStandard as OccupationStandard).clone();
-    console.log('copy', model);
+    commit('updateSelectedStandard', model);
   } catch (e) {
     // console.log('duplicate error', e);
   }
