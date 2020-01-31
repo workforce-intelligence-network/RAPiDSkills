@@ -266,8 +266,10 @@ export default {
     ...mapState({
       standard: (state: any): OccupationStandard => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
-      editing: (state: any) => state.standards.selectedStandardEditing,
     }),
+    editing() {
+      return this.standard && this.standard.loggedInUserIsCreator;
+    },
     addNewWorkProcessDisabled() {
       const workProcess: WorkProcess | undefined = _get(this.standard, 'workProcesses[0]');
       return workProcess && workProcess.propertyInvalid('title');

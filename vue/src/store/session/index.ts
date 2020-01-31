@@ -7,6 +7,7 @@ export default {
   state: {
     token: undefined,
     initialized: false,
+    userId: undefined,
   },
   mutations,
   actions,

@@ -3,6 +3,10 @@ import _every from 'lodash/every';
 
 import { MinLength } from 'class-validator';
 
+import _isUndefined from 'lodash/isUndefined';
+
+import store from '@/store';
+
 import jsonApi from '@/utilities/api';
 
 import ModelBase from '@/models/ModelBase';
@@ -12,6 +16,7 @@ import WorkProcess from '@/models/WorkProcess';
 import Skill from '@/models/Skill';
 import Organization from '@/models/Organization';
 import Occupation from '@/models/Occupation';
+import User from '@/models/User';
 
 export default class OccupationStandard extends ModelBase {
   constructor(standard: Partial<OccupationStandard> = {}) {
@@ -39,6 +44,8 @@ export default class OccupationStandard extends ModelBase {
     });
     this.occupation = new Occupation(standard.occupation || {});
     this.organization = new Organization(standard.organization || {});
+
+    this.creator = standard.creator ? new User(standard.creator) : undefined;
   }
 
   static jsonApiClassName: string = 'occupation_standard'
@@ -51,6 +58,10 @@ export default class OccupationStandard extends ModelBase {
     workProcesses: {
       jsonApi: 'hasMany',
       type: 'work_process',
+    },
+    creator: {
+      jsonApi: 'hasOne',
+      type: 'user',
     },
   }
 
@@ -89,6 +100,8 @@ export default class OccupationStandard extends ModelBase {
 
   parentOccupationStandardId: string | number
 
+  creator: User | undefined
+
   get totalNumberOfSkills() {
     return this.skills.length + this.workProcesses.reduce(
       (total: number, workProcess: WorkProcess) => total + workProcess.skills.length,
@@ -123,6 +136,11 @@ export default class OccupationStandard extends ModelBase {
     return super.valid
       && _every(this.workProcesses, workProcess => workProcess.valid)
       && _every(this.skills, skill => skill.valid);
+  }
+
+  get loggedInUserIsCreator() {
+    const { userId } = (store.state as any).session;
+    return !_isUndefined(userId) && this.creator && !_isUndefined(this.creator.id) && String(userId) === String(this.creator.id);
   }
 }
 
