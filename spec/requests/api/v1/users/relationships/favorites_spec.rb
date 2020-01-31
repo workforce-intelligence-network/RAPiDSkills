@@ -26,7 +26,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
     end
 
     context "when user requests someone else's favorites" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end
@@ -109,7 +109,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       end
 
       context "when adding favorite for someone else" do
-        it_behaves_like "unauthorized", :post do
+        it_behaves_like "forbidden", :post do
           let(:header) { auth_header(create(:user)) }
         end
       end
@@ -187,7 +187,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       end
 
       context "when deleting favorite for someone else" do
-        it_behaves_like "unauthorized", :delete do
+        it_behaves_like "forbidden", :delete do
           let(:header) { auth_header(create(:user)) }
         end
       end

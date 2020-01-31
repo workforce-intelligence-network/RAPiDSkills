@@ -26,7 +26,7 @@ RSpec.describe API::V1::Users::Relationships::OccupationStandardsController, typ
     end
 
     context "when user requests someone else's occupation_standards" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end

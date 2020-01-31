@@ -125,7 +125,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     end
 
     context "when viewed by non-owning user" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end

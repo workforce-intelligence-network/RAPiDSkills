@@ -141,7 +141,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     end
 
     context "when user does not belong to occupation standard" do
-      it_behaves_like "unauthorized", :patch
+      it_behaves_like "forbidden", :patch
     end
   end
 
@@ -285,7 +285,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     end
 
     context "when user does not belong to occupation standard" do
-      it_behaves_like "unauthorized", :post do
+      it_behaves_like "forbidden", :post do
         let(:os) { create(:occupation_standard) }
       end
     end

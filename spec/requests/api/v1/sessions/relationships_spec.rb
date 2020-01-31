@@ -22,7 +22,7 @@ RSpec.describe API::V1::Sessions::RelationshipsController, type: :request do
     end
 
     context "when session does not belong to user" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end

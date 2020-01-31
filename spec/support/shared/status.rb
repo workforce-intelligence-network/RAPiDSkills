@@ -21,6 +21,15 @@ RSpec.shared_examples "unauthorized" do |method|
   end
 end
 
+RSpec.shared_examples "forbidden" do |method|
+  it "has forbidden status" do
+    send(method, path, params: params, headers: header)
+    expect(response).to have_http_status(:forbidden)
+    expect(json["errors"]["status"]).to eq "403"
+    expect(json["errors"]["detail"]).to eq "User is not authorized to perform this action"
+  end
+end
+
 RSpec.shared_examples "not found" do |method|
   it "has not found status" do
     send(method, path, params: params, headers: header)

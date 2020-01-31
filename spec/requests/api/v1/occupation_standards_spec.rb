@@ -374,7 +374,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       let!(:os) { create(:occupation_standard) }
       let!(:relationship) { create(:relationship, occupation_standard: os) }
 
-      it_behaves_like "unauthorized", :delete
+      it_behaves_like "forbidden", :delete
 
       it "does not change occupation standard count or relationship count" do
         expect{
@@ -506,7 +506,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     end
 
     context "with user who does not own occupation standard" do
-      it_behaves_like "unauthorized", :patch do
+      it_behaves_like "forbidden", :patch do
         let(:params) {
           {
             data: {
