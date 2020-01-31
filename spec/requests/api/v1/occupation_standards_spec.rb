@@ -198,6 +198,11 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
       expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss3.id.to_s
 
+      expect(json["data"]["relationships"]["creator"]["links"]["self"]).to eq relationships_creator_api_v1_occupation_standard_url(os)
+      expect(json["data"]["relationships"]["creator"]["links"]["related"]).to eq api_v1_user_url(os.creator)
+      expect(json["data"]["relationships"]["creator"]["data"]["type"]).to eq "user"
+      expect(json["data"]["relationships"]["creator"]["data"]["id"]).to eq os.creator_id.to_s
+
       expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(os)
       expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(os.occupation)
       expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
@@ -218,109 +223,15 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["registration_state"]["data"]["type"]).to eq "state"
       expect(json["data"]["relationships"]["registration_state"]["data"]["id"]).to eq os.registration_state_id.to_s
 
-      included_array = [
-        {
-          type: "work_process",
-          id: oswp.id.to_s,
-          attributes: {
-            title: oswp.work_process.title,
-            description: oswp.work_process.description,
-          }.stringify_keys,
-          relationships: {
-            skills: {
-              links: {
-                self: relationships_skills_api_v1_occupation_standard_work_process_url(oswp),
-                related: api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp),
-              }.stringify_keys,
-              data: [
-                { type: "skill", id: oss1.id.to_s }.stringify_keys,
-                { type: "skill", id: oss2.id.to_s }.stringify_keys,
-              ],
-            }.stringify_keys,
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "skill",
-          id: oss3.id.to_s,
-          attributes: {
-            description: oss3.skill.description,
-          }.stringify_keys,
-          links: {
-            self: api_v1_occupation_standard_skill_url(oss3),
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "skill",
-          id: oss1.id.to_s,
-          attributes: {
-            description: oss1.skill.description,
-          }.stringify_keys,
-          links: {
-            self: api_v1_occupation_standard_skill_url(oss1),
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "skill",
-          id: oss2.id.to_s,
-          attributes: {
-            description: oss2.skill.description,
-          }.stringify_keys,
-          links: {
-            self: api_v1_occupation_standard_skill_url(oss2),
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "occupation",
-          id: os.occupation_id.to_s,
-          attributes: {
-            title: os.occupation.title,
-            kind: "hybrid",
-            rapids_code: os.occupation.rapids_code,
-            onet_code: os.occupation.onet_code,
-            onet_page_url: os.occupation.onet_page_url,
-            term_length_min: os.occupation.term_length_min,
-            term_length_max: os.occupation.term_length_max,
-            title_aliases: "",
-          }.stringify_keys,
-          links: {
-            self: api_v1_occupation_url(os.occupation),
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "organization",
-          id: os.organization_id.to_s,
-          attributes: {
-            title: os.organization.title,
-            logo_url: os.organization.logo_url,
-            registers_standards: os.organization.registers_standards,
-          }.stringify_keys,
-          links: {
-            self: api_v1_organization_url(os.organization),
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "industry",
-          id: industry.id.to_s,
-          attributes: {
-            title: industry.title,
-          }.stringify_keys,
-          links: {
-            self: api_v1_industry_url(industry),
-          }.stringify_keys,
-        }.stringify_keys,
-        {
-          type: "state",
-          id: state.id.to_s,
-          attributes: {
-            short_name: state.short_name,
-            long_name: state.long_name,
-          }.stringify_keys,
-          links: {
-            self: api_v1_state_url(state),
-          }.stringify_keys,
-        }.stringify_keys,
-      ]
-      expect(json["included"]).to match_array included_array
+      expect(json["included"]).to include(a_hash_including("type" => "work_process", "id" => oswp.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss3.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss1.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss2.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "occupation", "id" => os.occupation_id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "organization", "id" => os.organization_id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "user", "id" => os.creator_id.to_s))
     end
   end
 
