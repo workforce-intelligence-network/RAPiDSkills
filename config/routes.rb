@@ -34,7 +34,7 @@ Rails.application.routes.draw do
         resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
       end
 
-      resources :occupation_standard_skills, path: "skills", only: [:show, :update]
+      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
       resources :industry, only: [:show]
       resources :organizations, only: [:show]
       resources :states, only: [:show]

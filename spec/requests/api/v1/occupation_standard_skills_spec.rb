@@ -44,7 +44,6 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     let(:user) { create(:user) }
     let(:os) { create(:occupation_standard) }
     let!(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
-    let(:user) { create(:user) }
     let(:header) { auth_header(user) }
     let(:params) {
       {
@@ -143,6 +142,152 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
 
     context "when user does not belong to occupation standard" do
       it_behaves_like "unauthorized", :patch
+    end
+  end
+
+  describe "POST #create" do
+    let(:path) { "/api/v1/skills" }
+    let(:user) { create(:user) }
+    let(:header) { auth_header(user) }
+    let(:params) {
+      {
+        data: {
+          type: "skill",
+          attributes: {
+            description: "this is a new skill",
+          },
+          relationships: {
+            occupation_standard: {
+              data: {
+                type: "occupation_standard",
+                id: os.id.to_s,
+              }
+            }
+          }
+        }
+      }
+    }
+
+    context "when user belongs to occupation_standard" do
+      let(:os) { create(:occupation_standard, creator: user) }
+
+      it_behaves_like "authorization", :post
+
+      context "with valid parameters" do
+        context "when new skill name does not exist" do
+          it "creates a new skill and new occupation standard skill" do
+            expect{
+              post path, params: params, headers: header
+            }.to change(Skill, :count).by(1)
+              .and change(OccupationStandardSkill, :count).by(1)
+            skill = Skill.last
+            expect(skill.description).to eq "this is a new skill"
+            expect(skill.parent_skill).to be nil
+            oss = OccupationStandardSkill.last
+            expect(oss.skill).to eq skill
+            expect(oss.occupation_standard).to eq os
+          end
+
+          it "returns correct response" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:success)
+            oss = OccupationStandardSkill.last
+            expect(json["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+            expect(json["data"]["id"]).to eq oss.id.to_s
+            expect(json["data"]["type"]).to eq "skill"
+            expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+          end
+        end
+
+        context "when new skill name does exist" do
+          let!(:skill) { create(:skill, description: "this is a new skill") }
+
+          it "does not create a new skill but creates new oss" do
+            expect{
+              post path, params: params, headers: header
+            }.to change(Skill, :count).by(0)
+              .and change(OccupationStandardSkill, :count).by(1)
+            oss = OccupationStandardSkill.last
+            expect(oss.skill).to eq skill
+            expect(oss.occupation_standard).to eq os
+          end
+
+          it "returns correct response" do
+            post path, params: params, headers: header
+            oss = OccupationStandardSkill.last
+            expect(response).to have_http_status(:success)
+            expect(json["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+            expect(json["data"]["id"]).to eq oss.id.to_s
+            expect(json["data"]["type"]).to eq "skill"
+            expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+          end
+        end
+      end
+
+      context "with invalid parameters" do
+        context "when description is blank" do
+          let(:params) {
+            {
+              data: {
+                type: "skill",
+                attributes: {
+                  description: "",
+                },
+                relationships: {
+                  occupation_standard: {
+                    data: {
+                      type: "occupation_standard",
+                      id: os.id.to_s,
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          it "does not create new skill or oss" do
+            expect{
+              post path, params: params, headers: header
+            }.to change(Skill, :count).by(0)
+              .and change(OccupationStandardSkill, :count).by(0)
+          end
+
+          it "returns 422 with an error message" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to eq "Description can't be blank"
+          end
+        end
+
+        context "when missing relationships key" do
+          let(:params) {
+            {
+              data: {
+                type: "skill",
+                attributes: {
+                  description: "new skill",
+                }
+              }
+            }
+          }
+
+          it "returns 422 http status" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to match "empty: relationships"
+          end
+        end
+      end
+    end
+
+    context "when user does not belong to occupation standard" do
+      it_behaves_like "unauthorized", :post do
+        let(:os) { create(:occupation_standard) }
+      end
     end
   end
 end

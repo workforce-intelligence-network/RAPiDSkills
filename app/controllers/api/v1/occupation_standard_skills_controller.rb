@@ -14,6 +14,21 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
     render_resource
   end
 
+  def create
+    @os = OccupationStandard.where(id: occupation_standard_params[:id]).first_or_initialize
+    authorize @os, :create_skill?, policy_class: API::V1::OccupationStandardPolicy
+    skill = Skill.where(update_params).first_or_initialize
+    if skill.save
+      @oss = @os.occupation_standard_skills.where(skill: skill).first_or_create
+      render_resource
+    else
+      render_resource_error(skill)
+    end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
   def update
     authorize [:api, :v1, @oss]
     skill = Skill.where(update_params).first_or_initialize(parent_skill: @oss.skill)
@@ -33,6 +48,10 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
 
   def update_params
     params.require(:data).require(:attributes).permit(:description)
+  end
+
+  def occupation_standard_params
+    params.require(:data).require(:relationships).require(:occupation_standard).require(:data).permit(:id)
   end
 
   def render_resource
