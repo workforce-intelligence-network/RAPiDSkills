@@ -38,7 +38,7 @@
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
           <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Standard Title</label>
-          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" />
+          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" />
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
         </div>
       </div>
@@ -78,7 +78,7 @@
               {{ workProcess.title }}
             </div>
             <div class="input input--subtle page--standard__body__work-process__wrapper__vertical-group__input" @click.stop="" v-if="editing" :class="{ 'input--error': workProcess.propertyInvalid('title') }">
-              <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" />
+              <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" @input="saveStandard" />
             </div>
           </div>
           <button class="button button--link page--standard__body__work-process__wrapper__icon--delete" v-if="editing" @click.stop="deleteWorkProcess(workProcess)">
@@ -105,7 +105,7 @@
                 {{ skill.description }}
               </div>
               <div class="input input--subtle page--standard__body__work-process__skills__skill__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-                <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" />
+                <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" @input="saveStandard" />
               </div>
             </div>
             <button class="button button--link page--standard__body__work-process__skills__skill__icon--delete" v-if="editing" @click.stop="deleteWorkProcessSkill(workProcess, skill)">
@@ -132,7 +132,7 @@
               {{ skill.description }}
             </div>
             <div class="input input--subtle page--standard__body__skill__wrapper__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-              <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" />
+              <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" @input="saveStandard" />
             </div>
           </div>
           <button class="button button--link page--standard__body__skill__wrapper__icon--delete" v-if="editing" @click.stop="deleteSkill(skill)">
@@ -145,6 +145,7 @@
 </template>
 
 <script lang="ts">
+import _debounce from 'lodash/debounce';
 import _flatten from 'lodash/flatten';
 import _times from 'lodash/times';
 import _some from 'lodash/some';
@@ -174,7 +175,17 @@ export default {
     Loading,
     TextArea,
   },
+  created() {
+    (this as any).saveStandard = _debounce((this as any).saveStandard, 500).bind(this);
+  },
   methods: {
+    saveStandard() {
+      try {
+        this.standard.save();
+      } catch (e) {
+        console.log('Failed to save standard', e);
+      }
+    },
     toggleWorkProcess(workProcess: any) {
       Vue.set(workProcess, 'expanded', !workProcess.expanded);
     },
@@ -224,12 +235,15 @@ export default {
     },
     deleteWorkProcess(workProcess) {
       this.standard.workProcesses.splice(this.standard.workProcesses.indexOf(workProcess), 1); // TODO: move to action
+      (this as any).saveStandard();
     },
     deleteWorkProcessSkill(workProcess, skill) {
       workProcess.skills.splice(workProcess.skills.indexOf(skill), 1); // TODO: move to action
+      (this as any).saveStandard();
     },
     deleteSkill(skill) {
       this.standard.skills.splice(this.standard.skills.indexOf(skill), 1); // TODO: move to action
+      (this as any).saveStandard();
     },
   },
   beforeDestroy() {
