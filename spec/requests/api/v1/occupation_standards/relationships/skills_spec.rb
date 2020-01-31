@@ -22,4 +22,53 @@ RSpec.describe API::V1::OccupationStandards::Relationships::SkillsController, ty
       expect(json["data"][1]["id"]).to eq oss1.id.to_s
     end
   end
+
+  describe "DELETE #destroy" do
+    let(:path) { "/api/v1/occupation_standards/#{os.id}/relationships/skills" }
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os) }
+    let(:params) {
+      {
+        data: [
+          { type: "skill", id: oss1.id },
+          { type: "skill", id: oss3.id },
+        ]
+      }
+    }
+    let(:header) { {} }
+
+    context "when guest" do
+      it_behaves_like "unauthorized", :delete
+    end
+
+    context "when user does not own occupation standard" do
+      it_behaves_like "forbidden", :delete do
+        let(:user) { create(:user) }
+        let(:header) { auth_header(user) }
+      end
+    end
+
+    context "when user owns occupation standard" do
+      let(:user) { create(:user) }
+      let(:os) { create(:occupation_standard, creator: user) }
+      let(:header) { auth_header(user) }
+
+      it_behaves_like "no content", :delete
+
+      it "deletes occupation standard skill records but not skill records" do
+        expect{
+          delete path, params: params, headers: header
+        }.to change(OccupationStandardSkill, :count).by(-2)
+          .and change(Skill, :count).by(0)
+      end
+
+      it "removes occupation standard skills from association" do
+        delete path, params: params, headers: header
+        os.reload
+        expect(os.occupation_standard_skills).to eq [oss2]
+      end
+    end
+  end
 end

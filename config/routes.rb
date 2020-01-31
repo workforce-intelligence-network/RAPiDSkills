@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         member do
           get "relationships/work_processes", to: "occupation_standards/relationships#work_processes"
           get "relationships/skills", to: "occupation_standards/relationships/skills#index"
+          delete "relationships/skills", to: "occupation_standards/relationships/skills#destroy"
           get "relationships/creator", to: "occupation_standards/relationships#creator"
           get "relationships/industry", to: "occupation_standards/relationships#industry"
           get "relationships/occupation", to: "occupation_standards/relationships#occupation"
