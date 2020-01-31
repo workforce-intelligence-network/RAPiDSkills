@@ -1,7 +1,6 @@
-class API::V1::OccupationStandards::RelationshipsController < API::V1::APIController
-  skip_before_action :authenticate
+class API::V1::OccupationStandards::RelationshipsController < API::V1::OccupationStandards::Relationships::BaseController
 
-  before_action :set_occupation_standard
+  skip_before_action :authenticate
 
   def work_processes
     @oswps = @os.occupation_standard_work_processes
@@ -12,17 +11,6 @@ class API::V1::OccupationStandards::RelationshipsController < API::V1::APIContro
       }
     }
     render json: API::V1::OccupationStandard::Relationships::WorkProcessSerializer.new(@oswps, options)
-  end
-
-  def skills
-    @osss = @os.occupation_standard_skills_with_no_work_process
-    options = {
-      links: {
-        self: @os.relationships_url('skills'),
-        related: @os.related_url('occupation_standard_skills'),
-      }
-    }
-    render json: API::V1::OccupationStandard::Relationships::SkillSerializer.new(@osss, options)
   end
 
   def occupation
@@ -45,11 +33,5 @@ class API::V1::OccupationStandards::RelationshipsController < API::V1::APIContro
       }
     }
     render json: API::V1::OccupationStandard::Relationships::OrganizationSerializer.new(@organization, options)
-  end
-
-  private
-
-  def set_occupation_standard
-    @os = OccupationStandard.find(params[:id])
   end
 end
