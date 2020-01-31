@@ -44,6 +44,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][2]["attributes"]["industry_title"]).to be nil
       expect(json["data"][2]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
       expect(json["included"]).to_not be nil
+      user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
+      expect(user_included_hash["attributes"]).to be nil
 
       # With occupation_id parameter, returns matches
       get path, params: { occupation_id: occupation.id }
@@ -232,6 +234,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "user", "id" => os.creator_id.to_s))
+      user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
+      expect(user_included_hash["attributes"]).to be nil
     end
   end
 
