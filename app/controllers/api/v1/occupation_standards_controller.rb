@@ -47,11 +47,13 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def update
     authorize @os, policy_class: API::V1::OccupationStandardPolicy
+
     if organization_params[:organization_title].present?
       @os.organization = Organization.where(
         title: organization_params[:organization_title]
       ).first_or_initialize
     end
+
     if @os.update(update_params)
       options = { links: { self: request.original_url } }
       render_resource(@os, options)
@@ -85,9 +87,11 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def update_params
+    relationships_params = params.require(:data).permit(relationships: { industry: {}, occupation: {}, registration_state: {} })
+    relationships_params = relationships_params[:relationships] || {}
+
     relationships = {}
-    relationship_params = params.require(:data).fetch(:relationships, {})
-    relationship_params.each do |key, data_hash|
+    relationships_params.each do |key, data_hash|
       relationships["#{key}_id"] = data_hash["data"]["id"]
     end
     params.require(:data).fetch(:attributes, {}).permit(:title, :registration_organization_name).merge(relationships)
