@@ -200,8 +200,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
       expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss3.id.to_s
 
-      expect(json["data"]["relationships"]["creator"]["links"]["self"]).to eq relationships_creator_api_v1_occupation_standard_url(os)
-      expect(json["data"]["relationships"]["creator"]["links"]["related"]).to eq api_v1_user_url(os.creator)
+      expect(json["data"]["relationships"]["creator"]["links"]).to be nil
       expect(json["data"]["relationships"]["creator"]["data"]["type"]).to eq "user"
       expect(json["data"]["relationships"]["creator"]["data"]["id"]).to eq os.creator_id.to_s
 
