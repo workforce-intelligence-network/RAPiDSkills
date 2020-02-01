@@ -11,4 +11,19 @@ class API::V1::OccupationStandards::Relationships::WorkProcessesController < API
     }
     render json: API::V1::OccupationStandard::Relationships::WorkProcessSerializer.new(@oswps, options)
   end
+
+  def destroy
+    authorize @os, :delete_work_process?, policy_class: API::V1::OccupationStandardPolicy
+    object_params.each do |object_param|
+      oswp = OccupationStandardWorkProcess.find_by(id: object_param[:id])
+      oswp.destroy
+    end
+    head :no_content
+  end
+
+  private
+
+  def object_params
+    params.require(:data)
+  end
 end

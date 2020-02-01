@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :occupation_standards, except: [:new, :edit] do
         member do
           get "relationships/work_processes", to: "occupation_standards/relationships/work_processes#index"
+          delete "relationships/work_processes", to: "occupation_standards/relationships/work_processes#destroy"
           get "relationships/skills", to: "occupation_standards/relationships/skills#index"
           delete "relationships/skills", to: "occupation_standards/relationships/skills#destroy"
           get "relationships/creator", to: "occupation_standards/relationships#creator"
