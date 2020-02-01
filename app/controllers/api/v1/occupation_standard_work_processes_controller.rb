@@ -1,7 +1,7 @@
 class API::V1::OccupationStandardWorkProcessesController < API::V1::APIController
   skip_before_action :authenticate, only: [:index, :show]
   before_action :set_occupation_standard, only: [:index]
-  before_action :set_occupation_standard_work_process, only: [:show]
+  before_action :set_occupation_standard_work_process, only: [:show, :update]
 
   def index
     @oswps = @os.occupation_standard_work_processes.with_eager_loading
@@ -27,6 +27,17 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
 
   rescue ActionController::ParameterMissing => e
     render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
+  def update
+    authorize [:api, :v1, @oswp]
+    work_process = WorkProcess.where(update_params).first_or_initialize
+    if work_process.save
+      @oswp.update(work_process: work_process)
+      render_resource
+    else
+      render_resource_error(work_process)
+    end
   end
 
   private

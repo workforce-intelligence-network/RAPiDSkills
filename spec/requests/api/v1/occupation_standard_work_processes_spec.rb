@@ -224,4 +224,118 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
       end
     end
   end
+
+  describe "PATCH #update" do
+    let(:path) { "/api/v1/work_processes/#{oswp.id}" }
+    let(:user) { create(:user) }
+    let(:os) { create(:occupation_standard) }
+    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let(:header) { auth_header(user) }
+    let(:params) {
+      {
+        data: {
+          type: "work_process",
+          id: oswp.id.to_s,
+          attributes: {
+            title: "this is an updated title",
+            description: "this is an updated desc",
+          }
+        }
+      }
+    }
+
+    context "when user belongs to occupation_standard" do
+      let(:os) { create(:occupation_standard, creator: user) }
+
+      it_behaves_like "authorization", :patch
+
+      context "with valid parameters" do
+        context "when new work process title/desc does not exist" do
+          it "creates a new work process and links work process to oswp" do
+            expect{
+              patch path, params: params, headers: header
+            }.to change(WorkProcess, :count).by(1)
+              .and change(OccupationStandardWorkProcess, :count).by(0)
+            work_process = WorkProcess.last
+            expect(work_process.title).to eq "this is an updated title"
+            expect(work_process.description).to eq "this is an updated desc"
+            oswp.reload
+            expect(oswp.work_process).to eq work_process
+          end
+
+          it "returns correct response" do
+            patch path, params: params, headers: header
+            expect(response).to have_http_status(:success)
+            expect(json["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+            expect(json["data"]["id"]).to eq oswp.id.to_s
+            expect(json["data"]["type"]).to eq "work_process"
+            expect(json["data"]["attributes"]["title"]).to eq "this is an updated title"
+            expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+          end
+        end
+
+        context "when new work process title/desc does exist" do
+          let!(:work_process) { create(:work_process, title: "this is an updated title", description: "this is an updated desc") }
+
+          it "does not create a new work process but links work process to oswp" do
+            expect{
+              patch path, params: params, headers: header
+            }.to change(WorkProcess, :count).by(0)
+              .and change(OccupationStandardWorkProcess, :count).by(0)
+            oswp.reload
+            expect(oswp.work_process).to eq work_process
+          end
+
+          it "returns correct response" do
+            patch path, params: params, headers: header
+            expect(response).to have_http_status(:success)
+            expect(json["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+            expect(json["data"]["id"]).to eq oswp.id.to_s
+            expect(json["data"]["type"]).to eq "work_process"
+            expect(json["data"]["attributes"]["title"]).to eq "this is an updated title"
+            expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+          end
+        end
+      end
+
+      context "with invalid parameters" do
+        let(:params) {
+          {
+            data: {
+              type: "work_process",
+              id: oswp.id.to_s,
+              attributes: {
+                title: "",
+              }
+            }
+          }
+        }
+
+        it "does not create new work process" do
+          expect{
+            patch path, params: params, headers: header
+          }.to_not change(WorkProcess, :count)
+        end
+
+        it "returns 422 with an error message" do
+          patch path, params: params, headers: header
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to eq "Title can't be blank"
+        end
+      end
+
+      context "with bad work process id" do
+        it_behaves_like "not found", :patch do
+          let(:path) { "/api/v1/work_processes/999" }
+        end
+      end
+    end
+
+    context "when user does not belong to occupation standard" do
+      it_behaves_like "forbidden", :patch
+    end
+  end
 end
