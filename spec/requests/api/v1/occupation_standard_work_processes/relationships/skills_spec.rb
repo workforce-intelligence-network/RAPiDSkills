@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe API::V1::OccupationStandardWorkProcesses::RelationshipsController, type: :request do
-  describe "GET #skills" do
+RSpec.describe API::V1::OccupationStandardWorkProcesses::Relationships::SkillsController, type: :request do
+  describe "GET #index" do
     let(:path) { "/api/v1/work_processes/#{oswp.id}/relationships/skills" }
     let(:os) { create(:occupation_standard) }
     let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
