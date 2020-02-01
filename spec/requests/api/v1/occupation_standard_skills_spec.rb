@@ -10,17 +10,27 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
     let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
 
-    it "returns the correct data" do
-      get path
-      expect(response).to have_http_status(:success)
-      expect(json["links"]["self"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(os)
-      expect(json["data"].count).to eq 2
-      expect(json["data"][0]["id"]).to eq oss2.id.to_s
-      expect(json["data"][0]["type"]).to eq "skill"
-      expect(json["data"][0]["attributes"]["description"]).to eq oss2.skill.description
-      expect(json["data"][1]["id"]).to eq oss1.id.to_s
-      expect(json["data"][1]["type"]).to eq "skill"
-      expect(json["data"][1]["attributes"]["description"]).to eq oss1.skill.description
+    context "with valid standard" do
+      it "returns the correct data" do
+        get path
+        expect(response).to have_http_status(:success)
+        expect(json["links"]["self"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(os)
+        expect(json["data"].count).to eq 2
+        expect(json["data"][0]["id"]).to eq oss2.id.to_s
+        expect(json["data"][0]["type"]).to eq "skill"
+        expect(json["data"][0]["attributes"]["description"]).to eq oss2.skill.description
+        expect(json["data"][1]["id"]).to eq oss1.id.to_s
+        expect(json["data"][1]["type"]).to eq "skill"
+        expect(json["data"][1]["attributes"]["description"]).to eq oss1.skill.description
+      end
+    end
+
+    context "with bad standard id" do
+      it_behaves_like "not found", :get do
+        let(:path) { "/api/v1/occupation_standards/999/skills" }
+        let(:params) { {} }
+        let(:header) { {} }
+      end
     end
   end
 
@@ -28,14 +38,24 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     let(:path) { "/api/v1/skills/#{oss.id}" }
     let(:oss) { create(:occupation_standard_skill) }
 
-    it "returns the correct data" do
-      get path
-      expect(response).to have_http_status(:success)
-      expect(json["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
-      expect(json["data"]["id"]).to eq oss.id.to_s
-      expect(json["data"]["type"]).to eq "skill"
-      expect(json["data"]["attributes"]["description"]).to eq oss.skill.description
-      expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+    context "with valid skill id" do
+      it "returns the correct data" do
+        get path
+        expect(response).to have_http_status(:success)
+        expect(json["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+        expect(json["data"]["id"]).to eq oss.id.to_s
+        expect(json["data"]["type"]).to eq "skill"
+        expect(json["data"]["attributes"]["description"]).to eq oss.skill.description
+        expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+      end
+    end
+
+    context "with bad skill id" do
+      it_behaves_like "not found", :get do
+        let(:path) { "/api/v1/skills/999" }
+        let(:params) { {} }
+        let(:header) { {} }
+      end
     end
   end
 
@@ -136,6 +156,12 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
           expect(response).to have_http_status(:unprocessable_entity)
           expect(json["errors"][0]["status"]).to eq "422"
           expect(json["errors"][0]["detail"]).to eq "Description can't be blank"
+        end
+      end
+
+      context "with bad skill id" do
+        it_behaves_like "not found", :patch do
+          let(:path) { "/api/v1/skills/999" }
         end
       end
     end

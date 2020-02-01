@@ -1,10 +1,10 @@
 class API::V1::OccupationStandardSkillsController < API::V1::APIController
   skip_before_action :authenticate, only: [:index, :show]
 
+  before_action :set_occupation_standard, only: [:index]
   before_action :set_occupation_standard_skill, only: [:show, :update]
 
   def index
-    @os = OccupationStandard.find(params[:occupation_standard_id])
     @osss = @os.occupation_standard_skills_with_no_work_process
     options = { links: { self: @os.related_url("occupation_standard_skills") } }
     render json: API::V1::OccupationStandardSkillSerializer.new(@osss, options)
@@ -42,8 +42,14 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
 
   private
 
+  def set_occupation_standard
+    @os = OccupationStandard.find_by(id: params[:occupation_standard_id])
+    head :not_found and return unless @os
+  end
+
   def set_occupation_standard_skill
-    @oss = OccupationStandardSkill.find(params[:id])
+    @oss = OccupationStandardSkill.find_by(id: params[:id])
+    head :not_found and return unless @oss
   end
 
   def update_params
