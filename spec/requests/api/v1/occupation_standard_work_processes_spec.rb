@@ -55,4 +55,153 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
       expect(json["included"][0]["attributes"]["description"]).to eq oss.skill.description
     end
   end
+
+  describe "POST #create" do
+    let(:path) { "/api/v1/work_processes" }
+    let(:user) { create(:user) }
+    let(:header) { auth_header(user) }
+    let(:params) {
+      {
+        data: {
+          type: "work_process",
+          attributes: {
+            title: "new work process title",
+            description: "new work process desc",
+          },
+          relationships: {
+            occupation_standard: {
+              data: {
+                type: "occupation_standard",
+                id: os.id.to_s,
+              }
+            }
+          }
+        }
+      }
+    }
+
+    context "when user belongs to occupation_standard" do
+      let(:os) { create(:occupation_standard, creator: user) }
+
+      it_behaves_like "authorization", :post
+
+      context "with valid parameters" do
+        context "when new work process title does not exist" do
+          it "creates a new work process and new occupation standard work process" do
+            expect{
+              post path, params: params, headers: header
+            }.to change(WorkProcess, :count).by(1)
+              .and change(OccupationStandardWorkProcess, :count).by(1)
+            wp = WorkProcess.last
+            expect(wp.title).to eq "new work process title"
+            expect(wp.description).to eq "new work process desc"
+            oswp = OccupationStandardWorkProcess.last
+            expect(oswp.work_process).to eq wp
+            expect(oswp.occupation_standard).to eq os
+          end
+
+          it "returns correct response" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:success)
+            oswp = OccupationStandardWorkProcess.last
+            expect(json["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+            expect(json["data"]["id"]).to eq oswp.id.to_s
+            expect(json["data"]["type"]).to eq "work_process"
+            expect(json["data"]["attributes"]["title"]).to eq "new work process title"
+            expect(json["data"]["attributes"]["description"]).to eq "new work process desc"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+          end
+        end
+
+        context "when new work process title and desc does exist" do
+          let!(:wp) { create(:work_process, title: "new work process title", description: "new work process desc") }
+
+          it "does not create a new work process but creates new oswp" do
+            expect{
+              post path, params: params, headers: header
+            }.to change(WorkProcess, :count).by(0)
+              .and change(OccupationStandardWorkProcess, :count).by(1)
+            oswp = OccupationStandardWorkProcess.last
+            expect(oswp.work_process).to eq wp
+            expect(oswp.occupation_standard).to eq os
+          end
+
+          it "returns correct response" do
+            post path, params: params, headers: header
+            oswp = OccupationStandardWorkProcess.last
+            expect(response).to have_http_status(:success)
+            expect(json["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+            expect(json["data"]["id"]).to eq oswp.id.to_s
+            expect(json["data"]["type"]).to eq "work_process"
+            expect(json["data"]["attributes"]["title"]).to eq "new work process title"
+            expect(json["data"]["attributes"]["description"]).to eq "new work process desc"
+            expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
+          end
+        end
+      end
+
+      context "with invalid parameters" do
+        context "when title is blank" do
+          let(:params) {
+            {
+              data: {
+                type: "work_process",
+                attributes: {
+                  title: "",
+                },
+                relationships: {
+                  occupation_standard: {
+                    data: {
+                      type: "occupation_standard",
+                      id: os.id.to_s,
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          it "does not create new work process or oswp" do
+            expect{
+              post path, params: params, headers: header
+            }.to change(WorkProcess, :count).by(0)
+              .and change(OccupationStandardWorkProcess, :count).by(0)
+          end
+
+          it "returns 422 with an error message" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to eq "Title can't be blank"
+          end
+        end
+
+        context "when missing relationships key" do
+          let(:params) {
+            {
+              data: {
+                type: "work_process",
+                attributes: {
+                  title: "new work process",
+                }
+              }
+            }
+          }
+
+          it "returns 422 http status" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to match "empty: relationships"
+          end
+        end
+      end
+    end
+
+    context "when user does not belong to occupation standard" do
+      it_behaves_like "forbidden", :post do
+        let(:os) { create(:occupation_standard) }
+      end
+    end
+  end
 end
