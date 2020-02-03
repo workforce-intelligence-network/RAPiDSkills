@@ -264,12 +264,6 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
                   description: "this is a new skill",
                 },
                 relationships: {
-                  occupation_standard: {
-                    data: {
-                      type: "occupation_standard",
-                      id: os.id.to_s,
-                    }
-                  },
                   work_process: {
                     data: {
                       type: "work_process",
@@ -358,6 +352,35 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(response).to have_http_status(:unprocessable_entity)
             expect(json["errors"][0]["status"]).to eq "422"
             expect(json["errors"][0]["detail"]).to eq "Description can't be blank"
+          end
+        end
+
+        context "with bad standard and work process ids" do
+          it_behaves_like "not found", :post do
+            let(:params) {
+              {
+                data: {
+                  type: "skill",
+                  attributes: {
+                    description: "this is a new skill",
+                  },
+                  relationships: {
+                    occupation_standard: {
+                      data: {
+                        type: "occupation_standard",
+                        id: 9999,
+                      }
+                    },
+                    work_process: {
+                      data: {
+                        type: "work_process",
+                        id: 9999,
+                      }
+                    }
+                  }
+                }
+              }
+            }
           end
         end
 
