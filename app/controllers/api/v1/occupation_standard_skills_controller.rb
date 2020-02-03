@@ -18,6 +18,7 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
     @os = OccupationStandard.where(id: occupation_standard_params[:id]).first_or_initialize
     authorize @os, :create_skill?, policy_class: API::V1::OccupationStandardPolicy
     @oswp = OccupationStandardWorkProcess.find_by(id: work_process_params[:id])
+    authorize [:api, :v1, @oswp], :create_skill? if @oswp
     skill = Skill.where(update_params).first_or_initialize
     if skill.save
       @oss = @os.occupation_standard_skills.where(

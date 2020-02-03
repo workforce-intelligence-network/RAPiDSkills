@@ -7,6 +7,16 @@ class API::V1::OccupationStandardWorkProcessPolicy < ApplicationPolicy
   end
 
   def update?
+    owned_by_user?
+  end
+
+  def create_skill?
+    owned_by_user?
+  end
+
+  private
+
+  def owned_by_user?
     oswp.creator == user
   end
 end

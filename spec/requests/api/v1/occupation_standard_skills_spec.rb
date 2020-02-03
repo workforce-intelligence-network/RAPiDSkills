@@ -256,7 +256,6 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
         end
 
         context "when passing work process parent" do
-          let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
           let(:params) {
             {
               data: {
@@ -282,7 +281,9 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             }
           }
 
-          context "when new skill name does not exist" do
+          context "when work process belongs to standard" do
+            let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+
             it "creates a new skill and new occupation standard skill" do
               expect{
                 post path, params: params, headers: header
@@ -309,30 +310,17 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             end
           end
 
-          context "when new skill name does exist" do
-            let!(:skill) { create(:skill, description: "this is a new skill") }
+          context "when work process does not belong to standard" do
+            let(:oswp) { create(:occupation_standard_work_process) }
 
-            it "does not create a new skill but creates new oss" do
+            it "does not create a new skill or new occupation standard skill" do
               expect{
                 post path, params: params, headers: header
               }.to change(Skill, :count).by(0)
-                .and change(OccupationStandardSkill, :count).by(1)
-              oss = OccupationStandardSkill.last
-              expect(oss.skill).to eq skill
-              expect(oss.occupation_standard).to eq os
-              expect(oss.occupation_standard_work_process).to eq oswp
+                .and change(OccupationStandardSkill, :count).by(0)
             end
 
-            it "returns correct response" do
-              post path, params: params, headers: header
-              oss = OccupationStandardSkill.last
-              expect(response).to have_http_status(:success)
-              expect(json["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
-              expect(json["data"]["id"]).to eq oss.id.to_s
-              expect(json["data"]["type"]).to eq "skill"
-              expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
-              expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
-            end
+            it_behaves_like "forbidden", :post
           end
         end
       end
