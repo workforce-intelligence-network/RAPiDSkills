@@ -12,7 +12,7 @@ RSpec.describe API::V1::Sessions::UserController, type: :request do
     context "when session belongs to user" do
       before { user.favorites << os }
 
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns the correct data" do
         get path, headers: header

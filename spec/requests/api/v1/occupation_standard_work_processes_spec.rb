@@ -103,7 +103,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
     context "when user belongs to occupation_standard" do
       let(:os) { create(:occupation_standard, creator: user) }
 
-      it_behaves_like "authorization", :post
+      it_behaves_like "authentication", :post
 
       context "with valid parameters" do
         context "when new work process title does not exist" do
@@ -247,7 +247,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
     context "when user belongs to occupation_standard" do
       let(:os) { create(:occupation_standard, creator: user) }
 
-      it_behaves_like "authorization", :patch
+      it_behaves_like "authentication", :patch
 
       context "with valid parameters" do
         context "when new work process title/desc does not exist" do

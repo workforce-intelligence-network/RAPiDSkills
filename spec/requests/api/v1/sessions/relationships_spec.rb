@@ -9,7 +9,7 @@ RSpec.describe API::V1::Sessions::RelationshipsController, type: :request do
     let(:header) { auth_header(user) }
 
     context "when session belongs to user" do
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns the correct data" do
         get path, headers: header

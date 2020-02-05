@@ -106,7 +106,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     let(:params) { {} }
 
     context "when viewed by owning user" do
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns session data" do
         get path, headers: header
@@ -137,7 +137,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     let(:params) { {} }
     let!(:header) { auth_header(user) }
 
-    it_behaves_like "authorization", :delete
+    it_behaves_like "authentication", :delete
 
     it "deletes client_session record" do
       expect{

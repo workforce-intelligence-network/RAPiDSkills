@@ -7,7 +7,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
     let(:header) { auth_header(user) }
     let(:params) { {} }
 
-    it_behaves_like "authorization", :get
+    it_behaves_like "authentication", :get
 
     context "when user requests own favorites" do
       let(:os_list) { create_list(:occupation_standard, 2) }
@@ -56,7 +56,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       let(:user) { create(:user) }
       let(:header) { auth_header(user) }
 
-      it_behaves_like "authorization", :post
+      it_behaves_like "authentication", :post
 
       context "when adding own favorite" do
         context "when occupation_standard is not already favorited" do
@@ -134,7 +134,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
       let(:user) { create(:user) }
       let(:header) { auth_header(user) }
 
-      it_behaves_like "authorization", :delete
+      it_behaves_like "authentication", :delete
 
       context "when deleting own favorite" do
         context "when occupation_standard is favorited" do
