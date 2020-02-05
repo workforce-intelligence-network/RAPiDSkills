@@ -2169,7 +2169,8 @@ added.</p>
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre><h2 id='skills-remove-skill-from-standard'>Remove skill from standard</h2>
-<p>User must be authorized to remove the skill from the standard.</p>
+<p>User must own the standard from which the skill is being removed, and the skill
+must belong to the standard.</p>
 
 <blockquote>
 <p>Example request</p>
@@ -2725,7 +2726,8 @@ being added.</p>
         "type": "work_process",
         "attributes": {
             "title": "a new wp title",
-            "description": "a new wp desc"
+            "description": "a new wp desc",
+            "hours": 50
         },
         "relationships": {
             "occupation_standard": {
@@ -2757,6 +2759,11 @@ being added.</p>
 <td>string</td>
 <td></td>
 </tr>
+<tr>
+<td>hours</td>
+<td>integer</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <p>The relationships hash with the occupation standard data is also required.</p>
@@ -2769,6 +2776,7 @@ being added.</p>
         </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"85"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"hours"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
             </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a new wp title"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"a new wp desc"</span><span class="w">
         </span><span class="p">},</span><span class="w">
@@ -2796,7 +2804,7 @@ being added.</p>
 <blockquote>
 <p>Example request</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/work_processes/85'</span> <span class="se">\</span>
+<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/work_processes/83'</span> <span class="se">\</span>
 --header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
 --header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
 --header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGYvSlBlSjhsVDZ1YkhETFBiTVdBZ3VLZ1RQRWlLRHo2V3R4eHpyeVZJRVRaN3FCTmRUbHFlIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiZTEwNGQ1YWQtODU3NC00Zjk1LTg5Y2MtNTJmMDc2ZDA3YzQyIn0.MoppB2O24Qbf6Ljq0r0GRKS3b1BL89qLM0tjmEedP6Q'</span> <span class="se">\</span>
@@ -2804,7 +2812,8 @@ being added.</p>
     "data": {
         "attributes": {
             "title": "New title",
-            "description": "New description"
+            "description": "New description",
+            "hours": 50
         }
     }
 }'</span>
@@ -2828,6 +2837,11 @@ being added.</p>
 <td>string</td>
 <td></td>
 </tr>
+<tr>
+<td>hours</td>
+<td>integer</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <blockquote>
@@ -2835,32 +2849,51 @@ being added.</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"85"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"83"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"hours"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
             </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New title"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New description"</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"685"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
                 </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85/relationships/skills"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85/skills"</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83/relationships/skills"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83/skills"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85"</span><span class="w">
+            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85"</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83"</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"685"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"another new skill to add to standard 22"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/685"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre><h2 id='work-processes-remove-work-process-from-standard'>Remove work process from standard</h2>
-<p>User must be authorized to remove the work process from the standard. Work processes with nested skills cannot be removed.</p>
+<p>User must own the standard from which the work process is being removed, and
+the work process must belong to the standard. Work processes with nested skills
+cannot be removed.</p>
 
 <blockquote>
 <p>Example request</p>
