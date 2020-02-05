@@ -148,7 +148,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
 
           it "removes favorite and returns success" do
             delete path, params: params, headers: header
-            expect(response).to have_http_status(:success)
+            expect(response).to have_http_status(:no_content)
             user.reload
             expect(user.favorites).to be_empty
           end
@@ -182,7 +182,7 @@ RSpec.describe API::V1::Users::Relationships::FavoritesController, type: :reques
             }.to_not change(Relationship, :count)
           end
 
-          it_behaves_like "success", :post
+          it_behaves_like "no content", :delete
         end
       end
 

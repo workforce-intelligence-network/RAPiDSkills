@@ -115,7 +115,7 @@ ActiveAdmin.register OccupationStandard do
               link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
             end
             column do
-              oswp.hours
+              oswp.hours || "&nbsp;".html_safe
             end
             column do
               oswp.skills.map do |skill|

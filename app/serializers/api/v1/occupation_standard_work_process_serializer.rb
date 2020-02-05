@@ -2,6 +2,8 @@ class API::V1::OccupationStandardWorkProcessSerializer
   include FastJsonapi::ObjectSerializer
   set_type :work_process
 
+  link :self, :url
+
   has_many :occupation_standard_skills,
     record_type: :skill,
     key: :skills,

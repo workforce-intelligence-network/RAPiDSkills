@@ -4,7 +4,7 @@ class OccupationStandardSkill < ApplicationRecord
   belongs_to :occupation_standard_work_process, optional: true
   has_one :work_process, through: :occupation_standard_work_process
 
-  validates :occupation_standard, uniqueness: { scope: :skill }
+  validates :occupation_standard, uniqueness: { scope: [:skill, :occupation_standard_work_process] }
 
   delegate :description, to: :skill, prefix: true
   delegate :creator, to: :occupation_standard
