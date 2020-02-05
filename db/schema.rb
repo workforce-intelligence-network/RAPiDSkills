@@ -103,6 +103,8 @@ ActiveRecord::Schema.define(version: 2020_02_15_010246) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "sort_order", default: 0
     t.bigint "occupation_standard_work_process_id"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_occupation_standard_skills_on_category_id"
     t.index ["occupation_standard_id"], name: "index_occupation_standard_skills_on_occupation_standard_id"
     t.index ["occupation_standard_work_process_id"], name: "occupation_standard_work_process_id_idx"
     t.index ["skill_id"], name: "index_occupation_standard_skills_on_skill_id"
@@ -246,6 +248,7 @@ ActiveRecord::Schema.define(version: 2020_02_15_010246) do
   add_foreign_key "data_imports", "users"
   add_foreign_key "locations", "organizations"
   add_foreign_key "locations", "states"
+  add_foreign_key "occupation_standard_skills", "categories"
   add_foreign_key "occupation_standard_skills", "occupation_standard_work_processes"
   add_foreign_key "occupation_standard_skills", "occupation_standards"
   add_foreign_key "occupation_standard_skills", "skills"
