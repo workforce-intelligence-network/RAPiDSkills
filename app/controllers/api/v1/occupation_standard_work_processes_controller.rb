@@ -17,9 +17,12 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
   def create
     @os = OccupationStandard.where(id: occupation_standard_params[:id]).first_or_initialize
     authorize @os, :create_work_process?, policy_class: API::V1::OccupationStandardPolicy
-    work_process = WorkProcess.where(update_params).first_or_initialize
+    work_process = WorkProcess.where(work_process_params).first_or_initialize
     if work_process.save
-      @oswp = @os.occupation_standard_work_processes.where(work_process: work_process).first_or_create
+      @oswp = @os.occupation_standard_work_processes.where(
+        work_process: work_process,
+        hours: oswp_params[:hours],
+      ).first_or_create
       render_resource
     else
       render_resource_error(work_process)
@@ -31,7 +34,7 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
 
   def update
     authorize [:api, :v1, @oswp]
-    work_process = WorkProcess.where(update_params).first_or_initialize
+    work_process = WorkProcess.where(work_process_params).first_or_initialize
     if work_process.save
       @oswp.update(work_process: work_process)
       render_resource
@@ -56,8 +59,12 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
     params.require(:data).require(:relationships).require(:occupation_standard).require(:data).permit(:id)
   end
 
-  def update_params
+  def work_process_params
     params.require(:data).require(:attributes).permit(:title, :description)
+  end
+
+  def oswp_params
+    params.require(:data).require(:attributes).permit(:hours)
   end
 
   def render_resource

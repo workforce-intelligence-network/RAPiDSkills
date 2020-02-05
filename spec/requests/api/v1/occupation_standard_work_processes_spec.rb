@@ -87,6 +87,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
           attributes: {
             title: "new work process title",
             description: "new work process desc",
+            hours: 50,
           },
           relationships: {
             occupation_standard: {
@@ -118,6 +119,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             oswp = OccupationStandardWorkProcess.last
             expect(oswp.work_process).to eq wp
             expect(oswp.occupation_standard).to eq os
+            expect(oswp.hours).to eq 50
           end
 
           it "returns correct response" do
@@ -129,6 +131,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["type"]).to eq "work_process"
             expect(json["data"]["attributes"]["title"]).to eq "new work process title"
             expect(json["data"]["attributes"]["description"]).to eq "new work process desc"
+            expect(json["data"]["attributes"]["hours"]).to eq 50
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
@@ -144,6 +147,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             oswp = OccupationStandardWorkProcess.last
             expect(oswp.work_process).to eq wp
             expect(oswp.occupation_standard).to eq os
+            expect(oswp.hours).to eq 50
           end
 
           it "returns correct response" do
@@ -155,6 +159,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["type"]).to eq "work_process"
             expect(json["data"]["attributes"]["title"]).to eq "new work process title"
             expect(json["data"]["attributes"]["description"]).to eq "new work process desc"
+            expect(json["data"]["attributes"]["hours"]).to eq 50
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
