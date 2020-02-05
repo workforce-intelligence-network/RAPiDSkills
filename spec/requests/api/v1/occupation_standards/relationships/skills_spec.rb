@@ -26,18 +26,8 @@ RSpec.describe API::V1::OccupationStandards::Relationships::SkillsController, ty
   describe "DELETE #destroy" do
     let(:path) { "/api/v1/occupation_standards/#{os.id}/relationships/skills" }
     let(:os) { create(:occupation_standard) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
-    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
-    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os) }
-    let(:params) {
-      {
-        data: [
-          { type: "skill", id: oss1.id },
-          { type: "skill", id: oss3.id },
-        ]
-      }
-    }
     let(:header) { {} }
+    let(:params) { {} }
 
     context "when guest" do
       it_behaves_like "unauthorized", :delete
@@ -54,10 +44,23 @@ RSpec.describe API::V1::OccupationStandards::Relationships::SkillsController, ty
       let(:user) { create(:user) }
       let(:os) { create(:occupation_standard, creator: user) }
       let(:header) { auth_header(user) }
+      let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+      let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+      let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os) }
+      let!(:oss4) { create(:occupation_standard_skill) }
+      let(:params) {
+        {
+          data: [
+            { type: "skill", id: oss1.id },
+            { type: "skill", id: oss3.id },
+            { type: "skill", id: oss4.id },
+          ]
+        }
+      }
 
       it_behaves_like "no content", :delete
 
-      it "deletes occupation standard skill records but not skill records" do
+      it "deletes occupation standard skill records but not skill records, ignoring skills that are not linked" do
         expect{
           delete path, params: params, headers: header
         }.to change(OccupationStandardSkill, :count).by(-2)

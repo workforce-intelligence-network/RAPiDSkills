@@ -15,8 +15,8 @@ class API::V1::OccupationStandards::Relationships::SkillsController < API::V1::O
   def destroy
     authorize @os, :delete_skill?, policy_class: API::V1::OccupationStandardPolicy
     object_params.each do |object_param|
-      oss = OccupationStandardSkill.find_by(id: object_param[:id])
-      oss.destroy
+      oss = @os.occupation_standard_skills.find_by(id: object_param[:id])
+      oss.destroy if oss
     end
     head :no_content
   end
