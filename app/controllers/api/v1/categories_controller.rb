@@ -2,10 +2,14 @@ class API::V1::CategoriesController < API::V1::APIController
   skip_before_action :authenticate, only: [:show]
 
   before_action :authorize_parent, only: [:create]
-  before_action :set_category, only: [:show]
+  before_action :set_category, only: [:show, :update]
+
+  def show
+    render_resource
+  end
 
   def create
-    @category = Category.new(update_params)
+    @category = Category.new(create_params)
     if @category.save
       render_resource
     else
@@ -13,8 +17,13 @@ class API::V1::CategoriesController < API::V1::APIController
     end
   end
 
-  def show
-    render_resource
+  def update
+    authorize [:api, :v1, @category]
+    if @category.update(update_params)
+      render_resource
+    else
+      render_resource_error(@category)
+    end
   end
 
   private
@@ -24,8 +33,12 @@ class API::V1::CategoriesController < API::V1::APIController
     head :not_found and return unless @category
   end
 
-  def update_params
+  def create_params
     params.require(:data).require(:attributes).permit(:name, :sort_order).merge(occupation_standard_work_process_id: @oswp.id)
+  end
+
+  def update_params
+    params.require(:data).require(:attributes).permit(:name, :sort_order)
   end
 
   def work_process_params

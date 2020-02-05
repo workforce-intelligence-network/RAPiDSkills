@@ -191,6 +191,83 @@ RSpec.describe API::V1::CategoriesController, type: :request do
     end
   end
 
+  describe "PATCH #update" do
+    let(:path) { "/api/v1/categories/#{category.id}" }
+    let(:user) { create(:user) }
+    let(:os) { create(:occupation_standard) }
+    let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:category) { create(:category, occupation_standard_work_process: oswp) }
+    let(:header) { auth_header(user) }
+    let(:params) {
+      {
+        data: {
+          type: "category",
+          id: category.id.to_s,
+          attributes: {
+            name: "updated name",
+            sort_order: 5,
+          }
+        }
+      }
+    }
+
+    context "when user belongs to occupation_standard" do
+      let(:os) { create(:occupation_standard, creator: user) }
+
+      it_behaves_like "authentication", :patch
+
+      context "with valid parameters" do
+        it "does not create a new category" do
+          expect{
+            patch path, params: params, headers: header
+          }.to_not change(Category, :count)
+        end
+
+        it "returns correct response" do
+          patch path, params: params, headers: header
+          expect(response).to have_http_status(:success)
+          expect(json["links"]["self"]).to eq api_v1_category_url(category)
+          expect(json["data"]["id"]).to eq category.id.to_s
+          expect(json["data"]["type"]).to eq "category"
+          expect(json["data"]["attributes"]["name"]).to eq "updated name"
+          expect(json["data"]["attributes"]["sort_order"]).to eq 5
+          expect(json["data"]["links"]["self"]).to eq api_v1_category_url(category)
+        end
+      end
+
+      context "with invalid parameters" do
+        let(:params) {
+          {
+            data: {
+              type: "category",
+              id: category.id.to_s,
+              attributes: {
+                name: "",
+              }
+            }
+          }
+        }
+
+        it "returns 422 with an error message" do
+          patch path, params: params, headers: header
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to eq "Name can't be blank"
+        end
+      end
+
+      context "with bad category id" do
+        it_behaves_like "not found", :patch do
+          let(:path) { "/api/v1/categories/999" }
+        end
+      end
+    end
+
+    context "when user does not belong to occupation standard" do
+      it_behaves_like "forbidden", :patch
+    end
+  end
+
   describe "GET #show" do
     let(:path) { "/api/v1/categories/#{category.id}" }
     let(:category) { create(:category) }

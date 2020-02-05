@@ -42,7 +42,7 @@ Rails.application.routes.draw do
       end
 
       resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
-      resources :categories, only: [:create, :show]
+      resources :categories, only: [:create, :show, :update]
       resources :industry, only: [:show]
       resources :organizations, only: [:show]
       resources :states, only: [:show]
