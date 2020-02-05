@@ -14,11 +14,22 @@ class API::V1::OccupationStandards::Relationships::WorkProcessesController < API
 
   def destroy
     authorize @os, :delete_work_process?, policy_class: API::V1::OccupationStandardPolicy
-    object_params.each do |object_param|
-      oswp = @os.occupation_standard_work_processes.find_by(id: object_param[:id])
-      oswp.destroy if oswp
+    begin
+      OccupationStandardWorkProcess.transaction do
+        object_params.each_with_index do |object_param, index|
+          @pointer = "/data/#{index}"
+          oswp = @os.occupation_standard_work_processes.find_by(id: object_param[:id])
+          oswp.destroy if oswp
+        end
+      end
+      head :no_content
+    rescue Exception => e
+      render_error(
+        status: :unprocessable_entity,
+        detail: "Work process with skills may not be deleted",
+        source_pointer: @pointer,
+      )
     end
-    head :no_content
   end
 
   private
