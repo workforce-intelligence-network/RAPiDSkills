@@ -45,18 +45,20 @@ RSpec.describe API::V1::OccupationStandards::Relationships::WorkProcessesControl
       let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
       let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
       let!(:oswp3) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let!(:oswp4) { create(:occupation_standard_work_process) }
       let(:params) {
         {
           data: [
             { type: "work_process", id: oswp1.id },
             { type: "work_process", id: oswp3.id },
+            { type: "work_process", id: oswp4.id },
           ]
         }
       }
 
       it_behaves_like "no content", :delete
 
-      it "deletes occupation standard work process records but not work process records" do
+      it "deletes occupation_standard_work_process records but not work process records, ignoring occupation standard work processes that are not linked" do
         expect{
           delete path, params: params, headers: header
         }.to change(OccupationStandardWorkProcess, :count).by(-2)

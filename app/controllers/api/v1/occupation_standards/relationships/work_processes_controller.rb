@@ -15,8 +15,8 @@ class API::V1::OccupationStandards::Relationships::WorkProcessesController < API
   def destroy
     authorize @os, :delete_work_process?, policy_class: API::V1::OccupationStandardPolicy
     object_params.each do |object_param|
-      oswp = OccupationStandardWorkProcess.find_by(id: object_param[:id])
-      oswp.destroy
+      oswp = @os.occupation_standard_work_processes.find_by(id: object_param[:id])
+      oswp.destroy if oswp
     end
     head :no_content
   end
