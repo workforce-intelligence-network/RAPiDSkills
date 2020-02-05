@@ -234,7 +234,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
     let(:path) { "/api/v1/work_processes/#{oswp.id}" }
     let(:user) { create(:user) }
     let(:os) { create(:occupation_standard) }
-    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os, hours: 10) }
     let(:header) { auth_header(user) }
     let(:params) {
       {
@@ -244,6 +244,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
           attributes: {
             title: "this is an updated title",
             description: "this is an updated desc",
+            hours: 40,
           }
         }
       }
@@ -266,6 +267,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(work_process.description).to eq "this is an updated desc"
             oswp.reload
             expect(oswp.work_process).to eq work_process
+            expect(oswp.hours).to eq 40
           end
 
           it "returns correct response" do
@@ -276,6 +278,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["type"]).to eq "work_process"
             expect(json["data"]["attributes"]["title"]).to eq "this is an updated title"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["attributes"]["hours"]).to eq 40
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
@@ -290,6 +293,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
               .and change(OccupationStandardWorkProcess, :count).by(0)
             oswp.reload
             expect(oswp.work_process).to eq work_process
+            expect(oswp.hours).to eq 40
           end
 
           it "returns correct response" do
@@ -300,6 +304,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["type"]).to eq "work_process"
             expect(json["data"]["attributes"]["title"]).to eq "this is an updated title"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["attributes"]["hours"]).to eq 40
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end

@@ -36,7 +36,10 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
     authorize [:api, :v1, @oswp]
     work_process = WorkProcess.where(work_process_params).first_or_initialize
     if work_process.save
-      @oswp.update(work_process: work_process)
+      @oswp.update(
+        work_process: work_process,
+        hours: oswp_params[:hours],
+      )
       render_resource
     else
       render_resource_error(work_process)
