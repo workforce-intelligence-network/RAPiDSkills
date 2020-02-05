@@ -7,7 +7,7 @@ RSpec.describe API::V1::Users::Relationships::OccupationStandardsController, typ
     let(:header) { auth_header(user) }
     let(:params) { {} }
 
-    it_behaves_like "authorization", :get
+    it_behaves_like "authentication", :get
 
     context "when user requests own occupation_standards" do
       let!(:os) { create(:occupation_standard) }

@@ -80,7 +80,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     context "when user belongs to occupation_standard" do
       let(:os) { create(:occupation_standard, creator: user) }
 
-      it_behaves_like "authorization", :patch
+      it_behaves_like "authentication", :patch
 
       context "with valid parameters" do
         context "when new skill name does not exist" do
@@ -197,7 +197,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     context "when user belongs to occupation_standard" do
       let(:os) { create(:occupation_standard, creator: user) }
 
-      it_behaves_like "authorization", :post
+      it_behaves_like "authentication", :post
 
       context "with valid parameters" do
         context "when not passing work process parent" do

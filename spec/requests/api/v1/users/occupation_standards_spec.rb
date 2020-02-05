@@ -12,7 +12,7 @@ RSpec.describe API::V1::Users::OccupationStandardsController, type: :request do
       let!(:os2) { create(:occupation_standard, creator: user) }
       let!(:os3) { create(:occupation_standard) }
 
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns occupation_standards by id desc" do
         get path, headers: header

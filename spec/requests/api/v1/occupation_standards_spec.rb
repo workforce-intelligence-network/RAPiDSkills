@@ -255,7 +255,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       }
       let(:new_os) { create(:occupation_standard, parent_occupation_standard: os) }
 
-      it_behaves_like "authorization", :post
+      it_behaves_like "authentication", :post
 
       it "returns new occupation standard" do
         expect_any_instance_of(OccupationStandard).to receive(:clone_as_unregistered!).with(creator_id: user.id, organization_id: employer.id).and_return(new_os)
@@ -351,7 +351,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     let(:params) { {} }
     let(:header) { auth_header(user) }
 
-    it_behaves_like "authorization", :delete
+    it_behaves_like "authentication", :delete
 
     context "when user owns occupation standard" do
       let!(:relationship) { create(:relationship, occupation_standard: os) }
@@ -423,7 +423,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           }
         }
 
-        it_behaves_like "authorization", :patch
+        it_behaves_like "authentication", :patch
 
         it "returns updated occupation standard" do
           patch path, params: params, headers: header

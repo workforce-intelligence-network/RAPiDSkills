@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.shared_examples "authorization" do |method|
-  it "returns unauthorized if bad authorization" do
+RSpec.shared_examples "authentication" do |method|
+  it "returns unauthorized if bad authentication" do
     send(method, path, params: params, headers: bad_auth_header)
     expect(response).to have_http_status(:unauthorized)
   end

@@ -13,7 +13,7 @@ RSpec.describe API::V1::Users::FavoritesController, type: :request do
 
       before { user.favorites << os1 << os2 }
 
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns favorites by most recently added" do
         get path, headers: header
@@ -45,7 +45,7 @@ RSpec.describe API::V1::Users::FavoritesController, type: :request do
 
       before { user.favorites << os1 << os2 }
 
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns favorites by filtered creator" do
         get path, headers: header
