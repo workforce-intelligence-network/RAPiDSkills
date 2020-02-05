@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
+RSpec.describe API::V1::OccupationStandardWorkProcsses::OccupationStandardSkillsController, type: :request do
   describe "GET #index" do
     let(:path) { "/api/v1/work_processes/#{oswp.id}/skills" }
 
@@ -24,4 +24,3 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     end
   end
 end
-
