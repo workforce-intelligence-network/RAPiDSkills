@@ -24,17 +24,7 @@ RSpec.describe API::V1::OccupationStandards::Relationships::WorkProcessesControl
   describe "DELETE #destroy" do
     let(:path) { "/api/v1/occupation_standards/#{os.id}/relationships/work_processes" }
     let(:os) { create(:occupation_standard) }
-    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oswp3) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let(:params) {
-      {
-        data: [
-          { type: "work_process", id: oswp1.id },
-          { type: "work_process", id: oswp3.id },
-        ]
-      }
-    }
+    let(:params) { {} }
     let(:header) { {} }
 
     context "when guest" do
@@ -52,6 +42,17 @@ RSpec.describe API::V1::OccupationStandards::Relationships::WorkProcessesControl
       let(:user) { create(:user) }
       let(:os) { create(:occupation_standard, creator: user) }
       let(:header) { auth_header(user) }
+      let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let!(:oswp3) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let(:params) {
+        {
+          data: [
+            { type: "work_process", id: oswp1.id },
+            { type: "work_process", id: oswp3.id },
+          ]
+        }
+      }
 
       it_behaves_like "no content", :delete
 
