@@ -190,4 +190,30 @@ RSpec.describe API::V1::CategoriesController, type: :request do
       end
     end
   end
+
+  describe "GET #show" do
+    let(:path) { "/api/v1/categories/#{category.id}" }
+    let(:category) { create(:category) }
+
+    context "with valid category id" do
+      it "returns the correct data" do
+        get path
+        expect(response).to have_http_status(:success)
+        expect(json["links"]["self"]).to eq api_v1_category_url(category)
+        expect(json["data"]["id"]).to eq category.id.to_s
+        expect(json["data"]["type"]).to eq "category"
+        expect(json["data"]["attributes"]["name"]).to eq category.name
+        expect(json["data"]["attributes"]["sort_order"]).to eq category.sort_order
+        expect(json["data"]["links"]["self"]).to eq api_v1_category_url(category)
+      end
+    end
+
+    context "with bad category id" do
+      it_behaves_like "not found", :get do
+        let(:path) { "/api/v1/categories/999" }
+        let(:params) { {} }
+        let(:header) { {} }
+      end
+    end
+  end
 end

@@ -1,5 +1,8 @@
 class API::V1::CategoriesController < API::V1::APIController
+  skip_before_action :authenticate, only: [:show]
+
   before_action :authorize_parent, only: [:create]
+  before_action :set_category, only: [:show]
 
   def create
     @category = Category.new(update_params)
@@ -10,7 +13,16 @@ class API::V1::CategoriesController < API::V1::APIController
     end
   end
 
+  def show
+    render_resource
+  end
+
   private
+
+  def set_category
+    @category = Category.find_by(id: params[:id])
+    head :not_found and return unless @category
+  end
 
   def update_params
     params.require(:data).require(:attributes).permit(:name, :sort_order).merge(occupation_standard_work_process_id: @oswp.id)
