@@ -220,6 +220,33 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["errors"][0]["detail"]).to match "empty: relationships"
           end
         end
+
+        context "when missing attributes key" do
+          let(:params) {
+            {
+              data: {
+                type: "work_process",
+                attributes: {
+                },
+                relationships: {
+                  occupation_standard: {
+                    data: {
+                      type: "occupation_standard",
+                      id: os.id.to_s,
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          it "returns 422 http status" do
+            post path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to match "empty: attributes"
+          end
+        end
       end
     end
 

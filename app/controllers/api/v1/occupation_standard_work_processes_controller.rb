@@ -2,6 +2,7 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
   skip_before_action :authenticate, only: [:index, :show]
   before_action :set_occupation_standard, only: [:index]
   before_action :set_occupation_standard_work_process, only: [:show, :update]
+  before_action :authorize_parent, only: [:create]
 
   def index
     @oswps = @os.occupation_standard_work_processes.with_eager_loading
@@ -15,35 +16,13 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
   end
 
   def create
-    @os = OccupationStandard.where(id: occupation_standard_params[:id]).first_or_initialize
-    authorize @os, :create_work_process?, policy_class: API::V1::OccupationStandardPolicy
-    work_process = WorkProcess.where(work_process_params).first_or_initialize
-    if work_process.save
-      @oswp = @os.occupation_standard_work_processes.where(
-        work_process: work_process,
-        hours: oswp_params[:hours],
-      ).first_or_create
-      render_resource
-    else
-      render_resource_error(work_process)
-    end
-
-  rescue ActionController::ParameterMissing => e
-    render_error(status: :unprocessable_entity, detail: e.message)
+    @oswp = @os.occupation_standard_work_processes.build
+    save_and_update_work_process
   end
 
   def update
     authorize [:api, :v1, @oswp]
-    work_process = WorkProcess.where(work_process_params).first_or_initialize
-    if work_process.save
-      @oswp.update(
-        work_process: work_process,
-        hours: oswp_params[:hours],
-      )
-      render_resource
-    else
-      render_resource_error(work_process)
-    end
+    save_and_update_work_process
   end
 
   private
@@ -58,6 +37,14 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
     head :not_found and return unless @oswp
   end
 
+  def authorize_parent
+    @os = OccupationStandard.where(id: occupation_standard_params[:id]).first_or_initialize
+    authorize @os, :create_work_process?, policy_class: API::V1::OccupationStandardPolicy
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
   def occupation_standard_params
     params.require(:data).require(:relationships).require(:occupation_standard).require(:data).permit(:id)
   end
@@ -68,6 +55,22 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
 
   def oswp_params
     params.require(:data).require(:attributes).permit(:hours)
+  end
+
+  def save_and_update_work_process
+    work_process = WorkProcess.where(work_process_params).first_or_initialize
+    if work_process.save
+      @oswp.update(
+        work_process: work_process,
+        hours: oswp_params[:hours],
+      )
+      render_resource
+    else
+      render_resource_error(work_process)
+    end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
   end
 
   def render_resource
