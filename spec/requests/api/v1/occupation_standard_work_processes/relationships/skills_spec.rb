@@ -5,8 +5,8 @@ RSpec.describe API::V1::OccupationStandardWorkProcesses::Relationships::SkillsCo
     let(:path) { "/api/v1/work_processes/#{oswp.id}/relationships/skills" }
     let(:os) { create(:occupation_standard) }
     let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, sort_order: 2) }
-    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, sort_order: 1) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, sort_order: 2, id: 100) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, sort_order: 1, id: 101) }
 
     it "returns the correct data" do
       get path
@@ -15,9 +15,17 @@ RSpec.describe API::V1::OccupationStandardWorkProcesses::Relationships::SkillsCo
       expect(json["links"]["related"]).to eq api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp)
       expect(json["data"].count).to eq 2
       expect(json["data"][0]["type"]).to eq "skill"
-      expect(json["data"][0]["id"]).to eq oss2.skill_id.to_s
+      expect(json["data"][0]["id"]).to eq oss2.id.to_s
       expect(json["data"][1]["type"]).to eq "skill"
-      expect(json["data"][1]["id"]).to eq oss1.skill_id.to_s
+      expect(json["data"][1]["id"]).to eq oss1.id.to_s
+    end
+
+    context "with bad oswp id" do
+      it_behaves_like "no content", :get do
+        let(:path) { "/api/v1/work_processes/999/relationships/skills" }
+        let(:params) { {} }
+        let(:header) { {} }
+      end
     end
   end
 end
