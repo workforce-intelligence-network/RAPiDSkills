@@ -44,7 +44,12 @@ Rails.application.routes.draw do
       end
 
       resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
-      resources :categories, only: [:create, :show, :update]
+      resources :categories, only: [:create, :show, :update] do
+        member do
+          get "relationships/skills", to: "categories/relationships/skills#index"
+        end
+        resources :occupation_standard_skills, path: "skills", only: [:index], controller: "categories/occupation_standard_skills"
+      end
       resources :industry, only: [:show]
       resources :organizations, only: [:show]
       resources :states, only: [:show]
