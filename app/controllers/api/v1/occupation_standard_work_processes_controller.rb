@@ -74,7 +74,10 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
 
   def render_resource
     options = { links: { self: @oswp.url } }
-    options[:include] = [:occupation_standard_skills]
+    options[:include] = [
+      :occupation_standard_skills,
+      :categories,
+    ]
     render json: API::V1::OccupationStandardWorkProcessSerializer.new(@oswp, options)
   end
 
