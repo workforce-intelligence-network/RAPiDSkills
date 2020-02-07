@@ -6,6 +6,7 @@ class API::V1::SessionsController < API::V1::APIController
     @user = User.find_by(email: create_params[:email])
     if @user && @user.valid_password?(create_params[:password])
       @session = @user.create_session!
+      sign_in @user
       render json: API::V1::SessionSerializer.new(@session, render_options),
         status: :created
     else

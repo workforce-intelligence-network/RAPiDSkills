@@ -43,6 +43,16 @@ RSpec.describe API::V1::SessionsController, type: :request do
         expect(json["meta"]["access_token"]).to eq "jwt456"
         expect(json["meta"]["token_type"]).to eq "Bearer"
       end
+
+      context "admin user" do
+        let(:user) { create(:admin) }
+
+        it "can access admin pages" do
+          post path, params: params
+          get "/admin"
+          expect(response).to have_http_status(:success)
+        end
+      end
     end
 
     context "with invalid params" do
