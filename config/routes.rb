@@ -15,8 +15,10 @@ Rails.application.routes.draw do
       resources :occupations, only: [:index, :show]
       resources :occupation_standards, except: [:new, :edit] do
         member do
-          get "relationships/work_processes", to: "occupation_standards/relationships#work_processes"
-          get "relationships/skills", to: "occupation_standards/relationships#skills"
+          get "relationships/work_processes", to: "occupation_standards/relationships/work_processes#index"
+          delete "relationships/work_processes", to: "occupation_standards/relationships/work_processes#destroy"
+          get "relationships/skills", to: "occupation_standards/relationships/skills#index"
+          delete "relationships/skills", to: "occupation_standards/relationships/skills#destroy"
           get "relationships/creator", to: "occupation_standards/relationships#creator"
           get "relationships/industry", to: "occupation_standards/relationships#industry"
           get "relationships/occupation", to: "occupation_standards/relationships#occupation"
@@ -27,14 +29,14 @@ Rails.application.routes.draw do
         resources :occupation_standard_skills, path: "skills", only: [:index]
       end
 
-      resources :occupation_standard_work_processes, path: "work_processes", only: [:show] do
+      resources :occupation_standard_work_processes, path: "work_processes", only: [:show, :create, :update] do
         member do
-          get "relationships/skills", to: "occupation_standard_work_processes/relationships#skills"
+          get "relationships/skills", to: "occupation_standard_work_processes/relationships/skills#index"
         end
         resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
       end
 
-      resources :occupation_standard_skills, path: "skills", only: [:show, :update]
+      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
       resources :industry, only: [:show]
       resources :organizations, only: [:show]
       resources :states, only: [:show]

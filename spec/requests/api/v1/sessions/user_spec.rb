@@ -12,7 +12,7 @@ RSpec.describe API::V1::Sessions::UserController, type: :request do
     context "when session belongs to user" do
       before { user.favorites << os }
 
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns the correct data" do
         get path, headers: header
@@ -33,7 +33,7 @@ RSpec.describe API::V1::Sessions::UserController, type: :request do
     end
 
     context "when session does not belong to user" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end

@@ -260,7 +260,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           }
         }
 
-        it_behaves_like "authorization", :post
+        it_behaves_like "authentication", :post
 
         it "returns new occupation standard" do
           post path, params: params, headers: header
@@ -401,7 +401,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     let(:params) { {} }
     let(:header) { auth_header(user) }
 
-    it_behaves_like "authorization", :delete
+    it_behaves_like "authentication", :delete
 
     context "when user owns occupation standard" do
       let!(:relationship) { create(:relationship, occupation_standard: os) }
@@ -424,7 +424,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       let!(:os) { create(:occupation_standard) }
       let!(:relationship) { create(:relationship, occupation_standard: os) }
 
-      it_behaves_like "unauthorized", :delete
+      it_behaves_like "forbidden", :delete
 
       it "does not change occupation standard count or relationship count" do
         expect{
@@ -474,7 +474,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
             }
           }
 
-          it_behaves_like "authorization", :patch
+          it_behaves_like "authentication", :patch
 
           it "returns updated occupation standard" do
             patch path, params: params, headers: header
@@ -586,7 +586,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     end
 
     context "with user who does not own occupation standard" do
-      it_behaves_like "unauthorized", :patch do
+      it_behaves_like "forbidden", :patch do
         let(:params) {
           {
             data: {

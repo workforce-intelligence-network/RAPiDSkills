@@ -27,7 +27,7 @@ class API::V1::Users::Relationships::FavoritesController < API::V1::Users::Relat
       os = OccupationStandard.find_by(id: object_param[:id])
       Relationship.where(user: @target_user, occupation_standard: os).destroy_all if os
     end
-    head :ok
+    head :no_content
   end
 
   private

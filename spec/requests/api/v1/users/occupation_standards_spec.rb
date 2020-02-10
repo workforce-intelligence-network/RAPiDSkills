@@ -12,7 +12,7 @@ RSpec.describe API::V1::Users::OccupationStandardsController, type: :request do
       let!(:os2) { create(:occupation_standard, creator: user) }
       let!(:os3) { create(:occupation_standard) }
 
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns occupation_standards by id desc" do
         get path, headers: header
@@ -38,7 +38,7 @@ RSpec.describe API::V1::Users::OccupationStandardsController, type: :request do
     end
 
     context "when user viewing someone else's occupation_standards" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end

@@ -53,9 +53,9 @@ class API::V1::APIController < ApplicationController
   def user_not_authorized
     render json: {
       errors: {
-        status: "401",
+        status: "403",
         detail: "User is not authorized to perform this action",
       }
-    }, status: :unauthorized
+    }, status: :forbidden
   end
 end

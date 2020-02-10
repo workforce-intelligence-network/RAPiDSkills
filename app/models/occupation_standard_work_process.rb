@@ -8,6 +8,7 @@ class OccupationStandardWorkProcess < ApplicationRecord
 
   delegate :title, to: :work_process, prefix: true
   delegate :description, to: :work_process, prefix: true
+  delegate :creator, to: :occupation_standard
 
   scope :with_eager_loading, -> { includes(:work_process, :occupation_standard_skills) }
 

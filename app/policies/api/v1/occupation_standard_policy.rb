@@ -14,6 +14,22 @@ class API::V1::OccupationStandardPolicy < ApplicationPolicy
     owned_by_user?
   end
 
+  def create_skill?
+    owned_by_user?
+  end
+
+  def delete_skill?
+    owned_by_user?
+  end
+
+  def create_work_process?
+    owned_by_user?
+  end
+
+  def delete_work_process?
+    owned_by_user?
+  end
+
   private
 
   def owned_by_user?

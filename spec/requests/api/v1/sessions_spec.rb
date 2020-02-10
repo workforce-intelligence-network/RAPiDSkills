@@ -43,6 +43,16 @@ RSpec.describe API::V1::SessionsController, type: :request do
         expect(json["meta"]["access_token"]).to eq "jwt456"
         expect(json["meta"]["token_type"]).to eq "Bearer"
       end
+
+      context "admin user" do
+        let(:user) { create(:admin) }
+
+        it "can access admin pages" do
+          post path, params: params
+          get "/admin"
+          expect(response).to have_http_status(:success)
+        end
+      end
     end
 
     context "with invalid params" do
@@ -106,7 +116,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     let(:params) { {} }
 
     context "when viewed by owning user" do
-      it_behaves_like "authorization", :get
+      it_behaves_like "authentication", :get
 
       it "returns session data" do
         get path, headers: header
@@ -125,7 +135,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     end
 
     context "when viewed by non-owning user" do
-      it_behaves_like "unauthorized", :get do
+      it_behaves_like "forbidden", :get do
         let(:header) { auth_header(create(:user)) }
       end
     end
@@ -137,7 +147,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
     let(:params) { {} }
     let!(:header) { auth_header(user) }
 
-    it_behaves_like "authorization", :delete
+    it_behaves_like "authentication", :delete
 
     it "deletes client_session record" do
       expect{
