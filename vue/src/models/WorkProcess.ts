@@ -46,8 +46,6 @@ export default class WorkProcess extends ModelBase {
 
   occupationStandard?: OccupationStandard
 
-  expanded?: boolean
-
   get valid() {
     return super.valid
       && _every(this.skills, skill => skill.valid);
@@ -65,6 +63,13 @@ export default class WorkProcess extends ModelBase {
     this.skills = updatedWorkProcessSkills;
 
     return this;
+  }
+
+  addSkill(skill: Skill) {
+    const updatedSkills: Skill[] = _clone(this.skills);
+
+    updatedSkills.unshift(skill);
+    this.skills = updatedSkills;
   }
 }
 

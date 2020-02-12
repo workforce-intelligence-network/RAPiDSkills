@@ -2,6 +2,7 @@ import _get from 'lodash/get';
 
 import OccupationStandard from '@/models/OccupationStandard';
 import WorkProcess from '@/models/WorkProcess';
+import Skill from '@/models/Skill';
 
 export const fetchStandards = async (
   { commit, state, rootState },
@@ -58,14 +59,43 @@ export const editSelectedStandard = ({ state, commit }, editing: boolean = !stat
   commit('updateSelectedStandardEditing', editing);
 };
 
-export const deleteSkillFromSelectedStandard = async ({ commit, state }, { skill, workProcess }) => {
-  await state.selectedStandard.removeSkill(skill, workProcess);
-
-  commit('updateSelectedStandard', state.selectedStandard);
+export const refreshSelectedStandard = ({ state, commit }) => {
+  commit('updateSelectedStandard', new OccupationStandard(state.selectedStandard));
 };
 
-export const deleteWorkProcessFromSelectedStandard = async ({ commit, state }, workProcess: WorkProcess) => {
+export const deleteSkillFromSelectedStandard = async ({ dispatch, state }, { skill, workProcess }) => {
+  await state.selectedStandard.removeSkill(skill, workProcess);
+
+  dispatch('refreshSelectedStandard');
+};
+
+export const deleteWorkProcessFromSelectedStandard = async ({ dispatch, state }, workProcess: WorkProcess) => {
   await state.selectedStandard.removeWorkProcess(workProcess);
 
-  commit('updateSelectedStandard', state.selectedStandard);
+  dispatch('refreshSelectedStandard');
+};
+
+export const addNewWorkProcessToSelectedStandard = async ({ dispatch, state }) => {
+  state.selectedStandard.addWorkProcess(new WorkProcess({
+    title: '',
+    occupationStandard: state.selectedStandard,
+  }));
+
+  dispatch('refreshSelectedStandard');
+};
+
+export const addNewSkillToSelectedStandard = async ({ dispatch, state }, workProcess?: WorkProcess) => {
+  const freshSkill: Skill = new Skill({
+    description: '',
+    occupationStandard: state.selectedStandard,
+    workProcess,
+  });
+
+  if (workProcess) {
+    workProcess.addSkill(freshSkill);
+  } else {
+    state.selectedStandard.addSkill(freshSkill);
+  }
+
+  dispatch('refreshSelectedStandard');
 };

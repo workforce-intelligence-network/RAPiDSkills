@@ -41,6 +41,8 @@ export default class ModelBase {
 
   loading: boolean = false
 
+  dirty: boolean = false
+
   apiErrors?: []
 
   static jsonApiClassName: string
@@ -110,10 +112,11 @@ export default class ModelBase {
     this.validating = true;
 
     if (this.invalid) {
+      this.dirty = true;
       throw this.validationErrors; // TODO: reformat to standard format?
     }
 
-    this.validating = false;
+    this.dirty = false;
     this.apiErrors = undefined;
     this.loading = true;
 
@@ -136,6 +139,7 @@ export default class ModelBase {
       }
     } catch (errors) {
       this.apiErrors = _flatten([errors]);
+      this.dirty = true;
     }
 
     this.loading = false;

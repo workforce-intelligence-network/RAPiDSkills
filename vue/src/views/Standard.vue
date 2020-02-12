@@ -50,96 +50,25 @@
           <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
           <span>New Work Process</span>
         </button>
-        <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addNewWorkSkill()" :disabled="addNewSkillDisabled">
+        <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addSkill" :disabled="addNewSkillDisabled">
           <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="page--standard__body__actions__action__icon" />
           <span>New Skill</span>
         </button>
       </div>
-      <div
-        class="page--standard__body__work-process"
+      <!-- Work Processes -->
+      <StandardWorkProcess
         v-for="(workProcess, workProcessIndex) in standard.workProcesses"
-        :key="`work-process-${workProcessIndex}`"
-        :class="{
-          'page--standard__body__work-process--error': workProcess.invalid,
-          'page--standard__body__work-process--expanded': workProcessExpanded(workProcess),
-          'page--standard__body__work-process--editing': editing
-        }"
-      >
-        <div class="page--standard__body__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
-          <div class="page--standard__body__work-process__wrapper__icon--folder">
-            <img :src="ICON_FOLDER" alt="Work Process icon" v-if="workProcessExpanded(workProcess)" />
-            <img :src="ICON_FOLDER_CLOSED" alt="Work Process icon" v-if="!workProcessExpanded(workProcess)" />
-          </div>
-          <div class="page--standard__body__work-process__wrapper__vertical-group">
-            <div class="page--standard__body__work-process__wrapper__vertical-group__label">
-              Work Process
-            </div>
-            <div class="page--standard__body__work-process__wrapper__vertical-group__title" v-if="!editing">
-              {{ workProcess.title }}
-            </div>
-            <div class="input input--subtle page--standard__body__work-process__wrapper__vertical-group__input" @click.stop="" v-if="editing" :class="{ 'input--error': workProcess.propertyInvalid('title') }">
-              <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" @input="saveWorkProcess(workProcess)" />
-            </div>
-          </div>
-          <button class="button button--link page--standard__body__work-process__wrapper__icon--delete" v-if="editing && !workProcess.skills.length" @click.stop="deleteWorkProcess(workProcess)">
-            <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__work-process__wrapper__icon--delete__icon" />
-          </button>
-          <div class="page--standard__body__work-process__wrapper__icon--caret">
-            <FontAwesomeIcon :icon="['fas', 'caret-down']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="workProcess.expanded" />
-            <FontAwesomeIcon :icon="['fas', 'caret-right']" class="page--standard__body__work-process__wrapper__icon--caret__icon" v-if="!workProcess.expanded" />
-          </div>
-        </div>
-        <div class="page--standard__body__work-process__skills" v-if="workProcess.expanded">
-          <div class="page--standard__body__work-process__skills__actions" v-if="editing">
-            <button role="button" class="button button--square button--alternative page--standard__body__work-process__skills__actions__action" @click="addNewWorkSkill(workProcess)" :disabled="addNewWorkProcessSkillDisabled(workProcess)">
-              <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="page--standard__body__work-process__skills__actions__action__icon" />
-              <span>New Skill</span>
-            </button>
-          </div>
-          <div class="page--standard__body__work-process__skills__skill" v-for="(skill, skillIndex) in workProcess.skills" :key="`work-process-${workProcessIndex}-skill-${skillIndex}`">
-            <div class="page--standard__body__work-process__skills__skill__vertical-group">
-              <div class="page--standard__body__work-process__skills__skill__vertical-group__label">
-                Skill
-              </div>
-              <div class="page--standard__body__work-process__skills__skill__vertical-group__description" v-if="!editing">
-                {{ skill.description }}
-              </div>
-              <div class="input input--subtle page--standard__body__work-process__skills__skill__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-                <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" @input="saveSkill(skill, workProcess)" />
-              </div>
-            </div>
-            <button class="button button--link page--standard__body__work-process__skills__skill__icon--delete" v-if="editing" @click.stop="deleteWorkProcessSkill(workProcess, skill)">
-              <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__work-process__skills__skill__icon--delete__icon" />
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        class="page--standard__body__skill"
+        :key="`work-process-${workProcess.synced ? `id-${workProcess.id}` : workProcessIndex}`"
+        :workProcessIndex="workProcessIndex"
+        :editing="editing"
+      />
+      <StandardSkill
         v-for="(skill, skillIndex) in standard.skills"
-        :key="`skill-${skillIndex}`"
-        :class="{
-          'page--standard__body__skill--error': skill.invalid,
-          'page--standard__body__skill--editing': editing
-        }"
-      >
-        <div class="page--standard__body__skill__wrapper">
-          <div class="page--standard__body__skill__wrapper__vertical-group">
-            <div class="page--standard__body__skill__wrapper__vertical-group__label">
-              Skill
-            </div>
-            <div class="page--standard__body__skill__wrapper__vertical-group__description" v-if="!editing">
-              {{ skill.description }}
-            </div>
-            <div class="input input--subtle page--standard__body__skill__wrapper__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-              <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" @input="saveSkill(skill)" />
-            </div>
-          </div>
-          <button class="button button--link page--standard__body__skill__wrapper__icon--delete" v-if="editing" @click.stop="deleteSkill(skill)">
-            <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__skill__wrapper__icon--delete__icon" />
-          </button>
-        </div>
-      </div>
+        :key="`skill-${skill.synced ? `id-${skill.id}` : skillIndex}`"
+        :skillIndex="skillIndex"
+        :editing="editing"
+        :onSkillInput="onSkillInput"
+      />
     </div>
   </div>
 </template>
@@ -156,127 +85,47 @@ import Vue from 'vue';
 import { mapState } from 'vuex';
 
 import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
-import ICON_FOLDER from '@/assets/folder.svg';
-import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
 import Loading from '@/components/Loading.vue';
+import StandardWorkProcess from '@/components/StandardWorkProcess.vue';
+import StandardSkill from '@/components/StandardSkill.vue';
+
 import OccupationStandard from '@/models/OccupationStandard';
 import WorkProcess from '@/models/WorkProcess';
 import Skill from '@/models/Skill';
 
 import TextArea from '@/components/TextArea.vue';
 
-const NEW_WORK_PROCESS_TITLE = 'New Work Process';
-const NEW_SKILL_TITLE = 'New Skill';
-
 export default {
   name: 'standard',
   components: {
     Loading,
     TextArea,
+    StandardWorkProcess,
+    StandardSkill,
   },
   created() {
-    (this as any).saveWorkProcess = _debounce((this as any).saveWorkProcess, 500).bind(this);
-    (this as any).saveSkill = _debounce((this as any).saveSkill, 500).bind(this);
     (this as any).saveStandard = _debounce((this as any).saveStandard, 500).bind(this);
   },
   methods: {
-    saveWorkProcess(workProcess: WorkProcess) {
-      try {
-        workProcess.save();
-      } catch (e) {
-        console.log('Failed to save work process', e);
-      }
+    onSkillInput() {
+      this.$forceUpdate();
     },
-    saveSkill(skill: Skill, workProcess: WorkProcess) {
+    async saveStandard() {
       try {
-        skill.save();
-      } catch (e) {
-        console.log('Failed to save skill', e);
-      }
-    },
-    saveStandard() {
-      try {
-        this.standard.save();
+        await (this as any).standard.save();
       } catch (e) {
         console.log('Failed to save standard', e);
       }
-    },
-    toggleWorkProcess(workProcess: any) {
-      Vue.set(workProcess, 'expanded', !workProcess.expanded);
-    },
-    workProcessExpanded(workProcess) {
-      return (workProcess && !!workProcess.expanded);
-    },
-    addNewWorkSkill(workProcess?: WorkProcess) {
-      const freshSkill: Skill = new Skill({
-        description: NEW_SKILL_TITLE,
-        occupationStandard: this.standard,
-        workProcess,
-      });
 
-      (workProcess || this.standard).skills.unshift(freshSkill); // TODO: move to action?
-
-      setTimeout(() => {
-        _some(_flatten([workProcess
-          ? this.$refs.workProcessSkillDescription
-          : this.$refs.skillDescription,
-        ]), (ref) => {
-          if (ref.$el.value === NEW_SKILL_TITLE) {
-            Vue.set(freshSkill, 'description', '');
-            ref.$el.focus();
-            if (!workProcess) {
-              ref.$el.scrollIntoView();
-            }
-            return true;
-          }
-
-          return false;
-        });
-      });
+      this.$store.dispatch('standards/refreshSelectedStandard');
     },
-    addNewWorkProcess() {
-      const freshWorkProcess: WorkProcess = new WorkProcess({
-        title: NEW_WORK_PROCESS_TITLE,
-        occupationStandard: this.standard,
-      });
-
-      this.standard.workProcesses.unshift(freshWorkProcess); // TODO: move to action?
-
-      setTimeout(() => {
-        _some(_flatten([this.$refs.workProcessTitle]), (ref) => {
-          if (ref.$el.value === NEW_WORK_PROCESS_TITLE) {
-            Vue.set(freshWorkProcess, 'title', '');
-            ref.$el.focus();
-            return true;
-          }
-
-          return false;
-        });
-      });
+    async addSkill() {
+      await this.$store.dispatch('standards/addNewSkillToSelectedStandard');
     },
-    addNewWorkProcessSkillDisabled(workProcess: WorkProcess) {
-      return _get(workProcess, 'skills[0].invalid');
+    async addNewWorkProcess() {
+      await this.$store.dispatch('standards/addNewWorkProcessToSelectedStandard');
     },
-    deleteWorkProcess(workProcess: WorkProcess) {
-      this.$store.dispatch('standards/deleteWorkProcessFromSelectedStandard', workProcess);
-    },
-    deleteWorkProcessSkill(workProcess: WorkProcess, skill: Skill) {
-      this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
-        skill,
-        workProcess,
-      });
-    },
-    deleteSkill(skill) {
-      this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
-        skill,
-      });
-    },
-  },
-  beforeDestroy() {
-    this.standard.workProcesses.forEach((workProcess, key) => {
-      delete this.standard.workProcesses[key].expanded;
-    });
   },
   beforeRouteLeave(to, from, next) {
     this.$store.dispatch('standards/editSelectedStandard', false);
@@ -285,8 +134,6 @@ export default {
   data() {
     return {
       ICON_PLUS_BLUE,
-      ICON_FOLDER,
-      ICON_FOLDER_CLOSED,
     };
   },
   computed: {
@@ -295,14 +142,14 @@ export default {
       loading: (state: any) => state.standards.selectedStandardLoading,
     }),
     editing() {
-      return this.standard && this.standard.loggedInUserIsCreator;
+      return (this as any).standard && (this as any).standard.loggedInUserIsCreator;
     },
     addNewWorkProcessDisabled() {
-      const workProcess: WorkProcess | undefined = _get(this.standard, 'workProcesses[0]');
+      const workProcess: WorkProcess | undefined = _get((this as any).standard, 'workProcesses[0]');
       return workProcess && workProcess.propertyInvalid('title');
     },
     addNewSkillDisabled() {
-      return _get(this.standard, 'skills[0].invalid');
+      return _get((this as any).standard, 'skills[0].invalid');
     },
   },
 };
@@ -312,11 +159,9 @@ export default {
 @import "@/scss/colors";
 @import "@/scss/navbars";
 @import "@/scss/mixins";
+@import "@/scss/standards";
 
 $sidebar-left-width: 20rem;
-
-$work-process-height: 6rem;
-$skill-height: 5rem;
 
 .page--standard {
   @include breakpoint--above-sm {
@@ -408,215 +253,6 @@ $skill-height: 5rem;
   }
 }
 
-.page--standard__body__work-process {
-  min-height: $work-process-height;
-  overflow: hidden;
-  width: 100%;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
-  border-radius: 4px;
-  border-left: 3px solid $color-blue;
-
-  &.page--standard__body__work-process--error {
-    border-color: $color-salmon;
-  }
-}
-
-.page--standard__body__work-process--editing .page--standard__body__work-process__skills__skill {
-  padding-right: 0;
-}
-
-.page--standard__body__work-process:not(.page--standard__body__work-process--expanded) {
-  .page--standard__body__work-process__wrapper__vertical-group__title {
-    max-height: 3rem;
-  }
-}
-
-.page--standard__body__work-process__wrapper {
-  display: flex;
-  flex-direction: row;
-  // justify-content: space-between;
-  min-height: $work-process-height;
-  background: $color-white;
-  cursor: pointer;
-  border-bottom: 1px solid $color-gray-light;
-  overflow: hidden;
-}
-
-.page--standard__body__work-process__wrapper__vertical-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 0.5rem 0;
-  flex-grow: 1;
-}
-
-.page--standard__body__work-process__wrapper__vertical-group__label {
-  font-size: 0.9rem;
-  color: gray;
-  margin-bottom: 0.25rem;
-  margin-top: 0.5rem;
-}
-
-.page--standard__body__work-process__wrapper__vertical-group__input__input,
-.page--standard__body__work-process__wrapper__vertical-group__title {
-  font-size: 1.25rem;
-  line-height: 1.5rem;
-  overflow: hidden;
-  font-weight: 500;
-}
-
-.page--standard__body__work-process__wrapper__icon--folder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 3.5rem;
-}
-
-.page--standard__body__work-process__wrapper__icon--caret {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-left: auto;
-  width: 3.5rem;
-  color: $color-blue;
-}
-
-.page--standard__body__skill__wrapper__icon--delete,
-.page--standard__body__work-process__skills__skill__icon--delete,
-.page--standard__body__work-process__wrapper__icon--delete {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-left: auto;
-  width: 3.5rem;
-  color: $color-salmon;
-  font-size: 1.125rem;
-}
-
-.page--standard__body__work-process__skills {
-  display: flex;
-  flex-direction: column;
-  padding: 0 0.5rem;
-}
-
-.page--standard__body__work-process__skills__skill {
-  display: flex;
-  flex-direction: row;
-  // justify-content: space-between;
-  background: $color-white;
-  width: 100%;
-  border: 1px solid $color-gray-light;
-  margin-bottom: 0.5rem;
-  &:first-child {
-    margin-top: .5rem;
-  }
-  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
-  min-height: $work-process-height;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 0 2rem;
-}
-
-.page--standard__body__work-process__skills__skill__vertical-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 1rem 0;
-  align-items: stretch;
-  text-align: left;
-  flex-grow: 1;
-}
-
-.page--standard__body__skill__wrapper__vertical-group__input__input,
-.page--standard__body__skill__wrapper__vertical-group__input {
-  width: 100%;
-}
-
-.page--standard__body__work-process__skills__skill__vertical-group__input__input,
-.page--standard__body__work-process__skills__skill__vertical-group__input {
-  width: 100%;
-}
-
-.page--standard__body__work-process__skills__skill__vertical-group__label {
-  font-size: 0.9rem;
-  color: gray;
-  margin-bottom: 0.25rem;
-}
-
-.page--standard__body__work-process__wrapper__vertical-group__title,
-.page--standard__body__work-process__skills__skill__vertical-group__description {
-  text-align: left;
-}
-
-.page--standard__body__work-process__skills__skill__vertical-group__description {
-  font-size: 1rem;
-}
-
-.page--standard__body__work-process__wrapper__vertical-group__input,
-.page--standard__body__work-process__wrapper__vertical-group__input__input {
-  width: 100%;
-}
-
-.page--standard__body__skill {
-  min-height: $skill-height;
-  overflow: hidden;
-  width: 100%;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
-  border-radius: 4px;
-  border-left: 3px solid $color-blue;
-
-  &.page--standard__body__skill--error {
-    border-color: $color-salmon;
-  }
-}
-
-.page--standard__body__skill__wrapper {
-  display: flex;
-  flex-direction: row;
-  min-height: $skill-height;
-  background: $color-white;
-  cursor: pointer;
-  border-bottom: 1px solid $color-gray-light;
-  overflow: hidden;
-  padding: 0 2rem;
-}
-
-.page--standard__body__skill--editing .page--standard__body__skill__wrapper {
-  padding-right: 0;
-}
-
-.page--standard__body__skill__wrapper__vertical-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 0.5rem 0;
-  flex-grow: 1;
-}
-
-.page--standard__body__skill__wrapper__vertical-group__label {
-  font-size: 0.9rem;
-  color: gray;
-  margin-bottom: 0.25rem;
-  margin-top: 0.5rem;
-}
-
-.page--standard__body__skill__wrapper__vertical-group__input__input,
-.page--standard__body__skill__wrapper__vertical-group__description {
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-  overflow: hidden;
-  // font-weight: 500;
-  text-align: left;
-}
-
 .page--standard__sidebar--left__about {
   padding-top: 1rem;
   border-top: 1px solid $color-gray-light;
@@ -647,7 +283,6 @@ $skill-height: 5rem;
   word-break: break-word;
 }
 
-.page--standard__body__work-process__skills__actions,
 .page--standard__body__actions {
   display: flex;
   flex-direction: row;
@@ -657,11 +292,6 @@ $skill-height: 5rem;
   margin-bottom: 1.5rem;
 }
 
-.page--standard__body__work-process__skills__actions__action {
-  margin-bottom: .5rem;
-}
-
-.page--standard__body__work-process__skills__actions__action,
 .page--standard__body__actions__action {
   display: flex;
   justify-content: center;
@@ -672,13 +302,8 @@ $skill-height: 5rem;
   }
 }
 
-.page--standard__body__work-process__skills__actions__action__icon,
 .page--standard__body__actions__action__icon {
   height: .9rem;
   margin-right: .5rem;
-}
-
-.page--standard__body__work-process__skills__actions {
-  padding: 1rem .5rem;
 }
 </style>

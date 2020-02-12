@@ -1,3 +1,4 @@
+import _find from 'lodash/find';
 import _pick from 'lodash/pick';
 import _every from 'lodash/every';
 import _clone from 'lodash/clone';
@@ -180,7 +181,16 @@ export default class OccupationStandard extends ModelBase {
       throw new Error('Failed to find skill to remove from standard skills');
     }
 
-    await workProcess.removeSkill(skill);
+    const accurateWorkProcessReference = _find(
+      this.workProcesses,
+      (currentWorkProcess: WorkProcess) => currentWorkProcess === workProcess || (currentWorkProcess.synced && currentWorkProcess.id === workProcess.id),
+    );
+
+    try {
+      accurateWorkProcessReference.removeSkill(skill);
+    } catch (e) {
+      console.log(e);
+    }
 
     await this.destroySkillIfSynced(skill);
   }
@@ -205,6 +215,20 @@ export default class OccupationStandard extends ModelBase {
     // .destroy([{ id: workProcess.id }]);
 
     // TODO: undo if fails?
+  }
+
+  addSkill(skill: Skill) {
+    const updatedSkills: Skill[] = _clone(this.skills);
+
+    updatedSkills.unshift(skill);
+    this.skills = updatedSkills;
+  }
+
+  addWorkProcess(workProcess: WorkProcess) {
+    const updatedWorkProcesses: WorkProcess[] = _clone(this.workProcesses);
+
+    updatedWorkProcesses.unshift(workProcess);
+    this.workProcesses = updatedWorkProcesses;
   }
 
   async removeWorkProcess(workProcess: WorkProcess) {
