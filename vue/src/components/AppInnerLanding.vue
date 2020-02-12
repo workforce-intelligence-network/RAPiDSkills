@@ -23,6 +23,9 @@
             <img :src="ICON_NO_LOGO" alt="RapidSkills" />
           </div>
         </router-link>
+        <div class="app__inner--landing__footer__dol_copy">
+          This workforce product was funded by a grant awarded by the U.S. Department of Labor’s Employment and Training Administration. The product was created by the recipient and does not necessarily reflect the official position of the U.S. Department of Labor. The Department of Labor makes no guarantees, warranties, or assurances of any kind, express or implied, with respect to such information, including any information on linked sites and including, but not limited to, accuracy of the information or its completeness, timeliness, usefulness, adequacy, continued availability, or ownership. This product is copyrighted by the institution that created it
+        </div>
         <div class="app__inner--landing__footer__copyright">
           © {{ currentYear }} all rights reserved.
         </div>
