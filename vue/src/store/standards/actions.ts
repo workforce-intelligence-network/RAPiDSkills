@@ -1,6 +1,7 @@
 import _get from 'lodash/get';
 
 import OccupationStandard from '@/models/OccupationStandard';
+import WorkProcess from '@/models/WorkProcess';
 
 export const fetchStandards = async (
   { commit, state, rootState },
@@ -55,4 +56,16 @@ export const duplicateSelectedStandard = async ({ state, commit }) => {
 
 export const editSelectedStandard = ({ state, commit }, editing: boolean = !state.editing) => {
   commit('updateSelectedStandardEditing', editing);
+};
+
+export const deleteSkillFromSelectedStandard = async ({ commit, state }, { skill, workProcess }) => {
+  await state.selectedStandard.removeSkill(skill, workProcess);
+
+  commit('updateSelectedStandard', state.selectedStandard);
+};
+
+export const deleteWorkProcessFromSelectedStandard = async ({ commit, state }, workProcess: WorkProcess) => {
+  await state.selectedStandard.removeWorkProcess(workProcess);
+
+  commit('updateSelectedStandard', state.selectedStandard);
 };

@@ -51,7 +51,7 @@
           <span>New Work Process</span>
         </button>
         <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addNewWorkSkill()" :disabled="addNewSkillDisabled">
-          <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
+          <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="page--standard__body__actions__action__icon" />
           <span>New Skill</span>
         </button>
       </div>
@@ -78,10 +78,10 @@
               {{ workProcess.title }}
             </div>
             <div class="input input--subtle page--standard__body__work-process__wrapper__vertical-group__input" @click.stop="" v-if="editing" :class="{ 'input--error': workProcess.propertyInvalid('title') }">
-              <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" @input="saveStandard" />
+              <TextArea v-model="workProcess.title" class="input__input page--standard__body__work-process__wrapper__vertical-group__input__input" ref="workProcessTitle" @input="saveWorkProcess(workProcess)" />
             </div>
           </div>
-          <button class="button button--link page--standard__body__work-process__wrapper__icon--delete" v-if="editing" @click.stop="deleteWorkProcess(workProcess)">
+          <button class="button button--link page--standard__body__work-process__wrapper__icon--delete" v-if="editing && !workProcess.skills.length" @click.stop="deleteWorkProcess(workProcess)">
             <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="page--standard__body__work-process__wrapper__icon--delete__icon" />
           </button>
           <div class="page--standard__body__work-process__wrapper__icon--caret">
@@ -92,7 +92,7 @@
         <div class="page--standard__body__work-process__skills" v-if="workProcess.expanded">
           <div class="page--standard__body__work-process__skills__actions" v-if="editing">
             <button role="button" class="button button--square button--alternative page--standard__body__work-process__skills__actions__action" @click="addNewWorkSkill(workProcess)" :disabled="addNewWorkProcessSkillDisabled(workProcess)">
-              <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__work-process__skills__actions__action__icon" />
+              <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="page--standard__body__work-process__skills__actions__action__icon" />
               <span>New Skill</span>
             </button>
           </div>
@@ -105,7 +105,7 @@
                 {{ skill.description }}
               </div>
               <div class="input input--subtle page--standard__body__work-process__skills__skill__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-                <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" @input="saveStandard" />
+                <TextArea class="input__input page--standard__body__work-process__skills__skill__vertical-group__input__input" v-model="skill.description" ref="workProcessSkillDescription" @input="saveSkill(skill, workProcess)" />
               </div>
             </div>
             <button class="button button--link page--standard__body__work-process__skills__skill__icon--delete" v-if="editing" @click.stop="deleteWorkProcessSkill(workProcess, skill)">
@@ -132,7 +132,7 @@
               {{ skill.description }}
             </div>
             <div class="input input--subtle page--standard__body__skill__wrapper__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-              <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" @input="saveStandard" />
+              <TextArea class="input__input page--standard__body__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="skillDescription" @input="saveSkill(skill)" />
             </div>
           </div>
           <button class="button button--link page--standard__body__skill__wrapper__icon--delete" v-if="editing" @click.stop="deleteSkill(skill)">
@@ -176,9 +176,25 @@ export default {
     TextArea,
   },
   created() {
+    (this as any).saveWorkProcess = _debounce((this as any).saveWorkProcess, 500).bind(this);
+    (this as any).saveSkill = _debounce((this as any).saveSkill, 500).bind(this);
     (this as any).saveStandard = _debounce((this as any).saveStandard, 500).bind(this);
   },
   methods: {
+    saveWorkProcess(workProcess: WorkProcess) {
+      try {
+        workProcess.save();
+      } catch (e) {
+        console.log('Failed to save work process', e);
+      }
+    },
+    saveSkill(skill: Skill, workProcess: WorkProcess) {
+      try {
+        skill.save();
+      } catch (e) {
+        console.log('Failed to save skill', e);
+      }
+    },
     saveStandard() {
       try {
         this.standard.save();
@@ -193,7 +209,12 @@ export default {
       return (workProcess && !!workProcess.expanded);
     },
     addNewWorkSkill(workProcess?: WorkProcess) {
-      const freshSkill: Skill = new Skill({ description: NEW_SKILL_TITLE });
+      const freshSkill: Skill = new Skill({
+        description: NEW_SKILL_TITLE,
+        occupationStandard: this.standard,
+        workProcess,
+      });
+
       (workProcess || this.standard).skills.unshift(freshSkill); // TODO: move to action?
 
       setTimeout(() => {
@@ -215,7 +236,11 @@ export default {
       });
     },
     addNewWorkProcess() {
-      const freshWorkProcess: WorkProcess = new WorkProcess({ title: NEW_WORK_PROCESS_TITLE });
+      const freshWorkProcess: WorkProcess = new WorkProcess({
+        title: NEW_WORK_PROCESS_TITLE,
+        occupationStandard: this.standard,
+      });
+
       this.standard.workProcesses.unshift(freshWorkProcess); // TODO: move to action?
 
       setTimeout(() => {
@@ -233,17 +258,19 @@ export default {
     addNewWorkProcessSkillDisabled(workProcess: WorkProcess) {
       return _get(workProcess, 'skills[0].invalid');
     },
-    deleteWorkProcess(workProcess) {
-      this.standard.workProcesses.splice(this.standard.workProcesses.indexOf(workProcess), 1); // TODO: move to action
-      (this as any).saveStandard();
+    deleteWorkProcess(workProcess: WorkProcess) {
+      this.$store.dispatch('standards/deleteWorkProcessFromSelectedStandard', workProcess);
     },
-    deleteWorkProcessSkill(workProcess, skill) {
-      workProcess.skills.splice(workProcess.skills.indexOf(skill), 1); // TODO: move to action
-      (this as any).saveStandard();
+    deleteWorkProcessSkill(workProcess: WorkProcess, skill: Skill) {
+      this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
+        skill,
+        workProcess,
+      });
     },
     deleteSkill(skill) {
-      this.standard.skills.splice(this.standard.skills.indexOf(skill), 1); // TODO: move to action
-      (this as any).saveStandard();
+      this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
+        skill,
+      });
     },
   },
   beforeDestroy() {

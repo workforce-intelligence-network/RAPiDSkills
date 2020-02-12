@@ -9,6 +9,7 @@ import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import SearchOccupations from '@/components/SearchOccupations.vue';
 import PageTitle from '@/components/PageTitle.vue';
+import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 
 import Standard from '@/views/Standard.vue';
 
@@ -120,7 +121,7 @@ const routes = [
         name: 'standard',
         components: {
           default: Standard,
-          navbarActions: PageTitle,
+          navbarActions: StandardNavBarActions,
         },
         beforeEnter(to, from, next) {
           store.dispatch('standards/getStandard', to.params.id);

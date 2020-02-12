@@ -1,5 +1,6 @@
 import _pick from 'lodash/pick';
 import _every from 'lodash/every';
+import _clone from 'lodash/clone';
 
 import { MinLength } from 'class-validator';
 
@@ -7,7 +8,7 @@ import _isUndefined from 'lodash/isUndefined';
 
 import store from '@/store';
 
-import jsonApi from '@/utilities/api';
+import jsonApi, { apiRaw } from '@/utilities/api';
 
 import ModelBase from '@/models/ModelBase';
 
@@ -36,11 +37,17 @@ export default class OccupationStandard extends ModelBase {
     this.title = standard.title || '';
     this.workProcesses = standard.workProcesses || [];
     this.workProcesses.forEach((workProcess, key) => {
-      this.workProcesses[key] = new WorkProcess(workProcess);
+      this.workProcesses[key] = new WorkProcess({
+        ...workProcess,
+        occupationStandard: this,
+      });
     });
     this.skills = standard.skills || [];
     this.skills.forEach((skill, key) => {
-      this.skills[key] = new Skill(skill);
+      this.skills[key] = new Skill({
+        ...skill,
+        occupationStandard: this,
+      });
     });
     this.occupation = new Occupation(standard.occupation || {});
     this.organization = new Organization(standard.organization || {});
@@ -141,6 +148,77 @@ export default class OccupationStandard extends ModelBase {
   get loggedInUserIsCreator() {
     const { userId } = (store.state as any).session;
     return !_isUndefined(userId) && this.creator && !_isUndefined(this.creator.id) && String(userId) === String(this.creator.id);
+  }
+
+  async destroySkillIfSynced(skill: Skill) {
+    if (!skill.synced) {
+      return;
+    }
+
+    await jsonApi
+      .one(this.staticType.jsonApiClassName, this.id)
+      .relationships('skills')
+      .destroy([{ id: skill.id }]);
+
+    // TODO: undo if fails?
+  }
+
+  async removeSkill(skill: Skill, workProcess?: WorkProcess) {
+    const updatedSkills: Skill[] = _clone(this.skills);
+    const indexOfSkill: number = updatedSkills.indexOf(skill);
+
+    if (indexOfSkill !== -1) {
+      updatedSkills.splice(indexOfSkill, 1);
+      this.skills = updatedSkills;
+
+      await this.destroySkillIfSynced(skill);
+
+      return;
+    }
+
+    if (!workProcess) {
+      throw new Error('Failed to find skill to remove from standard skills');
+    }
+
+    await workProcess.removeSkill(skill);
+
+    await this.destroySkillIfSynced(skill);
+  }
+
+  async destroyWorkProcessIfSynced(workProcess: WorkProcess) {
+    if (!workProcess.synced) {
+      return;
+    }
+
+    await apiRaw.delete(`/occupation_standards/${this.id}/relationships/work_processes`, {
+      data: {
+        data: [{
+          id: workProcess.id,
+        }],
+      },
+    });
+
+    // TODO: get the following working with middleware?
+
+    // .one(this.staticType.jsonApiClassName, this.id)
+    // .relationships('work_processes')
+    // .destroy([{ id: workProcess.id }]);
+
+    // TODO: undo if fails?
+  }
+
+  async removeWorkProcess(workProcess: WorkProcess) {
+    const updatedWorkProcesses: WorkProcess[] = _clone(this.workProcesses);
+    const indexOfWorkProcess: number = updatedWorkProcesses.indexOf(workProcess);
+
+    if (indexOfWorkProcess === -1) {
+      throw new Error('Failed to find work process to remove from standard');
+    }
+
+    updatedWorkProcesses.splice(indexOfWorkProcess, 1);
+    this.workProcesses = updatedWorkProcesses;
+
+    await this.destroyWorkProcessIfSynced(workProcess);
   }
 }
 

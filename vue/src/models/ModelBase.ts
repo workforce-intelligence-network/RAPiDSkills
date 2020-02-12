@@ -1,12 +1,15 @@
 import _set from 'lodash/set';
 import _pick from 'lodash/pick';
 import _omit from 'lodash/omit';
+import _uniq from 'lodash/uniq';
 import _flatten from 'lodash/flatten';
 import _isUndefined from 'lodash/isUndefined';
 import _zipObject from 'lodash/zipObject';
 import _isObject from 'lodash/isObject';
 import _isArray from 'lodash/isArray';
 import _isFunction from 'lodash/isFunction';
+import _isString from 'lodash/isString';
+import _isNumber from 'lodash/isNumber';
 
 import {
   validateSync, ValidationError, ValidatorOptions,
@@ -76,28 +79,31 @@ export default class ModelBase {
   }
 
   get generatedJsonApiClassDefinition() {
-    return _zipObject(this.propertyKeys, this.propertyKeys.map((key) => {
-      if (
-        (!this.staticType.jsonApiClassDefinition || !this.staticType.jsonApiClassDefinition[key])
-        && !(this[key] instanceof ModelBase)
-        && (_isArray(this[key]) || _isObject(this[key]))
-      ) {
-        throw new Error('JSON API class definition required for any sub-type that does not extend ModelBase');
-      }
+    return _zipObject(
+      this.propertyKeys,
+      this.propertyKeys.map((key) => {
+        if (
+          (!this.staticType.jsonApiClassDefinition || !this.staticType.jsonApiClassDefinition[key])
+          && !(this[key] instanceof ModelBase)
+          && (_isArray(this[key]) || _isObject(this[key]))
+        ) {
+          throw new Error('JSON API class definition required for any sub-type that does not extend ModelBase');
+        }
 
-      if (this[key] instanceof ModelBase) {
-        return {
-          jsonApi: 'hasOne',
-          type: (this[key] as ModelBase).staticType.jsonApiClassName,
-        };
-      }
+        if (this[key] instanceof ModelBase) {
+          return {
+            jsonApi: 'hasOne',
+            type: (this[key] as ModelBase).staticType.jsonApiClassName,
+          };
+        }
 
-      if (!_isUndefined((this.staticType.jsonApiClassDefinition || {})[key])) {
-        return (this.staticType.jsonApiClassDefinition || {})[key];
-      }
+        if (!_isUndefined((this.staticType.jsonApiClassDefinition || {})[key])) {
+          return (this.staticType.jsonApiClassDefinition || {})[key];
+        }
 
-      return this[key];
-    }));
+        return this[key];
+      }),
+    );
   }
 
   async save(params: object = {}): Promise<any> {
@@ -120,6 +126,14 @@ export default class ModelBase {
       ).bind(jsonApi);
 
       result = await apiMethod(this.staticType.jsonApiClassName, this.jsonApiObject, params);
+
+      // Automatically sets id if present
+      if (!this.synced) {
+        const { data } = result;
+        if (_isNumber(data.id) || _isString(data.id)) {
+          this.id = data.id;
+        }
+      }
     } catch (errors) {
       this.apiErrors = _flatten([errors]);
     }
@@ -150,15 +164,19 @@ export default class ModelBase {
   }
 
   get propertyKeys() {
-    return Object.keys(this).filter(key => !_isFunction(this[key]) && [
-      'type',
-      'links',
-      'classDefinition',
-      'validatorOptions',
-      'validating',
-      'loading',
-      'apiErrors',
-    ].indexOf(key) === -1);
+    return _uniq(
+      Object.keys(this.staticType.jsonApiClassDefinition || {}).concat(
+        Object.keys(this).filter(key => !_isFunction(this[key]) && [
+          'type',
+          'links',
+          'classDefinition',
+          'validatorOptions',
+          'validating',
+          'loading',
+          'apiErrors',
+        ].indexOf(key) === -1),
+      ),
+    );
   }
 
   get jsonApiObject() {

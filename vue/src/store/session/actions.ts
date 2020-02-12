@@ -1,9 +1,10 @@
 import moment from 'moment';
 import storage from '@/storage';
 
-import jsonApi from '@/utilities/api';
+import jsonApi, { apiRaw } from '@/utilities/api';
 
 import User from '@/models/User';
+
 
 const SESSION_EXPIRATION_AMOUNT = 4;
 const SESSION_EXPIRATION_UNITS = 'hours';
@@ -37,6 +38,7 @@ export const initializeSession = async ({ dispatch, commit }) => {
 
   commit('setToken', token);
 
+  apiRaw.defaults.headers.common.Authorization = token;
   jsonApi.axios.defaults.headers.common.Authorization = token;
 
   // TODO: finish UI for token expiring
@@ -63,5 +65,6 @@ export const expireToken = async ({ state, commit }) => {
   await storage.setItem('sessionTokenExpiration', undefined);
   await storage.setItem('userId', undefined);
 
+  delete apiRaw.defaults.headers.common.Authorization;
   delete jsonApi.axios.defaults.headers.common.Authorization;
 };
