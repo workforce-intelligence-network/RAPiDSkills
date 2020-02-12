@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :organization do
     type { "" }
     sequence(:title) { |n| "Org Title #{n}" }
-    logo_url { "http://www.example.com" }
     registers_standards { false }
+    logo { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'acme-co.jpg'), 'image/jpg') }
   end
 end

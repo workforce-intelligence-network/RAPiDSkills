@@ -4,7 +4,6 @@ class API::V1::OrganizationSerializer
   link :self, :url
 
   attributes :title,
-             :logo_url,
              :registers_standards
 
   attribute :logo_filename do |object|
