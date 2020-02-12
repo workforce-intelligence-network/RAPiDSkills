@@ -1,9 +1,12 @@
 <template>
   <div class="standard__navbar-actions">
     <PageTitle />
-    <div class="standard__navbar-actions__state">
-      <div class="standard__navbar-actions__state__text" v-if="loading">Loading...</div>
+    <div class="standard__navbar-actions__state" v-if="sessionActive && valid">
+      <div class="standard__navbar-actions__state__text" v-if="loading">Updating...</div>
       <div class="standard__navbar-actions__state__text" v-if="!loading">Up to date.</div>
+    </div>
+    <div class="standard__navbar-actions__state" v-if="sessionActive && !valid">
+      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error">Standard invalid.</div>
     </div>
   </div>
 </template>
@@ -17,7 +20,6 @@ import {
 } from 'vue-property-decorator';
 
 import PageTitle from '@/components/PageTitle.vue';
-
 import Loading from '@/components/Loading.vue';
 
 @Component({
@@ -27,8 +29,16 @@ import Loading from '@/components/Loading.vue';
   },
 })
 export default class StandardNavBarActions extends Vue {
+  protected get valid() {
+    return (this.$store.state.standards.selectedStandard || {}).valid;
+  }
+
   protected get loading() {
     return this.$store.getters['standards/selectedStandardLoading'];
+  }
+
+  protected get sessionActive() {
+    return this.$store.getters['session/isActive'];
   }
 }
 </script>
@@ -46,8 +56,14 @@ export default class StandardNavBarActions extends Vue {
 }
 
 .standard__navbar-actions__state__text {
+  min-width: 7rem;
+  text-align: center;
   white-space: nowrap;
   color: $color-text-light;
   padding: 0 1rem;
+}
+
+.standard__navbar-actions__state__text--error {
+  color: $color-salmon;
 }
 </style>
