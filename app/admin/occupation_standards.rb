@@ -160,7 +160,6 @@ ActiveAdmin.register OccupationStandard do
       f.input :work_processes, include_blank: true
       f.input :completed_at
       f.input :published_at
-      f.input :excel_file_url
       f.input :source_file_url
     end
     f.actions
