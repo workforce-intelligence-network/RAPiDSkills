@@ -14,8 +14,8 @@ The following commands should just be run for the initial setup only. Rebuilding
 4. Run `docker-compose up -d database` to start the database service.
 4. Run `docker-compose run --rm web rails db:reset` to create the dev and test databases, load the schema, and run the seeds file.
 4. Run `docker-compose up -d` to start all the remaining services.
-5. The server application (including the admin dashboard) will be available at http://localhost:3000.
 5. The client application will be available at http://localhost:8080.
+5. The server application will be available at http://localhost:3000. To access the admin dashboard, visit http://localhost:3000/admin/login.
 
 If you cloned the directory without the documentation submodule, you must initialize and update the submodule in order to have the `middleman` service start correctly:
 1. Change into the documentation directory: `cd documentation`
