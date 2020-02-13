@@ -15,7 +15,7 @@ ActiveAdmin.register Organization do
       row :registers_standards
       row :locations
       row :logo do |org|
-        image_tag url_for(org.logo)
+        org.logo.attached? ? image_tag(url_for(org.logo)) : nil
       end
       row :created_at
       row :updated_at
