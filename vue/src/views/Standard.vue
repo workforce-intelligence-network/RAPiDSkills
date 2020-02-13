@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     onSkillInput() {
-      this.$forceUpdate();
+      (this as any).$forceUpdate();
     },
     async saveStandard() {
       try {
@@ -118,17 +118,17 @@ export default {
         console.log('Failed to save standard', e);
       }
 
-      this.$store.dispatch('standards/refreshSelectedStandard');
+      (this as any).$store.dispatch('standards/refreshSelectedStandard');
     },
     async addSkill() {
-      await this.$store.dispatch('standards/addNewSkillToSelectedStandard');
+      await (this as any).$store.dispatch('standards/addNewSkillToSelectedStandard');
     },
     async addNewWorkProcess() {
-      await this.$store.dispatch('standards/addNewWorkProcessToSelectedStandard');
+      await (this as any).$store.dispatch('standards/addNewWorkProcessToSelectedStandard');
     },
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.dispatch('standards/editSelectedStandard', false);
+    (this as any).$store.dispatch('standards/editSelectedStandard', false);
     next();
   },
   data() {
