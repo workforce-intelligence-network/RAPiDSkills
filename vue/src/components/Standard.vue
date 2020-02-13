@@ -133,7 +133,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 8rem;
-  padding: .5rem;
+  padding: 1rem;
 }
 
 .standard__logo__logo {

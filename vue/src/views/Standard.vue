@@ -193,7 +193,7 @@ $sidebar-left-width: 20rem;
   align-items: center;
   justify-content: center;
   height: 8rem;
-  padding: .5rem;
+  padding: 1rem;
 }
 
 .page--standard__sidebar--left__logo__logo {

@@ -1,13 +1,13 @@
 import ModelBase from '@/models/ModelBase';
 
-import LOGO_WIN from '@/assets/win.png';
+import LOGO_DEFAULT from '@/assets/default-standard-logo-alt.png';
 
 export default class Organization extends ModelBase {
   constructor(organization: Partial<Organization> = {}) {
     super(organization);
 
     this.title = organization.title || '';
-    this.logoUrl = organization.logoUrl || LOGO_WIN;
+    this.logoUrl = organization.logoUrl || LOGO_DEFAULT;
     this.registersStandards = organization.registersStandards || false;
   }
 
