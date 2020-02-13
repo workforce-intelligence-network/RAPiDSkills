@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import Modal from '@/components/Modal.vue';

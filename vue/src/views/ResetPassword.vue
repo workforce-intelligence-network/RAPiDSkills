@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import _get from 'lodash/get';
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';

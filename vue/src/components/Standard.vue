@@ -28,8 +28,8 @@
         <div class="standard__work-process-data__stat__text">Hours</div>
       </div>
     </div>
-    <div class="standard__divider" v-if="sessionActive" />
-    <div class="standard__actions" v-if="sessionActive">
+    <div class="standard__divider" v-if="!saved && sessionActive" />
+    <div class="standard__actions" v-if="!saved && sessionActive">
       <Tooltip tip="Duplicate">
         <button class="button button--link standard__actions__button standard__actions__button--right" @click.prevent="duplicateStandard">
           <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__button__icon" />
@@ -53,6 +53,7 @@ export default {
   props: {
     standard: Object,
     label: String,
+    saved: Boolean,
   },
   methods: {
     duplicateStandard() {

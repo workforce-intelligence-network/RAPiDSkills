@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import Vue from 'vue';
 import { Component, Prop, Provide } from 'vue-property-decorator';
 
@@ -88,6 +88,8 @@ export default class Duplicate extends Vue {
     this.saving = true;
 
     await this.$store.dispatch('standards/duplicateSelectedStandard');
+
+    this.$store.dispatch('user/clearSavedStandards');
 
     this.$store.dispatch('standards/editSelectedStandard', true);
 

@@ -92,6 +92,10 @@ const routes = [
   {
     path: '/',
     component: AppInnerDashboard,
+    beforeEnter(to, from, next) {
+      // store.dispatch('user/getUser'); TODO: get name, icon, etc.
+      next();
+    },
     children: [
       {
         path: 'standards',
@@ -135,6 +139,10 @@ const routes = [
         path: 'saved',
         name: 'saved',
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
+        beforeEnter(to, from, next) {
+          store.dispatch('user/getSavedStandards');
+          next();
+        },
       },
       {
         path: 'reports',

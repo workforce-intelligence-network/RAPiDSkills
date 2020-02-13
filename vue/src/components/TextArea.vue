@@ -2,7 +2,7 @@
   <textarea v-bind="$attrs" class="textarea" @input="onInput($event)" />
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import Vue from 'vue';
 import {
   Component, Prop,
