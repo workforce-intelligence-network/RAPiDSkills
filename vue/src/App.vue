@@ -1,12 +1,31 @@
 <template>
   <div id="app" class="app">
-    <router-view />
+    <router-view :class="{ 'app__inner--blurred': !!modalComponent }" />
+    <Modal :class="{ 'modal--visible': !!modalComponent }" :component="modalComponent" />
   </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import Modal from '@/components/Modal.vue';
+
+@Component({
+  components: {
+    Modal,
+  },
+})
+export default class App extends Vue {
+  protected get modalComponent() {
+    return this.$store.state.modal.content;
+  }
+}
+</script>
 
 <style lang="scss">
 @import "@/scss/colors";
 @import "@/scss/mixins";
+@import "@/scss/modal";
 
 @import url("https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap");
@@ -28,6 +47,7 @@ body {
 
 body * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 a {
@@ -43,6 +63,14 @@ a {
   width: 100%;
 }
 
+.app__inner {
+  transition: $modal-transition-time filter ease;
+}
+
+.app__inner--blurred {
+  filter: blur(2px);
+}
+
 .button {
   border-radius: 25px;
   font-size: 1rem;
@@ -53,17 +81,22 @@ a {
   white-space: nowrap;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
 
+  &[disabled] {
+    opacity: .5;
+    pointer-events: none;
+  }
+
   @include breakpoint--xs {
     padding: 0.7rem 0.75rem;
   }
 
   color: $color-white;
-  background: $color-link-blue;
+  background: $color-button-blue;
 
   cursor: pointer;
 
   &:hover {
-    background: $color-button-hover-blue;
+    background: $color-link-blue;
   }
 
   &,
@@ -74,9 +107,9 @@ a {
 
 .button--link,
 .button--inverted {
-  color: $color-link-blue;
+  color: $color-button-blue;
   &:hover {
-    color: $color-button-hover-blue;
+    color: $color-link-blue;
   }
 }
 
@@ -88,7 +121,7 @@ a {
 }
 
 .button--link {
-  padding: 0 1rem;
+  padding: 0;
   &,
   &:hover {
     background: none;
@@ -105,19 +138,27 @@ a {
   }
 }
 
-.button--secondary {
-  background: lightgray;
-  color: darkgray;
-
-  &:hover {
-    background: darken($color: lightgray, $amount: 20);
-    color: black;
-  }
-}
-
 .button--round {
   padding: 0.5rem;
   border-radius: 50%;
+}
+
+.button--square {
+  border-radius: 4px;
+}
+
+.button--tall {
+  line-height: 2rem;
+}
+
+.button--alternative {
+  background: $color-button-alternative-blue;
+  color: $color-blue;
+  border: 1px solid $color-blue;
+
+  &:hover {
+    background: fade-in($color-button-alternative-blue, .125);
+  }
 }
 
 .input {
@@ -161,9 +202,49 @@ a {
     outline: dashed 1px $color-link-blue;
     outline-offset: 4px;
   }
+  &[disabled] {
+    background: none;
+    color: $color-text-light;
+  }
 }
 
 .input__input:not(textarea) {
   height: 2.75rem;
+}
+
+.input--subtle {
+  .input__label {
+    margin-bottom: 0;
+  }
+
+  .input__input {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid $color-gray-light;
+    padding: 0;
+    height: 2rem;
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid $color-blue;
+    }
+
+    &[disabled] {
+      background: none;
+    }
+  }
+
+  &.input--error {
+    .input__label {
+      color: $color-salmon;
+      font-weight: 400;
+    }
+
+    .input__input {
+      border-color: $color-salmon;
+      &::placeholder {
+        color: $color-text-light;
+      }
+    }
+  }
 }
 </style>

@@ -11,7 +11,6 @@ import store from '@/store';
 
 Vue.config.productionTip = false;
 
-
 (async () => {
   // Make sure session is loaded before loading views
   await store.dispatch('session/initializeSession');

@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
@@ -69,7 +69,7 @@ export default class ForgotPassword extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/scss/colors';
 
 .page--forgot {

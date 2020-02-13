@@ -9,16 +9,12 @@
         <span>Finally an easy-to-use application that takes the pain out of</span>
         <span> creating new apprenticeship standards from scratch.</span>
       </div>
-      <div>
-        <router-link :to="{ name: 'follow' }">
-          <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
-            Follow us
-          </button>
+      <div class="page--home__links">
+        <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+          Follow us
         </router-link>
-        <router-link :to="{ name: 'standards' }">
-          <button class="button button--link page--home__hero__button page--home__hero__button--follow button--link--alternative">
-            Browse Standards
-          </button>
+        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
+          Browse Standards
         </router-link>
       </div>
       <LaptopPreview class="page--home__hero__laptop-preview" />
@@ -92,16 +88,12 @@
           Get started today
         </div>
       </div>
-      <div>
-        <router-link :to="{ name: 'follow' }">
-          <button class="button button--inverted page--home__hero__button page--home__hero__button--follow">
-            Follow us
-          </button>
+      <div class="page--home__links">
+        <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+          Follow us
         </router-link>
-        <router-link :to="{ name: 'standards' }">
-          <button class="button button--link page--home__hero__button page--home__hero__button--follow button--link--alternative">
-            Browse Standards
-          </button>
+        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
+          Browse Standards
         </router-link>
       </div>
     </div>
@@ -185,8 +177,20 @@ export default {
   margin-bottom: 2rem;
 }
 
-.page--home__hero__button--follow {
-  margin-bottom: 4rem;
+.page--home__links {
+  display: inline-block;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.page--home__links__button {
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.page--home__links__button--browse {
+  padding: .7rem .5rem;
 }
 
 .page--home__hero__laptop-preview {

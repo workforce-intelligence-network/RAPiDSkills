@@ -44,6 +44,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][2]["attributes"]["industry_title"]).to be nil
       expect(json["data"][2]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
       expect(json["included"]).to_not be nil
+      user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
+      expect(user_included_hash["attributes"]).to be nil
 
       # With occupation_id parameter, returns matches
       get path, params: { occupation_id: occupation.id }
@@ -198,8 +200,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
       expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss3.id.to_s
 
-      expect(json["data"]["relationships"]["creator"]["links"]["self"]).to eq relationships_creator_api_v1_occupation_standard_url(os)
-      expect(json["data"]["relationships"]["creator"]["links"]["related"]).to eq api_v1_user_url(os.creator)
+      expect(json["data"]["relationships"]["creator"]["links"]).to be nil
       expect(json["data"]["relationships"]["creator"]["data"]["type"]).to eq "user"
       expect(json["data"]["relationships"]["creator"]["data"]["id"]).to eq os.creator_id.to_s
 
@@ -232,6 +233,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "user", "id" => os.creator_id.to_s))
+      user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
+      expect(user_included_hash["attributes"]).to be nil
     end
   end
 
@@ -243,57 +246,82 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
     context "with valid params" do
       let(:os) { create(:occupation_standard) }
-      let(:params) {
-        {
-          data: {
-            type: "occupation_standard",
-            attributes: {
-              parent_occupation_standard_id: os.id,
-            },
+
+      context "when passing title" do
+        let(:params) {
+          {
+            data: {
+              type: "occupation_standard",
+              attributes: {
+                parent_occupation_standard_id: os.id,
+                title: "copy of standard",
+              },
+            }
           }
         }
-      }
-      let(:new_os) { create(:occupation_standard, parent_occupation_standard: os) }
 
-      it_behaves_like "authentication", :post
+        it_behaves_like "authentication", :post
 
-      it "returns new occupation standard" do
-        expect_any_instance_of(OccupationStandard).to receive(:clone_as_unregistered!).with(creator_id: user.id, organization_id: employer.id).and_return(new_os)
-        post path, params: params, headers: header
-        expect(response).to have_http_status(:success)
-        expect(json["data"]["id"]).to eq new_os.id.to_s
-        expect(json["data"]["type"]).to eq "occupation_standard"
-        expect(json["data"]["attributes"]["title"]).to eq new_os.title
-        expect(json["data"]["attributes"]["organization_title"]).to eq new_os.organization.title
-        expect(json["data"]["attributes"]["occupation_title"]).to eq new_os.occupation.title
-        expect(json["data"]["attributes"]["industry_title"]).to be nil
-        expect(json["data"]["attributes"]["should_generate_attachments"]).to be true
-        expect(json["data"]["attributes"]["pdf_filename"]).to be nil
-        expect(json["data"]["attributes"]["pdf_url"]).to be nil
-        expect(json["data"]["attributes"]["pdf_created_at"]).to be nil
-        expect(json["data"]["attributes"]["excel_filename"]).to be nil
-        expect(json["data"]["attributes"]["excel_url"]).to be nil
-        expect(json["data"]["attributes"]["excel_created_at"]).to be nil
+        it "returns new occupation standard" do
+          post path, params: params, headers: header
+          new_os = OccupationStandard.last
+          expect(response).to have_http_status(:success)
+          expect(json["data"]["id"]).to eq new_os.id.to_s
+          expect(json["data"]["type"]).to eq "occupation_standard"
+          expect(json["data"]["attributes"]["title"]).to eq "copy of standard"
+          expect(json["data"]["attributes"]["organization_title"]).to eq new_os.organization.title
+          expect(json["data"]["attributes"]["occupation_title"]).to eq new_os.occupation.title
+          expect(json["data"]["attributes"]["industry_title"]).to be nil
+          expect(json["data"]["attributes"]["should_generate_attachments"]).to be true
+          expect(json["data"]["attributes"]["pdf_filename"]).to be nil
+          expect(json["data"]["attributes"]["pdf_url"]).to be nil
+          expect(json["data"]["attributes"]["pdf_created_at"]).to be nil
+          expect(json["data"]["attributes"]["excel_filename"]).to be nil
+          expect(json["data"]["attributes"]["excel_url"]).to be nil
+          expect(json["data"]["attributes"]["excel_created_at"]).to be nil
 
-        expect(json["data"]["relationships"]["work_processes"]["links"]["self"]).to eq relationships_work_processes_api_v1_occupation_standard_url(new_os)
-        expect(json["data"]["relationships"]["work_processes"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_work_processes_url(new_os)
-        expect(json["data"]["relationships"]["work_processes"]["data"]).to be_empty
+          expect(json["data"]["relationships"]["work_processes"]["links"]["self"]).to eq relationships_work_processes_api_v1_occupation_standard_url(new_os)
+          expect(json["data"]["relationships"]["work_processes"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_work_processes_url(new_os)
+          expect(json["data"]["relationships"]["work_processes"]["data"]).to be_empty
 
-        expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(new_os)
-        expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(new_os)
-        expect(json["data"]["relationships"]["skills"]["data"]).to be_empty
+          expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_url(new_os)
+          expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(new_os)
+          expect(json["data"]["relationships"]["skills"]["data"]).to be_empty
 
-        expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(new_os)
-        expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(new_os.occupation)
-        expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
-        expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq new_os.occupation_id.to_s
+          expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(new_os)
+          expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(new_os.occupation)
+          expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
+          expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq new_os.occupation_id.to_s
 
-        expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(new_os)
-        expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(new_os.organization)
-        expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
-        expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq new_os.organization_id.to_s
+          expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(new_os)
+          expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(new_os.organization)
+          expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
+          expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq new_os.organization_id.to_s
 
-        expect(json["included"]).to_not be_empty
+          expect(json["included"]).to_not be_empty
+        end
+      end
+
+      context "when not passing title" do
+        let(:params) {
+          {
+            data: {
+              type: "occupation_standard",
+              attributes: {
+                parent_occupation_standard_id: os.id,
+              },
+            }
+          }
+        }
+
+        it "returns new occupation standard" do
+          post path, params: params, headers: header
+          new_os = OccupationStandard.last
+          expect(response).to have_http_status(:success)
+          expect(json["data"]["id"]).to eq new_os.id.to_s
+          expect(json["data"]["type"]).to eq "occupation_standard"
+          expect(json["data"]["attributes"]["title"]).to eq "#{os.title} COPY"
+        end
       end
     end
 
@@ -320,6 +348,28 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           expect(response).to have_http_status(:unprocessable_entity)
           expect(json["errors"][0]["status"]).to eq "422"
           expect(json["errors"][0]["detail"]).to match "is invalid"
+        end
+      end
+
+      context "when user is missing employer" do
+        let(:user) { create(:user, employer: nil) }
+        let(:os) { create(:occupation_standard) }
+        let(:params) {
+          {
+            data: {
+              type: "occupation_standard",
+              attributes: {
+                parent_occupation_standard_id: os.id,
+              },
+            }
+          }
+        }
+
+        it "returns 422 http status" do
+          post path, params: params, headers: header
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json["errors"][0]["status"]).to eq "422"
+          expect(json["errors"][0]["detail"]).to match "Organization must exist"
         end
       end
 
@@ -395,66 +445,96 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       let(:os) { create(:occupation_standard, creator: user) }
 
       context "with valid params" do
-        let(:state) { create(:state) }
-        let(:occupation) { create(:occupation) }
-        let(:industry) { create(:industry) }
-        let(:params) {
-          {
-            data: {
-              id: os.id.to_s,
-              type: "occupation_standard",
-              attributes: {
-                title: "new title",
-                registration_organization_name: "new reg org name",
-                organization_title: "new org name",
-              },
-              relationships: {
-                occupation: {
-                  data: { type: "occupation", id: occupation.id.to_s }
+        context "when updating relationships" do
+          let(:state) { create(:state) }
+          let(:occupation) { create(:occupation) }
+          let(:industry) { create(:industry) }
+          let(:params) {
+            {
+              data: {
+                id: os.id.to_s,
+                type: "occupation_standard",
+                attributes: {
+                  title: "new title",
+                  registration_organization_name: "new reg org name",
+                  organization_title: "new org name",
                 },
-                industry: {
-                  data: { type: "industry", id: industry.id.to_s }
+                relationships: {
+                  occupation: {
+                    data: { type: "occupation", id: occupation.id.to_s }
+                  },
+                  industry: {
+                    data: { type: "industry", id: industry.id.to_s }
+                  },
+                  registration_state: {
+                    data: { type: "state", id: state.id.to_s }
+                  },
                 },
-                registration_state: {
-                  data: { type: "state", id: state.id.to_s }
-                },
-              },
+              }
             }
           }
-        }
 
-        it_behaves_like "authentication", :patch
+          it_behaves_like "authentication", :patch
 
-        it "returns updated occupation standard" do
-          patch path, params: params, headers: header
-          expect(response).to have_http_status(:success)
-          expect(json["data"]["id"]).to eq os.id.to_s
-          expect(json["data"]["type"]).to eq "occupation_standard"
-          expect(json["data"]["attributes"]["title"]).to eq "new title"
-          expect(json["data"]["attributes"]["organization_title"]).to eq "new org name"
-          expect(json["data"]["attributes"]["occupation_title"]).to eq occupation.title
-          expect(json["data"]["attributes"]["industry_title"]).to eq industry.title
-          expect(json["data"]["attributes"]["should_generate_attachments"]).to be true
-          expect(json["data"]["attributes"]["pdf_filename"]).to be nil
-          expect(json["data"]["attributes"]["pdf_url"]).to be nil
-          expect(json["data"]["attributes"]["pdf_created_at"]).to be nil
-          expect(json["data"]["attributes"]["excel_filename"]).to be nil
-          expect(json["data"]["attributes"]["excel_url"]).to be nil
-          expect(json["data"]["attributes"]["excel_created_at"]).to be nil
-          expect(json["data"]["attributes"]["registration_organization_name"]).to eq "new reg org name"
-          expect(json["data"]["attributes"]["registration_state_name"]).to eq state.short_name
+          it "returns updated occupation standard" do
+            patch path, params: params, headers: header
+            expect(response).to have_http_status(:success)
+            expect(json["data"]["id"]).to eq os.id.to_s
+            expect(json["data"]["type"]).to eq "occupation_standard"
+            expect(json["data"]["attributes"]["title"]).to eq "new title"
+            expect(json["data"]["attributes"]["organization_title"]).to eq "new org name"
+            expect(json["data"]["attributes"]["occupation_title"]).to eq occupation.title
+            expect(json["data"]["attributes"]["industry_title"]).to eq industry.title
+            expect(json["data"]["attributes"]["should_generate_attachments"]).to be true
+            expect(json["data"]["attributes"]["pdf_filename"]).to be nil
+            expect(json["data"]["attributes"]["pdf_url"]).to be nil
+            expect(json["data"]["attributes"]["pdf_created_at"]).to be nil
+            expect(json["data"]["attributes"]["excel_filename"]).to be nil
+            expect(json["data"]["attributes"]["excel_url"]).to be nil
+            expect(json["data"]["attributes"]["excel_created_at"]).to be nil
+            expect(json["data"]["attributes"]["registration_organization_name"]).to eq "new reg org name"
+            expect(json["data"]["attributes"]["registration_state_name"]).to eq state.short_name
 
-          expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(os)
-          expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(occupation)
-          expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
-          expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq occupation.id.to_s
+            expect(json["data"]["relationships"]["occupation"]["links"]["self"]).to eq relationships_occupation_api_v1_occupation_standard_url(os)
+            expect(json["data"]["relationships"]["occupation"]["links"]["related"]).to eq api_v1_occupation_url(occupation)
+            expect(json["data"]["relationships"]["occupation"]["data"]["type"]).to eq "occupation"
+            expect(json["data"]["relationships"]["occupation"]["data"]["id"]).to eq occupation.id.to_s
 
-          expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(os)
-          expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(Organization.last)
-          expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
-          expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq Organization.last.id.to_s
+            expect(json["data"]["relationships"]["organization"]["links"]["self"]).to eq relationships_organization_api_v1_occupation_standard_url(os)
+            expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(Organization.last)
+            expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
+            expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq Organization.last.id.to_s
 
-          expect(json["included"]).to_not be_empty
+            expect(json["included"]).to_not be_empty
+          end
+        end
+
+        context "when not updating relationships" do
+          let(:params) {
+            {
+              data: {
+                id: os.id.to_s,
+                type: "occupation_standard",
+                attributes: {
+                  title: "new title",
+                  registration_organization_name: "new reg org name",
+                  organization_title: "new org name",
+                },
+              }
+            }
+          }
+
+          it "returns updated occupation standard" do
+            patch path, params: params, headers: header
+            expect(response).to have_http_status(:success)
+            expect(json["data"]["id"]).to eq os.id.to_s
+            expect(json["data"]["type"]).to eq "occupation_standard"
+            expect(json["data"]["attributes"]["title"]).to eq "new title"
+            expect(json["data"]["attributes"]["organization_title"]).to eq "new org name"
+            expect(json["data"]["attributes"]["industry_title"]).to be nil
+            expect(json["data"]["attributes"]["registration_organization_name"]).to eq "new reg org name"
+            expect(json["data"]["attributes"]["registration_state_name"]).to be nil
+          end
         end
       end
 

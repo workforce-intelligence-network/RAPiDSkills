@@ -55,9 +55,13 @@ export default class Session extends ModelBase {
 
   user: User
 
+  meta?: object
+
   async save() {
     const response = await super.save();
-    const { meta } = response;
+    const { data, meta } = response;
+    const user: User = new User(data.user);
+    await store.dispatch('session/setUser', user);
     await store.dispatch('session/setToken', `${meta.tokenType} ${meta.accessToken}`);
   }
 }
