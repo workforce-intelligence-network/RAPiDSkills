@@ -1,12 +1,10 @@
 <template>
   <div class="standard__navbar-actions">
     <PageTitle />
-    <div class="standard__navbar-actions__state" v-if="sessionActive && valid">
+    <div class="standard__navbar-actions__state" v-if="userIsCreator">
       <div class="standard__navbar-actions__state__text" v-if="loading">Updating...</div>
-      <div class="standard__navbar-actions__state__text" v-if="!loading">Up to date.</div>
-    </div>
-    <div class="standard__navbar-actions__state" v-if="sessionActive && !valid">
-      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error">Standard invalid.</div>
+      <div class="standard__navbar-actions__state__text" v-if="valid && !loading">Up to date.</div>
+      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error" v-if="!valid && !loading">Standard invalid.</div>
     </div>
   </div>
 </template>
@@ -37,8 +35,8 @@ export default class StandardNavBarActions extends Vue {
     return this.$store.getters['standards/selectedStandardLoading'];
   }
 
-  protected get sessionActive() {
-    return this.$store.getters['session/isActive'];
+  protected get userIsCreator() {
+    return (this.$store.state.standards.selectedStandard || {}).loggedInUserIsCreator;
   }
 }
 </script>
