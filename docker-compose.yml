@@ -3,7 +3,6 @@ version: '3'
 services:
   web:
     build: .
-    image: rapid-skills/web
     ports:
       - '3000:3000'
     volumes:
@@ -39,7 +38,7 @@ services:
     image: redis:5.0
 
   sidekiq:
-    image: rapid-skills/web
+    build: .
     volumes:
       - .:/usr/src/app
     command: bundle exec sidekiq -C config/sidekiq.yml
