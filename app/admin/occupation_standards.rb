@@ -59,14 +59,9 @@ ActiveAdmin.register OccupationStandard do
     column :type
     column :organization
     column :title
-    column :creator
     column :occupation
-    column :data_trust_approval
     column :parent_occupation_standard
-    column :completed_at
     column :published_at
-    column :created_at
-    column :updated_at
     actions
   end
 
