@@ -3,6 +3,10 @@ ActiveAdmin.register Organization do
 
   permit_params :type, :title, :registers_standards, :logo
 
+  preserve_default_filters!
+  remove_filter :logo_blob
+  remove_filter :logo_attachment
+
   show do
     attributes_table do
       row :id
