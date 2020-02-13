@@ -4,4 +4,3 @@ class Organization < ApplicationRecord
   has_many :locations
   has_one_attached :logo
 end
-      
