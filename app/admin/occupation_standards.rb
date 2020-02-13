@@ -59,14 +59,14 @@ ActiveAdmin.register OccupationStandard do
     column :type
     column :organization
     column :title
-    column :creator
     column :occupation
-    column :data_trust_approval
+    column :occupation_type
+    column :onet_code
+    column :rapids_code
     column :parent_occupation_standard
-    column :completed_at
     column :published_at
-    column :created_at
-    column :updated_at
+    column :work_processes_count
+    column :skills_count
     actions
   end
 
@@ -78,6 +78,9 @@ ActiveAdmin.register OccupationStandard do
       row :title
       row :creator
       row :occupation
+      row :occupation_type
+      row :onet_code
+      row :rapids_code
       row :data_trust_approval
       row :parent_occupation_standard
       row :industry
@@ -94,6 +97,8 @@ ActiveAdmin.register OccupationStandard do
         end
       end
       row :source_file_url
+      row :work_processes_count
+      row :skills_count
       row :created_at
       row :updated_at
 
@@ -149,13 +154,13 @@ ActiveAdmin.register OccupationStandard do
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
       f.input :type, as: :select, collection: SUBMODELS, include_blank: false
-      f.input :organization
+      f.input :organization, as: :select, collection: Organization.order(:title)
       f.input :title
-      f.input :creator
-      f.input :occupation
+      f.input :creator, as: :select, collection: User.order(:name)
+      f.input :occupation, as: :select, collection: Occupation.order(:title)
       f.input :data_trust_approval
-      f.input :parent_occupation_standard
-      f.input :industry
+      f.input :parent_occupation_standard, as: :select, collection: OccupationStandard.order(:title)
+      f.input :industry, as: :select, collection: Industry.order(:title)
       f.input :skills, include_blank: true
       f.input :work_processes, include_blank: true
       f.input :completed_at

@@ -3,11 +3,11 @@
     <div class="page--home__hero">
       <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__hero__text page--home__hero__text--title">
-        Create new apprenticeship standards in a snap!
+        Create competency-based apprenticeships in a snap!
       </div>
       <div class="page--home__text page--home__hero__text page--home__hero__text--description">
-        <span>Finally an easy-to-use application that takes the pain out of</span>
-        <span> creating new apprenticeship standards from scratch.</span>
+        <span>RapidSkills takes the pain out of creating competency-based apprenticeships from scratch.</span>
+        <span> Time-based programs will be supported soon, too! Follow now to find out when we launch.</span>
       </div>
       <div class="page--home__links">
         <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
@@ -24,55 +24,50 @@
         How it works
       </div>
       <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--appeal">
-        <span>Stop starting from scratch and start</span>
-        <span> leveraging content from approved standards!</span>
-      </div>
-      <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--description">
-        <span>RapidSkills uses smart technology to help you streamline</span>
-        <span> your process saving you time and the frustration of</span>
-        <span> having to create new standards from scratch.</span>
+        <span>Leverage content from high-quality. apprenitceship programs</span>
+        <span> to quickly and easily create your custom competency list!</span>
       </div>
       <div class="page--home__how-it-works__cards">
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_SEARCH_DATABASE" alt="Search the Database Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Search the Database</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Access and review thousands of similar standards by searching the RapidSkills Occupation Database.
+            Search by occupation or job title to view existing skill and competency outlines from the database.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_SAVE_CLONE" alt="Save & Clone Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Save & Clone</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Easily save and clone similar standards for as a starting point for your own customized work processes.
+            Easily save and make a copy of your favorites to customize for your needs.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_EDIT_CUSTOMIZE" alt="Edit & Customize Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Edit & Customize</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Once you’ve created a clone of a similar standard RapidSkills makes it super easy to customize and create new standards.
+            Add, remove, and modify skills and work processes to customize for your apprenticeship program.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_LEVERAGE_SKILLS" alt="Leverage Existing Skills Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Leverage Existing Skills</div>
           <div class="page--home__how-it-works__cards__card__description">
-            RapidSkills is smart and helps you find existing related skills as you customize and edit your new apprenticeship standards.
+            Find and add related skills from other outlines as you customize your own.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_DOWNLOAD_PDF" alt="Download PDF or Excel Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Download PDF or Excel</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Download your digital standard into a common document form for your records and easy sharing and distribution.
+            Download or email your customized competency outline into a common format for sharing with partners.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_SHARE_WITH_OTHERS" alt="Share with Others Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Share with Others</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Simply share with others by entering an email address - RapidSkills will send an invite so your contacts can collaborate.
+            Share with others by entering an email address - RapidSkills will send an invite so your contacts can collaborate.
           </div>
         </div>
       </div>
@@ -81,8 +76,7 @@
       <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__follow__text page--home__follow__text--call-to-action">
         <div>
-          <span>Join the many curious users already</span>
-          <span> signed up for early-access Beta.</span>
+          <span>Sign up now to find out when we launch or scontribute your own competency outlines.</span>
         </div>
         <div class="page--home__follow__text--call-to-action__bold">
           Get started today

@@ -6,6 +6,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     let!(:os1) { create(:occupation_standard, occupation: occupation) }
     let!(:os2) { create(:occupation_standard) }
     let!(:os3) { create(:occupation_standard, occupation: occupation) }
+    let!(:os4) { create(:occupation_standard, type: "UnregisteredStandard") }
     let(:path) { "/api/v1/occupation_standards" }
 
     it "returns the correct data" do
