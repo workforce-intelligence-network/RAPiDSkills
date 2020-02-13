@@ -192,7 +192,13 @@ $sidebar-left-width: 20rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 6rem;
+  height: 8rem;
+  padding: 1rem;
+}
+
+.page--standard__sidebar--left__logo__logo {
+  max-width: 100%;
+  height: 100%;
 }
 
 .page--standard__sidebar--left__occupation-name {
