@@ -7,8 +7,25 @@ services:
       - '3000:3000'
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/tmp # https://github.com/Shopify/bootsnap/issues/177#issuecomment-491711481
     env_file:
       - config/docker.env
+    depends_on:
+      - database
+      - redis
+      - sidekiq
+    tty: true
+    stdin_open: true
+
+  vue:
+    build: ./vue
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./vue:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - web
 
   database:
     image: postgres:11.5

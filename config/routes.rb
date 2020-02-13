@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, ActiveAdmin::Devise.config
 
   ActiveAdmin.routes(self)
 
@@ -12,13 +12,53 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      resources :occupations, only: [:index]
-      resources :occupation_standards, only: [:index, :show]
+      resources :occupations, only: [:index, :show]
+      resources :occupation_standards, except: [:new, :edit] do
+        member do
+          get "relationships/work_processes", to: "occupation_standards/relationships/work_processes#index"
+          delete "relationships/work_processes", to: "occupation_standards/relationships/work_processes#destroy"
+          get "relationships/skills", to: "occupation_standards/relationships/skills#index"
+          delete "relationships/skills", to: "occupation_standards/relationships/skills#destroy"
+          get "relationships/creator", to: "occupation_standards/relationships#creator"
+          get "relationships/industry", to: "occupation_standards/relationships#industry"
+          get "relationships/occupation", to: "occupation_standards/relationships#occupation"
+          get "relationships/organization", to: "occupation_standards/relationships#organization"
+          get "relationships/registration_state", to: "occupation_standards/relationships#registration_state"
+        end
+        resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
+        resources :occupation_standard_skills, path: "skills", only: [:index]
+      end
 
-      resources :users, only: [:create]
+      resources :occupation_standard_work_processes, path: "work_processes", only: [:show, :create, :update] do
+        member do
+          get "relationships/skills", to: "occupation_standard_work_processes/relationships/skills#index"
+        end
+        resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
+      end
 
-      resources :sessions, only: [:create]
-      delete "sessions", to: "sessions#destroy"
+      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
+      resources :industry, only: [:show]
+      resources :organizations, only: [:show]
+      resources :states, only: [:show]
+      resources :leads, only: [:create]
+      resources :users, only: [:create, :show] do
+        member do
+          get "relationships/favorites", to: "users/relationships/favorites#index"
+          post "relationships/favorites", to: "users/relationships/favorites#create"
+          delete "relationships/favorites", to: "users/relationships/favorites#destroy"
+
+          get "relationships/occupation_standards", to: "users/relationships/occupation_standards#index"
+        end
+        resources :favorites, only: [:index], controller: "users/favorites"
+        resources :occupation_standards, only: [:index], controller: "users/occupation_standards"
+      end
+
+      resources :client_sessions, path: "sessions", only: [:create, :destroy, :show], controller: "sessions" do
+        member do
+          get "relationships/user", to: "sessions/relationships#user"
+        end
+        resource :user, only: [:show], controller: "sessions/user"
+      end
 
       resources :downloads, only: [:create]
 

@@ -1,21 +1,29 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '2.6.5'
+gem 'rails', '6.0.1'
 
-# Architecture
-gem 'rails', '~> 6.0.1'
+# API
 gem 'fast_jsonapi'
 gem 'jwt'
-gem 'pg'
-gem 'puma', '~> 3.11'
+gem 'kaminari'
 gem 'rack-cors'
-gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 4.0'
+
+# Database
+gem 'pg'
+
+# Web server
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'puma', '~> 3.12'
 
 # Frontend
 gem 'sass-rails', '~> 5'
+gem 'turbolinks', '~> 5'
+gem 'webpacker', '~> 4.0'
+
+# Authorization
+gem 'pundit'
 
 # Admin dashboard
 gem 'activeadmin'

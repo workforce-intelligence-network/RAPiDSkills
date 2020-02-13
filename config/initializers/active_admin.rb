@@ -315,3 +315,13 @@ ActiveAdmin.setup do |config|
   #
   # config.order_clause = MyOrderClause
 end
+
+class ActiveAdmin::Views::Pages::Base
+  def build_flash_messages
+    div class: 'flashes' do
+      flash_messages.each do |type, message|
+        div message.html_safe, class: "flash flash_#{type}"
+      end
+    end
+  end
+end

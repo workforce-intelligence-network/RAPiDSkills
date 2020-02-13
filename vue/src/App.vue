@@ -1,35 +1,58 @@
 <template>
   <div id="app" class="app">
-    <router-view />
+    <router-view :class="{ 'app__inner--blurred': !!modalComponent }" />
+    <Modal :class="{ 'modal--visible': !!modalComponent }" :component="modalComponent" />
   </div>
 </template>
 
-<style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap');
+<script lang="ts">
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
+import Modal from '@/components/Modal.vue';
 
-html, body {
+@Component({
+  components: {
+    Modal,
+  },
+})
+export default class App extends Vue {
+  protected get modalComponent() {
+    return this.$store.state.modal.content;
+  }
+}
+</script>
+
+<style lang="scss">
+@import "@/scss/colors";
+@import "@/scss/mixins";
+@import "@/scss/modal";
+
+@import url("https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap");
+
+html,
+body {
   font-size: 16px;
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  font-family: 'Livvic', 'Heebo', Helvetica, Arial, sans-serif;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background: #FAFBFC;
+  color: $color-body-text;
+  background: $color-body-background;
 }
 
 body * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 a {
-  &, &:hover {
+  &,
+  &:hover {
     text-decoration: none;
   }
 }
@@ -38,39 +61,60 @@ a {
   position: relative;
   height: 100%;
   width: 100%;
-  overflow: auto;
+}
+
+.app__inner {
+  transition: $modal-transition-time filter ease;
+}
+
+.app__inner--blurred {
+  filter: blur(2px);
 }
 
 .button {
   border-radius: 25px;
   font-size: 1rem;
-  padding: .7rem 1.5rem;
+  line-height: 1rem;
+  padding: 0.7rem 1.5rem;
   font-weight: 600;
+  border: none;
+  white-space: nowrap;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
 
-  color: white;
-  background: #459EFF;
+  &[disabled] {
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  @include breakpoint--xs {
+    padding: 0.7rem 0.75rem;
+  }
+
+  color: $color-white;
+  background: $color-button-blue;
 
   cursor: pointer;
 
   &:hover {
-    background: #0073FF;
+    background: $color-link-blue;
   }
 
-  &, &:hover {
+  &,
+  &:hover {
     text-decoration: none;
   }
 }
 
 .button--link,
 .button--inverted {
-  color: #459EFF;
+  color: $color-button-blue;
   &:hover {
-    color: #0073FF;
+    color: $color-link-blue;
   }
 }
 
 .button--inverted {
-  background: white;
+  background: $color-white;
   &:hover {
     background: darken(white, 10);
   }
@@ -78,24 +122,43 @@ a {
 
 .button--link {
   padding: 0;
-  &, &:hover {
+  &,
+  &:hover {
     background: none;
   }
 }
 
-.button--secondary {
-  background: lightgray;
-  color: darkgray;
-
+.button--link--alternative {
+  &,
   &:hover {
-    background: darken($color: lightgray, $amount: 20);
-    color: black;
+    color: $color-white;
+  }
+  &:hover {
+    opacity: .8;
   }
 }
 
 .button--round {
   padding: 0.5rem;
   border-radius: 50%;
+}
+
+.button--square {
+  border-radius: 4px;
+}
+
+.button--tall {
+  line-height: 2rem;
+}
+
+.button--alternative {
+  background: $color-button-alternative-blue;
+  color: $color-blue;
+  border: 1px solid $color-blue;
+
+  &:hover {
+    background: fade-in($color-button-alternative-blue, .125);
+  }
 }
 
 .input {
@@ -110,37 +173,78 @@ a {
 }
 
 .input--error .input__input {
-  border-color: salmon;
+  border-color: $color-salmon;
   &::placeholder {
-    color: salmon;
+    color: $color-salmon;
   }
 }
 
 .input--error .input__label {
-  color: salmon;
+  color: $color-salmon;
+  font-weight: 700;
 }
 
 .input__label {
   font-size: 1rem;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   cursor: pointer;
 }
 
 .input__input {
   border-radius: 4px;
   margin: 0;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   font-size: 1rem;
   outline: none;
   border: 1px solid #f2f2f2;
-  font-family: 'Livvic', 'Heebo', Helvetica, Arial, sans-serif;
+  font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   &:focus {
-    outline: dashed 1px #459EFF;
+    outline: dashed 1px $color-link-blue;
     outline-offset: 4px;
+  }
+  &[disabled] {
+    background: none;
+    color: $color-text-light;
   }
 }
 
 .input__input:not(textarea) {
   height: 2.75rem;
+}
+
+.input--subtle {
+  .input__label {
+    margin-bottom: 0;
+  }
+
+  .input__input {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid $color-gray-light;
+    padding: 0;
+    height: 2rem;
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid $color-blue;
+    }
+
+    &[disabled] {
+      background: none;
+    }
+  }
+
+  &.input--error {
+    .input__label {
+      color: $color-salmon;
+      font-weight: 400;
+    }
+
+    .input__input {
+      border-color: $color-salmon;
+      &::placeholder {
+        color: $color-text-light;
+      }
+    }
+  }
 }
 </style>

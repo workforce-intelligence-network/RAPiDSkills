@@ -1,6 +1,38 @@
-$breakpoint-mobile: 32rem;
-@mixin breakpoint--mobile {
-  @media (max-width: $breakpoint-mobile) {
+$breakpoint-xs: 24rem;
+@mixin breakpoint--xs {
+  @media (max-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
+@mixin breakpoint--above-xs {
+  @media (min-width: $breakpoint-xs) {
+    @content;
+  }
+}
+
+$breakpoint-sm: 42rem;
+@mixin breakpoint--sm {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin breakpoint--above-sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+$breakpoint-md: 60rem;
+@mixin breakpoint--md {
+  @media (max-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin breakpoint--above-md {
+  @media (min-width: $breakpoint-md) {
     @content;
   }
 }

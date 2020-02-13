@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_232914) do
+ActiveRecord::Schema.define(version: 2020_02_12_233000) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -50,9 +51,8 @@ ActiveRecord::Schema.define(version: 2019_11_14_232914) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "client_sessions", force: :cascade do |t|
+  create_table "client_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "identifier"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_client_sessions_on_user_id"
@@ -123,11 +123,14 @@ ActiveRecord::Schema.define(version: 2019_11_14_232914) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "title"
+    t.string "registration_organization_name"
+    t.bigint "registration_state_id"
     t.index ["creator_id"], name: "index_occupation_standards_on_creator_id"
     t.index ["industry_id"], name: "index_occupation_standards_on_industry_id"
     t.index ["occupation_id"], name: "index_occupation_standards_on_occupation_id"
     t.index ["organization_id"], name: "index_occupation_standards_on_organization_id"
     t.index ["parent_occupation_standard_id"], name: "index_occupation_standards_on_parent_occupation_standard_id"
+    t.index ["registration_state_id"], name: "index_occupation_standards_on_registration_state_id"
   end
 
   create_table "occupations", force: :cascade do |t|
@@ -148,10 +151,18 @@ ActiveRecord::Schema.define(version: 2019_11_14_232914) do
   create_table "organizations", force: :cascade do |t|
     t.string "type"
     t.string "title"
-    t.string "logo_url"
     t.boolean "registers_standards"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "occupation_standard_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["occupation_standard_id"], name: "index_relationships_on_occupation_standard_id"
+    t.index ["user_id"], name: "index_relationships_on_user_id"
   end
 
   create_table "skills", force: :cascade do |t|
@@ -232,7 +243,10 @@ ActiveRecord::Schema.define(version: 2019_11_14_232914) do
   add_foreign_key "occupation_standards", "occupation_standards", column: "parent_occupation_standard_id"
   add_foreign_key "occupation_standards", "occupations"
   add_foreign_key "occupation_standards", "organizations"
+  add_foreign_key "occupation_standards", "states", column: "registration_state_id"
   add_foreign_key "occupation_standards", "users", column: "creator_id"
+  add_foreign_key "relationships", "occupation_standards"
+  add_foreign_key "relationships", "users"
   add_foreign_key "skills", "skills", column: "parent_skill_id"
   add_foreign_key "standards_registrations", "occupation_standards"
   add_foreign_key "standards_registrations", "organizations"

@@ -1,5 +1,4 @@
 class DataImport < ApplicationRecord
-  include Redis::Objects
 
   validates :file, :kind, presence: true
 
@@ -8,63 +7,50 @@ class DataImport < ApplicationRecord
 
   enum kind: [:occupation_standards]
 
-  value :blob_key
-
-  before_save :run_import, if: :file_changed?
-  after_save :set_blob_key
-
-  private
-
-  def file_changed?
-    new_record? || blob_key.value != file.blob.key
-  end
+  attr_accessor :all_sections_invalid
 
   def run_import
     case kind
     when "occupation_standards"
-      begin
-        transaction do
-          # https://github.com/rails/rails/issues/36994
-          file_data = File.read(attachment_changes['file'].attachable)
-          @count = 0
-          CSV.parse(file_data, headers: true) do |row|
-            @count += 1
-            occupation = Occupation.find_by(rapids_code: row["rapids_code"])
-            organization = Organization.where(title: row["organization_title"]).first_or_create
-            occupation_standard = OccupationStandard.where(
-              type: "#{row["type"]}Standard",
-              organization: organization,
-              occupation: occupation,
-              title: row["occupation_standard_title"].presence || occupation.try(:title),
-            ).first_or_create!(creator: user)
-            work_process = WorkProcess.where(
-              title: row["work_process_title"],
-              description: row["work_process_description"],
-            ).first_or_create!
-            oswp = OccupationStandardWorkProcess.where(
-              occupation_standard: occupation_standard,
-              work_process: work_process,
-              hours: row["work_process_hours"],
-            ).first_or_create!(sort_order: row["work_process_sort"])
-            skill = Skill.where(
-              description: row["skill"],
-            ).first_or_create!
-            OccupationStandardSkill.where(
-              occupation_standard: occupation_standard,
-              skill: skill,
-              occupation_standard_work_process: oswp,
-            ).first_or_create!(sort_order: row["skill_sort"])
+      # https://github.com/rails/rails/issues/36994
+      file_data = File.read(attachment_changes['file'].attachable)
+      @count = 2 # Account for header row
+      rows = []
+      current_title = nil
+      self.all_sections_invalid = true
+      CSV.parse(file_data, headers: true) do |row|
+        if row["occupation_standard_title"] != current_title
+          current_title = row["occupation_standard_title"]
+          unless rows.empty?
+            service_resp = API::V1::ImportOccupationStandard.new(
+              data: rows,
+              user: user,
+            ).call
+            self.all_sections_invalid = check_service_response(service_resp)
+            @count += rows.count
           end
+          rows = [row]
+        else
+          rows << row
         end
-      rescue Exception => e
-        error_msg = "[Error on line #{@count}] #{e.message}"
-        errors.add(:base, error_msg)
-        throw(:abort)
       end
+      service_resp = API::V1::ImportOccupationStandard.new(
+        data: rows,
+        user: user,
+      ).call
+      self.all_sections_invalid = check_service_response(service_resp)
     end
   end
 
-  def set_blob_key
-    self.blob_key = file.blob.key
+  private
+
+  def check_service_response(service_response)
+    if service_response.success?
+      return false
+    else
+      error_msg = "[Error on line #{@count}] #{service_response.error}"
+      errors.add(:base, error_msg)
+      all_sections_invalid
+    end
   end
 end

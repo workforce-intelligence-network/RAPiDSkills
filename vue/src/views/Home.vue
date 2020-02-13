@@ -3,74 +3,64 @@
     <div class="page--home__hero">
       <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__hero__text page--home__hero__text--title">
-        Create new apprenticeship standards in a snap!
+        Create competency-based apprenticeships in a snap!
       </div>
       <div class="page--home__text page--home__hero__text page--home__hero__text--description">
-        <span>RapidSkills takes the pain out of creating new apprenticeship standards from scratch.</span>
-        <span>We're starting with competency-based standards and working from there. Follow now to find out when we launch.</span>
+        <span>RapidSkills takes the pain out of creating competency-based apprenticeships from scratch.</span>
+        <span> Time-based programs will be supported soon, too! Follow now to find out when we launch.</span>
       </div>
-      <router-link to="/follow">
-        <button
-          class="button button--inverted page--home__hero__button page--home__hero__button--follow"
-        >
-          Follow Us
-        </button>
-      </router-link>
+      <div class="page--home__links">
+        <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+          Follow us
+        </router-link>
+        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
+          Browse Standards
+        </router-link>
+      </div>
       <LaptopPreview class="page--home__hero__laptop-preview" />
     </div>
     <div class="page--home__how-it-works">
-      <div
-        class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--title"
-      >
+      <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--title">
         How it works
       </div>
-      <div
-        class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--appeal"
-      >
-        <span>Stop starting from scratch and start</span>
-        <span> leveraging content from approved standards!</span>
-      </div>
-      <div
-        class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--description"
-      >
-        <span>RapidSkills leverages high-quality apprenticeship standards from across the country.</span>
-        <span> to help you streamline your development process, saving you time and frustration</span>
-        <span> from building your standards from scratch.</span>
+      <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--appeal">
+        <span>Leverage content from high-quality. apprenitceship programs</span>
+        <span> to quickly and easily create your custom competency list!</span>
       </div>
       <div class="page--home__how-it-works__cards">
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_SEARCH_DATABASE" alt="Search the Database Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Search the Database</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Access and review thousands of similar standards by searching the RapidSkills Occupation Database.
+            Search by occupation or job title to view existing skill and competency outlines from the database.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_SAVE_CLONE" alt="Save & Clone Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Save & Clone</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Easily copy similar standards as a starting point for your own customized work processes and skills.
+            Easily save and make a copy of your favorites to customize for your needs.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_EDIT_CUSTOMIZE" alt="Edit & Customize Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Edit & Customize</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Once you’ve created a copy, RapidSkills makes it super easy to customize and create new work processes and skills.
+            Add, remove, and modify skills and work processes to customize for your apprenticeship program.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_LEVERAGE_SKILLS" alt="Leverage Existing Skills Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Leverage Existing Skills</div>
           <div class="page--home__how-it-works__cards__card__description">
-            RapidSkills helps you find existing, related skills as you customize and edit your new apprenticeship standards.
+            Find and add related skills from other outlines as you customize your own.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
           <img :src="ICON_DOWNLOAD_PDF" alt="Download PDF or Excel Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Download PDF or Excel</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Download your digital standard into a common document for easy sharing and distribution or Appendix A.
+            Download or email your customized competency outline into a common format for sharing with partners.
           </div>
         </div>
         <div class="page--home__how-it-works__cards__card">
@@ -86,20 +76,20 @@
       <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__follow__text page--home__follow__text--call-to-action">
         <div>
-          <span>Join the many curious users already</span>
-          <span> signed up for early-access Beta.</span>
+          <span>Sign up now to find out when we launch or scontribute your own competency outlines.</span>
         </div>
         <div class="page--home__follow__text--call-to-action__bold">
-          Get Started Today
+          Get started today
         </div>
       </div>
-      <router-link to="/follow">
-        <button
-          class="button button--inverted page--home__follow__button page--home__follow__button--follow"
-        >
-          Follow Us
-        </button>
-      </router-link>
+      <div class="page--home__links">
+        <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+          Follow us
+        </router-link>
+        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
+          Browse Standards
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -137,7 +127,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/mixins';
+@import "@/scss/colors";
+@import "@/scss/mixins";
 
 .page--home {
   text-align: center;
@@ -160,13 +151,13 @@ export default {
 
 .page--home__follow__logo,
 .page--home__hero__logo {
-  color: white;
+  color: $color-white;
   font-size: 2rem;
   margin-bottom: 2rem;
 }
 
 .page--home__hero__text {
-  color: white;
+  color: $color-white;
 }
 
 .page--home__hero__text--title {
@@ -180,24 +171,39 @@ export default {
   margin-bottom: 2rem;
 }
 
-.page--home__hero__button--follow {
-  margin-bottom: 4rem;
+.page--home__links {
+  display: inline-block;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.page--home__links__button {
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.page--home__links__button--browse {
+  padding: .7rem .5rem;
 }
 
 .page--home__hero__laptop-preview {
   margin-bottom: 3rem;
   min-height: 20rem;
-  @include breakpoint--mobile {
+  @include breakpoint--sm {
     min-height: auto;
   }
 }
 
 .page--home__how-it-works {
   padding-bottom: 6rem;
+  @include breakpoint--sm {
+    padding-bottom: 2rem;
+  }
 }
 
 .page--home__how-it-works__text--title {
-  color: #459EFF;
+  color: $color-link-blue;
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
@@ -230,9 +236,9 @@ export default {
 }
 
 .page--home__how-it-works__cards__card {
-  background: white;
-  border: 1px solid #F2F2F2;
-  box-shadow: 0 10px 20px 0 transparentize(#459EFF, .9);
+  background: $color-white;
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
@@ -240,7 +246,7 @@ export default {
   padding: 0 1.5rem;
   padding-bottom: 1.5rem;
   height: 24rem;
-  margin: 1rem .5rem;
+  margin: 1rem 0.5rem;
 }
 
 .page--home__how-it-works__cards__card__title {
@@ -256,13 +262,13 @@ export default {
 
 .page--home__follow {
   padding: 5rem 0;
-  background-image: url('../assets/home-hero-background.svg');
+  background-image: url("../assets/home-hero-background.svg");
   background-position: left;
   background-size: cover;
 }
 
 .page--home__follow__text {
-  color: white;
+  color: $color-white;
 }
 
 .page--home__follow__text--call-to-action {

@@ -7,25 +7,94 @@ RSpec.describe OccupationStandard, type: :model do
   end
 
   describe ".search" do
-    let(:occupation) { create(:occupation) }
-    let!(:os1) { create(:occupation_standard, occupation: occupation) }
-    let!(:os2) { create(:occupation_standard, occupation: occupation) }
-    let!(:os3) { create(:occupation_standard) }
+    context "by occupation" do
+      let(:occupation) { create(:occupation) }
+      let!(:os1) { create(:occupation_standard, occupation: occupation) }
+      let!(:os2) { create(:occupation_standard, occupation: occupation) }
+      let!(:os3) { create(:occupation_standard) }
 
-    it "returns all objects if options are empty" do
-      expect(OccupationStandard.search).to contain_exactly os1, os2, os3
+      it "returns all objects if options are empty" do
+        expect(OccupationStandard.search).to contain_exactly os1, os2, os3
+      end
+
+      it "returns all objects if occupation_id is blank" do
+        expect(OccupationStandard.search(occupation_id: nil)).to contain_exactly os1, os2, os3
+      end
+
+      it "returns filtered objects for valid occupation_id" do
+        expect(OccupationStandard.search(occupation_id: occupation.id)).to contain_exactly os1, os2
+      end
+
+      it "returns no objects for invalid occupation_id" do
+        expect(OccupationStandard.search(occupation_id: 9999)).to be_empty
+      end
     end
 
-    it "returns all objects if occupation_id is blank" do
-      expect(OccupationStandard.search(occupation_id: nil)).to contain_exactly os1, os2, os3
+    context "by creator" do
+      let(:user) { create(:user) }
+      let!(:os1) { create(:occupation_standard, creator: user) }
+      let!(:os2) { create(:occupation_standard, creator: user) }
+      let!(:os3) { create(:occupation_standard) }
+
+      it "returns all objects if options are empty" do
+        expect(OccupationStandard.search).to contain_exactly os1, os2, os3
+      end
+
+      it "returns all objects if creator_id is blank" do
+        expect(OccupationStandard.search(creator: nil)).to contain_exactly os1, os2, os3
+      end
+
+      it "returns filtered objects for valid creator_id" do
+        expect(OccupationStandard.search(creator: user.id)).to contain_exactly os1, os2
+      end
+
+      it "returns no objects for invalid creator_id" do
+        expect(OccupationStandard.search(creator: 9999)).to be_empty
+      end
     end
 
-    it "returns filtered objects for valid occupation_id" do
-      expect(OccupationStandard.search(occupation_id: occupation.id)).to contain_exactly os1, os2
-    end
+    context "by multiple fields" do
+      let(:occupation) { create(:occupation) }
+      let(:user) { create(:user) }
+      let!(:os1) { create(:occupation_standard, creator: user, occupation: occupation) }
+      let!(:os2) { create(:occupation_standard, creator: user) }
+      let!(:os3) { create(:occupation_standard, occupation: occupation) }
 
-    it "returns no objects for invalid occupation_id" do
-      expect(OccupationStandard.search(occupation_id: 9999)).to be_empty
+      it "returns all objects if options are empty" do
+        expect(OccupationStandard.search).to contain_exactly os1, os2, os3
+      end
+
+      it "returns occupation objects if creator_id is blank" do
+        expect(OccupationStandard.search(occupation_id: occupation.id, creator: nil)).to contain_exactly os1, os3
+      end
+
+      it "returns filtered objects for valid creator_id, occupation_id" do
+        expect(OccupationStandard.search(occupation_id: occupation.id, creator: user.id)).to eq [os1]
+      end
+
+      it "returns no objects for invalid creator_id, valid  occupation" do
+        expect(OccupationStandard.search(occupation_id: occupation.id, creator: 9999)).to be_empty
+      end
+    end
+  end
+
+  describe "#skills" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns skills with no work process" do
+      expect(os.skills).to eq [oss2.skill]
+    end
+  end
+
+  describe "#flattened_skills" do
+    let(:os) { create(:occupation_standard) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+
+    it "returns all skills" do
+      expect(os.flattened_skills).to match_array [oss1.skill, oss2.skill]
     end
   end
 
@@ -41,24 +110,37 @@ RSpec.describe OccupationStandard, type: :model do
 
   describe "#clone_as_unregistered!" do
     let!(:occupation_standard) { create(:occupation_standard, title: "OS Title", completed_at: Time.current, published_at: Time.current) }
-    let!(:oswp) { create_list(:occupation_standard_work_process, 2, occupation_standard: occupation_standard) }
-    let!(:oss) { create_list(:occupation_standard_skill, 2, occupation_standard: occupation_standard) }
+    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: occupation_standard) }
+    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: occupation_standard) }
+    let!(:oss1a) { create(:occupation_standard_skill, occupation_standard: occupation_standard, occupation_standard_work_process: oswp1) }
+    let!(:oss1b) { create(:occupation_standard_skill, occupation_standard: occupation_standard, occupation_standard_work_process: oswp1) }
+    let!(:oss) { create(:occupation_standard_skill, occupation_standard: occupation_standard, occupation_standard_work_process: nil) }
     let(:user) { create(:user) }
     let(:organization) { create(:organization) }
 
     context "when successful" do
-      it "creates UnregisteredStandard" do
-        os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
-        expect(os).to be_a(UnregisteredStandard)
-        expect(os.skills).to match_array occupation_standard.skills
-        expect(os.work_processes).to match_array occupation_standard.work_processes
-        expect(os.title).to eq "OS Title COPY"
-        expect(os.occupation).to eq os.occupation
-        expect(os.parent_occupation_standard).to eq occupation_standard
-        expect(os.creator).to eq user
-        expect(os.organization).to eq organization
-        expect(os.completed_at).to be nil
-        expect(os.published_at).to be nil
+      context "when no title is passed" do
+        it "creates UnregisteredStandard" do
+          os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
+          expect(os).to be_a(UnregisteredStandard)
+          expect(os.work_processes).to match_array [oswp1.work_process, oswp2.work_process]
+          expect(os.occupation_standard_work_processes.flat_map(&:skills)).to match_array [oss1a.skill, oss1b.skill]
+          expect(os.skills).to match_array [oss.skill]
+          expect(os.title).to eq "OS Title COPY"
+          expect(os.occupation).to eq os.occupation
+          expect(os.parent_occupation_standard).to eq occupation_standard
+          expect(os.creator).to eq user
+          expect(os.organization).to eq organization
+          expect(os.completed_at).to be nil
+          expect(os.published_at).to be nil
+        end
+      end
+
+      context "when title is passed" do
+        it "sets title" do
+          os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id, new_title: "New Title")
+          expect(os.title).to eq "New Title"
+        end
       end
     end
 
@@ -69,7 +151,7 @@ RSpec.describe OccupationStandard, type: :model do
         allow(UnregisteredStandard).to receive(:create!).and_raise(error)
         os = occupation_standard.clone_as_unregistered!(creator_id: user.id, organization_id: organization.id)
         expect(os).to be_new_record
-        expect(occupation_standard.errors.full_messages.to_sentence).to eq "error msg"
+        expect(os.errors.full_messages.to_sentence).to eq "error msg"
       end
     end
   end
@@ -119,12 +201,32 @@ RSpec.describe OccupationStandard, type: :model do
 
   describe "#to_csv" do
     let(:os) { create(:occupation_standard) }
-    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp1) }
     let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
 
     it "returns a string" do
       expect(os.to_csv).to be_a(String)
+    end
+  end
+
+  describe "#registration_state_name" do
+    context "when registration state exists" do
+      let(:rs) { build_stubbed(:state, short_name: "short") }
+      let(:os) { build_stubbed(:occupation_standard, registration_state: rs) }
+
+      it "returns short name" do
+        expect(os.registration_state_name).to eq "short"
+      end
+    end
+
+    context "when registration state does not exist" do
+      let(:os) { build_stubbed(:occupation_standard) }
+
+      it "returns short name" do
+        expect(os.registration_state_name).to be nil
+      end
     end
   end
 end

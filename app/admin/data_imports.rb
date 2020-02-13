@@ -35,14 +35,41 @@ ActiveAdmin.register DataImport do
   end
 
   form do |f|
-    para "Do not modify headers of files for CSV imports", class: "info"
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
-      f.input :file, as: :file
-      f.input :user
-      f.input :kind
+      if f.object.new_record?
+        para "Do not modify headers of files for CSV imports", class: "info"
+        f.input :file, as: :file
+        f.input :user
+        f.input :kind
+      end
       f.input :description
     end
     f.actions
+  end
+
+  controller do
+    def create
+      @data_import = DataImport.new(permitted_params[:data_import])
+      if @data_import.valid?
+        @data_import.run_import
+        if @data_import.all_sections_invalid
+          render :new
+        else
+          if @data_import.errors.any?
+            error_msg = "<div>File successfully imported except for the following errors:</div>"
+            error_msg += "<div>" + @data_import.errors.full_messages.join("</div><div>") + "</div>"
+            flash[:notice] = error_msg
+            @data_import.errors.clear
+          else
+            flash[:notice] = "File successfully imported"
+          end
+          @data_import.save
+          redirect_to admin_data_import_path(@data_import)
+        end
+      else
+        render :new
+      end
+    end
   end
 end

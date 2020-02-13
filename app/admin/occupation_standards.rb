@@ -109,13 +109,13 @@ ActiveAdmin.register OccupationStandard do
             span "Skills", class: "header"
           end
         end
-        os.occupation_standard_work_processes.eager_load_associations.each do |oswp|
+        os.occupation_standard_work_processes.with_eager_loading.includes(:skills).each do |oswp|
           columns do
             column do
               link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
             end
             column do
-              oswp.hours
+              oswp.hours || "&nbsp;".html_safe
             end
             column do
               oswp.skills.map do |skill|
@@ -160,7 +160,6 @@ ActiveAdmin.register OccupationStandard do
       f.input :work_processes, include_blank: true
       f.input :completed_at
       f.input :published_at
-      f.input :excel_file_url
       f.input :source_file_url
     end
     f.actions
