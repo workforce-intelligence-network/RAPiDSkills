@@ -45,7 +45,7 @@ export default {
       (this as any).$store.dispatch('occupations/setSelectedOccupation');
     },
     loadMoreStandards() {
-      (this as any).$store.dispatch('standards/fetchStandards', true);
+      (this as any).$store.dispatch('standards/fetchStandards');
     },
   },
   computed: {
