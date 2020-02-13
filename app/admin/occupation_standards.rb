@@ -154,13 +154,13 @@ ActiveAdmin.register OccupationStandard do
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
       f.input :type, as: :select, collection: SUBMODELS, include_blank: false
-      f.input :organization
+      f.input :organization, as: :select, collection: Organization.order(:title)
       f.input :title
-      f.input :creator
-      f.input :occupation
+      f.input :creator, as: :select, collection: User.order(:name)
+      f.input :occupation, as: :select, collection: Occupation.order(:title)
       f.input :data_trust_approval
-      f.input :parent_occupation_standard
-      f.input :industry
+      f.input :parent_occupation_standard, as: :select, collection: OccupationStandard.order(:title)
+      f.input :industry, as: :select, collection: Industry.order(:title)
       f.input :skills, include_blank: true
       f.input :work_processes, include_blank: true
       f.input :completed_at
