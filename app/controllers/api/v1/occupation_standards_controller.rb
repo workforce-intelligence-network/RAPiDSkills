@@ -29,6 +29,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
         creator_id: current_user.id,
         organization_id: current_user.employer_id,
       )
+      @os = OccupationStandard.includes(organization: :logo_attachment).find_by(id: @os.id)
       render_resource(@os)
     else
       @os = OccupationStandard.new
@@ -108,7 +109,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :occupation_standard_skills,
       :organization,
       :industry,
-      :registration_state,
+      :registration_state
     ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end
