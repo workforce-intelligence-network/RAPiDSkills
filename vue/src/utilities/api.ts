@@ -18,7 +18,10 @@ export const apiRaw = axios.create({
   baseURL: apiUrl,
 });
 
-const jsonApi = new JsonApi({ apiUrl });
+const jsonApi = new JsonApi({
+  apiUrl,
+  logger: false,
+});
 
 const requestMiddleware = {
   name: 'snake-case-attributes',

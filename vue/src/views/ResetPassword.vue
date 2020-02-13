@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script lang="tsx">
+<script lang="ts">
 import _get from 'lodash/get';
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
@@ -76,7 +76,7 @@ export default class ResetPassword extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/scss/colors';
 
 .page--reset {

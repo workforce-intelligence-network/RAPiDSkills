@@ -1,5 +1,5 @@
 <template>
-  <div class="app__inner app__inner--dashboard">
+  <div class="app__inner--dashboard">
     <div class="app__inner--dashboard__body">
       <div class="app__inner--dashboard__body__content">
         <router-view />
@@ -15,7 +15,7 @@
       <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
         <img :src="ICON_TOP_NAV_SUPPORT" alt="Support Icon" class="app__inner--dashboard__nav--top__link__icon" />
       </a>
-      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)">
+      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)" v-if="sessionActive">
         <div class="app__inner--dashboard__nav--top__link--user__button">
           ?
         </div>
@@ -40,7 +40,7 @@
           </span>
         </span>
       </router-link>
-      <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'saved' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
+      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'saved' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
         </span>
@@ -49,7 +49,7 @@
             Saved Standards
           </span>
         </span>
-      </router-link> -->
+      </router-link>
       <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'reports' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_PIE_CHART" alt="Reports Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
@@ -150,7 +150,10 @@ export default class AppInnerDashboard extends Vue {
   padding-left: 0.5rem;
   max-width: calc(100% - 4rem);
   &.app__inner--dashboard__nav--top__navbar-actions--session-active {
-    max-width: calc(100% - 8rem);
+    max-width: calc(100% - 8.0625rem - 9.5rem);
+    @include breakpoint--sm {
+      max-width: calc(100% - 8.0625rem);
+    }
   }
 }
 
@@ -172,9 +175,6 @@ export default class AppInnerDashboard extends Vue {
 
 .app__inner--dashboard__nav--top__link--support {
   align-self: flex-end;
-  flex-basis: 0;
-  margin-left: auto;
-  flex-shrink: 0;
 }
 
 .app__inner--dashboard__nav--top__link__icon {
@@ -185,16 +185,16 @@ export default class AppInnerDashboard extends Vue {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 100%;
-  max-width: $nav-left-width;
+  width: $nav-left-width;
+  height: 100vh;
   background: $color-nav-left-background-blue;
   flex-direction: column;
   align-content: flex-start;
-  transition: max-width 0.25s ease;
+  transition: width 0.25s ease;
   overflow-x: hidden;
 
   &:hover {
-    max-width: $nav-left-width-expanded;
+    width: $nav-left-width-expanded;
   }
 }
 
@@ -255,6 +255,8 @@ export default class AppInnerDashboard extends Vue {
 .app__inner--dashboard__body {
   top: $nav-top-height;
   left: $nav-left-width;
+  min-width: calc(100vw - #{$nav-left-width});
+  min-height: calc(100vh - #{$nav-top-height});
   right: 0;
   bottom: 0;
   overflow: auto;

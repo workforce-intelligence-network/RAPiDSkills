@@ -14,6 +14,10 @@ export const updateSelectedStandardLoading = (state, loading: boolean) => {
   state.selectedStandardLoading = loading;
 };
 
+export const updateSelectedStandardEditing = (state, editing: boolean) => {
+  state.selectedStandardEditing = editing;
+};
+
 export const updateStandardsSearchOccupationId = (state, occupationId: number | undefined) => {
   state.occupationId = occupationId;
 };

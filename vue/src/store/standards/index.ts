@@ -12,6 +12,7 @@ export default {
     occupationId: undefined,
     selectedStandard: undefined,
     selectedStandardLoading: false,
+    selectedStandardEditing: false,
   },
   mutations,
   actions,
