@@ -28,29 +28,52 @@
         <div class="standard__work-process-data__stat__text">Hours</div>
       </div>
     </div>
-    <!-- <div class="standard__divider" />
-    <div class="standard__actions">
-      <button class="button button--secondary button--round standard__actions__button--save">
-        X
-      </button>
-    </div> -->
+    <div class="standard__divider" v-if="!saved && sessionActive" />
+    <div class="standard__actions" v-if="!saved && sessionActive">
+      <Tooltip tip="Duplicate">
+        <button class="button button--link standard__actions__button standard__actions__button--right" @click.prevent="duplicateStandard">
+          <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__button__icon" />
+        </button>
+      </Tooltip>
+    </div>
   </router-link>
 </template>
 
 <script lang="ts">
-import ICON_LEFT_NAV_HEART from '@/assets/left-nav-icon-heart.svg';
+import { mapGetters } from 'vuex';
+
+import Tooltip from '@/components/Tooltip.vue';
+import ICON_DUPLICATE_ALT from '@/assets/icon-duplicate-alt.svg';
+
 
 export default {
+  components: {
+    Tooltip,
+  },
   props: {
     standard: Object,
     label: String,
+    saved: Boolean,
+  },
+  methods: {
+    duplicateStandard() {
+      (this as any).$router.push({
+        name: 'duplicate',
+        params: {
+          id: (this as any).standard.id,
+        },
+      });
+    },
   },
   data() {
     return {
-      ICON_LEFT_NAV_HEART,
+      ICON_DUPLICATE_ALT,
     };
   },
   computed: {
+    ...mapGetters({
+      sessionActive: 'session/isActive',
+    }),
     routerLink() {
       return {
         name: 'standard',
@@ -120,6 +143,9 @@ export default {
   height: 4.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .standard__logo__logo {
@@ -168,22 +194,23 @@ export default {
 
 .standard__divider {
   height: 1px;
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid $color-gray-light;
   width: 100%;
 }
 
 .standard__actions {
   display: flex;
-  flex-direction: row;
-  padding: 0.5rem;
+  flex-direction: row-reverse;
+  height: 3rem;
 }
 
-.standard__actions__button--save {
-  height: 2rem;
-  width: 2rem;
-  line-height: 1rem;
-  font-size: 1rem;
-  text-align: center;
-  align-self: flex-start;
+.standard__actions__button {
+  height: 3rem;
+  width: 3rem;
+  padding: .75rem;
+}
+
+.standard__actions__button__icon {
+  height: 100%;
 }
 </style>

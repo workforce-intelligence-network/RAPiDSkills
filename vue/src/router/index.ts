@@ -9,6 +9,11 @@ import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
 import SearchOccupations from '@/components/SearchOccupations.vue';
 import PageTitle from '@/components/PageTitle.vue';
+import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
+
+import Standard from '@/views/Standard.vue';
+
+import { duplicateComponentName } from '@/modal';
 
 Vue.use(VueRouter);
 
@@ -87,6 +92,10 @@ const routes = [
   {
     path: '/',
     component: AppInnerDashboard,
+    beforeEnter(to, from, next) {
+      // store.dispatch('user/getUser'); TODO: get name, icon, etc.
+      next();
+    },
     children: [
       {
         path: 'standards',
@@ -99,13 +108,24 @@ const routes = [
           store.dispatch('standards/fetchStandards');
           next();
         },
+        children: [
+          {
+            path: ':id/duplicate',
+            name: 'duplicate',
+            async beforeEnter(to, from, next) {
+              store.dispatch('standards/getStandard', to.params.id);
+              store.dispatch('modal/updateContent', duplicateComponentName);
+              next();
+            },
+          },
+        ],
       },
       {
         path: 'standards/:id',
         name: 'standard',
         components: {
-          default: () => import(/* webpackChunkName: "standard" */ '@/views/Standard.vue'),
-          navbarActions: PageTitle,
+          default: Standard,
+          navbarActions: StandardNavBarActions,
         },
         beforeEnter(to, from, next) {
           store.dispatch('standards/getStandard', to.params.id);
@@ -119,6 +139,10 @@ const routes = [
         path: 'saved',
         name: 'saved',
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
+        beforeEnter(to, from, next) {
+          store.dispatch('user/getSavedStandards');
+          next();
+        },
       },
       {
         path: 'reports',
@@ -151,7 +175,9 @@ const router = new VueRouter({
       };
     }
 
-    if (savedPosition) {
+    if (![
+      'standard',
+    ].includes(to.name || '') && savedPosition) {
       return savedPosition;
     }
 
