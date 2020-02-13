@@ -7,6 +7,15 @@ ActiveAdmin.register Organization do
   remove_filter :logo_blob
   remove_filter :logo_attachment
 
+  index do
+    selectable_column
+    column :id
+    column :type
+    column :title
+    column :registers_standards
+    actions
+  end
+
   show do
     attributes_table do
       row :id
