@@ -132,7 +132,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 6rem;
+  height: 8rem;
+  padding: .5rem;
+}
+
+.standard__logo__logo {
+  max-width: 100%;
+  height: 100%;
 }
 
 .standard__occupation-name {
@@ -146,11 +152,6 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-}
-
-.standard__logo__logo {
-  max-width: 100%;
-  max-height: 100%;
 }
 
 .standard__occupation-metadata {
