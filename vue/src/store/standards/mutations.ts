@@ -21,3 +21,16 @@ export const updateSelectedStandardEditing = (state, editing: boolean) => {
 export const updateStandardsSearchOccupationId = (state, occupationId: number | undefined) => {
   state.occupationId = occupationId;
 };
+
+export const resetPagination = (state) => {
+  state.page = 1;
+  state.moreAvailable = true;
+};
+
+export const incrementPage = (state) => {
+  state.page = state.page + 1;
+};
+
+export const updateMoreAvailable = (state, moreAvailable: boolean) => {
+  state.moreAvailable = moreAvailable;
+};

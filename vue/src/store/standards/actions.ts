@@ -8,7 +8,11 @@ export const fetchStandards = async (
   { commit, state, rootState },
   occupationId: number | undefined = _get(rootState, 'occupations.selectedOccupation.id'),
 ) => {
-  if (state.list.length && occupationId === state.occupationId) {
+  if (occupationId !== state.occupationId) {
+    commit('resetPagination');
+  }
+
+  if (!state.moreAvailable && state.list.length && occupationId === state.occupationId) {
     return;
   }
 
@@ -16,9 +20,23 @@ export const fetchStandards = async (
     commit('updateStandardsSearchOccupationId', occupationId);
     commit('updateStandardsSearchLoading', true);
 
-    const { model } = await OccupationStandard.getAll({ occupationId });
+    const { meta, model } = await OccupationStandard.getAll({
+      occupationId,
+      page: {
+        number: state.page,
+        size: state.pageSize,
+      },
+    });
 
-    commit('updateStandardsSearchList', model);
+    commit('updateStandardsSearchList', state.page <= 1 ? model : state.list.concat(model));
+
+    const moreAvailable: boolean = Number(meta.currentPage) < Number(meta.totalPages);
+
+    if (moreAvailable) {
+      commit('incrementPage');
+    }
+
+    commit('updateMoreAvailable', moreAvailable);
   } catch (e) {
     //
   }
