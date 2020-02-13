@@ -30,11 +30,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
         organization_id: current_user.employer_id,
         new_title: create_params[:title],
       )
-      if @os.valid?
-        render_resource(@os)
-      else
-        render_resource_error(@os)
-      end
+      @os.valid? ? render_resource(@os) : render_resource_error(@os)
     else
       @os = OccupationStandard.new
       @os.errors.add(:parent_occupation_standard_id, :invalid)
@@ -117,7 +113,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :occupation_standard_skills,
       :organization,
       :industry,
-      :registration_state,
+      :registration_state
     ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end
