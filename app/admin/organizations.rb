@@ -26,7 +26,6 @@ ActiveAdmin.register Organization do
   form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
-      f.input :id
       f.input :type
       f.input :title
       f.input :registers_standards
