@@ -23,6 +23,7 @@ class OccupationStandard < ApplicationRecord
 
   delegate :rapids_code, to: :occupation
   delegate :onet_code, to: :occupation
+  delegate :type, to: :occupation, prefix: true
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
   delegate :title, to: :industry, prefix: true, allow_nil: true
@@ -88,6 +89,14 @@ class OccupationStandard < ApplicationRecord
 
   def registration_state_name
     registration_state&.short_name
+  end
+
+  def work_processes_count
+    work_processes.count
+  end
+
+  def skills_count
+    flattened_skills.count
   end
 
   def should_generate_attachment?(kind)

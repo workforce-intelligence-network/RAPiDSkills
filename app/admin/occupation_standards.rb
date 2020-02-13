@@ -60,8 +60,13 @@ ActiveAdmin.register OccupationStandard do
     column :organization
     column :title
     column :occupation
+    column :occupation_type
+    column :onet_code
+    column :rapids_code
     column :parent_occupation_standard
     column :published_at
+    column :work_processes_count
+    column :skills_count
     actions
   end
 
@@ -73,6 +78,9 @@ ActiveAdmin.register OccupationStandard do
       row :title
       row :creator
       row :occupation
+      row :occupation_type
+      row :onet_code
+      row :rapids_code
       row :data_trust_approval
       row :parent_occupation_standard
       row :industry
@@ -89,6 +97,8 @@ ActiveAdmin.register OccupationStandard do
         end
       end
       row :source_file_url
+      row :work_processes_count
+      row :skills_count
       row :created_at
       row :updated_at
 
