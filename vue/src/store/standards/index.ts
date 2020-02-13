@@ -9,6 +9,8 @@ export default {
     loading: false,
     query: '',
     page: 1,
+    pageSize: 25,
+    moreAvailable: true,
     occupationId: undefined,
     selectedStandard: undefined,
     selectedStandardLoading: false,

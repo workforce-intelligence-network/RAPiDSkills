@@ -3,10 +3,13 @@
     <div class="page--dashboard__cards" v-if="!showLoadingState && !showEmptyState">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" />
     </div>
-    <div class="page--dashboard__state--loading" v-if="showLoadingState">
+    <button v-if="showLoadMoreButton" class="page--dashboard__button--load-more button button--link" @click="loadMoreStandards">
+      Load more standards
+    </button>
+    <div class="page--dashboard__state--loading" v-if="showLoadingState || showLoadingMoreState">
       <Loading />
     </div>
-    <div class="page--dashboard__state--empty" v-if="showEmptyState">
+    <div class="page--dashboard__state--empty" v-if="showEmptyState && !showLoadingState">
       <div class="page--dashboard__state--empty__description">
         <span>No standards found </span>
         <span v-if="selectedOccupation">for occupation:</span>
@@ -41,6 +44,9 @@ export default {
     clearSelectedOccupation() {
       (this as any).$store.dispatch('occupations/setSelectedOccupation');
     },
+    loadMoreStandards() {
+      (this as any).$store.dispatch('standards/fetchStandards');
+    },
   },
   computed: {
     ...mapGetters({
@@ -48,7 +54,9 @@ export default {
     }),
     ...mapState({
       selectedOccupation: (state: any) => state.occupations.selectedOccupation,
-      showLoadingState: (state: any) => state.standards.loading,
+      showLoadingState: (state: any) => state.standards.loading && state.standards.page <= 1,
+      showLoadingMoreState: (state: any) => state.standards.loading && state.standards.page > 1,
+      showLoadMoreButton: (state: any) => !state.standards.loading && state.standards.moreAvailable,
       standards: (state: any) => state.standards.list,
     }),
   },
@@ -102,5 +110,15 @@ $card-column-padding: 2rem;
 .page--dashboard__state--empty__description__occupation {
   font-size: 1.5rem;
   padding-top: .5rem;
+}
+
+.page--dashboard__button--load-more {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 8em;
+  font-size: 1.125rem;
 }
 </style>
