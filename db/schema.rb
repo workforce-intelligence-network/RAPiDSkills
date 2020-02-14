@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_13_201136) do
+ActiveRecord::Schema.define(version: 2020_02_14_200522) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -145,6 +146,7 @@ ActiveRecord::Schema.define(version: 2020_02_13_201136) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["rapids_code"], name: "index_occupations_on_rapids_code", unique: true
+    t.index ["title", "rapids_code", "onet_code"], name: "index_occupations_on_title_and_rapids_code_and_onet_code", unique: true
     t.index ["title"], name: "index_occupations_on_title"
   end
 
