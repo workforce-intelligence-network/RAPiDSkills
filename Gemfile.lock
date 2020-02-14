@@ -238,6 +238,7 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rollbar (2.23.2)
     rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
@@ -348,6 +349,7 @@ DEPENDENCIES
   rack-rewrite
   rails (= 6.0.1)
   redis-objects
+  rollbar
   rspec-rails (~> 3.8)
   sass-rails (~> 5)
   sidekiq
