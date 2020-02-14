@@ -165,7 +165,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
     let(:industry) { create(:industry) }
     let(:state) { create(:state) }
-    let(:os) { create(:occupation_standard, :with_attachments, industry: industry, registration_state: state) }
+    let(:parent) { create(:occupation_standard) }
+    let(:os) { create(:occupation_standard, :with_attachments, industry: industry, registration_state: state, parent_occupation_standard: parent) }
     let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
     let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
     let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
@@ -225,6 +226,11 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["registration_state"]["data"]["type"]).to eq "state"
       expect(json["data"]["relationships"]["registration_state"]["data"]["id"]).to eq os.registration_state_id.to_s
 
+      expect(json["data"]["relationships"]["parent_occupation_standard"]["links"]["self"]).to eq relationships_parent_occupation_standard_api_v1_occupation_standard_url(os)
+      expect(json["data"]["relationships"]["parent_occupation_standard"]["links"]["related"]).to eq api_v1_occupation_standard_url(os.parent_occupation_standard)
+      expect(json["data"]["relationships"]["parent_occupation_standard"]["data"]["type"]).to eq "occupation_standard"
+      expect(json["data"]["relationships"]["parent_occupation_standard"]["data"]["id"]).to eq parent.id.to_s
+
       expect(json["included"]).to include(a_hash_including("type" => "work_process", "id" => oswp.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss3.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss1.id.to_s))
@@ -233,6 +239,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["included"]).to include(a_hash_including("type" => "organization", "id" => os.organization_id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "occupation_standard", "id" => parent.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "user", "id" => os.creator_id.to_s))
       user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
       expect(user_included_hash["attributes"]).to be nil
