@@ -30,4 +30,19 @@ RSpec.describe API::V1::OccupationStandards::RelationshipsController, type: :req
       expect(json["data"]["id"]).to eq organization.id.to_s
     end
   end
+
+  describe "GET #parent_occupation_standard" do
+    let(:path) { "/api/v1/occupation_standards/#{os.id}/relationships/parent_occupation_standard" }
+    let(:parent) { create(:occupation_standard) }
+    let(:os) { create(:occupation_standard, parent_occupation_standard: parent) }
+
+    it "returns the correct data" do
+      get path
+      expect(response).to have_http_status(:success)
+      expect(json["links"]["self"]).to eq relationships_parent_occupation_standard_api_v1_occupation_standard_url(os)
+      expect(json["links"]["related"]).to eq api_v1_occupation_standard_url(parent)
+      expect(json["data"]["type"]).to eq "occupation_standard"
+      expect(json["data"]["id"]).to eq parent.id.to_s
+    end
+  end
 end

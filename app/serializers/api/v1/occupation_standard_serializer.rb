@@ -50,6 +50,14 @@ class API::V1::OccupationStandardSerializer
       related: ->(object) { Rails.application.routes.url_helpers.api_v1_organization_url(object.organization) },
     }
 
+  belongs_to :parent_occupation_standard,
+    serializer: API::V1::OccupationStandardParentSerializer,
+    record_type: :occupation_standard,
+    links: {
+      self: ->(object) { object.relationships_url('parent_occupation_standard') },
+      related: ->(object) { Rails.application.routes.url_helpers.api_v1_occupation_standard_url(object.parent_occupation_standard) },
+    }, if: Proc.new { |object| object.parent_occupation_standard }
+
   attributes :title,
              :industry_title,
              :organization_title,

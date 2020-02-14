@@ -110,6 +110,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
     options[:include] = [
       :creator,
       :occupation,
+      :parent_occupation_standard,
       :"occupation_standard_work_processes.occupation_standard_skills",
       :occupation_standard_skills,
       :organization,

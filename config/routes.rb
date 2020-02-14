@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           get "relationships/occupation", to: "occupation_standards/relationships#occupation"
           get "relationships/organization", to: "occupation_standards/relationships#organization"
           get "relationships/registration_state", to: "occupation_standards/relationships#registration_state"
+          get "relationships/parent_occupation_standard", to: "occupation_standards/relationships#parent_occupation_standard"
         end
         resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
         resources :occupation_standard_skills, path: "skills", only: [:index]
