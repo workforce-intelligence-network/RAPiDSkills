@@ -19,7 +19,7 @@
   },
   "name": "RAPiDSkills",
   "scripts": {
-    "postdeploy": "bundle exec rake db:schema:load db:seed"
+    "postdeploy": "bundle exec rake db:seed"
   },
   "stack": "container"
 }
