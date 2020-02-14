@@ -16,6 +16,7 @@ The following commands should just be run for the initial setup only. Rebuilding
 4. Run `docker-compose up -d` to start all the remaining services.
 5. The client application will be available at http://localhost:8080.
 5. The server application will be available at http://localhost:3000. To access the admin dashboard, visit http://localhost:3000/admin/login.
+5. If you have Heroku access to the production application, you can import a copy of the production database into your local database by running: `bin/database_import.sh`. Note that this will completely replace your local database.
 
 If you cloned the directory without the documentation submodule, you must initialize and update the submodule in order to have the `middleman` service start correctly:
 1. Change into the documentation directory: `cd documentation`
