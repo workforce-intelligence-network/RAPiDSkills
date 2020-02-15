@@ -68,6 +68,8 @@ class API::V1::ImportOccupationStandard
         occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
           title: row["occupation_standard_title"],
           type: type,
+          rapids_code: row["rapids_code"],
+          onet_code: row["onet_code"],
         )
       end
       organization = Organization.where(title: row["organization_title"]).first_or_create!
