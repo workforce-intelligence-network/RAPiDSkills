@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_14_200522) do
+ActiveRecord::Schema.define(version: 2020_02_15_010246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -147,7 +147,6 @@ ActiveRecord::Schema.define(version: 2020_02_14_200522) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["rapids_code"], name: "index_occupations_on_rapids_code", unique: true
     t.index ["title", "rapids_code", "onet_code"], name: "index_occupations_on_title_and_rapids_code_and_onet_code", unique: true
-    t.index ["title"], name: "index_occupations_on_title"
   end
 
   create_table "organizations", force: :cascade do |t|
