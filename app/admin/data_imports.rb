@@ -40,7 +40,7 @@ ActiveAdmin.register DataImport do
       if f.object.new_record?
         para "Do not modify headers of files for CSV imports", class: "info"
         f.input :file, as: :file
-        f.input :user
+        f.input :user, as: :select, collection: User.order(:name)
         f.input :kind
       end
       f.input :description
