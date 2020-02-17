@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       resources :categories, only: [:create, :show, :update] do
         member do
           get "relationships/skills", to: "categories/relationships/skills#index"
+          delete "relationships/skills", to: "categories/relationships/skills#destroy"
         end
         resources :occupation_standard_skills, path: "skills", only: [:index], controller: "categories/occupation_standard_skills"
       end
