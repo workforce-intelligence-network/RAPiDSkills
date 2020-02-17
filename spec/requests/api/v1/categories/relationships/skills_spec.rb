@@ -25,7 +25,7 @@ RSpec.describe API::V1::Categories::Relationships::SkillsController, type: :requ
     end
 
     context "with bad category id" do
-      it_behaves_like "no content", :get do
+      it_behaves_like "not found", :get do
         let(:path) { "/api/v1/categories/999/relationships/skills" }
         let(:params) { {} }
         let(:header) { {} }
@@ -41,6 +41,14 @@ RSpec.describe API::V1::Categories::Relationships::SkillsController, type: :requ
 
     context "when guest" do
       it_behaves_like "unauthorized", :delete
+    end
+
+    context "when bad category" do
+      it_behaves_like "not found", :delete do
+        let(:user) { create(:user) }
+        let(:header) { auth_header(user) }
+        let(:path) { "/api/v1/categories/9999/relationships/skills" }
+      end
     end
 
     context "when user does not own category" do

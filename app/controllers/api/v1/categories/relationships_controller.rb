@@ -6,6 +6,6 @@ class API::V1::Categories::RelationshipsController < API::V1::APIController
 
   def set_category
     @category = Category.find_by(id: params[:id])
-    head :no_content and return unless @category
+    head :not_found and return unless @category
   end
 end
