@@ -271,6 +271,8 @@ RSpec.describe API::V1::CategoriesController, type: :request do
   describe "GET #show" do
     let(:path) { "/api/v1/categories/#{category.id}" }
     let(:category) { create(:category) }
+    let(:oswp) { category.occupation_standard_work_process }
+    let!(:oss) { create(:occupation_standard_skill, occupation_standard_work_process: oswp, category: category) }
 
     context "with valid category id" do
       it "returns the correct data" do
@@ -279,9 +281,16 @@ RSpec.describe API::V1::CategoriesController, type: :request do
         expect(json["links"]["self"]).to eq api_v1_category_url(category)
         expect(json["data"]["id"]).to eq category.id.to_s
         expect(json["data"]["type"]).to eq "category"
+        expect(json["data"]["links"]["self"]).to eq api_v1_category_url(category)
         expect(json["data"]["attributes"]["name"]).to eq category.name
         expect(json["data"]["attributes"]["sort_order"]).to eq category.sort_order
-        expect(json["data"]["links"]["self"]).to eq api_v1_category_url(category)
+        expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
+        expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss.id.to_s
+        expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
+        expect(json["data"]["relationships"]["work_process"]["data"]["id"]).to eq oswp.id.to_s
+        expect(json["data"]["relationships"]["work_process"]["data"]["type"]).to eq "work_process"
+        expect(json["included"]).to include(a_hash_including("type" => "work_process", "id" => oswp.id.to_s))
+        expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss.id.to_s))
       end
     end
 

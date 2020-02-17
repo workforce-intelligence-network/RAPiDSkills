@@ -55,7 +55,13 @@ class API::V1::CategoriesController < API::V1::APIController
   end
 
   def render_resource
-    options = { links: { self: @category.url } }
+    options = {
+      links: { self: @category.url },
+      include: [
+        :occupation_standard_skills,
+        :occupation_standard_work_process,
+      ]
+    }
     render json: API::V1::CategorySerializer.new(@category, options)
   end
 end

@@ -6,6 +6,10 @@ class API::V1::CategorySerializer
   attributes :name,
              :sort_order
 
+  belongs_to :occupation_standard_work_process,
+    record_type: :work_process,
+    key: :work_process
+
   has_many :occupation_standard_skills,
     record_type: :skill,
     key: :skills,
