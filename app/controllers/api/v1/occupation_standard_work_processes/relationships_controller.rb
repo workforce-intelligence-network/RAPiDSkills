@@ -6,6 +6,6 @@ class API::V1::OccupationStandardWorkProcesses::RelationshipsController < API::V
 
   def set_occupation_standard_work_process
     @oswp = OccupationStandardWorkProcess.find_by(id: params[:id])
-    head :no_content and return unless @oswp
+    head :not_found and return unless @oswp
   end
 end

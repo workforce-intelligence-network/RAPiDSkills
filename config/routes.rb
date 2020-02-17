@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       resources :occupation_standard_work_processes, path: "work_processes", only: [:show, :create, :update] do
         member do
           get "relationships/skills", to: "occupation_standard_work_processes/relationships/skills#index"
+          delete "relationships/skills", to: "occupation_standard_work_processes/relationships/skills#destroy"
           get "relationships/categories", to: "occupation_standard_work_processes/relationships/categories#index"
           delete "relationships/categories", to: "occupation_standard_work_processes/relationships/categories#destroy"
         end
