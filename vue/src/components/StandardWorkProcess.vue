@@ -92,7 +92,8 @@ export default class StandardWorkProcess extends Vue {
   expanded: boolean = false
 
   created() {
-    (this as any).saveWorkProcess = _debounce((this as any).saveWorkProcess, 500).bind(this);
+    this.saveWorkProcess = _debounce(this.saveWorkProcess, 500).bind(this);
+    this.expanded = this.workProcessIndex === 0;
   }
 
   mounted() {
