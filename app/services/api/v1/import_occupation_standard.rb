@@ -83,29 +83,16 @@ class API::V1::ImportOccupationStandard
       end
       organization = Organization.where(title: row["organization_title"]).first_or_create!
       state = State.find_by(short_name: row["registration_state"])
-     # occupation_standard = OccupationStandard.where(
-     #   type: "#{row["type"]}Standard",
-     #   organization: organization,
-     #   occupation: occupation,
-     #   title: row["occupation_standard_title"].presence || occupation.try(:title),
-     # ).first_or_create!(
-     #   creator: user,
-     #   registration_organization_name: row["registration_organization_name"],
-     #   registration_state: state,
-     #   )
-      #
-      #   Tmp fix to re-upload files to set registration state
       occupation_standard = OccupationStandard.where(
         type: "#{row["type"]}Standard",
         organization: organization,
         occupation: occupation,
         title: row["occupation_standard_title"].presence || occupation.try(:title),
-      ).first_or_initialize
-      occupation_standard.update!(
+      ).first_or_create!(
         creator: user,
         registration_organization_name: row["registration_organization_name"],
         registration_state: state,
-      )
+        )
     end
   end
 end
