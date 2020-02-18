@@ -12,7 +12,7 @@ build:
 release:
   command:
     - bundle exec rails db:migrate
-    - bundle exec rails after_party:run
+    - bundle exec rake after_party:run
   image: web
 run:
   web: bundle exec puma -C config/puma.rb
