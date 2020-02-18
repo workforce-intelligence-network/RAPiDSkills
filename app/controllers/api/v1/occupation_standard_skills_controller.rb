@@ -16,28 +16,13 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   end
 
   def create
-    skill = Skill.where(update_params).first_or_initialize
-    if skill.save
-      @oss = @os.occupation_standard_skills.where(
-        skill: skill,
-        occupation_standard_work_process: @oswp,
-      ).first_or_initialize
-      @oss.update(sort_order: oss_params[:sort_order])
-      render_resource
-    else
-      render_resource_error(skill)
-    end
+    @oss = @os.occupation_standard_skills.build
+    save_and_update_skill
   end
 
   def update
     authorize [:api, :v1, @oss]
-    skill = Skill.where(update_params).first_or_initialize(parent_skill: @oss.skill)
-    if skill.save
-      @oss.update(skill: skill, sort_order: oss_params[:sort_order])
-      render_resource
-    else
-      render_resource_error(skill)
-    end
+    save_and_update_skill
   end
 
   private
@@ -76,6 +61,21 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
 
   def oss_params
     params.require(:data).require(:attributes).permit(:sort_order)
+  end
+
+  def save_and_update_skill
+    skill = Skill.where(update_params).first_or_initialize(parent_skill: @oss.skill)
+    if skill.save
+      attributes = {
+        skill: skill,
+        sort_order: oss_params[:sort_order],
+      }
+      attributes[:occupation_standard_work_process] = @oswp if @oswp.present?
+      @oss.update(attributes)
+      render_resource
+    else
+      render_resource_error(skill)
+    end
   end
 
   def occupation_standard_params

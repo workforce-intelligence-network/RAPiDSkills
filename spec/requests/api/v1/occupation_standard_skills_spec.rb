@@ -63,7 +63,8 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     let(:path) { "/api/v1/skills/#{oss.id}" }
     let(:user) { create(:user) }
     let(:os) { create(:occupation_standard) }
-    let!(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
+    let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oss) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
     let(:header) { auth_header(user) }
     let(:params) {
       {
@@ -96,6 +97,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             oss.reload
             expect(oss.skill).to eq skill
             expect(oss.sort_order).to eq 99
+            expect(oss.occupation_standard_work_process).to eq oswp
           end
 
           it "returns correct response" do
@@ -121,6 +123,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             oss.reload
             expect(oss.skill).to eq skill
             expect(oss.sort_order).to eq 99
+            expect(oss.occupation_standard_work_process).to eq oswp
             expect(skill.reload.parent_skill).to eq parent
           end
 
