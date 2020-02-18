@@ -106,7 +106,6 @@ class API::V1::ImportOccupationStandard
         registration_organization_name: row["registration_organization_name"],
         registration_state: state,
       )
-      occupation_standard
     end
   end
 end
