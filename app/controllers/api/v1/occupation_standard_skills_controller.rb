@@ -21,7 +21,8 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
       @oss = @os.occupation_standard_skills.where(
         skill: skill,
         occupation_standard_work_process: @oswp,
-      ).first_or_create
+      ).first_or_initialize
+      @oss.update(sort_order: oss_params[:sort_order])
       render_resource
     else
       render_resource_error(skill)
@@ -32,7 +33,7 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
     authorize [:api, :v1, @oss]
     skill = Skill.where(update_params).first_or_initialize(parent_skill: @oss.skill)
     if skill.save
-      @oss.update(skill: skill)
+      @oss.update(skill: skill, sort_order: oss_params[:sort_order])
       render_resource
     else
       render_resource_error(skill)
@@ -71,6 +72,10 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
 
   def update_params
     params.require(:data).require(:attributes).permit(:description)
+  end
+
+  def oss_params
+    params.require(:data).require(:attributes).permit(:sort_order)
   end
 
   def occupation_standard_params

@@ -4,6 +4,8 @@ class API::V1::OccupationStandardSkillSerializer
 
   link :self, :url
 
+  attribute :sort_order
+
   attribute :description do |object|
     object.skill_description
   end
