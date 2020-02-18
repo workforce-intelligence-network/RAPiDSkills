@@ -3,6 +3,8 @@ ActiveAdmin.register Occupation do
 
   preserve_default_filters!
   filter :type, as: :select, collection: %w(HybridOccupation TimeOccupation CompetencyOccupation)
+  filter :occupation_standards, collection: proc { OccupationStandard.order(:title) }
+  filter :industry, collection: proc { Industry.order(:title) }
   remove_filter :title_aliases
 
   index do

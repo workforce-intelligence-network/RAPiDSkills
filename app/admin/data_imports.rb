@@ -4,7 +4,9 @@ ActiveAdmin.register DataImport do
   permit_params :description, :kind, :file, :user_id
 
   preserve_default_filters!
+  filter :user, collection: proc { User.order(:name) }
   remove_filter :file_blob
+  remove_filter :file_attachment
 
   index do
     column :id

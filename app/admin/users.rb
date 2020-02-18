@@ -1,6 +1,14 @@
 ActiveAdmin.register User do
   permit_params :email, :name, :role, :password, :password_confirmation, :employer_id
 
+  filter :role
+  filter :name
+  filter :email
+  filter :employer, collection: proc { Organization.order(:title) }
+  filter :current_sign_in_at
+  filter :sign_in_count
+  filter :created_at
+
   action_item :change_password, only: [:edit, :show] do
     link_to 'Change Password', change_password_admin_user_path(user)
   end
@@ -26,14 +34,6 @@ ActiveAdmin.register User do
     column :created_at
     actions
   end
-
-  filter :role
-  filter :name
-  filter :email
-  filter :employer
-  filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
 
   form do |f|
     f.inputs do

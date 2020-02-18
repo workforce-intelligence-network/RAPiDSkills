@@ -6,6 +6,9 @@ ActiveAdmin.register OccupationStandardWorkProcess do
   permit_params :sort_order, :hours
 
   preserve_default_filters!
+  filter :occupation_standard, collection: proc { OccupationStandard.order(:title) }
+  filter :skill, collection: proc { Skill.order(:description) }
+  filter :work_process, collection: proc { WorkProcess.order(:title) }
   remove_filter :occupation_standard_skills
 
   index do

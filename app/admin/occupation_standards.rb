@@ -9,9 +9,19 @@ ActiveAdmin.register OccupationStandard do
 
   preserve_default_filters!
   filter :type, as: :select, collection: SUBMODELS
+  filter :organization, collection: proc { Organization.order(:title) }
+  filter :occupation, collection: proc { Occupation.order(:title) }
+  filter :industry, collection: proc { Industry.order(:title) }
+  filter :creator, collection: proc { User.order(:name) }
+  filter :parent_occupation_standard, collection: proc { OccupationStandard.joins(:parent_occupation_standard).order("occupation_standards.title") }
+  filter :registration_state, collection: proc { State.order(:long_name) }
   remove_filter :occupation_standard_skills
   remove_filter :occupation_standard_work_processes
   remove_filter :occupation_standard_skills_with_no_work_process
+  remove_filter :work_processes
+  remove_filter :flattened_skills
+  remove_filter :skills
+  remove_filter :relationships
   remove_filter :pdf_attachment
   remove_filter :pdf_blob
   remove_filter :excel_attachment

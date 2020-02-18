@@ -4,6 +4,7 @@ ActiveAdmin.register Skill do
   permit_params :description, :usage_count, :parent_skill_id
 
   preserve_default_filters!
+  filter :parent_skill, collection: proc { Skill.joins(:parent_skill).order("skills.description") }
   remove_filter :occupation_standard_skills
   remove_filter :occupation_standards
 
