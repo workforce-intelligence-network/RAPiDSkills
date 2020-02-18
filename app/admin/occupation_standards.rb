@@ -94,6 +94,8 @@ ActiveAdmin.register OccupationStandard do
       row :data_trust_approval
       row :parent_occupation_standard
       row :industry
+      row :registration_state
+      row :registration_organization_name
       row :completed_at
       row :published_at
       row :pdf do |occupation_standard|
@@ -164,15 +166,17 @@ ActiveAdmin.register OccupationStandard do
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
       f.input :type, as: :select, collection: SUBMODELS, include_blank: false
-      f.input :organization, as: :select, collection: Organization.order(:title)
+      f.input :organization, collection: Organization.order(:title)
       f.input :title
-      f.input :creator, as: :select, collection: User.order(:name)
-      f.input :occupation, as: :select, collection: Occupation.order(:title)
+      f.input :creator, collection: User.order(:name)
+      f.input :occupation, collection: Occupation.order(:title)
       f.input :data_trust_approval
-      f.input :parent_occupation_standard, as: :select, collection: OccupationStandard.order(:title)
-      f.input :industry, as: :select, collection: Industry.order(:title)
+      f.input :parent_occupation_standard, collection: OccupationStandard.order(:title)
+      f.input :industry, collection: Industry.order(:title)
       f.input :skills, include_blank: true
       f.input :work_processes, include_blank: true
+      f.input :registration_state, collection: State.order(:long_name)
+      f.input :registration_organization_name
       f.input :completed_at
       f.input :published_at
       f.input :source_file_url
