@@ -65,16 +65,7 @@ class API::V1::ImportOccupationStandard
                else
                  raise "Either work process or skill is required"
                end
-       # occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
-       #   title: row["occupation_standard_title"],
-       #   type: type,
-       #   rapids_code: row["rapids_code"],
-       #   onet_code: row["onet_code"],
-       # )
-
-        # Tmp fix to re-upload files to set rapids/onet codes
-        occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_initialize
-        occupation.update!(
+        occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
           title: row["occupation_standard_title"],
           type: type,
           rapids_code: row["rapids_code"],
