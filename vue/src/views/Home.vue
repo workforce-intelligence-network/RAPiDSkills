@@ -24,7 +24,7 @@
         How it works
       </div>
       <div class="page--home__text page--home__how-it-works__text page--home__how-it-works__text--appeal">
-        <span>Leverage content from high-quality. apprenitceship programs</span>
+        <span>Leverage content from high-quality apprenticeship programs</span>
         <span> to quickly and easily create your custom competency list!</span>
       </div>
       <div class="page--home__how-it-works__cards">
@@ -76,7 +76,7 @@
       <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__follow__text page--home__follow__text--call-to-action">
         <div>
-          <span>Sign up now to find out when we launch or scontribute your own competency outlines.</span>
+          <span>Sign up now to find out when we launch or contribute your own competency outlines.</span>
         </div>
         <div class="page--home__follow__text--call-to-action__bold">
           Get started today
