@@ -147,8 +147,9 @@ export default class OccupationStandard extends ModelBase {
   }
 
   get loggedInUserIsCreator() {
-    const { userId } = (store.state as any).session;
-    return !_isUndefined(userId) && this.creator && !_isUndefined(this.creator.id) && String(userId) === String(this.creator.id);
+    // eslint-disable-next-line prefer-destructuring
+    const user: User = (store.state as any).user.user;
+    return user.synced && this.creator && !_isUndefined(this.creator.id) && String(user.id) === String(this.creator.id);
   }
 
   async destroySkillIfSynced(skill: Skill) {

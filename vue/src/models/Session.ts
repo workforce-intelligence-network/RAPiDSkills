@@ -21,7 +21,7 @@ export default class Session extends ModelBase {
     this.resetToken = session.resetToken || '';
     this.email = session.email || '';
     this.password = session.password || '';
-    this.user = new User();
+    this.user = new User(session.user || {});
   }
 
   static jsonApiClassName = 'session'
@@ -55,13 +55,12 @@ export default class Session extends ModelBase {
 
   user: User
 
-  meta?: object
-
   async save() {
     const response = await super.save();
     const { data, meta } = response;
-    const user: User = new User(data.user);
-    await store.dispatch('session/setUser', user);
+    const session: Session = new Session(data);
+    await store.dispatch('user/setUser', session.user);
+    await store.dispatch('session/setSession', session);
     await store.dispatch('session/setToken', `${meta.tokenType} ${meta.accessToken}`);
   }
 }
