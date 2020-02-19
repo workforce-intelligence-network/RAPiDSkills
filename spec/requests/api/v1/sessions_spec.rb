@@ -142,7 +142,7 @@ RSpec.describe API::V1::SessionsController, type: :request do
   end
 
   describe "DELETE #destroy" do
-    let(:user) { create(:user) }
+    let(:user) { create(:admin) }
     let(:path) { "/api/v1/sessions/abc123" }
     let(:params) { {} }
     let!(:header) { auth_header(user) }
@@ -160,6 +160,15 @@ RSpec.describe API::V1::SessionsController, type: :request do
       expect(response).to have_http_status(:no_content)
       delete path, headers: header
       expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "signs user out of admin pages as well" do
+      sign_in user
+      get "/admin"
+      expect(response).to have_http_status(:success)
+      delete path, headers: header
+      get "/admin"
+      expect(response).to have_http_status(:redirect)
     end
   end
 end

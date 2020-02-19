@@ -27,6 +27,7 @@ class API::V1::SessionsController < API::V1::APIController
 
   def destroy
     @user.destroy_session!(@session_identifier)
+    sign_out @user
     head :no_content
   end
 
