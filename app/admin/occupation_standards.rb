@@ -27,6 +27,16 @@ ActiveAdmin.register OccupationStandard do
   remove_filter :excel_attachment
   remove_filter :excel_blob
 
+  controller do
+    after_action :generate_download_docs, only: [:create, :update]
+
+    private
+
+    def generate_download_docs
+      resource.generate_download_docs
+    end
+  end
+
   action_item :clone_occupation_standard, only: :show do
     link_to 'Clone', clone_occupation_standard_admin_occupation_standard_path(occupation_standard)
   end

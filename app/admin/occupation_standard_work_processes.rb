@@ -11,6 +11,16 @@ ActiveAdmin.register OccupationStandardWorkProcess do
   filter :work_process, collection: proc { WorkProcess.order(:title) }
   remove_filter :occupation_standard_skills
 
+  controller do
+    after_action :generate_download_docs, only: [:create, :update, :destroy]
+
+    private
+
+    def generate_download_docs
+      resource.occupation_standard.generate_download_docs
+    end
+  end
+
   index do
     column :id
     column :occupation_standard
