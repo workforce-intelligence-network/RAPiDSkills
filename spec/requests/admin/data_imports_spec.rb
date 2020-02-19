@@ -29,12 +29,13 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect{
               post path, params: params
             }.to change(DataImport, :count).by(1)
-              .and change(OccupationStandard, :count).by(3)
-              .and change(WorkProcess, :count).by(3)
-              .and change(Skill, :count).by(5)
-              .and change(OccupationStandardWorkProcess, :count).by(4)
-              .and change(OccupationStandardSkill, :count).by(6)
-              .and change(Organization, :count).by(2)
+              .and change(OccupationStandard, :count).by(4)
+              .and change(WorkProcess, :count).by(4)
+              .and change(Skill, :count).by(8)
+              .and change(Category, :count).by(2)
+              .and change(OccupationStandardWorkProcess, :count).by(5)
+              .and change(OccupationStandardSkill, :count).by(9)
+              .and change(Organization, :count).by(3)
 
             di = DataImport.last
             expect(di.user).to eq user
@@ -44,8 +45,11 @@ RSpec.describe "Admin::DataImports", type: :request do
             organization1 = Organization.first
             expect(organization1.title).to eq "Acme Dog Walking"
 
-            organization2 = Organization.last
+            organization2 = Organization.all[1]
             expect(organization2.title).to eq "Dog Walking R Us"
+
+            organization3 = Organization.last
+            expect(organization3.title).to eq "Pet Palace"
 
             os1 = OccupationStandard.first
             expect(os1.title).to eq "Heeling"
@@ -86,7 +90,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os2.flattened_skills[0].description).to eq "Communicate with dog"
             expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
 
-            os3 = OccupationStandard.last
+            os3 = OccupationStandard.all[2]
             expect(os3.title).to eq "Dog Training"
             expect(os3.occupation).to eq occupation
             expect(os3.organization).to eq organization1
@@ -99,6 +103,39 @@ RSpec.describe "Admin::DataImports", type: :request do
 
             expect(os3.flattened_skills[0].description).to eq "Understand costs"
             expect(os3.occupation_standard_skills[0].occupation_standard_work_process).to eq os3.occupation_standard_work_processes[0]
+
+            os4 = OccupationStandard.last
+            expect(os4.title).to eq "Grooming"
+            expect(os4.occupation).to eq occupation
+            expect(os4.organization).to eq organization3
+            expect(os4.creator).to eq user
+            expect(os4.type).to eq "FrameworkStandard"
+
+            expect(os4.work_processes[0].title).to eq "Safety"
+            expect(os4.work_processes[0].description).to eq "All safety"
+            oswp = os4.occupation_standard_work_processes[0]
+            expect(oswp.hours).to eq 10
+            expect(oswp.sort_order).to eq 1
+
+            cat1 = oswp.categories.first
+            expect(cat1.name).to eq "Safety procedures"
+            expect(cat1.sort_order).to eq 1
+
+            cat2 = oswp.categories.last
+            expect(cat2.name).to eq "Safety features"
+            expect(cat2.sort_order).to eq 2
+
+            expect(cat1.occupation_standard_skills[0].skill.description).to eq "Handle cat"
+            expect(cat1.occupation_standard_skills[0].sort_order).to eq 1
+            expect(cat1.occupation_standard_skills[0].occupation_standard_work_process).to eq oswp
+
+            expect(cat1.occupation_standard_skills[1].skill.description).to eq "Handle dog"
+            expect(cat1.occupation_standard_skills[1].sort_order).to eq 2
+            expect(cat1.occupation_standard_skills[1].occupation_standard_work_process).to eq oswp
+
+            expect(cat2.occupation_standard_skills[0].skill.description).to eq "Restrain animal"
+            expect(cat2.occupation_standard_skills[0].sort_order).to eq 3
+            expect(cat2.occupation_standard_skills[0].occupation_standard_work_process).to eq oswp
           end
 
           it "triggers pdf/excel generation" do
