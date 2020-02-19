@@ -29,25 +29,28 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect{
               post path, params: params
             }.to change(DataImport, :count).by(1)
-              .and change(OccupationStandard, :count).by(2)
+              .and change(OccupationStandard, :count).by(3)
               .and change(WorkProcess, :count).by(3)
               .and change(Skill, :count).by(5)
-              .and change(OccupationStandardWorkProcess, :count).by(3)
-              .and change(OccupationStandardSkill, :count).by(5)
-              .and change(Organization, :count).by(1)
+              .and change(OccupationStandardWorkProcess, :count).by(4)
+              .and change(OccupationStandardSkill, :count).by(6)
+              .and change(Organization, :count).by(2)
 
             di = DataImport.last
             expect(di.user).to eq user
             expect(di.description).to eq "this is a description"
             expect(di.occupation_standards?).to be true
 
-            organization = Organization.last
-            expect(organization.title).to eq "Acme Dog Walking"
+            organization1 = Organization.first
+            expect(organization1.title).to eq "Acme Dog Walking"
+
+            organization2 = Organization.last
+            expect(organization2.title).to eq "Dog Walking R Us"
 
             os1 = OccupationStandard.first
             expect(os1.title).to eq "Heeling"
             expect(os1.occupation).to eq occupation
-            expect(os1.organization).to eq organization
+            expect(os1.organization).to eq organization1
             expect(os1.creator).to eq user
             expect(os1.type).to eq "FrameworkStandard"
             expect(os1.registration_organization_name).to eq "CA Dept of Labor"
@@ -69,19 +72,33 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os1.occupation_standard_skills[2].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
             expect(os1.occupation_standard_skills[3].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
 
-            os2 = OccupationStandard.last
-            expect(os2.title).to eq "Dog Training"
+            os2 = OccupationStandard.all[1]
+            expect(os2.title).to eq "Heeling"
             expect(os2.occupation).to eq occupation
-            expect(os2.organization).to eq organization
+            expect(os2.organization).to eq organization2
             expect(os2.creator).to eq user
-            expect(os2.type).to eq "UnregisteredStandard"
+            expect(os2.type).to eq "FrameworkStandard"
 
-            expect(os2.work_processes[0].title).to eq "Billing"
-            expect(os2.work_processes[0].description).to eq "Bill for services"
-            expect(os2.occupation_standard_work_processes[0].hours).to eq 50
+            expect(os2.work_processes[0].title).to eq "Communicate effectively"
+            expect(os2.work_processes[0].description).to eq "Communicate effectively with dog and human"
+            expect(os2.occupation_standard_work_processes[0].hours).to eq 40
 
-            expect(os2.flattened_skills[0].description).to eq "Understand costs"
+            expect(os2.flattened_skills[0].description).to eq "Communicate with dog"
             expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
+
+            os3 = OccupationStandard.last
+            expect(os3.title).to eq "Dog Training"
+            expect(os3.occupation).to eq occupation
+            expect(os3.organization).to eq organization1
+            expect(os3.creator).to eq user
+            expect(os3.type).to eq "UnregisteredStandard"
+
+            expect(os3.work_processes[0].title).to eq "Billing"
+            expect(os3.work_processes[0].description).to eq "Bill for services"
+            expect(os3.occupation_standard_work_processes[0].hours).to eq 50
+
+            expect(os3.flattened_skills[0].description).to eq "Understand costs"
+            expect(os3.occupation_standard_skills[0].occupation_standard_work_process).to eq os3.occupation_standard_work_processes[0]
           end
         end
 

@@ -19,8 +19,9 @@ class DataImport < ApplicationRecord
       current_title = nil
       self.all_sections_invalid = true
       CSV.parse(file_data, headers: true) do |row|
-        if row["occupation_standard_title"] != current_title
-          current_title = row["occupation_standard_title"]
+        org_os_title = "#{row["organization_title"]}|#{row["occupation_standard_title"]}"
+        if org_os_title != current_title
+          current_title = org_os_title
           unless rows.empty?
             service_resp = API::V1::ImportOccupationStandard.new(
               data: rows,

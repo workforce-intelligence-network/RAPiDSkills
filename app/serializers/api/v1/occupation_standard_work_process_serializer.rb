@@ -4,7 +4,8 @@ class API::V1::OccupationStandardWorkProcessSerializer
 
   link :self, :url
 
-  attribute :hours
+  attribute :hours,
+            :sort_order
 
   attribute :title do |object|
     object.work_process_title

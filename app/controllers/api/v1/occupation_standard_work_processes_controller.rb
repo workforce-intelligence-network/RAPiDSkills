@@ -54,16 +54,14 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
   end
 
   def oswp_params
-    params.require(:data).require(:attributes).permit(:hours)
+    params.require(:data).require(:attributes).permit(:hours, :sort_order)
   end
 
   def save_and_update_work_process
     work_process = WorkProcess.where(work_process_params).first_or_initialize
     if work_process.save
-      @oswp.update(
-        work_process: work_process,
-        hours: oswp_params[:hours],
-      )
+      @oswp.assign_attributes(oswp_params)
+      @oswp.update(work_process: work_process)
       render_resource
     else
       render_resource_error(work_process)
