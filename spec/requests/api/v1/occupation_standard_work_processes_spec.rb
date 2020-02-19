@@ -88,6 +88,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             title: "new work process title",
             description: "new work process desc",
             hours: 50,
+            sort_order: 99,
           },
           relationships: {
             occupation_standard: {
@@ -120,6 +121,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(oswp.work_process).to eq wp
             expect(oswp.occupation_standard).to eq os
             expect(oswp.hours).to eq 50
+            expect(oswp.sort_order).to eq 99
           end
 
           it "returns correct response" do
@@ -132,6 +134,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["attributes"]["title"]).to eq "new work process title"
             expect(json["data"]["attributes"]["description"]).to eq "new work process desc"
             expect(json["data"]["attributes"]["hours"]).to eq 50
+            expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
@@ -148,6 +151,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(oswp.work_process).to eq wp
             expect(oswp.occupation_standard).to eq os
             expect(oswp.hours).to eq 50
+            expect(oswp.sort_order).to eq 99
           end
 
           it "returns correct response" do
@@ -160,6 +164,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["attributes"]["title"]).to eq "new work process title"
             expect(json["data"]["attributes"]["description"]).to eq "new work process desc"
             expect(json["data"]["attributes"]["hours"]).to eq 50
+            expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
@@ -272,6 +277,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             title: "this is an updated title",
             description: "this is an updated desc",
             hours: 40,
+            sort_order: 99,
           }
         }
       }
@@ -295,6 +301,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             oswp.reload
             expect(oswp.work_process).to eq work_process
             expect(oswp.hours).to eq 40
+            expect(oswp.sort_order).to eq 99
           end
 
           it "returns correct response" do
@@ -306,6 +313,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["attributes"]["title"]).to eq "this is an updated title"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
             expect(json["data"]["attributes"]["hours"]).to eq 40
+            expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
@@ -321,6 +329,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             oswp.reload
             expect(oswp.work_process).to eq work_process
             expect(oswp.hours).to eq 40
+            expect(oswp.sort_order).to eq 99
           end
 
           it "returns correct response" do
@@ -332,6 +341,7 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["attributes"]["title"]).to eq "this is an updated title"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
             expect(json["data"]["attributes"]["hours"]).to eq 40
+            expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
         end
