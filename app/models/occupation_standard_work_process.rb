@@ -1,5 +1,5 @@
 class OccupationStandardWorkProcess < ApplicationRecord
-  belongs_to :occupation_standard
+  belongs_to :occupation_standard, touch: true
   belongs_to :work_process
   has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
   has_many :skills, through: :occupation_standard_skills

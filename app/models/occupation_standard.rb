@@ -21,6 +21,8 @@ class OccupationStandard < ApplicationRecord
 
   validates :title, presence: true
 
+  after_commit :generate_download_docs, except: :destroy
+
   delegate :rapids_code, to: :occupation
   delegate :onet_code, to: :occupation
   delegate :type, to: :occupation, prefix: true
@@ -150,6 +152,11 @@ class OccupationStandard < ApplicationRecord
 
   def skill_fields(oss)
     [oss.skill_description, oss.sort_order]
+  end
+
+  def generate_download_docs
+    GenerateOccupationStandardPdfJob.perform_later(id)
+    GenerateOccupationStandardExcelJob.perform_later(id)
   end
 
   def to_s
