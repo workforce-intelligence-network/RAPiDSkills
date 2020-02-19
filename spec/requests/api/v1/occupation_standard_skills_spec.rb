@@ -63,7 +63,8 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     let(:path) { "/api/v1/skills/#{oss.id}" }
     let(:user) { create(:user) }
     let(:os) { create(:occupation_standard) }
-    let!(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
+    let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:oss) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
     let(:header) { auth_header(user) }
     let(:params) {
       {
@@ -72,6 +73,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
           id: oss.id.to_s,
           attributes: {
             description: "this is an updated desc",
+            sort_order: 99,
           }
         }
       }
@@ -94,6 +96,8 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(skill.parent_skill).to eq original_skill
             oss.reload
             expect(oss.skill).to eq skill
+            expect(oss.sort_order).to eq 99
+            expect(oss.occupation_standard_work_process).to eq oswp
           end
 
           it "returns correct response" do
@@ -103,6 +107,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(json["data"]["id"]).to eq oss.id.to_s
             expect(json["data"]["type"]).to eq "skill"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
           end
         end
@@ -117,6 +122,8 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             }.to_not change(Skill, :count)
             oss.reload
             expect(oss.skill).to eq skill
+            expect(oss.sort_order).to eq 99
+            expect(oss.occupation_standard_work_process).to eq oswp
             expect(skill.reload.parent_skill).to eq parent
           end
 
@@ -127,6 +134,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(json["data"]["id"]).to eq oss.id.to_s
             expect(json["data"]["type"]).to eq "skill"
             expect(json["data"]["attributes"]["description"]).to eq "this is an updated desc"
+            expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
           end
         end
@@ -181,6 +189,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
           type: "skill",
           attributes: {
             description: "this is a new skill",
+            sort_order: 99,
           },
           relationships: {
             occupation_standard: {
@@ -214,6 +223,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(oss.skill).to eq skill
               expect(oss.occupation_standard).to eq os
               expect(oss.occupation_standard_work_process).to be nil
+              expect(oss.sort_order).to eq 99
             end
 
             it "returns correct response" do
@@ -224,6 +234,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(json["data"]["id"]).to eq oss.id.to_s
               expect(json["data"]["type"]).to eq "skill"
               expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
+              expect(json["data"]["attributes"]["sort_order"]).to eq 99
               expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
             end
           end
@@ -240,6 +251,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(oss.skill).to eq skill
               expect(oss.occupation_standard).to eq os
               expect(oss.occupation_standard_work_process).to be nil
+              expect(oss.sort_order).to eq 99
             end
 
             it "returns correct response" do
@@ -250,6 +262,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(json["data"]["id"]).to eq oss.id.to_s
               expect(json["data"]["type"]).to eq "skill"
               expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
+              expect(json["data"]["attributes"]["sort_order"]).to eq 99
               expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
             end
           end
@@ -262,6 +275,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
                 type: "skill",
                 attributes: {
                   description: "this is a new skill",
+                  sort_order: 99,
                 },
                 relationships: {
                   work_process: {
@@ -290,6 +304,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(oss.skill).to eq skill
               expect(oss.occupation_standard).to eq os
               expect(oss.occupation_standard_work_process).to eq oswp
+              expect(oss.sort_order).to eq 99
             end
 
             it "returns correct response" do
@@ -300,6 +315,7 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(json["data"]["id"]).to eq oss.id.to_s
               expect(json["data"]["type"]).to eq "skill"
               expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
+              expect(json["data"]["attributes"]["sort_order"]).to eq 99
               expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
             end
           end
