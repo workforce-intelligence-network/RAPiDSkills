@@ -4,6 +4,7 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   before_action :set_occupation_standard, only: [:index]
   before_action :set_occupation_standard_skill, only: [:show, :update]
   before_action :authorize_parent, only: [:create]
+  after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
   def index
     @osss = @os.occupation_standard_skills_with_no_work_process
@@ -89,5 +90,9 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   def render_resource
     options = { links: { self: @oss.url } }
     render json: API::V1::OccupationStandardSkillSerializer.new(@oss, options)
+  end
+
+  def generate_download_docs
+    @oss.occupation_standard.generate_download_docs
   end
 end

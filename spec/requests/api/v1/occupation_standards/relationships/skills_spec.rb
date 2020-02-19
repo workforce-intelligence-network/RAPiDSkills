@@ -67,6 +67,12 @@ RSpec.describe API::V1::OccupationStandards::Relationships::SkillsController, ty
           .and change(Skill, :count).by(0)
       end
 
+      it "triggers pdf/excel generation" do
+        expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+        expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+        delete path, params: params, headers: header
+      end
+
       it "removes occupation standard skills from association" do
         delete path, params: params, headers: header
         os.reload

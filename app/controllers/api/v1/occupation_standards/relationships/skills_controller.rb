@@ -1,5 +1,6 @@
 class API::V1::OccupationStandards::Relationships::SkillsController < API::V1::OccupationStandards::Relationships::BaseController
   skip_before_action :authenticate, only: [:index]
+  after_action :generate_download_docs, only: :destroy, if: -> { response.successful? }
 
   def index
     @osss = @os.occupation_standard_skills_with_no_work_process
@@ -25,5 +26,9 @@ class API::V1::OccupationStandards::Relationships::SkillsController < API::V1::O
 
   def object_params
     params.require(:data)
+  end
+
+  def generate_download_docs
+    @os.generate_download_docs
   end
 end
