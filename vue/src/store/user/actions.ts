@@ -25,7 +25,7 @@ export const getUser = async ({ state, commit, rootState }) => {
 
   const response = await apiRaw.get(`/sessions/${sessionId}/user`);
   if (!_get(response, 'data.data.attributes')) {
-    console.error('Invalid response for session user GET');
+    console.log('Invalid response for session user GET');
     return;
   }
 

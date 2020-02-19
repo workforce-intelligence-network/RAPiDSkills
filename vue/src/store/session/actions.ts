@@ -58,6 +58,18 @@ export const initializeSession = async ({ dispatch, commit }) => {
 };
 
 export const expireToken = async ({ state, commit }) => {
+  try {
+  // eslint-disable-next-line prefer-destructuring
+    const session: Session | undefined = state.session;
+    if (session) {
+      await jsonApi
+        .one(session.staticType.jsonApiClassName, session.id)
+        .destroy();
+    }
+  } catch (e) {
+    console.log('Failed to delete session');
+  }
+
   // TODO: if initialized, allow to re-login or persist state before wiping out token/state
   // if (state.initialized) {
   //   alert('Token expired');
