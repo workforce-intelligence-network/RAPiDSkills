@@ -3224,16 +3224,17 @@ being added.</p>
 <blockquote>
 <p>Example request</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/work_processes/83'</span> <span class="se">\</span>
+<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/work_processes/85'</span> <span class="se">\</span>
 --header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
 --header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
---header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGYvSlBlSjhsVDZ1YkhETFBiTVdBZ3VLZ1RQRWlLRHo2V3R4eHpyeVZJRVRaN3FCTmRUbHFlIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiZTEwNGQ1YWQtODU3NC00Zjk1LTg5Y2MtNTJmMDc2ZDA3YzQyIn0.MoppB2O24Qbf6Ljq0r0GRKS3b1BL89qLM0tjmEedP6Q'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6ImU4ZDZiOTU0LTNiNDctNGYwNy1iNjllLWRlYTM0YWVmZjZkZCJ9.mT6JYanc-mOS0xclTZoL3DK98NT-qOEhRaTT6uI6y2Q'</span> <span class="se">\</span>
 --data-raw <span class="s1">'{
     "data": {
         "attributes": {
             "title": "New title",
             "description": "New description",
-            "hours": 50
+            "hours": 50,
+            "sort_order": 3
         }
     }
 }'</span>
@@ -3248,11 +3249,6 @@ being added.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td>title</td>
-<td>string</td>
-<td></td>
-</tr>
-<tr>
 <td>description</td>
 <td>string</td>
 <td></td>
@@ -3262,6 +3258,16 @@ being added.</p>
 <td>integer</td>
 <td></td>
 </tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td></td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <blockquote>
@@ -3269,10 +3275,11 @@ being added.</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"83"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"85"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"hours"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sort_order"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
             </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New title"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New description"</span><span class="w">
         </span><span class="p">},</span><span class="w">
@@ -3280,32 +3287,33 @@ being added.</p>
             </span><span class="s2">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
                     </span><span class="p">{</span><span class="w">
-                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"685"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"586"</span><span class="p">,</span><span class="w">
                         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
                     </span><span class="p">}</span><span class="w">
                 </span><span class="p">],</span><span class="w">
                 </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83/relationships/skills"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83/skills"</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85/relationships/skills"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85/skills"</span><span class="w">
                 </span><span class="p">}</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83"</span><span class="w">
+            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/83"</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/85"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"685"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"586"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"another new skill to add to standard 22"</span><span class="w">
+                </span><span class="s2">"sort_order"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Recognizes safety, health, industrial, and environmental requirements in all departments"</span><span class="w">
             </span><span class="p">},</span><span class="w">
             </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/685"</span><span class="w">
+                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/586"</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
