@@ -66,7 +66,7 @@ RSpec.describe User, type: :model do
 
     context "when new user" do
       context "when lead" do
-        let(:user) { build(:user) }
+        let(:user) { build(:user, role: :lead) }
 
         it "calls welcome mailer" do
           expect(UserMailer).to receive(:welcome_email).and_return(mailer)
