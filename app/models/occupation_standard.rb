@@ -21,8 +21,6 @@ class OccupationStandard < ApplicationRecord
 
   validates :title, presence: true
 
-  after_commit :generate_download_docs, except: :destroy
-
   delegate :rapids_code, to: :occupation
   delegate :onet_code, to: :occupation
   delegate :type, to: :occupation, prefix: true

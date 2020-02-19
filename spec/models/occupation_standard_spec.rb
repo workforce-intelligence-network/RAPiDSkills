@@ -229,36 +229,4 @@ RSpec.describe OccupationStandard, type: :model do
       end
     end
   end
-
-  describe "#update" do
-    let!(:os) { create(:occupation_standard) }
-
-    context "when occupation standard is updated directly" do
-      it "calls pdf/excel jobs" do
-        expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
-        expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
-        os.update!(title: "new title")
-      end
-    end
-
-    context "when occupation standard work process is updated" do
-      let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-
-      it "calls pdf/excel jobs" do
-        expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
-        expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
-        oswp.update!(hours: 999)
-      end
-    end
-
-    context "when occupation standard skill is updated" do
-      let!(:oss) { create(:occupation_standard_skill, occupation_standard: os) }
-
-      it "calls pdf/excel jobs" do
-        expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
-        expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
-        oss.update!(sort_order: 99)
-      end
-    end
-  end
 end
