@@ -244,6 +244,26 @@
               </ul>
           </li>
           <li>
+            <a href="#categories" class="toc-h1 toc-link" data-title="Categories">Categories</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#categories-category-object" class="toc-h2 toc-link" data-title="Category object">Category object</a>
+                  </li>
+                  <li>
+                    <a href="#categories-retrieve-category" class="toc-h2 toc-link" data-title="Retrieve category">Retrieve category</a>
+                  </li>
+                  <li>
+                    <a href="#categories-create-category" class="toc-h2 toc-link" data-title="Create category">Create category</a>
+                  </li>
+                  <li>
+                    <a href="#categories-update-category" class="toc-h2 toc-link" data-title="Update category">Update category</a>
+                  </li>
+                  <li>
+                    <a href="#categories-remove-category-from-work-process" class="toc-h2 toc-link" data-title="Remove category from work process">Remove category from work process</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#downloads" class="toc-h1 toc-link" data-title="Downloads">Downloads</a>
               <ul class="toc-list-h2">
                   <li>
@@ -343,6 +363,12 @@
                   </li>
                   <li>
                     <a href="#skills-remove-skill-from-standard" class="toc-h2 toc-link" data-title="Remove skill from standard">Remove skill from standard</a>
+                  </li>
+                  <li>
+                    <a href="#skills-remove-skill-from-work-process" class="toc-h2 toc-link" data-title="Remove skill from work process">Remove skill from work process</a>
+                  </li>
+                  <li>
+                    <a href="#skills-remove-skill-from-category" class="toc-h2 toc-link" data-title="Remove skill from category">Remove skill from category</a>
                   </li>
               </ul>
           </li>
@@ -651,6 +677,287 @@ first, previous, next, and last pages are also displayed when applicable.</p>
 
 <p>Note that the example URI shows unencoded [ and ] characters for readability.
 In practice, these characters should be percent-encoded.</p>
+<h1 id='categories'>Categories</h1><h2 id='categories-category-object'>Category object</h2><h3 id='categories-category-object-attributes'>Attributes</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td>Ranking within occupation standard</td>
+</tr>
+</tbody></table>
+<h2 id='categories-retrieve-category'>Retrieve category</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request GET <span class="s1">'http://www.rapidskills.org/api/v1/categories/2'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span>
+</code></pre><h3 id='categories-retrieve-category-http-request'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/categories/:category_id</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"another new category"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sort_order"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"work_process"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/categories/2/relationships/skills"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/categories/2/skills"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/categories/2"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/categories/2"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"work_process"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"hours"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Operates in the workplace in a safe and effective manner"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/6/relationships/categories"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/6/categories"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"25"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"29"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/6/relationships/skills"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/6/skills"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/work_processes/6"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='categories-create-category'>Create category</h2>
+<p>User must be the owner of the work process to which the category is being
+added.</p>
+
+<p>See the <a href="#categories-retrieve-category">Retrieve category</a> response for an
+example of the full rendering of the relationship data for a category.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request POST <span class="s1">'http://www.rapidskills.org/api/v1/categories'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6IjBhZDgyNDA5LTJiYWQtNDBhOS1hMjg2LWViMWViMzA3YTIwYyJ9.UvgXioiZAvm6Pts_1DolG6MN_u1ZG3HnQZopGJFpkE0'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
+    "data": {
+        "type": "category",
+        "attributes": {
+            "name": "another new category",
+            "sort_order": 2
+        },
+        "relationships": {
+            "work_process": {
+                "data": {
+                    "type": "work_process",
+                    "id": "6"
+                }
+            }
+        }
+    }
+}'</span>
+</code></pre><h3 id='categories-create-category-http-request'>HTTP Request</h3>
+<p><code>POST http://www.rapidskills.org/api/v1/categories</code></p>
+<h3 id='categories-create-category-query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>The relationships hash with the work process data is also required.</p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"another new category"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sort_order"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='categories-update-category'>Update category</h2>
+<p>User must be authorized to update the category.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/categories/1'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6IjBhZDgyNDA5LTJiYWQtNDBhOS1hMjg2LWViMWViMzA3YTIwYyJ9.UvgXioiZAvm6Pts_1DolG6MN_u1ZG3HnQZopGJFpkE0'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
+    "data": {
+        "attributes": {
+            "name": "New name",
+            "sort_order": 3
+        }
+    }
+}'</span>
+</code></pre><h3 id='categories-update-category-http-request'>HTTP Request</h3>
+<p><code>PATCH http://www.rapidskills.org/api/v1/categories/:category_id</code></p>
+<h3 id='categories-update-category-query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>string</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"category"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New name"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sort_order"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='categories-remove-category-from-work-process'>Remove category from work process</h2>
+<p>User must own the work process from which the category is being removed, and
+the category must belong to the work process. Categories with nested skills
+cannot be removed.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request DELETE <span class="s1">'http://localhost:3000/api/v1/work_processes/6/relationships/categories'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6IjBhZDgyNDA5LTJiYWQtNDBhOS1hMjg2LWViMWViMzA3YTIwYyJ9.UvgXioiZAvm6Pts_1DolG6MN_u1ZG3HnQZopGJFpkE0'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
+    "data": [
+        {
+            "type": "category",
+            "id": "1"
+        },
+        {
+            "type": "category",
+            "id": "2"
+        }
+    ]
+}'</span>
+</code></pre><h3 id='categories-remove-category-from-work-process-http-request'>HTTP Request</h3>
+<p><code>DELETE http://www.rapidskills.org/api/v1/work_processes/:work_process_id/relationships/categories</code></p>
+<h3 id='categories-remove-category-from-work-process-query-parameters'>Query Parameters</h3>
+<p>Array specifying type and id must be passed.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type<br /><em>required</em></td>
+<td>string</td>
+<td>&quot;category&quot;</td>
+</tr>
+<tr>
+<td>id<br /><em>required</em></td>
+<td>string</td>
+<td>ID of category to remove from work process</td>
+</tr>
+</tbody></table>
+
+<p>Returns HTTP status 204, no content.</p>
 <h1 id='downloads'>Downloads</h1><h2 id='downloads-pdf-excel-generation'>PDF/Excel generation</h2>
 <p>This endpoint will trigger the PDF and/or Excel document generation for the
 resource passed in the relationships field.</p>
@@ -2103,6 +2410,11 @@ added.</p>
 <td>string</td>
 <td></td>
 </tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <p>The relationships hash with the occupation standard data is also required.</p>
@@ -2131,15 +2443,15 @@ added.</p>
 <blockquote>
 <p>Example request</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>curl -X PATCH <span class="se">\</span>
-  http://www.rapidskills.org/api/v1/skills/9 <span class="se">\</span>
-  -H <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
-  -H <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJGYvSlBlSjhsVDZ1YkhETFBiTVdBZ3VLZ1RQRWlLRHo2V3R4eHpyeVZJRVRaN3FCTmRUbHFlIiwic2Vzc2lvbl9pZGVudGlmaWVyIjoianE3MmV0T1p2Yzd6SEdMdXF0ZHg1USJ9.RKLaV3yfDs5czwBEuVr-gZtUatCfZTJOkmzEkYCLhcA'</span> <span class="se">\</span>
-  -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
-  -d <span class="s1">'{
+<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/skills/29'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6ImQ1NDYxMGZiLTg3MDEtNGI4YS04NzJkLTlhMTI2MTJiZWUwYSJ9.KpBJs2rNkFqNxkpaexuKjs1lxy6qlaHoeFYo-tlcC2U'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
     "data": {
         "attributes": {
-            "description": "Assess client needs"
+            "description": "Assess client needs",
+            "sort_order": 8
         }
     }
 }'</span>
@@ -2158,6 +2470,11 @@ added.</p>
 <td>string</td>
 <td></td>
 </tr>
+<tr>
+<td>sort_order</td>
+<td>integer</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <blockquote>
@@ -2165,17 +2482,18 @@ added.</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"29"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"skill"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"sort_order"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
             </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Assess client needs"</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
+            </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/29"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/9"</span><span class="w">
+        </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/skills/29"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre><h2 id='skills-remove-skill-from-standard'>Remove skill from standard</h2>
@@ -2222,6 +2540,98 @@ must belong to the standard.</p>
 <td>id<br /><em>required</em></td>
 <td>string</td>
 <td>ID of skill to remove from occupation standard</td>
+</tr>
+</tbody></table>
+
+<p>Returns HTTP status 204, no content.</p>
+<h2 id='skills-remove-skill-from-work-process'>Remove skill from work process</h2>
+<p>User must own the work process from which the skill is being removed, and the skill
+must belong to the work process.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request DELETE <span class="s1">'http://www.rapidskills.org/api/v1/work_processes/6/relationships/skills'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6IjBhZDgyNDA5LTJiYWQtNDBhOS1hMjg2LWViMWViMzA3YTIwYyJ9.UvgXioiZAvm6Pts_1DolG6MN_u1ZG3HnQZopGJFpkE0'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
+    "data": [
+        {
+            "type": "skill",
+            "id": "25"
+        },
+        {
+            "type": "skill",
+            "id": "26"
+        }
+    ]
+}'</span>
+</code></pre><h3 id='skills-remove-skill-from-work-process-http-request'>HTTP Request</h3>
+<p><code>DELETE http://www.rapidskills.org/api/v1/work_processes/:work_process_id/relationships/skills</code></p>
+<h3 id='skills-remove-skill-from-work-process-query-parameters'>Query Parameters</h3>
+<p>Array specifying type and id must be passed.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type<br /><em>required</em></td>
+<td>string</td>
+<td>&quot;skill&quot;</td>
+</tr>
+<tr>
+<td>id<br /><em>required</em></td>
+<td>string</td>
+<td>ID of skill to remove from work process</td>
+</tr>
+</tbody></table>
+
+<p>Returns HTTP status 204, no content.</p>
+<h2 id='skills-remove-skill-from-category'>Remove skill from category</h2>
+<p>User must own the category from which the skill is being removed, and the skill
+must belong to the category.</p>
+
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request DELETE <span class="s1">'http://www.rapidskills.org/api/v1/categories/3/relationships/skills'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MjIsImVuY3J5cHRlZF9wYXNzd29yZCI6IiQyYSQxMSRXQlFKZmZ6WGFzVTBkUHZBTG1SQWZ1LkZ0TExKWE90MjBsdXQyakdxa2lKVHQ1WVYyOEt0SyIsInNlc3Npb25faWRlbnRpZmllciI6IjBhZDgyNDA5LTJiYWQtNDBhOS1hMjg2LWViMWViMzA3YTIwYyJ9.UvgXioiZAvm6Pts_1DolG6MN_u1ZG3HnQZopGJFpkE0'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
+    "data": [
+        {
+            "type": "skill",
+            "id": "8146"
+        }
+    ]
+}'</span>
+</code></pre><h3 id='skills-remove-skill-from-category-http-request'>HTTP Request</h3>
+<p><code>DELETE http://www.rapidskills.org/api/v1/categories/:category_id/relationships/skills</code></p>
+<h3 id='skills-remove-skill-from-category-query-parameters'>Query Parameters</h3>
+<p>Array specifying type and id must be passed.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>type<br /><em>required</em></td>
+<td>string</td>
+<td>&quot;skill&quot;</td>
+</tr>
+<tr>
+<td>id<br /><em>required</em></td>
+<td>string</td>
+<td>ID of skill to remove from category</td>
 </tr>
 </tbody></table>
 
