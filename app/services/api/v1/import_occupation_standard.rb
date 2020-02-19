@@ -65,16 +65,7 @@ class API::V1::ImportOccupationStandard
                else
                  raise "Either work process or skill is required"
                end
-       # occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
-       #   title: row["occupation_standard_title"],
-       #   type: type,
-       #   rapids_code: row["rapids_code"],
-       #   onet_code: row["onet_code"],
-       # )
-
-        # Tmp fix to re-upload files to set rapids/onet codes
-        occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_initialize
-        occupation.update!(
+        occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
           title: row["occupation_standard_title"],
           type: type,
           rapids_code: row["rapids_code"],
@@ -83,29 +74,16 @@ class API::V1::ImportOccupationStandard
       end
       organization = Organization.where(title: row["organization_title"]).first_or_create!
       state = State.find_by(short_name: row["registration_state"])
-     # occupation_standard = OccupationStandard.where(
-     #   type: "#{row["type"]}Standard",
-     #   organization: organization,
-     #   occupation: occupation,
-     #   title: row["occupation_standard_title"].presence || occupation.try(:title),
-     # ).first_or_create!(
-     #   creator: user,
-     #   registration_organization_name: row["registration_organization_name"],
-     #   registration_state: state,
-     #   )
-      #
-      #   Tmp fix to re-upload files to set registration state
       occupation_standard = OccupationStandard.where(
         type: "#{row["type"]}Standard",
         organization: organization,
         occupation: occupation,
         title: row["occupation_standard_title"].presence || occupation.try(:title),
-      ).first_or_initialize
-      occupation_standard.update!(
+      ).first_or_create!(
         creator: user,
         registration_organization_name: row["registration_organization_name"],
         registration_state: state,
-      )
+        )
     end
   end
 end
