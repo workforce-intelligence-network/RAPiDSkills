@@ -1,4 +1,6 @@
 class API::V1::OccupationStandardWorkProcesses::Relationships::SkillsController < API::V1::OccupationStandardWorkProcesses::RelationshipsController
+  after_action :generate_download_docs, only: :destroy, if: -> { response.successful? }
+
   def index
     @osss = @oswp.occupation_standard_skills
     options = {
@@ -23,5 +25,9 @@ class API::V1::OccupationStandardWorkProcesses::Relationships::SkillsController 
 
   def object_params
     params.require(:data)
+  end
+
+  def generate_download_docs
+    @oswp.occupation_standard.generate_download_docs
   end
 end
