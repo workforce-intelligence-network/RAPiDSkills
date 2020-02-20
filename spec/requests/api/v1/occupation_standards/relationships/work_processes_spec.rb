@@ -72,6 +72,12 @@ RSpec.describe API::V1::OccupationStandards::Relationships::WorkProcessesControl
           os.reload
           expect(os.occupation_standard_work_processes).to eq [oswp2]
         end
+
+        it "triggers pdf/excel generation" do
+          expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+          expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+          delete path, params: params, headers: header
+        end
       end
 
       context "when work processes have skills" do
@@ -92,6 +98,12 @@ RSpec.describe API::V1::OccupationStandards::Relationships::WorkProcessesControl
             delete path, params: params, headers: header
           }.to change(OccupationStandardWorkProcess, :count).by(0)
             .and change(WorkProcess, :count).by(0)
+        end
+
+        it "does not trigger pdf/excel generation" do
+          expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+          delete path, params: params, headers: header
         end
 
         it "returns 422 http status" do

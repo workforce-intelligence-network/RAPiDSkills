@@ -1,6 +1,7 @@
 class API::V1::OccupationStandardsController < API::V1::APIController
   skip_before_action :authenticate, only: [:index, :show]
   before_action :set_occupation_standard, only: [:show, :update, :destroy]
+  after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
   def index
     @oss = OccupationStandard.with_eager_loading
@@ -118,5 +119,9 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :"occupation_standard_work_processes.occupation_standard_skills",
     ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
+  end
+
+  def generate_download_docs
+    @os.generate_download_docs
   end
 end

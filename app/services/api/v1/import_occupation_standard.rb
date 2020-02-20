@@ -37,6 +37,7 @@ class API::V1::ImportOccupationStandard
         end
       end
     end
+    occupation_standard.generate_download_docs
     ServiceResponse.new(success: true)
   rescue Exception => e
     error_msg = e.respond_to?(:record) ? "#{e.record.class.name} " : ""

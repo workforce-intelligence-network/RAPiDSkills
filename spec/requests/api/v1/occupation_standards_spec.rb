@@ -308,6 +308,12 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
           expect(json["included"]).to_not be_empty
         end
+
+        it "triggers pdf/excel generation" do
+          expect(GenerateOccupationStandardPdfJob).to receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to receive(:perform_later)
+          post path, params: params, headers: header
+        end
       end
 
       context "when not passing title" do
@@ -348,6 +354,12 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
         it "does not call clone method" do
           expect_any_instance_of(OccupationStandard).to_not receive(:clone_as_unregistered!)
+          post path, params: params, headers: header
+        end
+
+        it "does not trigger pdf/excel generation" do
+          expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
           post path, params: params, headers: header
         end
 
@@ -515,6 +527,12 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
 
             expect(json["included"]).to_not be_empty
           end
+
+          it "triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+            patch path, params: params, headers: header
+          end
         end
 
         context "when not updating relationships" do
@@ -565,6 +583,12 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
             patch path, params: params, headers: header
             os.reload
             expect(os.registration_organization_name).to_not eq "new reg org name"
+          end
+
+          it "does not trigger pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+            expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+            patch path, params: params, headers: header
           end
 
           it "returns 422 http status" do
