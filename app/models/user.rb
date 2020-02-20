@@ -27,6 +27,10 @@ class User < ApplicationRecord
     client_sessions.where(id: session_identifier).destroy_all
   end
 
+  def joined?
+    !last_sign_in_at.nil?
+  end
+
   private
 
   def authentication_payload(session_identifier)

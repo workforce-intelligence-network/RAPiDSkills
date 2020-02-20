@@ -10,6 +10,10 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/admin/sidekiq'
   end
 
+  # Helpers for vue routes
+  get '/signup' => "vuejs#index", as: 'new_registration'
+  get '/logins' => "vuejs#index", as: 'new_session'
+
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :occupations, only: [:index, :show]
