@@ -12,7 +12,7 @@ ActiveAdmin.register OccupationStandardWorkProcess do
   remove_filter :occupation_standard_skills
 
   controller do
-    after_action :generate_download_docs, only: [:create, :update, :destroy], if: -> { response.successful? }
+    after_action :generate_download_docs, only: [:create, :update, :destroy], if: -> { response.redirect? }
 
     private
 
