@@ -34,7 +34,7 @@ class OccupationStandard < ApplicationRecord
 
   scope :with_eager_loading, -> { includes(:creator, :occupation, :industry, :parent_occupation_standard, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, organization: [{ logo_attachment: [:blob]}]) }
 
-  CSV_HEADERS = %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort skill skill_sort).freeze
+  CSV_HEADERS = %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort category category_sort skill skill_sort).freeze
 
   def occupation_standard_skills_with_no_work_process_ids
     occupation_standard_skills_with_no_work_process.pluck(:id)
@@ -109,7 +109,13 @@ class OccupationStandard < ApplicationRecord
     CSV.generate do |csv|
       csv << CSV_HEADERS
       occupation_standard_work_processes.each do |oswp|
-        if oswp.skills.any?
+        if oswp.categories.any?
+          oswp.categories.each do |category|
+            category.occupation_standard_skills.each do |oss|
+              csv << work_process_with_category_row(oss)
+            end
+          end
+        elsif oswp.skills.any?
           oswp.occupation_standard_skills.each do |oss|
             csv << work_process_with_skill_row(oss)
           end
@@ -128,8 +134,12 @@ class OccupationStandard < ApplicationRecord
     "#{title.parameterize(separator: '_')}_#{I18n.l(Time.current, format: :filename)}"
   end
 
+  def work_process_with_category_row(oss)
+    work_process_row(oss.occupation_standard_work_process) + category_fields(oss.category) + skill_fields(oss)
+  end
+
   def work_process_with_skill_row(oss)
-    work_process_row(oss.occupation_standard_work_process) + skill_fields(oss)
+    work_process_row(oss.occupation_standard_work_process) + category_fields + skill_fields(oss)
   end
 
   def work_process_row(oswp)
@@ -137,7 +147,7 @@ class OccupationStandard < ApplicationRecord
   end
 
   def skill_row(oss)
-    common_fields + work_process_fields + skill_fields(oss)
+    common_fields + work_process_fields + category_fields + skill_fields(oss)
   end
 
   def common_fields
@@ -146,6 +156,10 @@ class OccupationStandard < ApplicationRecord
 
   def work_process_fields(oswp=nil)
     [oswp.try(:work_process_title), oswp.try(:work_process_description), oswp.try(:hours), oswp.try(:sort_order)]
+  end
+
+  def category_fields(category=nil)
+    [category.try(:name), category.try(:sort_order)]
   end
 
   def skill_fields(oss)

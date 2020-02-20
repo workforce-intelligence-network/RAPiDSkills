@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
   belongs_to :occupation_standard_work_process
-  has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }
+  has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }, dependent: :destroy
 
   validates :name, presence: true,
     uniqueness: { scope: :occupation_standard_work_process }
