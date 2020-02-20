@@ -152,6 +152,11 @@ class OccupationStandard < ApplicationRecord
     [oss.skill_description, oss.sort_order]
   end
 
+  def generate_download_docs
+    GenerateOccupationStandardPdfJob.perform_later(id)
+    GenerateOccupationStandardExcelJob.perform_later(id)
+  end
+
   def to_s
     "#{title} (#{organization.title})"
   end
