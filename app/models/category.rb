@@ -6,4 +6,8 @@ class Category < ApplicationRecord
     uniqueness: { scope: :occupation_standard_work_process }
 
   delegate :creator, to: :occupation_standard_work_process
+
+  def to_s
+    name
+  end
 end
