@@ -34,7 +34,7 @@ class OccupationStandard < ApplicationRecord
 
   scope :with_eager_loading, -> { includes(:creator, :occupation, :industry, :parent_occupation_standard, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, organization: [{ logo_attachment: [:blob]}]) }
 
-  CSV_HEADERS = %w(rapids_code onet_code organization_title occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort category category_sort skill skill_sort).freeze
+  CSV_HEADERS = %w(rapids_code onet_code organization_title registration_organization_name registration_state occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort category category_sort skill skill_sort).freeze
 
   def occupation_standard_skills_with_no_work_process_ids
     occupation_standard_skills_with_no_work_process.pluck(:id)
@@ -151,7 +151,7 @@ class OccupationStandard < ApplicationRecord
   end
 
   def common_fields
-    [rapids_code, onet_code, organization_title, title, type.gsub('Standard', '')]
+    [rapids_code, onet_code, organization_title, registration_organization_name, registration_state_name, title, type.gsub('Standard', '')]
   end
 
   def work_process_fields(oswp=nil)
