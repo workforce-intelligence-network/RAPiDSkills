@@ -28,7 +28,7 @@ ActiveAdmin.register OccupationStandard do
   remove_filter :excel_blob
 
   controller do
-    after_action :generate_download_docs, only: [:create, :update]
+    after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
     private
 
