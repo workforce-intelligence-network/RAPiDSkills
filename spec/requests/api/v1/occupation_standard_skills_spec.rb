@@ -110,6 +110,12 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
             expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
           end
+
+          it "triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+            patch path, params: params, headers: header
+          end
         end
 
         context "when new skill name does exist" do
@@ -157,6 +163,12 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
           expect{
             patch path, params: params, headers: header
           }.to_not change(Skill, :count)
+        end
+
+        it "does not trigger pdf/excel generation" do
+          expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+          patch path, params: params, headers: header
         end
 
         it "returns 422 with an error message" do
@@ -236,6 +248,12 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               expect(json["data"]["attributes"]["description"]).to eq "this is a new skill"
               expect(json["data"]["attributes"]["sort_order"]).to eq 99
               expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_skill_url(oss)
+            end
+
+            it "triggers pdf/excel generation" do
+              expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+              expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+              post path, params: params, headers: header
             end
           end
 
@@ -361,6 +379,12 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
               post path, params: params, headers: header
             }.to change(Skill, :count).by(0)
               .and change(OccupationStandardSkill, :count).by(0)
+          end
+
+          it "does not trigger pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+            expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+            post path, params: params, headers: header
           end
 
           it "returns 422 with an error message" do

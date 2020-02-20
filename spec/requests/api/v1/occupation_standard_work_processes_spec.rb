@@ -167,6 +167,12 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
+
+          it "triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+            post path, params: params, headers: header
+          end
         end
       end
 
@@ -197,6 +203,13 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             }.to change(WorkProcess, :count).by(0)
               .and change(OccupationStandardWorkProcess, :count).by(0)
           end
+
+          it "does not trigger pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+            expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+            post path, params: params, headers: header
+          end
+
 
           it "returns 422 with an error message" do
             post path, params: params, headers: header
@@ -316,6 +329,12 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
             expect(json["data"]["attributes"]["sort_order"]).to eq 99
             expect(json["data"]["links"]["self"]).to eq api_v1_occupation_standard_work_process_url(oswp)
           end
+
+          it "triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).with(os.id)
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).with(os.id)
+            patch path, params: params, headers: header
+          end
         end
 
         context "when new work process title/desc does exist" do
@@ -364,6 +383,12 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
           expect{
             patch path, params: params, headers: header
           }.to_not change(WorkProcess, :count)
+        end
+
+        it "does not trigger pdf/excel generation" do
+          expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+          expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+          patch path, params: params, headers: header
         end
 
         it "returns 422 with an error message" do
