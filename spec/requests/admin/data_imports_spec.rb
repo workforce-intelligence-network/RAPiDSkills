@@ -100,6 +100,12 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os3.flattened_skills[0].description).to eq "Understand costs"
             expect(os3.occupation_standard_skills[0].occupation_standard_work_process).to eq os3.occupation_standard_work_processes[0]
           end
+
+          it "triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).exactly(3).times
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).exactly(3).times
+            post path, params: params
+          end
         end
 
         context "without rapids_code" do
@@ -147,6 +153,12 @@ RSpec.describe "Admin::DataImports", type: :request do
               .and change(OccupationStandardWorkProcess, :count).by(2)
               .and change(OccupationStandardSkill, :count).by(4)
           end
+
+          it "triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).once
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).once
+            post path, params: params
+          end
         end
 
         context "with complete invalid data" do
@@ -160,6 +172,12 @@ RSpec.describe "Admin::DataImports", type: :request do
               .and change(Skill, :count).by(0)
               .and change(OccupationStandardWorkProcess, :count).by(0)
               .and change(OccupationStandardSkill, :count).by(0)
+          end
+
+          it "does not triggers pdf/excel generation" do
+            expect(GenerateOccupationStandardPdfJob).to_not receive(:perform_later)
+            expect(GenerateOccupationStandardExcelJob).to_not receive(:perform_later)
+            post path, params: params
           end
         end
       end
