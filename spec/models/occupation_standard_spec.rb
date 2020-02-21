@@ -203,8 +203,10 @@ RSpec.describe OccupationStandard, type: :model do
     let(:os) { create(:occupation_standard) }
     let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os) }
     let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:category) { create(:category, occupation_standard_work_process: oswp1) }
     let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp1) }
     let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp1, category: category) }
 
     it "returns a string" do
       expect(os.to_csv).to be_a(String)

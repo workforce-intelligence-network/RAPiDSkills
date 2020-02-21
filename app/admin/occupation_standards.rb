@@ -133,10 +133,13 @@ ActiveAdmin.register OccupationStandard do
             span "Hours", class: "header"
           end
           column do
+            span "Categories", class: "header"
+          end
+          column do
             span "Skills", class: "header"
           end
         end
-        os.occupation_standard_work_processes.with_eager_loading.includes(:skills).each do |oswp|
+        os.occupation_standard_work_processes.with_eager_loading.includes(:skills, :categories).each do |oswp|
           columns do
             column do
               link_to oswp.work_process.to_s, admin_occupation_standard_work_process_path(oswp)
@@ -145,10 +148,25 @@ ActiveAdmin.register OccupationStandard do
               oswp.hours || "&nbsp;".html_safe
             end
             column do
-              oswp.skills.map do |skill|
-                oss = os.occupation_standard_skills.where(skill: skill).first
-                link_to skill.to_s, admin_occupation_standard_skill_path(oss)
-              end.join(", ").html_safe
+              if oswp.categories.any?
+                oswp.categories.map do |category|
+                  link_to category.to_s, admin_category_path(category)
+                end.join(", ").html_safe
+              else
+                "&nbsp;".html_safe
+              end
+            end
+            column do
+              if oswp.categories.any?
+                oswp.categories.flat_map(&:occupation_standard_skills).map do |oss|
+                  link_to oss.skill.to_s, admin_occupation_standard_skill_path(oss)
+                end.join(", ").html_safe
+              else
+                oswp.skills.map do |skill|
+                  oss = os.occupation_standard_skills.where(skill: skill).first
+                  link_to skill.to_s, admin_occupation_standard_skill_path(oss)
+                end.join(", ").html_safe
+              end
             end
           end
         end

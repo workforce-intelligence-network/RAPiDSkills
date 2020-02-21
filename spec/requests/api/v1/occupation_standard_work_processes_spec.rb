@@ -45,7 +45,14 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
 
     let(:os) { create(:occupation_standard) }
     let(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oss) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    let(:cat1) { create(:category, occupation_standard_work_process: oswp, sort_order: 2) }
+    let(:cat2) { create(:category, occupation_standard_work_process: oswp, sort_order: 1) }
+    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, sort_order: 2) }
+    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, sort_order: 1) }
+    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat1, sort_order: 2) }
+    let!(:oss4) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat1, sort_order: 1) }
+    let!(:oss5) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat2, sort_order: 2) }
+    let!(:oss6) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat2, sort_order: 1) }
 
     context "with valid work process id" do
       it "returns the correct data" do
@@ -56,14 +63,27 @@ RSpec.describe API::V1::OccupationStandardWorkProcessesController, type: :reques
         expect(json["data"]["type"]).to eq "work_process"
         expect(json["data"]["attributes"]["title"]).to eq oswp.work_process.title
         expect(json["data"]["attributes"]["description"]).to eq oswp.work_process.description
+
         expect(json["data"]["relationships"]["skills"]["links"]["self"]).to eq relationships_skills_api_v1_occupation_standard_work_process_url(oswp)
         expect(json["data"]["relationships"]["skills"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_occupation_standard_skills_url(oswp)
-        expect(json["data"]["relationships"]["skills"]["data"].count).to eq 1
+        expect(json["data"]["relationships"]["skills"]["data"].count).to eq 2
         expect(json["data"]["relationships"]["skills"]["data"][0]["type"]).to eq "skill"
-        expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss.id.to_s
-        expect(json["included"][0]["type"]).to eq "skill"
-        expect(json["included"][0]["id"]).to eq oss.id.to_s
-        expect(json["included"][0]["attributes"]["description"]).to eq oss.skill.description
+        expect(json["data"]["relationships"]["skills"]["data"][0]["id"]).to eq oss2.id.to_s
+        expect(json["data"]["relationships"]["skills"]["data"][1]["type"]).to eq "skill"
+        expect(json["data"]["relationships"]["skills"]["data"][1]["id"]).to eq oss1.id.to_s
+
+        expect(json["data"]["relationships"]["categories"]["links"]["self"]).to eq relationships_categories_api_v1_occupation_standard_work_process_url(oswp)
+        expect(json["data"]["relationships"]["categories"]["links"]["related"]).to eq api_v1_occupation_standard_work_process_categories_url(oswp)
+        expect(json["data"]["relationships"]["categories"]["data"].count).to eq 2
+        expect(json["data"]["relationships"]["categories"]["data"][0]["type"]).to eq "category"
+        expect(json["data"]["relationships"]["categories"]["data"][0]["id"]).to eq cat2.id.to_s
+        expect(json["data"]["relationships"]["categories"]["data"][1]["type"]).to eq "category"
+        expect(json["data"]["relationships"]["categories"]["data"][1]["id"]).to eq cat1.id.to_s
+
+        expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss1.id.to_s))
+        expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss2.id.to_s))
+        expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat1.id.to_s))
+        expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat2.id.to_s))
       end
     end
 

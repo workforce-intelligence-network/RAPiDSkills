@@ -15,6 +15,12 @@ class API::V1::OccupationStandardWorkProcessSerializer
     object.work_process_description
   end
 
+  has_many :categories,
+    links: {
+      self: ->(object) { object.relationships_url('categories') },
+      related: ->(object) { object.related_url('categories') },
+    }
+
   has_many :occupation_standard_skills,
     record_type: :skill,
     key: :skills,

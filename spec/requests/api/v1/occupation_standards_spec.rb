@@ -168,9 +168,15 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     let(:parent) { create(:occupation_standard) }
     let(:os) { create(:occupation_standard, :with_attachments, industry: industry, registration_state: state, parent_occupation_standard: parent) }
     let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+    let!(:cat1) { create(:category, occupation_standard_work_process: oswp) }
+    let!(:cat2) { create(:category, occupation_standard_work_process: oswp) }
     let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
     let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
     let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: nil) }
+    let!(:oss4) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat1, sort_order: 2) }
+    let!(:oss5) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat1, sort_order: 1) }
+    let!(:oss6) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat2, sort_order: 2) }
+    let!(:oss7) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: cat2, sort_order: 1) }
 
     it "returns the correct data" do
       get path
@@ -232,14 +238,20 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["parent_occupation_standard"]["data"]["id"]).to eq parent.id.to_s
 
       expect(json["included"]).to include(a_hash_including("type" => "work_process", "id" => oswp.id.to_s))
-      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss3.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss1.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss2.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss3.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss4.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss5.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss6.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss7.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "occupation", "id" => os.occupation_id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "organization", "id" => os.organization_id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "occupation_standard", "id" => parent.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat1.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat2.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "user", "id" => os.creator_id.to_s))
       user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
       expect(user_included_hash["attributes"]).to be nil

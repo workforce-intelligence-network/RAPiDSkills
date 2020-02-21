@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(version: 2020_02_15_010246) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "occupation_standard_work_process_id", null: false
+    t.integer "sort_order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["occupation_standard_work_process_id"], name: "index_categories_on_occupation_standard_work_process_id"
+  end
+
   create_table "client_sessions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -94,6 +103,8 @@ ActiveRecord::Schema.define(version: 2020_02_15_010246) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "sort_order", default: 0
     t.bigint "occupation_standard_work_process_id"
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_occupation_standard_skills_on_category_id"
     t.index ["occupation_standard_id"], name: "index_occupation_standard_skills_on_occupation_standard_id"
     t.index ["occupation_standard_work_process_id"], name: "occupation_standard_work_process_id_idx"
     t.index ["skill_id"], name: "index_occupation_standard_skills_on_skill_id"
@@ -232,10 +243,12 @@ ActiveRecord::Schema.define(version: 2020_02_15_010246) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "categories", "occupation_standard_work_processes"
   add_foreign_key "client_sessions", "users"
   add_foreign_key "data_imports", "users"
   add_foreign_key "locations", "organizations"
   add_foreign_key "locations", "states"
+  add_foreign_key "occupation_standard_skills", "categories"
   add_foreign_key "occupation_standard_skills", "occupation_standard_work_processes"
   add_foreign_key "occupation_standard_skills", "occupation_standards"
   add_foreign_key "occupation_standard_skills", "skills"

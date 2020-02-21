@@ -117,6 +117,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :registration_state,
       :occupation_standard_skills,
       :"occupation_standard_work_processes.occupation_standard_skills",
+      :"occupation_standard_work_processes.categories.occupation_standard_skills",
     ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end
