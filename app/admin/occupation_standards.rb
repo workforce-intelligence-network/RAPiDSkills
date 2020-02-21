@@ -62,13 +62,13 @@ ActiveAdmin.register OccupationStandard do
   end
 
   member_action :generate_pdf, method: [:post] do
-    GenerateOccupationStandardPdfJob.perform_later(resource.id)
+    GenerateOccupationStandardPdfJob.perform_later(resource.id, force: true)
     flash[:notice] = "PDF is being generated"
     redirect_to admin_occupation_standard_path(resource)
   end
 
   member_action :generate_excel, method: [:post] do
-    GenerateOccupationStandardExcelJob.perform_later(resource.id)
+    GenerateOccupationStandardExcelJob.perform_later(resource.id, force: true)
     flash[:notice] = "CSV file is being generated"
     redirect_to admin_occupation_standard_path(resource)
   end

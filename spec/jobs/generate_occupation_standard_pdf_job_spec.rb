@@ -28,11 +28,22 @@ RSpec.describe GenerateOccupationStandardPdfJob, type: :job do
         allow(os).to receive(:should_generate_attachment?).with('pdf').and_return(false)
       end
 
-      it "does not calls pdf writer" do
-        expect(OccupationStandardPdf).to_not receive(:new)
-        described_class.new.perform(os.id)
-        os.reload
-        expect(os.pdf.attached?).to be false
+      context "without force flag" do
+        it "does not calls pdf writer" do
+          expect(OccupationStandardPdf).to_not receive(:new)
+          described_class.new.perform(os.id)
+          os.reload
+          expect(os.pdf.attached?).to be false
+        end
+      end
+
+      context "with force flag" do
+        it "calls pdf writer and attaches file" do
+          expect(OccupationStandardPdf).to receive(:new).and_call_original
+          described_class.new.perform(os.id, force: true)
+          os.reload
+          expect(os.pdf.attached?).to be true
+        end
       end
     end
   end
