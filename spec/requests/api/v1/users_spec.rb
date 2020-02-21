@@ -19,6 +19,33 @@ RSpec.describe API::V1::UsersController, type: :request do
         }
       }
 
+      context "with existing user" do
+        let!(:user) { create(:user, email: params[:data][:attributes][:email]) }
+
+        context "with no existing sign in" do
+          it "updates the User record and signs in" do
+            expect(user.sign_in_count).to eq 0
+            post path, params: params
+            user.reload
+            expect(user.sign_in_count).to eq 1
+            expect(user.name).to eq "Mickey Mouse"
+          end
+        end
+
+        context "with an existing sign in" do
+          before(:each) { allow_any_instance_of(User).to receive(:joined?).and_return(true) }
+
+          it "doesnt update the User record or sign in" do
+            expect(user.sign_in_count).to eq 0
+            post path, params: params
+            user.reload
+            expect(user.sign_in_count).to eq 0
+
+            expect(user.name).to eq user.name
+          end
+        end
+      end
+
       context "with existing organization" do
         let!(:organization) { create(:organization, title: "Acme Computing") }
 
@@ -156,37 +183,6 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["errors"].count).to eq 1
           expect(json["errors"][0]["status"]).to eq "422"
           expect(json["errors"][0]["detail"]).to eq "Email can't be blank"
-        end
-      end
-
-      context "with email already in use" do
-        let!(:user) { create(:user, email: "foo@example.com", name: "Foo Bar", role: :basic) }
-        let(:params) {
-          {
-            data: {
-              type: "user",
-              attributes: {
-                email: "foo@example.com",
-                password: "supersecret",
-                name: "Mickey Mouse",
-                organization_title: "Acme Computing",
-              }
-            }
-          }
-        }
-
-        it "does not create new user record" do
-          expect {
-            post path, params: params
-          }.to_not change(User, :count)
-        end
-
-        it "returns 422 with error message" do
-          post path, params: params
-          expect(response).to have_http_status(:unprocessable_entity)
-          expect(json["errors"].count).to eq 1
-          expect(json["errors"][0]["status"]).to eq "422"
-          expect(json["errors"][0]["detail"]).to eq "Email has already been taken"
         end
       end
 
