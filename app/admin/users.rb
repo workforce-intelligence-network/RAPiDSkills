@@ -13,6 +13,10 @@ ActiveAdmin.register User do
     link_to 'Change Password', change_password_admin_user_path(user)
   end
 
+  action_item :invite, only: [:edit, :show] do
+    link_to 'Invite', invite_admin_user_path(user) unless user.joined?
+  end
+
   member_action :change_password, method: [:get, :put] do
     if request.put?
       password_params = params.require(:user).permit(:password, :password_confirmation)
@@ -21,6 +25,12 @@ ActiveAdmin.register User do
         redirect_to admin_user_path(resource)
       end
     end
+  end
+
+  member_action :invite, only: [:post] do
+    UserMailer.with(user: resource).invite.deliver_later
+    flash[:success] = "Invite sent to #{resource.email}."
+    redirect_to admin_user_path(resource)
   end
 
   index do
