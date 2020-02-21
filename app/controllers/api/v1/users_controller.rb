@@ -39,4 +39,3 @@ class API::V1::UsersController < API::V1::APIController
     params.require(:data).require(:attributes).permit(:organization_title)
   end
 end
-© 2020 GitHub
