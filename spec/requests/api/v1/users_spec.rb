@@ -19,6 +19,21 @@ RSpec.describe API::V1::UsersController, type: :request do
         }
       }
 
+      it "create a client_session record" do
+        expect{
+          post path, params: params
+        }.to change(ClientSession, :count).by(1)
+      end
+
+      it "returns session data with access token" do
+        post path, params: params
+        expect(response).to have_http_status(:created)
+        expect(json["data"]["relationships"]["sessions"]["data"][0]["id"]).to be
+        expect(json["data"]["relationships"]["sessions"]["data"][0]["type"]).to eq "session"
+        expect(json["meta"]["access_token"]).to be
+        expect(json["meta"]["token_type"]).to eq "Bearer"
+      end
+
       context "with existing user" do
         let!(:user) { create(:user, email: params[:data][:attributes][:email]) }
 
@@ -40,7 +55,6 @@ RSpec.describe API::V1::UsersController, type: :request do
             post path, params: params
             user.reload
             expect(user.sign_in_count).to eq 0
-
             expect(user.name).to eq user.name
           end
         end
@@ -73,10 +87,6 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
-          expect(json["included"][0]["id"]).to eq organization.id.to_s
-          expect(json["included"][0]["type"]).to eq "organization"
-          expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
-          ## TODO include session details
         end
       end
 
@@ -116,9 +126,6 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
-          expect(json["included"][0]["id"]).to eq organization.id.to_s
-          expect(json["included"][0]["type"]).to eq "organization"
-          expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
         end
       end
 
@@ -152,7 +159,6 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
           expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]).to be nil
-          expect(json.has_key?("included")).to be false
         end
       end
     end

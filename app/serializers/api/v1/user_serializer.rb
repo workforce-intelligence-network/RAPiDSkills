@@ -16,11 +16,11 @@ class API::V1::UserSerializer
       related: ->(object) { object.related_url('favorites') },
     }, if: Proc.new { |user| !user.lead? }
 
-  has_many :clent_sessions,
+  has_many :client_sessions,
     serializer: API::V1::SessionSerializer,
     record_type: :session,
+    key: :sessions,
     links: {
       self: ->(object) { object.client_sessions.first.url },
-      meta: { access_token: ->(object) { object.client_sessions.first.token }, token_type: "Bearer" }
-    }
+    }, if: Proc.new { |user| user.client_sessions.count.eql?(1) }
 end

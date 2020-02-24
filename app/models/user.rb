@@ -12,8 +12,6 @@ class User < ApplicationRecord
   has_many :favorites, -> { order(id: :desc) }, through: :relationships,
     class_name: 'OccupationStandard', source: :occupation_standard
 
-  before_create :set_default_role, if: proc { role.blank? }
-
   def create_api_access_token!
     client_session = create_session!
     client_session.token
@@ -39,9 +37,5 @@ class User < ApplicationRecord
       encrypted_password: encrypted_password,
       session_identifier: session_identifier,
     }
-  end
-
-  def set_default_role
-    self.role = :basic
   end
 end

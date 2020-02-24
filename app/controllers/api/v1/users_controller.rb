@@ -12,6 +12,7 @@ class API::V1::UsersController < API::V1::APIController
     end
     @user.assign_attributes(user_params)
     @user.employer = define_employer
+    @user.role = :basic unless @user.role.eql?(:admin)
     if @user.save
       @session = @user.create_session!
       sign_in @user
@@ -42,13 +43,14 @@ class API::V1::UsersController < API::V1::APIController
 
   def render_options
     {
-      include: include_options
+      include: include_options,
+      meta: { access_token: @session.token , token_type: "Bearer" }
     }
   end
 
   def include_options
     options = []
     options += [:employer] if @user.employer.persisted?
-    options += [:session] if @session
+    options += [:client_sessions] if @session
   end
 end
