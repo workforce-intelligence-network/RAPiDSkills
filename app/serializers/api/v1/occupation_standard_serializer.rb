@@ -72,7 +72,9 @@ class API::V1::OccupationStandardSerializer
              :organization_title,
              :occupation_title,
              :registration_organization_name,
-             :registration_state_name
+             :registration_state_name,
+             :skills_count,
+             :work_processes_count
 
   attribute :pdf_filename do |object|
     object.pdf.filename if object.pdf.attached?
