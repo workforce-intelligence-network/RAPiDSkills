@@ -87,6 +87,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+          expect(json["included"]).to include(a_hash_including("id" => organization.id.to_s, "type" => "organization"))
         end
       end
 
@@ -126,6 +127,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["data"]["attributes"]["role"]).to eq "basic"
           expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq organization.id.to_s
           expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+          expect(json["included"]).to include(a_hash_including("id" => organization.id.to_s, "type" => "organization"))
         end
       end
 

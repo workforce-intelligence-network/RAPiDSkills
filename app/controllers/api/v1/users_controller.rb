@@ -12,7 +12,7 @@ class API::V1::UsersController < API::V1::APIController
     end
     @user.assign_attributes(user_params)
     @user.employer = define_employer
-    @user.role = :basic unless @user.role.eql?(:admin)
+    @user.role = :basic unless @user.admin?
     if @user.save
       @session = @user.create_session!
       sign_in @user
