@@ -3,10 +3,11 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
   before_action :set_occupation_standard, only: [:index]
   before_action :set_occupation_standard_work_process, only: [:show, :update]
   before_action :authorize_parent, only: [:create]
+  after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
   def index
     @oswps = @os.occupation_standard_work_processes.with_eager_loading
-    options = { links: { self: @os.related_url("occupation_standard_work_processes") } }
+    options = { links: { self: request.original_url } }
     options[:include] = [:occupation_standard_skills]
     render json: API::V1::OccupationStandardWorkProcessSerializer.new(@oswps, options)
   end
@@ -73,7 +74,14 @@ class API::V1::OccupationStandardWorkProcessesController < API::V1::APIControlle
 
   def render_resource
     options = { links: { self: @oswp.url } }
-    options[:include] = [:occupation_standard_skills]
+    options[:include] = [
+      :occupation_standard_skills,
+      :"categories.occupation_standard_skills",
+    ]
     render json: API::V1::OccupationStandardWorkProcessSerializer.new(@oswp, options)
+  end
+
+  def generate_download_docs
+    @oswp.occupation_standard.generate_download_docs
   end
 end

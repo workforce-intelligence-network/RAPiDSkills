@@ -10,6 +10,10 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/admin/sidekiq'
   end
 
+  # Helpers for vue routes
+  get '/signup' => "vuejs#index", as: 'new_registration'
+  get '/logins' => "vuejs#index", as: 'new_session'
+
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :occupations, only: [:index, :show]
@@ -33,11 +37,22 @@ Rails.application.routes.draw do
       resources :occupation_standard_work_processes, path: "work_processes", only: [:show, :create, :update] do
         member do
           get "relationships/skills", to: "occupation_standard_work_processes/relationships/skills#index"
+          delete "relationships/skills", to: "occupation_standard_work_processes/relationships/skills#destroy"
+          get "relationships/categories", to: "occupation_standard_work_processes/relationships/categories#index"
+          delete "relationships/categories", to: "occupation_standard_work_processes/relationships/categories#destroy"
         end
         resources :occupation_standard_skills, path: "skills", only: [:index], controller: "occupation_standard_work_processes/occupation_standard_skills"
+        resources :categories, only: [:index], controller: "occupation_standard_work_processes/categories"
       end
 
       resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
+      resources :categories, only: [:create, :show, :update] do
+        member do
+          get "relationships/skills", to: "categories/relationships/skills#index"
+          delete "relationships/skills", to: "categories/relationships/skills#destroy"
+        end
+        resources :occupation_standard_skills, path: "skills", only: [:index], controller: "categories/occupation_standard_skills"
+      end
       resources :industry, only: [:show]
       resources :organizations, only: [:show]
       resources :states, only: [:show]

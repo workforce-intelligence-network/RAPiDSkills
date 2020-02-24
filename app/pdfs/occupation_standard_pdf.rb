@@ -36,7 +36,20 @@ class OccupationStandardPdf < Prawn::Document
           end
           text "Hours: #{oswp.hours}"
 
-          if oswp.skills.any?
+          if oswp.categories.any?
+            bounding_box([bounds.left + 18, cursor - 12], width: bounds.width - 20) do
+              oswp.categories.each do |category|
+                move_down 5
+                text category.name, size: 12, style: :bold
+                move_down 3
+                category.occupation_standard_skills.each do |oss|
+                  text oss.skill.description
+                  move_down 2
+                end
+              end
+              move_down 15
+            end
+          elsif oswp.skills.any?
             bounding_box([bounds.left + 18, cursor - 12], width: bounds.width - 20) do
               text "Skills", size: 12, style: :bold
               oswp.skills.each do |skill|
@@ -44,9 +57,18 @@ class OccupationStandardPdf < Prawn::Document
                 move_down 2
               end
             end
+            move_down 15
           end
         end
-        move_down 15
+      end
+
+      if os.occupation_standard_skills_with_no_work_process.any?
+        text "Skills", size: 12, style: :bold
+        move_down 3
+        os.occupation_standard_skills_with_no_work_process.each do |oss|
+          text oss.skill.description
+          move_down 2
+        end
       end
     end
   end

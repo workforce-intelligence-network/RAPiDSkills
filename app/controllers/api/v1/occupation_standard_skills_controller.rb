@@ -4,6 +4,7 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   before_action :set_occupation_standard, only: [:index]
   before_action :set_occupation_standard_skill, only: [:show, :update]
   before_action :authorize_parent, only: [:create]
+  after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
   def index
     @osss = @os.occupation_standard_skills_with_no_work_process
@@ -40,15 +41,18 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   def authorize_parent
     @os = OccupationStandard.find_by(id: occupation_standard_params[:id])
     @oswp = OccupationStandardWorkProcess.find_by(id: work_process_params[:id])
-    head :not_found and return unless @os || @oswp
+    @category = Category.find_by(id: category_params[:id])
+    head :not_found and return unless @os || @oswp || @category
 
-    if @os
-      authorize @os, :create_skill?, policy_class: API::V1::OccupationStandardPolicy
-    end
-
-    if @oswp
+    if @category
+      authorize [:api, :v1, @category], :create_skill?
+      @oswp = @category.occupation_standard_work_process
+      @os = @oswp.occupation_standard
+    elsif @oswp
       authorize [:api, :v1, @oswp], :create_skill?
       @os = @oswp.occupation_standard
+    else
+      authorize @os, :create_skill?, policy_class: API::V1::OccupationStandardPolicy
     end
 
   rescue ActionController::ParameterMissing => e
@@ -71,6 +75,7 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
         sort_order: oss_params[:sort_order],
       }
       attributes[:occupation_standard_work_process] = @oswp if @oswp.present?
+      attributes[:category] = @category if @category.present?
       @oss.update(attributes)
       render_resource
     else
@@ -86,8 +91,16 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
     params.require(:data).require(:relationships).fetch(:work_process, {}).fetch(:data, {}).permit(:id)
   end
 
+  def category_params
+    params.require(:data).require(:relationships).fetch(:category, {}).fetch(:data, {}).permit(:id)
+  end
+
   def render_resource
     options = { links: { self: @oss.url } }
     render json: API::V1::OccupationStandardSkillSerializer.new(@oss, options)
+  end
+
+  def generate_download_docs
+    @oss.occupation_standard.generate_download_docs
   end
 end

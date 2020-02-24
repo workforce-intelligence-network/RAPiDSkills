@@ -1,9 +1,9 @@
 class GenerateOccupationStandardPdfJob < ApplicationJob
   queue_as :default
 
-  def perform(occupation_standard_id)
+  def perform(occupation_standard_id, force: false)
     os = OccupationStandard.find(occupation_standard_id)
-    if os.should_generate_attachment?('pdf')
+    if force || os.should_generate_attachment?('pdf')
       pdf = ::OccupationStandardPdf.new(os)
       os.pdf.attach(
         io: StringIO.new(pdf.render),

@@ -1,5 +1,6 @@
 class API::V1::OccupationStandards::Relationships::WorkProcessesController < API::V1::OccupationStandards::Relationships::BaseController
   skip_before_action :authenticate, only: [:index]
+  after_action :generate_download_docs, only: :destroy, if: -> { response.successful? }
 
   def index
     @oswps = @os.occupation_standard_work_processes
@@ -36,5 +37,9 @@ class API::V1::OccupationStandards::Relationships::WorkProcessesController < API
 
   def object_params
     params.require(:data)
+  end
+
+  def generate_download_docs
+    @os.generate_download_docs
   end
 end

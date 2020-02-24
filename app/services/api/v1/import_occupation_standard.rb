@@ -25,6 +25,16 @@ class API::V1::ImportOccupationStandard
           oswp = nil
         end
 
+        if row["category"].present?
+          category = Category.where(
+            name: row["category"],
+            sort_order: row["category_sort"],
+            occupation_standard_work_process: oswp,
+          ).first_or_create!
+        else
+          category = nil
+        end
+
         if row["skill"].present?
           skill = Skill.where(
             description: row["skill"],
@@ -33,10 +43,12 @@ class API::V1::ImportOccupationStandard
             occupation_standard: occupation_standard,
             skill: skill,
             occupation_standard_work_process: oswp,
+            category: category,
           ).first_or_create!(sort_order: row["skill_sort"])
         end
       end
     end
+    occupation_standard.generate_download_docs
     ServiceResponse.new(success: true)
   rescue Exception => e
     error_msg = e.respond_to?(:record) ? "#{e.record.class.name} " : ""

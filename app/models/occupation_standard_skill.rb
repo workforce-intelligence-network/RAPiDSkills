@@ -1,7 +1,8 @@
 class OccupationStandardSkill < ApplicationRecord
-  belongs_to :occupation_standard
+  belongs_to :occupation_standard, touch: true
   belongs_to :skill
   belongs_to :occupation_standard_work_process, optional: true
+  belongs_to :category, optional: true
   has_one :work_process, through: :occupation_standard_work_process
 
   validates :occupation_standard, uniqueness: { scope: [:skill, :occupation_standard_work_process] }

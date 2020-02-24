@@ -30,10 +30,20 @@ RSpec.describe GenerateOccupationStandardExcelJob, type: :job do
         allow(os).to receive(:should_generate_attachment?).with('excel').and_return(false)
       end
 
-      it "does not attach file" do
-        described_class.new.perform(os.id)
-        os.reload
-        expect(os.excel.attached?).to be false
+      context "without force flag" do
+        it "does not attach file" do
+          described_class.new.perform(os.id)
+          os.reload
+          expect(os.excel.attached?).to be false
+        end
+      end
+
+      context "with force flag" do
+        it "attaches file" do
+          described_class.new.perform(os.id, force: true)
+          os.reload
+          expect(os.excel.attached?).to be true
+        end
       end
     end
   end
