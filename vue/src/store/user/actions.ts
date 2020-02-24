@@ -6,26 +6,44 @@ import { apiRaw } from '@/utilities/api';
 import User from '@/models/User';
 import OccupationStandard from '@/models/OccupationStandard';
 
+export const clear = async ({ commit, dispatch }, user: User) => {
+  commit('updateUser');
+  dispatch('clearSavedStandards');
+};
+
+export const setUser = async ({ commit }, user: User) => {
+  commit('updateUser', user);
+};
+
 export const getUser = async ({ state, commit, rootState }) => {
-  const userId: number | string | undefined = _get(rootState, 'session.userId');
-  if (_isUndefined(userId)) {
+  const sessionId: number | string | undefined = _get(rootState, 'session.session.id');
+  if (_isUndefined(sessionId)) {
     return;
   }
 
   commit('updateUserLoading', true);
 
-  const { model } = await User.get(userId);
+  const response = await apiRaw.get(`/sessions/${sessionId}/user`);
+  if (!_get(response, 'data.data.attributes')) {
+    console.log('Invalid response for session user GET');
+    return;
+  }
+
+  const user: User = new User({
+    id: response.data.data.id,
+    ...response.data.data.attributes,
+  });
 
   commit('updateUserLoading', false);
-  commit('updateUser', model);
+  commit('updateUser', user);
 };
 
 export const clearSavedStandards = async ({ commit }) => {
   commit('updateSavedStandards', []);
 };
 
-export const getSavedStandards = async ({ state, commit, rootState }) => {
-  const userId: number | string | undefined = _get(rootState, 'session.userId');
+export const getSavedStandards = async ({ state, commit }) => {
+  const userId: number | string | undefined = _get(state, 'user.id');
   if (_isUndefined(userId)) {
     return;
   }

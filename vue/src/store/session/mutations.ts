@@ -1,5 +1,5 @@
-export const setUserId = (state, id?: string | number) => {
-  state.userId = id;
+export const setSession = (state, session) => {
+  state.session = session;
 };
 
 export const setToken = (state, token?: string) => {

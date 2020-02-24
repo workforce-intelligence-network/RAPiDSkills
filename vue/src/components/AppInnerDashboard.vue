@@ -15,9 +15,14 @@
       <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
         <img :src="ICON_TOP_NAV_SUPPORT" alt="Support Icon" class="app__inner--dashboard__nav--top__link__icon" />
       </a>
-      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)" v-if="sessionActive">
+      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)" v-if="sessionActive" @click="toggleUserOpen">
         <div class="app__inner--dashboard__nav--top__link--user__button">
-          ?
+          {{ userInitials }}
+        </div>
+        <div class="app__inner--dashboard__nav--top__link--user__dropdown" v-if="userOpen">
+          <router-link class="app__inner--dashboard__nav--top__link--user__dropdown__item" href="javascript:void(0)" :to="{ name: 'signout' }">
+            Sign out
+          </router-link>
         </div>
       </a>
     </div>
@@ -108,6 +113,16 @@ export default class AppInnerDashboard extends Vue {
 
   @Provide('ICON_TOP_NAV_SUPPORT') ICON_TOP_NAV_SUPPORT = ICON_TOP_NAV_SUPPORT
 
+  userOpen: boolean = false
+
+  toggleUserOpen() {
+    this.userOpen = !this.userOpen;
+  }
+
+  protected get userInitials() {
+    return this.$store.getters['user/initials'];
+  }
+
   protected get sessionActive() {
     return this.$store.getters['session/isActive'];
   }
@@ -162,6 +177,9 @@ export default class AppInnerDashboard extends Vue {
   height: $nav-top-height;
   justify-content: center;
   padding: 0 $nav-top-link-padding-sides;
+  &:hover {
+    background: transparentize($color: $color-black, $amount: 0.98);
+  }
 }
 
 .app__inner--dashboard__nav--top__link--logo {
@@ -270,6 +288,7 @@ export default class AppInnerDashboard extends Vue {
 }
 
 .app__inner--dashboard__nav--top__link--user {
+  position: relative;
   padding: 0.75rem;
   border-left: 1px solid $color-gray-light;
 }
@@ -282,5 +301,33 @@ export default class AppInnerDashboard extends Vue {
   background-color: $color-blue;
   font-weight: 600;
   line-height: 2.5rem;
+}
+
+.app__inner--dashboard__nav--top__link--user__dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: $color-white;
+  width: 8rem;
+  border: 1px solid $color-gray-light;
+  overflow: hidden;
+  border-radius: 4px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.app__inner--dashboard__nav--top__link--user__dropdown__item {
+  display: block;
+  padding: .5rem;
+  text-align: center;
+  color: $color-black;
+  font-weight: 500;
+  &:not(:last-child) {
+    border-bottom: 1px solid $color-gray-light;
+  }
+
+  &:hover {
+    background: darken($color: $color-white, $amount: 10);
+  }
 }
 </style>

@@ -121,4 +121,13 @@ $card-column-padding: 2rem;
   height: 8em;
   font-size: 1.125rem;
 }
+
+.page--dashboard__state--loading {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 8em;
+}
 </style>

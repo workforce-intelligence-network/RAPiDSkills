@@ -5,9 +5,9 @@ import * as getters from './getters';
 export default {
   namespaced: true,
   state: {
+    session: undefined,
     token: undefined,
     initialized: false,
-    userId: undefined,
   },
   mutations,
   actions,

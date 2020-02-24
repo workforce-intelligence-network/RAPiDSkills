@@ -87,13 +87,22 @@ const routes = [
           return next();
         },
       },
+      {
+        path: 'signout',
+        name: 'signout',
+        async beforeEnter(to, from, next) {
+          await store.dispatch('session/expireToken');
+          await store.dispatch('user/clear');
+          return next({ name: 'login' });
+        },
+      },
     ],
   },
   {
     path: '/',
     component: AppInnerDashboard,
     beforeEnter(to, from, next) {
-      // store.dispatch('user/getUser'); TODO: get name, icon, etc.
+      store.dispatch('user/getUser'); // TODO: get name, icon, etc.
       next();
     },
     children: [
