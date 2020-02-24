@@ -231,4 +231,52 @@ RSpec.describe OccupationStandard, type: :model do
       end
     end
   end
+
+  describe "#work_processes_count" do
+    let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+    let(:os) { build_stubbed(:occupation_standard) }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(memory_store)
+      allow(os).to receive(:work_processes).and_return(build_list(:work_process, 2))
+    end
+
+    context "when cache is not set" do
+      it "returns work processes count and sets cache" do
+        expect(os.work_processes_count).to eq 2
+        expect(Rails.cache.read('work_processes_count')).to eq 2
+      end
+    end
+
+    context "when cache is set" do
+      it "returns cache" do
+        expect(Rails.cache.write('work_processes_count', 3))
+        expect(os.work_processes_count).to eq 3
+      end
+    end
+  end
+
+  describe "#skills_count" do
+    let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+    let(:os) { build_stubbed(:occupation_standard) }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(memory_store)
+      allow(os).to receive(:flattened_skills).and_return(build_list(:skill, 2))
+    end
+
+    context "when cache is not set" do
+      it "returns skills count and sets cache" do
+        expect(os.skills_count).to eq 2
+        expect(Rails.cache.read('skills_count')).to eq 2
+      end
+    end
+
+    context "when cache is set" do
+      it "returns cache" do
+        expect(Rails.cache.write('skills_count', 3))
+        expect(os.skills_count).to eq 3
+      end
+    end
+  end
 end

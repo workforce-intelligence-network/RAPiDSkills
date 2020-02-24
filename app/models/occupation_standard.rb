@@ -92,11 +92,11 @@ class OccupationStandard < ApplicationRecord
   end
 
   def work_processes_count
-    work_processes.count
+    Rails.cache.fetch('work_processes_count') { work_processes.count }
   end
 
   def skills_count
-    flattened_skills.count
+    Rails.cache.fetch('skills_count') { flattened_skills.count }
   end
 
   def should_generate_attachment?(kind)
