@@ -15,4 +15,12 @@ class API::V1::UserSerializer
       self: ->(object) { object.relationships_url('favorites') },
       related: ->(object) { object.related_url('favorites') },
     }, if: Proc.new { |user| !user.lead? }
+
+  has_many :client_sessions,
+    serializer: API::V1::SessionSerializer,
+    record_type: :session,
+    key: :sessions,
+    links: {
+      self: ->(object) { object.client_sessions.first.url },
+    }, if: Proc.new { |user| user.client_sessions.count.eql?(1) }
 end
