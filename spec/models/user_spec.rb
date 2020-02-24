@@ -12,6 +12,18 @@ RSpec.describe User, type: :model do
     expect(new_user.valid?).to be false
   end
 
+  describe "before_create #set_default_role" do
+    it "sets a basic role by default" do
+      user = create(:user, role: nil)
+      expect(user.role).to eq 'basic'
+    end
+
+    it "does not override an explicit role" do
+      user = create(:user, role: :lead)
+      expect(user.role).to eq 'lead'
+    end
+  end
+
   describe "#favorites" do
     it "links through relationships table" do
       user = create(:user)
