@@ -33,5 +33,8 @@ module RapidSkills
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
     config.active_job.queue_adapter = :sidekiq
+
+    # Fast JSON API gem uses same cache_key method and it needs versioned key.
+    config.active_record.cache_versioning = false
   end
 end
