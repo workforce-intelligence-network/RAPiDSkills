@@ -76,6 +76,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           expect(json["included"][0]["id"]).to eq organization.id.to_s
           expect(json["included"][0]["type"]).to eq "organization"
           expect(json["included"][0]["attributes"]["title"]).to eq "Acme Computing"
+          ## TODO include session details
         end
       end
 
