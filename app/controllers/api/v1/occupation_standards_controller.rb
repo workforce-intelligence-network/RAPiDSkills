@@ -108,17 +108,6 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def render_resource(record, options={})
-    options[:include] = [
-      :creator,
-      :industry,
-      :occupation,
-      :organization,
-      :parent_occupation_standard,
-      :registration_state,
-      :occupation_standard_skills,
-      :"occupation_standard_work_processes.occupation_standard_skills",
-      :"occupation_standard_work_processes.categories.occupation_standard_skills",
-    ]
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end
 
