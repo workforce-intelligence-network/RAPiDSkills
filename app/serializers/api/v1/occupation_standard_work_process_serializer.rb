@@ -1,6 +1,7 @@
 class API::V1::OccupationStandardWorkProcessSerializer
   include FastJsonapi::ObjectSerializer
   set_type :work_process
+  cache_options enabled: true, cache_length: 1.day
 
   link :self, :url
 

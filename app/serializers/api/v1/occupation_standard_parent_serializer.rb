@@ -1,6 +1,7 @@
 class API::V1::OccupationStandardParentSerializer
   include FastJsonapi::ObjectSerializer
   set_type :occupation_standard
+  cache_options enabled: true, cache_length: 1.day
 
   link :self, :url
 
