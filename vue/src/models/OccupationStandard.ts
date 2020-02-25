@@ -36,6 +36,7 @@ export default class OccupationStandard extends ModelBase {
     this.pdfUrl = standard.pdfUrl || '';
     this.shouldGenerateAttachments = standard.shouldGenerateAttachments || false;
     this.title = standard.title || '';
+
     this.workProcesses = standard.workProcesses || [];
     this.workProcesses.forEach((workProcess, key) => {
       this.workProcesses[key] = new WorkProcess({
@@ -43,6 +44,7 @@ export default class OccupationStandard extends ModelBase {
         occupationStandard: this,
       });
     });
+
     this.skills = standard.skills || [];
     this.skills.forEach((skill, key) => {
       this.skills[key] = new Skill({
@@ -50,10 +52,15 @@ export default class OccupationStandard extends ModelBase {
         occupationStandard: this,
       });
     });
+
     this.occupation = new Occupation(standard.occupation || {});
     this.organization = new Organization(standard.organization || {});
 
     this.creator = standard.creator ? new User(standard.creator) : undefined;
+
+    this.workProcessesCount = standard.workProcessesCount || 0;
+    this.skillsCount = standard.skillsCount || 0;
+    this.hoursCount = standard.hoursCount || 0;
   }
 
   static jsonApiClassName: string = 'occupation_standard'
@@ -109,6 +116,12 @@ export default class OccupationStandard extends ModelBase {
   parentOccupationStandardId: string | number
 
   creator: User | undefined
+
+  workProcessesCount: number
+
+  skillsCount: number
+
+  hoursCount: number
 
   get totalNumberOfSkills() {
     return this.skills.length + this.workProcesses.reduce(
