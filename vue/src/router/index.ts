@@ -107,6 +107,40 @@ const routes = [
     },
     children: [
       {
+        path: 'standards/:id',
+        name: 'standard',
+        components: {
+          default: Standard,
+          navbarActions: StandardNavBarActions,
+        },
+        beforeEnter(to, from, next) {
+          store.dispatch('standards/getStandard', to.params.id);
+          next();
+        },
+        meta: {
+          pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
+        },
+        children: [
+          {
+            path: 'duplicate',
+            name: 'standardDuplicate',
+            async beforeEnter(to, from, next) {
+              store.dispatch('standards/ensureDuplicateStandard', to.params.id);
+              store.dispatch('modal/update', {
+                name: duplicateComponentName,
+                onClose() {
+                  // eslint-disable-next-line no-use-before-define
+                  router.replace({
+                    name: 'standard',
+                  });
+                },
+              });
+              next();
+            },
+          },
+        ],
+      },
+      {
         path: 'standards',
         name: 'standards',
         components: {
@@ -122,27 +156,20 @@ const routes = [
             path: ':id/duplicate',
             name: 'duplicate',
             async beforeEnter(to, from, next) {
-              store.dispatch('standards/getStandard', to.params.id);
-              store.dispatch('modal/updateContent', duplicateComponentName);
+              store.dispatch('standards/ensureDuplicateStandard', to.params.id);
+              store.dispatch('modal/update', {
+                name: duplicateComponentName,
+                onClose() {
+                  // eslint-disable-next-line no-use-before-define
+                  router.replace({
+                    name: 'standards',
+                  });
+                },
+              });
               next();
             },
           },
         ],
-      },
-      {
-        path: 'standards/:id',
-        name: 'standard',
-        components: {
-          default: Standard,
-          navbarActions: StandardNavBarActions,
-        },
-        beforeEnter(to, from, next) {
-          store.dispatch('standards/getStandard', to.params.id);
-          next();
-        },
-        meta: {
-          pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
-        },
       },
       {
         path: 'saved',
@@ -192,6 +219,12 @@ const router = new VueRouter({
 
     return { x: 0, y: 0 };
   },
+});
+
+router.afterEach((to, from) => {
+  if (['duplicate', 'standardDuplicate'].includes(from.name || '')) {
+    store.dispatch('modal/close', false);
+  }
 });
 
 export default router;
