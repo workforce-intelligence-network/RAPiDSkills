@@ -10,15 +10,13 @@ import Session from '@/models/Session';
 const SESSION_EXPIRATION_AMOUNT = 4;
 const SESSION_EXPIRATION_UNITS = 'hours';
 
-export const setSession = async ({ commit }, session: Session) => {
-  commit('setSession', session);
-  await storage.setItem('sessionId', session.id);
-};
-
-export const setToken = async ({ dispatch }, token: string) => {
+export const setSession = async ({ commit, dispatch }, session: Session) => {
   const expirationDateTime = moment().add(SESSION_EXPIRATION_AMOUNT, SESSION_EXPIRATION_UNITS);
 
-  await storage.setItem('sessionToken', token);
+  commit('setSession', session);
+
+  await storage.setItem('sessionId', session.id);
+  await storage.setItem('sessionToken', session.bearerToken);
   await storage.setItem('sessionTokenExpiration', expirationDateTime.toISOString());
 
   return dispatch('initializeSession');

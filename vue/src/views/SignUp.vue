@@ -42,6 +42,7 @@ import {
 } from 'class-validator';
 
 import User, { VALIDATION_GROUP_NAME_REGISTRATION } from '@/models/User';
+import Session from '@/models/Session';
 
 const validatorOptions: ValidatorOptions = {
   groups: [VALIDATION_GROUP_NAME_REGISTRATION],
@@ -75,7 +76,15 @@ export default class SignUp extends Vue {
 
   async submit() {
     try {
-      await this.user.save();
+      const { data, meta } = await this.user.save();
+
+      const session: Session = new Session({
+        ...data.sessions[0],
+        bearerToken: `${meta.tokenType} ${meta.accessToken}`,
+      });
+
+      await session.persist();
+
       this.$router.push({ name: 'standards' }); // TODO: define a "go to home" method?
     } catch (e) {
       this.submitError = this.user.valid;
