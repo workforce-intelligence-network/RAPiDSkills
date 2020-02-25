@@ -34,6 +34,8 @@
 </template>
 
 <script lang="ts">
+import _pick from 'lodash/pick';
+
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
@@ -52,7 +54,7 @@ const validatorOptions: ValidatorOptions = {
 export default class SignUp extends Vue {
   submitError: boolean = false
 
-  user: User = new User({ validatorOptions })
+  user!: User
 
   formTitle: string = 'Sign up'
 
@@ -69,6 +71,16 @@ export default class SignUp extends Vue {
   passwordConfirmationPlaceholder: string = 'Your password, again'
 
   errorMessage: string = 'We failed to create your account.'
+
+  created() {
+    this.user = new User({
+      validatorOptions,
+      ..._pick(
+        this.$route.query || {},
+        ['name', 'email', 'organizationName'],
+      ),
+    });
+  }
 
   userPropertyInvalid(property: string) {
     return this.submitError || (this.user.validating && this.user.propertyInvalid(property));
