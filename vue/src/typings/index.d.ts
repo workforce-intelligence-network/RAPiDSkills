@@ -7,3 +7,8 @@ declare module '*.png' {
   const content: any;
   export default content;
 }
+
+interface ModalComponent {
+  name: string;
+  onClose: Function;
+}

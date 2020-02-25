@@ -1,3 +1,3 @@
-export const modalComponentName = state => (state.component || {}).name;
+export const modalComponentName = state => ((state.component || {}) as ModalComponent).name;
 
-export const modalOnClose = state => (state.component || {}).onClose || (() => {});
+export const modalComponentOnClose = state => ((state.component || {}) as ModalComponent).onClose || (() => {});
