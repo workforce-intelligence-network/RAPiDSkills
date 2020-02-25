@@ -6,6 +6,7 @@ import _get from 'lodash/get';
 import EqualsOtherProperty from '@/validation/EqualsOtherProperty';
 
 import ModelBase from '@/models/ModelBase';
+import Session from '@/models/Session';
 
 export const VALIDATION_GROUP_NAME_REGISTRATION = 'registration';
 export const VALIDATION_GROUP_NAME_FORGOT = 'forgot';
@@ -22,6 +23,13 @@ export default class User extends ModelBase {
 
   @Allow()
   static jsonApiClassName = 'user'
+
+  static jsonApiClassDefinition = {
+    sessions: {
+      jsonApi: 'hasMany',
+      type: 'session',
+    },
+  }
 
   @Allow()
   classDefinition: Function = User
