@@ -1,6 +1,4 @@
 class Occupation < ApplicationRecord
-  validates :rapids_code, uniqueness: true, allow_nil: true
-  validates :onet_code, uniqueness: true, allow_nil: true
   validates :type, presence: true
   validates :title, uniqueness: { scope: [:rapids_code, :onet_code] }
 
