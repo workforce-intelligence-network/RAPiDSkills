@@ -34,6 +34,8 @@
 </template>
 
 <script lang="ts">
+import _pick from 'lodash/pick';
+
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 
@@ -42,6 +44,7 @@ import {
 } from 'class-validator';
 
 import User, { VALIDATION_GROUP_NAME_REGISTRATION } from '@/models/User';
+import Session from '@/models/Session';
 
 const validatorOptions: ValidatorOptions = {
   groups: [VALIDATION_GROUP_NAME_REGISTRATION],
@@ -51,7 +54,7 @@ const validatorOptions: ValidatorOptions = {
 export default class SignUp extends Vue {
   submitError: boolean = false
 
-  user: User = new User({ validatorOptions })
+  user!: User
 
   formTitle: string = 'Sign up'
 
@@ -69,13 +72,31 @@ export default class SignUp extends Vue {
 
   errorMessage: string = 'We failed to create your account.'
 
+  created() {
+    this.user = new User({
+      validatorOptions,
+      ..._pick(
+        this.$route.query || {},
+        ['name', 'email', 'organizationName'],
+      ),
+    });
+  }
+
   userPropertyInvalid(property: string) {
     return this.submitError || (this.user.validating && this.user.propertyInvalid(property));
   }
 
   async submit() {
     try {
-      await this.user.save();
+      const { data, meta } = await this.user.save();
+
+      const session: Session = new Session({
+        ...data.sessions[0],
+        bearerToken: `${meta.tokenType} ${meta.accessToken}`,
+      });
+
+      await session.persist();
+
       this.$router.push({ name: 'standards' }); // TODO: define a "go to home" method?
     } catch (e) {
       this.submitError = this.user.valid;

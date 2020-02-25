@@ -10,8 +10,8 @@
         <span> Time-based programs will be supported soon, too! Follow now to find out when we launch.</span>
       </div>
       <div class="page--home__links">
-        <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
-          Follow us
+        <router-link :to="{ name: 'signup' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+          Get started
         </router-link>
         <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
           Browse Standards
@@ -83,8 +83,8 @@
         </div>
       </div>
       <div class="page--home__links">
-        <router-link :to="{ name: 'follow' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
-          Follow us
+        <router-link :to="{ name: 'signup' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+          Get started
         </router-link>
         <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
           Browse Standards
@@ -168,6 +168,7 @@ export default {
 
 .page--home__hero__text--description {
   font-size: 1.125rem;
+  line-height: 1.75rem;
   margin-bottom: 2rem;
 }
 
@@ -278,6 +279,7 @@ export default {
 }
 
 .page--home__follow__text--call-to-action__bold {
+  margin-top: 1rem;
   font-weight: 600;
 }
 </style>
