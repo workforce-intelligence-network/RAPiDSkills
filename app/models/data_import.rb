@@ -16,12 +16,12 @@ class DataImport < ApplicationRecord
       file_data = File.read(attachment_changes['file'].attachable)
       @count = 2 # Account for header row
       rows = []
-      current_title = nil
+      current_key = nil
       self.all_sections_invalid = true
       CSV.parse(file_data, headers: true) do |row|
-        org_os_title = "#{row["organization_title"]}|#{row["occupation_standard_title"]}"
-        if org_os_title != current_title
-          current_title = org_os_title
+        key = "#{row["rapids_code"]}|#{row["onet_code"]}|#{row["organization_title"]}|#{row["occupation_standard_title"]}"
+        if key != current_key
+          current_key = key
           unless rows.empty?
             service_resp = API::V1::ImportOccupationStandard.new(
               data: rows,

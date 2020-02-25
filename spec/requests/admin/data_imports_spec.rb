@@ -23,19 +23,21 @@ RSpec.describe "Admin::DataImports", type: :request do
         context "with rapids_code" do
           let!(:state) { create(:state, short_name: "CA") }
           let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
+          let!(:occupation2) { create(:occupation, onet_code: "12345", title: "Dog Walking") }
           let(:file) { fixture_file_upload("files/dog_walking.csv", "text/csv") }
 
           it "saves data correctly" do
             expect{
               post path, params: params
             }.to change(DataImport, :count).by(1)
-              .and change(OccupationStandard, :count).by(4)
+              .and change(OccupationStandard, :count).by(6)
               .and change(WorkProcess, :count).by(4)
               .and change(Skill, :count).by(8)
               .and change(Category, :count).by(2)
-              .and change(OccupationStandardWorkProcess, :count).by(5)
-              .and change(OccupationStandardSkill, :count).by(9)
+              .and change(OccupationStandardWorkProcess, :count).by(7)
+              .and change(OccupationStandardSkill, :count).by(11)
               .and change(Organization, :count).by(3)
+              .and change(Occupation, :count).by(1)
 
             di = DataImport.last
             expect(di.user).to eq user
@@ -50,6 +52,12 @@ RSpec.describe "Admin::DataImports", type: :request do
 
             organization3 = Organization.last
             expect(organization3.title).to eq "Pet Palace"
+
+            occupation_new = Occupation.last
+            expect(occupation_new.title).to eq "Heeling"
+            expect(occupation_new.type).to eq "HybridOccupation"
+            expect(occupation_new.rapids_code).to be_blank
+            expect(occupation_new.onet_code).to be_blank
 
             os1 = OccupationStandard.first
             expect(os1.title).to eq "Heeling"
@@ -104,7 +112,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os3.flattened_skills[0].description).to eq "Understand costs"
             expect(os3.occupation_standard_skills[0].occupation_standard_work_process).to eq os3.occupation_standard_work_processes[0]
 
-            os4 = OccupationStandard.last
+            os4 = OccupationStandard.all[3]
             expect(os4.title).to eq "Grooming"
             expect(os4.occupation).to eq occupation
             expect(os4.organization).to eq organization3
@@ -116,6 +124,38 @@ RSpec.describe "Admin::DataImports", type: :request do
             oswp = os4.occupation_standard_work_processes[0]
             expect(oswp.hours).to eq 10
             expect(oswp.sort_order).to eq 1
+
+            os5 = OccupationStandard.all[4]
+            expect(os5.title).to eq "Heeling"
+            expect(os5.occupation).to eq occupation2
+            expect(os5.organization).to eq organization1
+            expect(os5.creator).to eq user
+            expect(os5.type).to eq "FrameworkStandard"
+            expect(os5.registration_state).to eq state
+            expect(os5.registration_organization_name).to eq "CA Dept of Labor"
+
+            expect(os5.work_processes[0].title).to eq "Communicate effectively"
+            expect(os5.work_processes[0].description).to eq "Communicate effectively with dog and human"
+            expect(os5.occupation_standard_work_processes[0].hours).to eq 35
+
+            expect(os5.flattened_skills[0].description).to eq "Communicate with dog"
+            expect(os5.occupation_standard_skills[0].occupation_standard_work_process).to eq os5.occupation_standard_work_processes[0]
+
+            os6 = OccupationStandard.all[5]
+            expect(os6.title).to eq "Heeling"
+            expect(os6.occupation).to eq occupation_new
+            expect(os6.organization).to eq organization1
+            expect(os6.creator).to eq user
+            expect(os6.type).to eq "FrameworkStandard"
+            expect(os6.registration_state).to eq state
+            expect(os6.registration_organization_name).to eq "CA Dept of Labor"
+
+            expect(os6.work_processes[0].title).to eq "Communicate effectively"
+            expect(os6.work_processes[0].description).to eq "Communicate effectively with dog and human"
+            expect(os6.occupation_standard_work_processes[0].hours).to eq 45
+
+            expect(os6.flattened_skills[0].description).to eq "Communicate with dog"
+            expect(os6.occupation_standard_skills[0].occupation_standard_work_process).to eq os6.occupation_standard_work_processes[0]
 
             cat1 = oswp.categories.first
             expect(cat1.name).to eq "Safety procedures"
