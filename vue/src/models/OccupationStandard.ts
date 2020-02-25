@@ -24,7 +24,6 @@ export default class OccupationStandard extends ModelBase {
   constructor(standard: Partial<OccupationStandard> = {}) {
     super(standard);
 
-    this.parentOccupationStandardId = this.id || '';
     this.excelCreatedAt = standard.excelCreatedAt || '';
     this.excelFilename = standard.excelFilename || '';
     this.excelUrl = standard.excelUrl || '';
@@ -59,6 +58,7 @@ export default class OccupationStandard extends ModelBase {
   static jsonApiClassName: string = 'occupation_standard'
 
   static jsonApiClassDefinition: object = {
+    parentOccupationStandardId: '',
     skills: {
       jsonApi: 'hasMany',
       type: 'skill',
@@ -106,8 +106,6 @@ export default class OccupationStandard extends ModelBase {
 
   organization: Organization
 
-  parentOccupationStandardId: string | number
-
   creator: User | undefined
 
   get totalNumberOfSkills() {
@@ -125,13 +123,13 @@ export default class OccupationStandard extends ModelBase {
       );
   }
 
-  async clone(params: object = {}): Promise<any> {
+  async persistDuplicate(params: object = {}): Promise<any> {
     const apiResponse = await jsonApi.create(
       this.staticType.jsonApiClassName,
-      _pick(this.jsonApiObject, [
-        'parentOccupationStandardId',
-        'title',
-      ]),
+      {
+        parentOccupationStandardId: this.id,
+        title: this.title,
+      },
       params,
     );
 

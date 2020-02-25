@@ -14,10 +14,6 @@ export const updateSelectedStandardLoading = (state, loading: boolean) => {
   state.selectedStandardLoading = loading;
 };
 
-export const updateSelectedStandardEditing = (state, editing: boolean) => {
-  state.selectedStandardEditing = editing;
-};
-
 export const updateStandardsSearchOccupationId = (state, occupationId: number | undefined) => {
   state.occupationId = occupationId;
 };
@@ -33,4 +29,12 @@ export const incrementPage = (state) => {
 
 export const updateMoreAvailable = (state, moreAvailable: boolean) => {
   state.moreAvailable = moreAvailable;
+};
+
+export const updateDuplicateStandard = (state, duplicateStandard) => {
+  state.duplicateStandard = duplicateStandard;
+};
+
+export const updateDuplicateStandardLoading = (state, duplicateStandardLoading) => {
+  state.duplicateStandardLoading = duplicateStandardLoading;
 };

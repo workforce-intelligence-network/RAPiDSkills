@@ -48,11 +48,11 @@ export default class Duplicate extends Vue {
   saving: boolean = false
 
   protected get standard(): OccupationStandard {
-    return this.$store.state.standards.selectedStandard || {};
+    return this.$store.state.standards.duplicateStandard || {};
   }
 
   protected get loading() {
-    return this.$store.state.standards.selectedStandardLoading;
+    return this.$store.state.standards.duplicateStandardLoading;
   }
 
   focusInput() {
@@ -69,14 +69,6 @@ export default class Duplicate extends Vue {
     this.focusInput();
   }
 
-  beforeDestroy() {
-    if (this.saving) {
-      return;
-    }
-
-    this.$router.push({ name: 'standards' });
-  }
-
   async createDuplicateStandardAndEdit() {
     this.validating = true;
 
@@ -87,15 +79,11 @@ export default class Duplicate extends Vue {
     this.validating = false;
     this.saving = true;
 
-    await this.$store.dispatch('standards/duplicateSelectedStandard');
+    await this.$store.dispatch('standards/persistStandardDuplicate');
 
     this.$store.dispatch('user/clearSavedStandards');
 
-    this.$store.dispatch('standards/editSelectedStandard', true);
-
-    this.$store.dispatch('modal/close');
-
-    this.$router.push({
+    this.$router.replace({
       name: 'standard',
       params: {
         id: String(this.standard.id),
