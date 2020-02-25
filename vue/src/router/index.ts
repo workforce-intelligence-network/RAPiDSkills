@@ -1,4 +1,6 @@
 import _get from 'lodash/get';
+import _isString from 'lodash/isString';
+import _isFunction from 'lodash/isFunction';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -119,6 +121,7 @@ const routes = [
         },
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
+          pageTitlePromise: () => _get(store, 'state.standards.selectedStandardPromise'),
         },
         children: [
           {
@@ -151,6 +154,9 @@ const routes = [
           store.dispatch('standards/fetchStandards');
           next();
         },
+        meta: {
+          pageTitle: 'Standards',
+        },
         children: [
           {
             path: ':id/duplicate',
@@ -174,6 +180,9 @@ const routes = [
       {
         path: 'saved',
         name: 'saved',
+        meta: {
+          pageTitle: 'Saved Standards',
+        },
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
         beforeEnter(to, from, next) {
           store.dispatch('user/getSavedStandards');
@@ -221,7 +230,27 @@ const router = new VueRouter({
   },
 });
 
+const updateDocumentTitle = async (pageTitle?: string | Function, pageTitlePromise?: () => Promise<any>) => {
+  const titleSections = ['RapidSkills'];
+
+  if (_isString(pageTitle) && (pageTitle as string).length) {
+    titleSections.push((pageTitle as string));
+  }
+  if (_isFunction(pageTitle) && (pageTitle as Function)()) {
+    titleSections.push((pageTitle as Function)());
+  }
+
+  document.title = titleSections.join(' - ');
+
+  if (pageTitlePromise) {
+    await pageTitlePromise();
+    updateDocumentTitle(pageTitle);
+  }
+};
+
 router.afterEach((to, from) => {
+  updateDocumentTitle(_get(to, 'meta.pageTitle'), _get(to, 'meta.pageTitlePromise'));
+
   if (['duplicate', 'standardDuplicate'].includes(from.name || '')) {
     store.dispatch('modal/close', false);
   }

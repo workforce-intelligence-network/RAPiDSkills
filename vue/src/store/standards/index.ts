@@ -14,6 +14,7 @@ export default {
     occupationId: undefined,
     selectedStandard: undefined,
     selectedStandardLoading: false,
+    selectedStandardPromise: undefined,
     duplicateStandard: undefined,
     duplicateStandardLoading: false,
   },
