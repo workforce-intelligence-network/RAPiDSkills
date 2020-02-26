@@ -8,7 +8,7 @@ class OccupationStandard < ApplicationRecord
   has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }, dependent: :destroy
   has_many :flattened_skills, through: :occupation_standard_skills,
     class_name: 'Skill', source: :skill
-  has_many :occupation_standard_work_processes, -> { order(:sort_order) },
+  has_many :occupation_standard_work_processes, -> { preload(:categories, :occupation_standard_skills, :work_process).order(:sort_order) },
     dependent: :destroy
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'

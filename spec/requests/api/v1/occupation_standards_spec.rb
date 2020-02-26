@@ -44,6 +44,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][2]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][2]["attributes"]["industry_title"]).to be nil
       expect(json["data"][2]["links"]["self"]).to eq api_v1_occupation_standard_url(os1)
+      expect(json["included"]).to be nil
 
       # With occupation_id parameter, returns matches
       get path, params: { occupation_id: occupation.id }
@@ -239,6 +240,25 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["parent_occupation_standard"]["links"]["related"]).to eq api_v1_occupation_standard_url(os.parent_occupation_standard)
       expect(json["data"]["relationships"]["parent_occupation_standard"]["data"]["type"]).to eq "occupation_standard"
       expect(json["data"]["relationships"]["parent_occupation_standard"]["data"]["id"]).to eq parent.id.to_s
+
+      expect(json["included"]).to include(a_hash_including("type" => "work_process", "id" => oswp.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss1.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss2.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss3.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss4.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss5.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss6.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss7.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "occupation", "id" => os.occupation_id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "organization", "id" => os.organization_id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "occupation_standard", "id" => parent.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat1.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat2.id.to_s))
+      expect(json["included"]).to include(a_hash_including("type" => "user", "id" => os.creator_id.to_s))
+      user_included_hash = json["included"].detect{|hash| hash["type"] == "user"}
+      expect(user_included_hash["attributes"]).to be nil
     end
   end
 
@@ -301,6 +321,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
           expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(new_os.organization)
           expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
           expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq new_os.organization_id.to_s
+          expect(json["included"]).to_not be_empty
         end
 
         it "triggers pdf/excel generation" do
@@ -518,6 +539,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
             expect(json["data"]["relationships"]["organization"]["links"]["related"]).to eq api_v1_organization_url(Organization.last)
             expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
             expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq Organization.last.id.to_s
+            expect(json["included"]).to_not be_empty
           end
 
           it "triggers pdf/excel generation" do
