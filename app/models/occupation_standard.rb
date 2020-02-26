@@ -92,11 +92,15 @@ class OccupationStandard < ApplicationRecord
   end
 
   def work_processes_count
-    Rails.cache.fetch('work_processes_count') { work_processes.count }
+    Rails.cache.fetch(method_cache_key(__method__)) { work_processes.count }
   end
 
   def skills_count
-    Rails.cache.fetch('skills_count') { flattened_skills.count }
+    Rails.cache.fetch(method_cache_key(__method__)) { flattened_skills.count }
+  end
+
+  def hours_count
+    Rails.cache.fetch(method_cache_key(__method__)) { occupation_standard_work_processes.sum(:hours) }
   end
 
   def should_generate_attachment?(kind)
