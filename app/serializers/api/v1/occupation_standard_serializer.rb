@@ -67,13 +67,14 @@ class API::V1::OccupationStandardSerializer
       related: ->(object) { Rails.application.routes.url_helpers.api_v1_occupation_standard_url(object.parent_occupation_standard) },
     }, if: Proc.new { |object| object.parent_occupation_standard }
 
-  attributes :title,
+  attributes :hours_count,
              :industry_title,
              :organization_title,
              :occupation_title,
              :registration_organization_name,
              :registration_state_name,
              :skills_count,
+             :title,
              :work_processes_count
 
   attribute :pdf_filename do |object|
