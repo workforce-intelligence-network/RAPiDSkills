@@ -302,9 +302,6 @@ GEM
     tilt (2.0.10)
     timecop (0.9.1)
     ttfunk (1.5.1)
-    turbolinks (5.2.0)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uniform_notifier (1.13.0)
@@ -357,7 +354,6 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   timecop
-  turbolinks (~> 5)
   web-console (>= 3.3.0)
   webpacker (~> 4.0)
 
