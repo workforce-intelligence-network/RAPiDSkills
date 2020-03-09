@@ -124,7 +124,7 @@ $search-button-width: 3rem;
   max-height: 20rem;
   background: $color-white;
   overflow: auto;
-  border: 1px solid #f2f2f2;
+  border: 1px solid $color-gray-border;
   box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
 }
 
