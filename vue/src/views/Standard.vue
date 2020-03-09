@@ -119,7 +119,7 @@ export default {
       try {
         await (this as any).standard.save();
       } catch (e) {
-        console.log('Failed to save standard', e);
+        (Vue as any).rollbar.error(e);
       }
 
       (this as any).$store.dispatch('standards/refreshSelectedStandard');

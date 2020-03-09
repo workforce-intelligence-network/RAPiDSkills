@@ -126,7 +126,7 @@ export default class StandardWorkProcess extends Vue {
     try {
       await this.workProcess.save();
     } catch (e) {
-      console.log('Failed to save work process', e);
+      (Vue as any).rollbar.error(e);
     }
 
     this.$store.dispatch('standards/refreshSelectedStandard');
