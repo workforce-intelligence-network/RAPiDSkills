@@ -17,9 +17,6 @@
 !/log/.keep
 !/tmp/.keep
 
-# Config files
-/config/docker.env
-
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
