@@ -1,7 +1,11 @@
-export const updateContent = async ({ commit }, content) => {
-  commit('updateContent', content);
+export const update = async ({ commit }, component: ModalComponent) => {
+  commit('update', component);
 };
 
-export const close = async ({ commit }) => {
-  commit('updateContent');
+export const close = async ({ commit, getters }, callOnClose: boolean = true) => {
+  if (callOnClose) {
+    getters.modalComponentOnClose();
+  }
+
+  commit('update');
 };

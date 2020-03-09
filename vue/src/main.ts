@@ -6,7 +6,6 @@ import '@/utilities/font-awesome';
 import '@/models';
 
 import App from '@/App.vue';
-import '@/registerServiceWorker';
 import router from '@/router';
 import store from '@/store';
 
@@ -14,7 +13,7 @@ import store from '@/store';
 Vue.config.productionTip = false;
 
 Vue.use(VueAnalytics, {
-  id: 'GTM-TVS9FH9',
+  id: 'UA-159063587-1',
 });
 
 (async () => {

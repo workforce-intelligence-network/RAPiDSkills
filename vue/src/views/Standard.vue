@@ -7,8 +7,8 @@
       <div class="page--standard__sidebar--left__occupation-name">{{ standard.title }}</div>
       <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
       <div class="page--standard__sidebar--left__actions">
-        <button role="button" class="button button--square page--standard__sidebar--left__actions__action" :disabled="true">
-          Share
+        <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
+          Duplicate
         </button>
         <button role="button" class="button button--square page--standard__sidebar--left__actions__action" :disabled="true">
           Download
@@ -82,7 +82,7 @@ import _get from 'lodash/get';
 
 import Vue from 'vue';
 
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
 
@@ -107,6 +107,10 @@ export default {
   created() {
     (this as any).saveStandard = _debounce((this as any).saveStandard, 500).bind(this);
   },
+  beforeRouteUpdate(to, from, next) {
+    (this as any).$store.dispatch('standards/getStandard', to.params.id);
+    next();
+  },
   methods: {
     onSkillInput() {
       (this as any).$forceUpdate();
@@ -126,10 +130,16 @@ export default {
     async addNewWorkProcess() {
       await (this as any).$store.dispatch('standards/addNewWorkProcessToSelectedStandard');
     },
-  },
-  beforeRouteLeave(to, from, next) {
-    (this as any).$store.dispatch('standards/editSelectedStandard', false);
-    next();
+    duplicateStandard() {
+      (this as any).$store.dispatch('standards/updateStandardToDuplicate', (this as any).standard);
+
+      (this as any).$router.push({
+        name: 'standardDuplicate',
+        params: {
+          id: (this as any).standard.id,
+        },
+      });
+    },
   },
   data() {
     return {
@@ -140,6 +150,9 @@ export default {
     ...mapState({
       standard: (state: any): OccupationStandard => state.standards.selectedStandard || {},
       loading: (state: any) => state.standards.selectedStandardLoading,
+    }),
+    ...mapGetters({
+      sessionActive: 'session/isActive',
     }),
     editing() {
       return (this as any).standard && (this as any).standard.loggedInUserIsCreator;
