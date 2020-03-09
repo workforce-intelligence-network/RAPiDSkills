@@ -238,7 +238,7 @@ export default {
 
 .page--home__how-it-works__cards__card {
   background: $color-white;
-  border: 1px solid #f2f2f2;
+  border: 1px solid $color-gray-border;
   box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
   flex-direction: column;
   align-items: center;
