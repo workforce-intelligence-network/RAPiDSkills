@@ -1,4 +1,6 @@
 import _get from 'lodash/get';
+import _isString from 'lodash/isString';
+import _isFunction from 'lodash/isFunction';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -107,29 +109,6 @@ const routes = [
     },
     children: [
       {
-        path: 'standards',
-        name: 'standards',
-        components: {
-          default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-          navbarActions: SearchOccupations,
-        },
-        beforeEnter(to, from, next) {
-          store.dispatch('standards/fetchStandards');
-          next();
-        },
-        children: [
-          {
-            path: ':id/duplicate',
-            name: 'duplicate',
-            async beforeEnter(to, from, next) {
-              store.dispatch('standards/getStandard', to.params.id);
-              store.dispatch('modal/updateContent', duplicateComponentName);
-              next();
-            },
-          },
-        ],
-      },
-      {
         path: 'standards/:id',
         name: 'standard',
         components: {
@@ -142,11 +121,68 @@ const routes = [
         },
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
+          pageTitlePromise: () => _get(store, 'state.standards.selectedStandardPromise'),
         },
+        children: [
+          {
+            path: 'duplicate',
+            name: 'standardDuplicate',
+            async beforeEnter(to, from, next) {
+              store.dispatch('standards/ensureDuplicateStandard', to.params.id);
+              store.dispatch('modal/update', {
+                name: duplicateComponentName,
+                onClose() {
+                  // eslint-disable-next-line no-use-before-define
+                  router.replace({
+                    name: 'standard',
+                  });
+                },
+              });
+              next();
+            },
+          },
+        ],
+      },
+      {
+        path: 'standards',
+        name: 'standards',
+        components: {
+          default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
+          navbarActions: SearchOccupations,
+        },
+        beforeEnter(to, from, next) {
+          store.dispatch('standards/fetchStandards');
+          next();
+        },
+        meta: {
+          pageTitle: 'Standards',
+        },
+        children: [
+          {
+            path: ':id/duplicate',
+            name: 'duplicate',
+            async beforeEnter(to, from, next) {
+              store.dispatch('standards/ensureDuplicateStandard', to.params.id);
+              store.dispatch('modal/update', {
+                name: duplicateComponentName,
+                onClose() {
+                  // eslint-disable-next-line no-use-before-define
+                  router.replace({
+                    name: 'standards',
+                  });
+                },
+              });
+              next();
+            },
+          },
+        ],
       },
       {
         path: 'saved',
         name: 'saved',
+        meta: {
+          pageTitle: 'Saved Standards',
+        },
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
         beforeEnter(to, from, next) {
           store.dispatch('user/getSavedStandards');
@@ -192,6 +228,32 @@ const router = new VueRouter({
 
     return { x: 0, y: 0 };
   },
+});
+
+const updateDocumentTitle = async (pageTitle?: string | Function, pageTitlePromise?: () => Promise<any>) => {
+  const titleSections = ['RapidSkills'];
+
+  if (_isString(pageTitle) && (pageTitle as string).length) {
+    titleSections.push((pageTitle as string));
+  }
+  if (_isFunction(pageTitle) && (pageTitle as Function)()) {
+    titleSections.push((pageTitle as Function)());
+  }
+
+  document.title = titleSections.join(' - ');
+
+  if (pageTitlePromise) {
+    await pageTitlePromise();
+    updateDocumentTitle(pageTitle);
+  }
+};
+
+router.afterEach((to, from) => {
+  updateDocumentTitle(_get(to, 'meta.pageTitle'), _get(to, 'meta.pageTitlePromise'));
+
+  if (['duplicate', 'standardDuplicate'].includes(from.name || '')) {
+    store.dispatch('modal/close', false);
+  }
 });
 
 export default router;

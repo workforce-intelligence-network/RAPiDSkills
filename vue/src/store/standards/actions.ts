@@ -54,7 +54,11 @@ export const getStandard = async ({ state, commit }, id: string | number) => {
 
     commit('updateSelectedStandardLoading', true);
 
-    const { model } = await OccupationStandard.get(Number(id));
+    const selectedStandardPromise: Promise<any> = OccupationStandard.get(id);
+
+    commit('updateSelectedStandardPromise', selectedStandardPromise);
+
+    const { model } = await selectedStandardPromise;
 
     commit('updateSelectedStandard', model);
   } catch (e) {
@@ -64,17 +68,14 @@ export const getStandard = async ({ state, commit }, id: string | number) => {
   commit('updateSelectedStandardLoading', false);
 };
 
-export const duplicateSelectedStandard = async ({ state, commit }) => {
+export const persistStandardDuplicate = async ({ state, commit }) => {
   try {
-    const { model } = await (state.selectedStandard as OccupationStandard).clone();
+    const { model } = await (state.duplicateStandard as OccupationStandard).persistDuplicate();
+    commit('updateDuplicateStandard', model);
     commit('updateSelectedStandard', model);
   } catch (e) {
     // console.log('duplicate error', e);
   }
-};
-
-export const editSelectedStandard = ({ state, commit }, editing: boolean = !state.editing) => {
-  commit('updateSelectedStandardEditing', editing);
 };
 
 export const refreshSelectedStandard = ({ state, commit }) => {
@@ -116,4 +117,31 @@ export const addNewSkillToSelectedStandard = async ({ dispatch, state }, workPro
   }
 
   dispatch('refreshSelectedStandard');
+};
+
+export const updateStandardToDuplicate = ({ commit }, standard: OccupationStandard) => {
+  commit('updateDuplicateStandard', new OccupationStandard(standard));
+};
+
+export const ensureDuplicateStandard = async ({ state, commit }, standardId: string | number) => {
+  // eslint-disable-next-line prefer-destructuring
+  const duplicateStandard: OccupationStandard | undefined = state.duplicateStandard;
+
+  if (duplicateStandard && String(duplicateStandard.id) === String(standardId) && duplicateStandard.title) {
+    return;
+  }
+
+  try {
+    commit('updateDuplicateStandard');
+
+    commit('updateDuplicateStandardLoading', true);
+
+    const { model } = await OccupationStandard.get(standardId);
+
+    commit('updateDuplicateStandard', model);
+  } catch (e) {
+    //
+  }
+
+  commit('updateDuplicateStandardLoading', false);
 };

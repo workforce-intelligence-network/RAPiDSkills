@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app">
-    <router-view :class="{ 'app__inner--blurred': !!modalComponent }" />
-    <Modal :class="{ 'modal--visible': !!modalComponent }" :component="modalComponent" />
+    <router-view :class="{ 'app__inner--blurred': !!modalComponentName }" />
+    <Modal :class="{ 'modal--visible': !!modalComponentName }" :component="modalComponentName" />
   </div>
 </template>
 
@@ -16,8 +16,8 @@ import Modal from '@/components/Modal.vue';
   },
 })
 export default class App extends Vue {
-  protected get modalComponent() {
-    return this.$store.state.modal.content;
+  protected get modalComponentName() {
+    return this.$store.getters['modal/modalComponentName'];
   }
 }
 </script>
@@ -47,7 +47,10 @@ body {
 
 body * {
   box-sizing: border-box;
-  user-select: none;
+
+  &:not(input):not(select):not(textarea) {
+    user-select: none;
+  }
 }
 
 a {
@@ -198,6 +201,7 @@ a {
   outline: none;
   border: 1px solid #f2f2f2;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
+  user-select: auto;
   &:focus {
     outline: dashed 1px $color-link-blue;
     outline-offset: 4px;

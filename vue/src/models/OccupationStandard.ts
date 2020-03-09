@@ -24,7 +24,6 @@ export default class OccupationStandard extends ModelBase {
   constructor(standard: Partial<OccupationStandard> = {}) {
     super(standard);
 
-    this.parentOccupationStandardId = this.id || '';
     this.excelCreatedAt = standard.excelCreatedAt || '';
     this.excelFilename = standard.excelFilename || '';
     this.excelUrl = standard.excelUrl || '';
@@ -66,6 +65,7 @@ export default class OccupationStandard extends ModelBase {
   static jsonApiClassName: string = 'occupation_standard'
 
   static jsonApiClassDefinition: object = {
+    parentOccupationStandardId: '',
     skills: {
       jsonApi: 'hasMany',
       type: 'skill',
@@ -113,8 +113,6 @@ export default class OccupationStandard extends ModelBase {
 
   organization: Organization
 
-  parentOccupationStandardId: string | number
-
   creator: User | undefined
 
   workProcessesCount: number
@@ -138,13 +136,13 @@ export default class OccupationStandard extends ModelBase {
       );
   }
 
-  async clone(params: object = {}): Promise<any> {
+  async persistDuplicate(params: object = {}): Promise<any> {
     const apiResponse = await jsonApi.create(
       this.staticType.jsonApiClassName,
-      _pick(this.jsonApiObject, [
-        'parentOccupationStandardId',
-        'title',
-      ]),
+      {
+        parentOccupationStandardId: this.id,
+        title: this.title,
+      },
       params,
     );
 
@@ -161,8 +159,8 @@ export default class OccupationStandard extends ModelBase {
 
   get loggedInUserIsCreator() {
     // eslint-disable-next-line prefer-destructuring
-    const user: User = (store.state as any).user.user;
-    return user.synced && this.creator && !_isUndefined(this.creator.id) && String(user.id) === String(this.creator.id);
+    const user: User | undefined = (store.state as any).user.user;
+    return user && user.synced && this.creator && !_isUndefined(this.creator.id) && String(user.id) === String(this.creator.id);
   }
 
   async destroySkillIfSynced(skill: Skill) {

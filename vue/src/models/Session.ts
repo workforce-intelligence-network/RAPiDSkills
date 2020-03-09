@@ -21,7 +21,8 @@ export default class Session extends ModelBase {
     this.resetToken = session.resetToken || '';
     this.email = session.email || '';
     this.password = session.password || '';
-    this.user = new User(session.user || {});
+    this.user = (session.user && session.user instanceof User) ? session.user : new User(session.user || {});
+    this.bearerToken = session.bearerToken || '';
   }
 
   static jsonApiClassName = 'session'
@@ -55,13 +56,23 @@ export default class Session extends ModelBase {
 
   user: User
 
+  bearerToken: string
+
   async save() {
     const response = await super.save();
     const { data, meta } = response;
-    const session: Session = new Session(data);
-    await store.dispatch('user/setUser', session.user);
-    await store.dispatch('session/setSession', session);
-    await store.dispatch('session/setToken', `${meta.tokenType} ${meta.accessToken}`);
+
+    const session: Session = new Session({
+      ...data,
+      bearerToken: `${meta.tokenType} ${meta.accessToken}`,
+    });
+
+    return session.persist();
+  }
+
+  async persist() {
+    await store.dispatch('user/setUser', this.user);
+    await store.dispatch('session/setSession', this);
   }
 }
 

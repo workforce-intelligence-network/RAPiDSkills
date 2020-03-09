@@ -57,6 +57,8 @@ export default {
   },
   methods: {
     duplicateStandard() {
+      (this as any).$store.dispatch('standards/updateStandardToDuplicate', (this as any).standard);
+
       (this as any).$router.push({
         name: 'duplicate',
         params: {

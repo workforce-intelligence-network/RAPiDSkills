@@ -13,7 +13,7 @@ const DEFAULT_PAGE_TITLE = '';
 export default {
   computed: {
     title() {
-      const title = _get(this, '$route.meta.pageTitle', DEFAULT_PAGE_TITLE);
+      const title = _get(this, '$route.meta.pageTitle', _get(this, `$route.matched[${_get(this, '$route.matched.length', 1) - 2}].meta.pageTitle`, DEFAULT_PAGE_TITLE));
       if (_isFunction(title)) {
         return title() || DEFAULT_PAGE_TITLE;
       }
