@@ -133,7 +133,7 @@ export default class OccupationStandard extends ModelBase {
   get totalNumberOfHours() {
     return this.workProcesses
       .reduce(
-        (total, workProcess) => total + (workProcess as any).hoursTotal || 0,
+        (total, workProcess) => total + (workProcess as any).hours || 0,
         0,
       );
   }
