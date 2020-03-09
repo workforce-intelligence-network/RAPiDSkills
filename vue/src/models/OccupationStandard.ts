@@ -53,6 +53,7 @@ export default class OccupationStandard extends ModelBase {
     this.organization = new Organization(standard.organization || {});
 
     this.creator = standard.creator ? new User(standard.creator) : undefined;
+    this.parentOccupationStandard = standard.parentOccupationStandard ? new OccupationStandard(standard.parentOccupationStandard) : undefined;
   }
 
   static jsonApiClassName: string = 'occupation_standard'
@@ -70,6 +71,10 @@ export default class OccupationStandard extends ModelBase {
     creator: {
       jsonApi: 'hasOne',
       type: 'user',
+    },
+    parentOccupationStandard: {
+      jsonApi: 'hasOne',
+      type: 'occupation_standard',
     },
   }
 
@@ -107,6 +112,8 @@ export default class OccupationStandard extends ModelBase {
   organization: Organization
 
   creator: User | undefined
+
+  parentOccupationStandard: OccupationStandard | undefined
 
   get totalNumberOfSkills() {
     return this.skills.length + this.workProcesses.reduce(

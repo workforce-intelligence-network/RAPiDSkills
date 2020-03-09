@@ -47,9 +47,41 @@
           About this standard
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
-          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Standard Title</label>
+          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Title</label>
           <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" />
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Developed by</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.organizationTitle" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.parentOccupationStandard">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Duplicated from</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.parentOccupationStandard.title" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Estimated hours</label>
+          <div class="page--standard__sidebar--left__about__input__text">
+            <span v-html="standard.occupation.termLengthMin" />
+            <span v-if="standard.occupation.termLengthMin !== standard.occupation.termLengthMax"> — </span>
+            <span v-if="standard.occupation.termLengthMin !== standard.occupation.termLengthMax" v-html="standard.occupation.termLengthMax" />
+          </div>
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Type</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.kind" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Occupation</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.title" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.occupation.onetCode">
+          <label class="input__label page--standard__sidebar--left__about__input__label">O*NET – SOC Code</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.onetCode" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.occupation.rapidsCode">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Rapids Code</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.rapidsCode" />
         </div>
       </div>
     </div>
@@ -309,7 +341,7 @@ $sidebar-left-width: 20rem;
 .page--standard__sidebar--left__about__title {
   font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .page--standard__sidebar--left__about__input__label {
@@ -352,6 +384,12 @@ $sidebar-left-width: 20rem;
 .page--standard__body__actions__action__icon {
   height: .9rem;
   margin-right: .5rem;
+}
+
+.page--standard__sidebar--left__about__input {
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }
 
 .page--standard__sidebar--left__actions__action--dropdown {
