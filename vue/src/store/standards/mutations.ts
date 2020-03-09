@@ -14,6 +14,10 @@ export const updateSelectedStandardLoading = (state, loading: boolean) => {
   state.selectedStandardLoading = loading;
 };
 
+export const updateSelectedStandardPromise = (state, promise: Promise<any>) => {
+  state.selectedStandardPromise = promise;
+};
+
 export const updateStandardsSearchOccupationId = (state, occupationId: number | undefined) => {
   state.occupationId = occupationId;
 };

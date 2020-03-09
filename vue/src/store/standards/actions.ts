@@ -54,7 +54,11 @@ export const getStandard = async ({ state, commit }, id: string | number) => {
 
     commit('updateSelectedStandardLoading', true);
 
-    const { model } = await OccupationStandard.get(id);
+    const selectedStandardPromise: Promise<any> = OccupationStandard.get(id);
+
+    commit('updateSelectedStandardPromise', selectedStandardPromise);
+
+    const { model } = await selectedStandardPromise;
 
     commit('updateSelectedStandard', model);
   } catch (e) {
