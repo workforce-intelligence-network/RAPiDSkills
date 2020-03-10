@@ -10,9 +10,19 @@
         <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
           Duplicate
         </button>
-        <button role="button" class="button button--square page--standard__sidebar--left__actions__action" :disabled="true">
-          Download
-        </button>
+        <div class="page--standard__sidebar--left__actions__action page--standard__sidebar--left__actions__action--dropdown">
+          <button role="button" class="button button--square" @click="toggleDownloadOpen" :disabled="!standard.pdfUrl && !standard.excelUrl">
+            Download
+          </button>
+          <div class="page--standard__sidebar--left__actions__action--dropdown__list" v-if="downloadOpen">
+            <a class="page--standard__sidebar--left__actions__action--dropdown__list__item" :href="standard.pdfUrl" @click="toggleDownloadOpen" target="_blank" v-if="standard.pdfUrl">
+              Download as PDF
+            </a>
+            <a class="page--standard__sidebar--left__actions__action--dropdown__list__item" :href="standard.excelUrl" @click="toggleDownloadOpen" target="_blank" v-if="standard.excelUrl">
+              Download as CSV
+            </a>
+          </div>
+        </div>
       </div>
       <div class="page--standard__sidebar--left__divider--stats" />
       <div class="page--standard__sidebar--left__work-process-data">
@@ -37,9 +47,41 @@
           About this standard
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
-          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Standard Title</label>
+          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Title</label>
           <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" />
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Developed by</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.organizationTitle" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.parentOccupationStandard">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Duplicated from</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.parentOccupationStandard.title" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Estimated hours</label>
+          <div class="page--standard__sidebar--left__about__input__text">
+            <span v-html="standard.occupation.termLengthMin" />
+            <span v-if="standard.occupation.termLengthMin !== standard.occupation.termLengthMax"> — </span>
+            <span v-if="standard.occupation.termLengthMin !== standard.occupation.termLengthMax" v-html="standard.occupation.termLengthMax" />
+          </div>
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Type</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.kind" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Occupation</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.title" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.occupation.onetCode">
+          <label class="input__label page--standard__sidebar--left__about__input__label">O*NET – SOC Code</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.onetCode" />
+        </div>
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.occupation.rapidsCode">
+          <label class="input__label page--standard__sidebar--left__about__input__label">Rapids Code</label>
+          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.rapidsCode" />
         </div>
       </div>
     </div>
@@ -82,6 +124,10 @@ import _get from 'lodash/get';
 
 import Vue from 'vue';
 
+import {
+  Component, Provide,
+} from 'vue-property-decorator';
+
 import { mapState, mapGetters } from 'vuex';
 
 import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
@@ -96,76 +142,90 @@ import Skill from '@/models/Skill';
 
 import TextArea from '@/components/TextArea.vue';
 
-export default {
-  name: 'standard',
+@Component({
   components: {
     Loading,
     TextArea,
     StandardWorkProcess,
     StandardSkill,
   },
+})
+export default class Standard extends Vue {
+  @Provide('ICON_PLUS_BLUE') ICON_PLUS_BLUE: string = ICON_PLUS_BLUE
+
+  downloadOpen: boolean = false
+
+  toggleDownloadOpen() {
+    this.downloadOpen = !this.downloadOpen;
+  }
+
   created() {
-    (this as any).saveStandard = _debounce((this as any).saveStandard, 500).bind(this);
-  },
+    this.saveStandard = _debounce(this.saveStandard, 500).bind(this);
+  }
+
   beforeRouteUpdate(to, from, next) {
-    (this as any).$store.dispatch('standards/getStandard', to.params.id);
+    this.$store.dispatch('standards/getStandard', to.params.id);
     next();
-  },
-  methods: {
-    onSkillInput() {
-      (this as any).$forceUpdate();
-    },
-    async saveStandard() {
-      try {
-        await (this as any).standard.save();
-      } catch (e) {
-        (Vue as any).rollbar.error(e);
-      }
+  }
 
-      (this as any).$store.dispatch('standards/refreshSelectedStandard');
-    },
-    async addSkill() {
-      await (this as any).$store.dispatch('standards/addNewSkillToSelectedStandard');
-    },
-    async addNewWorkProcess() {
-      await (this as any).$store.dispatch('standards/addNewWorkProcessToSelectedStandard');
-    },
-    duplicateStandard() {
-      (this as any).$store.dispatch('standards/updateStandardToDuplicate', (this as any).standard);
+  onSkillInput() {
+    this.$forceUpdate();
+  }
 
-      (this as any).$router.push({
-        name: 'standardDuplicate',
-        params: {
-          id: (this as any).standard.id,
-        },
-      });
-    },
-  },
-  data() {
-    return {
-      ICON_PLUS_BLUE,
-    };
-  },
-  computed: {
-    ...mapState({
-      standard: (state: any): OccupationStandard => state.standards.selectedStandard || {},
-      loading: (state: any) => state.standards.selectedStandardLoading,
-    }),
-    ...mapGetters({
-      sessionActive: 'session/isActive',
-    }),
-    editing() {
-      return (this as any).standard && (this as any).standard.loggedInUserIsCreator;
-    },
-    addNewWorkProcessDisabled() {
-      const workProcess: WorkProcess | undefined = _get((this as any).standard, 'workProcesses[0]');
-      return workProcess && workProcess.propertyInvalid('title');
-    },
-    addNewSkillDisabled() {
-      return _get((this as any).standard, 'skills[0].invalid');
-    },
-  },
-};
+  async saveStandard() {
+    try {
+      await this.standard.save();
+    } catch (e) {
+      (Vue as any).rollbar.error(e);
+    }
+
+    this.$store.dispatch('standards/refreshSelectedStandard');
+  }
+
+  async addSkill() {
+    await this.$store.dispatch('standards/addNewSkillToSelectedStandard');
+  }
+
+  async addNewWorkProcess() {
+    await this.$store.dispatch('standards/addNewWorkProcessToSelectedStandard');
+  }
+
+  duplicateStandard() {
+    this.$store.dispatch('standards/updateStandardToDuplicate', this.standard);
+
+    this.$router.push({
+      name: 'standardDuplicate',
+      params: {
+        id: String(this.standard.id),
+      },
+    });
+  }
+
+  protected get editing() {
+    return this.standard && this.standard.loggedInUserIsCreator;
+  }
+
+  protected get addNewWorkProcessDisabled() {
+    const workProcess: WorkProcess | undefined = _get(this.standard, 'workProcesses[0]');
+    return workProcess && workProcess.propertyInvalid('title');
+  }
+
+  protected get addNewSkillDisabled() {
+    return _get(this.standard, 'skills[0].invalid');
+  }
+
+  protected get standard(): OccupationStandard {
+    return this.$store.state.standards.selectedStandard || {};
+  }
+
+  protected get loading() {
+    return this.$store.state.standards.selectedStandardLoading;
+  }
+
+  protected get sessionActive() {
+    return this.$store.getters['session/isActive'];
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -281,7 +341,7 @@ $sidebar-left-width: 20rem;
 .page--standard__sidebar--left__about__title {
   font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .page--standard__sidebar--left__about__input__label {
@@ -324,5 +384,45 @@ $sidebar-left-width: 20rem;
 .page--standard__body__actions__action__icon {
   height: .9rem;
   margin-right: .5rem;
+}
+
+.page--standard__sidebar--left__about__input {
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.page--standard__sidebar--left__actions__action--dropdown {
+  position: relative;
+}
+
+.page--standard__sidebar--left__actions__action--dropdown__list__item {
+  display: block;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  color: $color-black;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $color-gray-border;
+  }
+
+  &:hover {
+    background: darken($color: $color-white, $amount: 10);
+  }
+}
+
+.page--standard__sidebar--left__actions__action--dropdown__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  background: $color-white;
+  overflow: auto;
+  border: 1px solid $color-gray-border;
+  box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
+  white-space: nowrap;
+  border-radius: 4px;
+  border-top-left-radius: 0;
 }
 </style>
