@@ -199,7 +199,7 @@ a {
   padding: 0 0.5rem;
   font-size: 1rem;
   outline: none;
-  border: 1px solid #f2f2f2;
+  border: 1px solid $color-gray-border;
   font-family: "Livvic", "Heebo", Helvetica, Arial, sans-serif;
   user-select: auto;
   &:focus {
