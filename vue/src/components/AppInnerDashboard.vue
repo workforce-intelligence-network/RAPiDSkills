@@ -285,6 +285,7 @@ export default class AppInnerDashboard extends Vue {
   min-height: 100%;
   width: 100%;
   overflow-x: hidden;
+  padding-bottom: 5rem;
 }
 
 .app__inner--dashboard__nav--top__link--user {

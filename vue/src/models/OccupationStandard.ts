@@ -60,6 +60,7 @@ export default class OccupationStandard extends ModelBase {
     this.workProcessesCount = standard.workProcessesCount || 0;
     this.skillsCount = standard.skillsCount || 0;
     this.hoursCount = standard.hoursCount || 0;
+    this.parentOccupationStandard = standard.parentOccupationStandard ? new OccupationStandard(standard.parentOccupationStandard) : undefined;
   }
 
   static jsonApiClassName: string = 'occupation_standard'
@@ -77,6 +78,10 @@ export default class OccupationStandard extends ModelBase {
     creator: {
       jsonApi: 'hasOne',
       type: 'user',
+    },
+    parentOccupationStandard: {
+      jsonApi: 'hasOne',
+      type: 'occupation_standard',
     },
   }
 
@@ -120,6 +125,8 @@ export default class OccupationStandard extends ModelBase {
   skillsCount: number
 
   hoursCount: number
+
+  parentOccupationStandard: OccupationStandard | undefined
 
   get totalNumberOfSkills() {
     return this.skills.length + this.workProcesses.reduce(
