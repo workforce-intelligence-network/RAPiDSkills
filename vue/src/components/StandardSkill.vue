@@ -64,7 +64,7 @@ export default class StandardSkill extends Vue {
     try {
       await this.skill.save();
     } catch (e) {
-      console.log('Failed to save standard skill', e);
+      (Vue as any).rollbar.error(e);
     }
 
     this.$store.dispatch('standards/refreshSelectedStandard');

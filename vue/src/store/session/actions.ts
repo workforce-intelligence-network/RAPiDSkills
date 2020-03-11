@@ -1,5 +1,7 @@
 import _isUndefined from 'lodash/isUndefined';
 
+import Vue from 'vue';
+
 import moment from 'moment';
 import storage from '@/storage';
 
@@ -65,7 +67,7 @@ export const expireToken = async ({ state, commit }) => {
         .destroy();
     }
   } catch (e) {
-    console.log('Failed to delete session');
+    (Vue as any).rollbar.error(e);
   }
 
   // TODO: if initialized, allow to re-login or persist state before wiping out token/state
