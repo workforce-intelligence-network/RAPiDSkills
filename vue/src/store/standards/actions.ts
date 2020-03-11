@@ -1,5 +1,7 @@
 import _get from 'lodash/get';
 
+import Vue from 'vue';
+
 import OccupationStandard from '@/models/OccupationStandard';
 import WorkProcess from '@/models/WorkProcess';
 import Skill from '@/models/Skill';
@@ -74,7 +76,7 @@ export const persistStandardDuplicate = async ({ state, commit }) => {
     commit('updateDuplicateStandard', model);
     commit('updateSelectedStandard', model);
   } catch (e) {
-    // console.log('duplicate error', e);
+    (Vue as any).rollbar.error(e);
   }
 };
 

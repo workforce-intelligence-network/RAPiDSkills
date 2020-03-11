@@ -176,7 +176,7 @@ export default class Standard extends Vue {
     try {
       await this.standard.save();
     } catch (e) {
-      console.log('Failed to save standard', e);
+      (Vue as any).rollbar.error(e);
     }
 
     this.$store.dispatch('standards/refreshSelectedStandard');

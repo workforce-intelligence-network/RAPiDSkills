@@ -3,6 +3,8 @@ import _pick from 'lodash/pick';
 import _every from 'lodash/every';
 import _clone from 'lodash/clone';
 
+import Vue from 'vue';
+
 import { MinLength } from 'class-validator';
 
 import _isUndefined from 'lodash/isUndefined';
@@ -195,7 +197,7 @@ export default class OccupationStandard extends ModelBase {
     try {
       accurateWorkProcessReference.removeSkill(skill);
     } catch (e) {
-      console.log(e);
+      (Vue as any).rollbar.error(e);
     }
 
     await this.destroySkillIfSynced(skill);
