@@ -3,7 +3,7 @@
     <div class="page--home__hero">
       <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__hero__text page--home__hero__text--title">
-        Create competency-based apprenticeships in a snap FOO 3-11 11:28am!
+        Create competency-based apprenticeships in a snap FOO 3-11 11:52am!
       </div>
       <div class="page--home__text page--home__hero__text page--home__hero__text--description">
         <span>RapidSkills takes the pain out of creating competency-based apprenticeships from scratch.</span>
