@@ -8,7 +8,7 @@ class OccupationStandard < ApplicationRecord
   has_many :occupation_standard_skills, -> { includes(:skill).order(:sort_order) }, dependent: :destroy
   has_many :flattened_skills, through: :occupation_standard_skills,
     class_name: 'Skill', source: :skill
-  has_many :occupation_standard_work_processes, -> { order(:sort_order) },
+  has_many :occupation_standard_work_processes, -> { preload(:categories, :occupation_standard_skills, :work_process).order(:sort_order) },
     dependent: :destroy
   has_many :work_processes, through: :occupation_standard_work_processes
   has_many :occupation_standard_skills_with_no_work_process, -> { includes(:skill).where(occupation_standard_work_process: nil).order(:sort_order) }, class_name: 'OccupationStandardSkill'
@@ -32,7 +32,7 @@ class OccupationStandard < ApplicationRecord
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
   scope :creator, ->(creator_id) { where(creator_id: creator_id) if creator_id.present? }
 
-  scope :with_eager_loading, -> { includes(:creator, :occupation, :industry, :parent_occupation_standard, :pdf_attachment, :excel_attachment, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, organization: [{ logo_attachment: [:blob]}]) }
+  scope :with_eager_loading, -> { includes(:creator, :occupation, :industry, :parent_occupation_standard, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, pdf_attachment: :blob, excel_attachment: :blob, organization: [logo_attachment: :blob]) }
 
   CSV_HEADERS = %w(rapids_code onet_code organization_title registration_organization_name registration_state occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort category category_sort skill skill_sort).freeze
 
@@ -92,11 +92,15 @@ class OccupationStandard < ApplicationRecord
   end
 
   def work_processes_count
-    work_processes.count
+    Rails.cache.fetch(method_cache_key(__method__)) { work_processes.count }
   end
 
   def skills_count
-    flattened_skills.count
+    Rails.cache.fetch(method_cache_key(__method__)) { flattened_skills.count }
+  end
+
+  def hours_count
+    Rails.cache.fetch(method_cache_key(__method__)) { occupation_standard_work_processes.sum(:hours) }
   end
 
   def should_generate_attachment?(kind)

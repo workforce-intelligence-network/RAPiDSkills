@@ -37,6 +37,7 @@ export default class OccupationStandard extends ModelBase {
     this.pdfUrl = standard.pdfUrl || '';
     this.shouldGenerateAttachments = standard.shouldGenerateAttachments || false;
     this.title = standard.title || '';
+
     this.workProcesses = standard.workProcesses || [];
     this.workProcesses.forEach((workProcess, key) => {
       this.workProcesses[key] = new WorkProcess({
@@ -44,6 +45,7 @@ export default class OccupationStandard extends ModelBase {
         occupationStandard: this,
       });
     });
+
     this.skills = standard.skills || [];
     this.skills.forEach((skill, key) => {
       this.skills[key] = new Skill({
@@ -51,10 +53,15 @@ export default class OccupationStandard extends ModelBase {
         occupationStandard: this,
       });
     });
+
     this.occupation = new Occupation(standard.occupation || {});
     this.organization = new Organization(standard.organization || {});
 
     this.creator = standard.creator ? new User(standard.creator) : undefined;
+
+    this.workProcessesCount = standard.workProcessesCount || 0;
+    this.skillsCount = standard.skillsCount || 0;
+    this.hoursCount = standard.hoursCount || 0;
     this.parentOccupationStandard = standard.parentOccupationStandard ? new OccupationStandard(standard.parentOccupationStandard) : undefined;
   }
 
@@ -115,6 +122,12 @@ export default class OccupationStandard extends ModelBase {
 
   creator: User | undefined
 
+  workProcessesCount: number
+
+  skillsCount: number
+
+  hoursCount: number
+
   parentOccupationStandard: OccupationStandard | undefined
 
   get totalNumberOfSkills() {
@@ -127,7 +140,7 @@ export default class OccupationStandard extends ModelBase {
   get totalNumberOfHours() {
     return this.workProcesses
       .reduce(
-        (total, workProcess) => total + (workProcess as any).hoursTotal || 0,
+        (total, workProcess) => total + (workProcess as any).hours || 0,
         0,
       );
   }

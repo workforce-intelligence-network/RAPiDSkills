@@ -20,6 +20,7 @@ export default class WorkProcess extends ModelBase {
         workProcess: this,
       });
     });
+    this.hours = workProcess.hours || 0;
   }
 
   static jsonApiClassName: string = 'work_process'
@@ -45,6 +46,8 @@ export default class WorkProcess extends ModelBase {
   skills: Skill[]
 
   occupationStandard?: OccupationStandard
+
+  hours: number
 
   get valid() {
     return super.valid

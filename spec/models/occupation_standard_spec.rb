@@ -231,4 +231,83 @@ RSpec.describe OccupationStandard, type: :model do
       end
     end
   end
+
+  describe "#work_processes_count" do
+    let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+    let(:os) { build_stubbed(:occupation_standard) }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(memory_store)
+      allow(os).to receive(:work_processes).and_return(build_list(:work_process, 2))
+    end
+
+    context "when cache is not set" do
+      it "returns work processes count and sets cache" do
+        expect(os.work_processes_count).to eq 2
+        expect(Rails.cache.read("#{os.cache_key}/work_processes_count")).to eq 2
+        os2 = create(:occupation_standard)
+        expect(os2.work_processes_count).to eq 0
+      end
+    end
+
+    context "when cache is set" do
+      it "returns cache" do
+        Rails.cache.write("#{os.cache_key}/work_processes_count", 3)
+        expect(os.work_processes_count).to eq 3
+      end
+    end
+  end
+
+  describe "#skills_count" do
+    let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+    let(:os) { build_stubbed(:occupation_standard) }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(memory_store)
+      allow(os).to receive(:flattened_skills).and_return(build_list(:skill, 2))
+    end
+
+    context "when cache is not set" do
+      it "returns skills count and sets cache" do
+        expect(os.skills_count).to eq 2
+        expect(Rails.cache.read("#{os.cache_key}/skills_count")).to eq 2
+        os2 = create(:occupation_standard)
+        expect(os2.skills_count).to eq 0
+      end
+    end
+
+    context "when cache is set" do
+      it "returns cache" do
+        Rails.cache.write("#{os.cache_key}/skills_count", 3)
+        expect(os.skills_count).to eq 3
+      end
+    end
+  end
+
+  describe "#hours_count" do
+    let(:memory_store) { ActiveSupport::Cache.lookup_store(:memory_store) }
+    let(:os) { create(:occupation_standard) }
+    let!(:oswp1) { create(:occupation_standard_work_process, occupation_standard: os, hours: 20) }
+    let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os, hours: 40) }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(memory_store)
+    end
+
+    context "when cache is not set" do
+      it "returns work processes hours count and sets cache" do
+        expect(os.hours_count).to eq 60
+        expect(Rails.cache.read("#{os.cache_key}/hours_count")).to eq 60
+        os2 = create(:occupation_standard)
+        expect(os2.hours_count).to eq 0
+      end
+    end
+
+    context "when cache is set" do
+      it "returns cache" do
+        Rails.cache.write("#{os.cache_key}/hours_count", 3)
+        expect(os.hours_count).to eq 3
+      end
+    end
+  end
 end

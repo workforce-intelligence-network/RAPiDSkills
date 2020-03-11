@@ -13,6 +13,10 @@ class ApplicationRecord < ActiveRecord::Base
     Rails.application.routes.url_helpers.send("api_v1_#{class_name}_#{association}_url", self)
   end
 
+  def method_cache_key(method_name)
+    "#{cache_key}/#{method_name}"
+  end
+
   private
 
   def class_name

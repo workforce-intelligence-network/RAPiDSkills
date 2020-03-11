@@ -21,6 +21,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def show
     options = { links: { self: request.original_url } }
+    options[:include] = include_relationships
     render_resource(@os, options)
   end
 
@@ -32,7 +33,8 @@ class API::V1::OccupationStandardsController < API::V1::APIController
         organization_id: current_user.employer_id,
         new_title: create_params[:title],
       )
-      @os.valid? ? render_resource(@os) : render_resource_error(@os)
+      options = { include: include_relationships }
+      @os.valid? ? render_resource(@os, options) : render_resource_error(@os)
     else
       @os = OccupationStandard.new
       @os.errors.add(:parent_occupation_standard_id, :invalid)
@@ -54,6 +56,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
     if @os.update(update_params)
       options = { links: { self: request.original_url } }
+      options[:include] = include_relationships
       render_resource(@os, options)
     else
       render_resource_error(@os)
@@ -107,8 +110,8 @@ class API::V1::OccupationStandardsController < API::V1::APIController
     params.permit(:occupation_id, page: {})
   end
 
-  def render_resource(record, options={})
-    options[:include] = [
+  def include_relationships
+    [
       :creator,
       :industry,
       :occupation,
@@ -119,6 +122,9 @@ class API::V1::OccupationStandardsController < API::V1::APIController
       :"occupation_standard_work_processes.occupation_standard_skills",
       :"occupation_standard_work_processes.categories.occupation_standard_skills",
     ]
+  end
+
+  def render_resource(record, options={})
     render json: API::V1::OccupationStandardSerializer.new(record, options)
   end
 
