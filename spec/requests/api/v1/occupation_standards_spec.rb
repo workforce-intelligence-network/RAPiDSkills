@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe API::V1::OccupationStandardsController, type: :request do
   describe "GET #index" do
     let(:occupation) { create(:occupation) }
+    let(:organization) { create(:organization, logo: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'acme-co.jpg'), 'image/jpeg')) }
     let!(:os1) { create(:occupation_standard, occupation: occupation) }
     let!(:os2) { create(:occupation_standard) }
-    let!(:os3) { create(:occupation_standard, occupation: occupation) }
+    let!(:os3) { create(:occupation_standard, occupation: occupation, organization: organization) }
     let!(:os4) { create(:occupation_standard, type: "UnregisteredStandard") }
     let(:path) { "/api/v1/occupation_standards" }
 
@@ -25,6 +26,7 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][0]["type"]).to eq "occupation_standard"
       expect(json["data"][0]["attributes"]["title"]).to eq os3.title
       expect(json["data"][0]["attributes"]["organization_title"]).to eq os3.organization.title
+      expect(json["data"][0]["attributes"]["organization_logo_url"]).to match "acme-co.jpg"
       expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][0]["attributes"]["industry_title"]).to be nil
       expect(json["data"][0]["links"]["self"]).to eq api_v1_occupation_standard_url(os3)
