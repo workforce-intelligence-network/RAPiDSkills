@@ -29,8 +29,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][0]["attributes"]["organization_logo_url"]).to match "acme-co.jpg"
       expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
       expect(json["data"][0]["attributes"]["occupation_kind"]).to eq "hybrid"
-      expect(json["data"][0]["attributes"]["onet_code"]).to eq "onet123"
-      expect(json["data"][0]["attributes"]["rapids_code"]).to eq "rapids456"
+      expect(json["data"][0]["attributes"]["occupation_onet_code"]).to eq "onet123"
+      expect(json["data"][0]["attributes"]["occupation_rapids_code"]).to eq "rapids456"
       expect(json["data"][0]["attributes"]["industry_title"]).to be nil
       expect(json["data"][0]["links"]["self"]).to eq api_v1_occupation_standard_url(os3)
 
