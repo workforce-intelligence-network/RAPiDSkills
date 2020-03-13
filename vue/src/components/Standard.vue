@@ -2,13 +2,13 @@
   <router-link class="standard" :to="routerLink">
     <div class="standard__label">{{ label }}</div>
     <div class="standard__logo">
-      <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="standard__logo__logo" />
+      <img :src="standard.organizationLogoUrl" :alt="standard.organizationTitle" class="standard__logo__logo" />
     </div>
     <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupation.kind }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupation.onetCode || 'ONET' }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupation.rapidsCode || 'Rapid' }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupationKind }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupationOnetCode || 'ONET' }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupationRapidsCode || 'Rapid' }}</div>
     </div>
     <div class="standard__divider--stats" />
     <div class="standard__work-process-data">
