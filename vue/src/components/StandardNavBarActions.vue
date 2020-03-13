@@ -95,8 +95,6 @@ export default class StandardNavBarActions extends Vue {
     }
 
     this.$store.dispatch('standards/refreshSelectedStandard');
-
-    this.standard.updatedAt = moment().format();
   }
 
   protected get standard(): OccupationStandard {
