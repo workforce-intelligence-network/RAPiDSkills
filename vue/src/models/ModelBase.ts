@@ -140,13 +140,14 @@ export default class ModelBase {
           this.id = data.id;
         }
       }
+
+      this.updatedAt = moment().format();
     } catch (errors) {
       this.apiErrors = _flatten([errors]);
       this.dirty = true;
     }
 
     this.loading = false;
-    this.updatedAt = moment().format();
 
     if (this.apiErrors) {
       throw this.apiErrors; // TODO: reformat to standard format?
