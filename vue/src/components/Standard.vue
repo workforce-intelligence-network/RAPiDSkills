@@ -45,7 +45,6 @@ import { mapGetters } from 'vuex';
 import Tooltip from '@/components/Tooltip.vue';
 import ICON_DUPLICATE_ALT from '@/assets/icon-duplicate-alt.svg';
 
-
 export default {
   components: {
     Tooltip,
