@@ -21,8 +21,9 @@ class OccupationStandard < ApplicationRecord
 
   validates :title, presence: true
 
-  delegate :rapids_code, to: :occupation
-  delegate :onet_code, to: :occupation
+  delegate :rapids_code, to: :occupation, prefix: true
+  delegate :onet_code, to: :occupation, prefix: true
+  delegate :kind, to: :occupation, prefix: true
   delegate :type, to: :occupation, prefix: true
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
@@ -155,7 +156,7 @@ class OccupationStandard < ApplicationRecord
   end
 
   def common_fields
-    [rapids_code, onet_code, organization_title, registration_organization_name, registration_state_name, title, type.gsub('Standard', '')]
+    [occupation_rapids_code, occupation_onet_code, organization_title, registration_organization_name, registration_state_name, title, type.gsub('Standard', '')]
   end
 
   def work_process_fields(oswp=nil)

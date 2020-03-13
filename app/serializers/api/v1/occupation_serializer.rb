@@ -11,10 +11,6 @@ class API::V1::OccupationSerializer
              :term_length_min,
              :term_length_max
 
-  attribute :kind do |object|
-    object.class.name.underscore.gsub('_occupation','')
-  end
-
   attribute :title_aliases do |object|
     object.title_aliases.join(", ")
   end

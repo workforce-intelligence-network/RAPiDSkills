@@ -81,8 +81,8 @@ ActiveAdmin.register OccupationStandard do
     column :title
     column :occupation
     column :occupation_type
-    column :onet_code
-    column :rapids_code
+    column :occupation_onet_code
+    column :occupation_rapids_code
     column :parent_occupation_standard
     column :published_at
     column :work_processes_count
