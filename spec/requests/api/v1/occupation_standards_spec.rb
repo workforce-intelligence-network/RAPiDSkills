@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe API::V1::OccupationStandardsController, type: :request do
   describe "GET #index" do
-    let(:occupation) { create(:occupation) }
+    let(:occupation) { create(:occupation, onet_code: "onet123", rapids_code: "rapids456") }
     let(:organization) { create(:organization, logo: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'acme-co.jpg'), 'image/jpeg')) }
     let!(:os1) { create(:occupation_standard, occupation: occupation) }
     let!(:os2) { create(:occupation_standard) }
@@ -28,6 +28,9 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"][0]["attributes"]["organization_title"]).to eq os3.organization.title
       expect(json["data"][0]["attributes"]["organization_logo_url"]).to match "acme-co.jpg"
       expect(json["data"][0]["attributes"]["occupation_title"]).to eq occupation.title
+      expect(json["data"][0]["attributes"]["occupation_kind"]).to eq "hybrid"
+      expect(json["data"][0]["attributes"]["onet_code"]).to eq "onet123"
+      expect(json["data"][0]["attributes"]["rapids_code"]).to eq "rapids456"
       expect(json["data"][0]["attributes"]["industry_title"]).to be nil
       expect(json["data"][0]["links"]["self"]).to eq api_v1_occupation_standard_url(os3)
 

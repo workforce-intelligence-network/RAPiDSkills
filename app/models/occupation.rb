@@ -39,4 +39,8 @@ class Occupation < ApplicationRecord
       super list
     end
   end
+
+  def kind
+    self.class.name.underscore.gsub('_occupation','')
+  end
 end
