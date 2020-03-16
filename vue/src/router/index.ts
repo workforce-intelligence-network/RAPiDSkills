@@ -191,6 +191,18 @@ const routes = [
         },
       },
       {
+        path: 'favorites',
+        name: 'favorites',
+        meta: {
+          pageTitle: 'Favorites',
+        },
+        component: () => import(/* webpackChunkName: "favorites" */ '@/views/Favorites.vue'),
+        beforeEnter(to, from, next) {
+          store.dispatch('user/getFavorites');
+          next();
+        },
+      },
+      {
         path: 'reports',
         name: 'reports',
         component: () => import(/* webpackChunkName: "reports" */ '@/views/Reports.vue'),

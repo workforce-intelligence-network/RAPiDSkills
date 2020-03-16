@@ -76,6 +76,14 @@ export default {
         },
       });
     },
+    favoriteStandard() {
+      (this as any).$store.dispatch('user/favoriteStandard', (this as any).standard.id);
+      (this as any).$forceUpdate();
+    },
+    unfavoriteStandard() {
+      (this as any).$store.dispatch('user/unfavoriteStandard', (this as any).standard.id);
+      (this as any).$forceUpdate();
+    },
   },
   data() {
     return {

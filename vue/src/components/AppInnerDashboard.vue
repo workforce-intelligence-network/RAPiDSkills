@@ -47,12 +47,21 @@
       </router-link>
       <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'saved' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <!-- <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" /> -->
           <FontAwesomeIcon :icon="['fas', 'file-alt']" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa" />
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
             Saved Standards
+          </span>
+        </span>
+      </router-link>
+      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'favorites' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
+        <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
+          <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
+        </span>
+        <span class="app__inner--dashboard__nav--left__link__name">
+          <span class="app__inner--dashboard__nav--left__link__name__text">
+            Favorites
           </span>
         </span>
       </router-link>

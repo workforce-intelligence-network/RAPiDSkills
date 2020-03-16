@@ -1,5 +1,7 @@
 import _set from 'lodash/set';
 import _get from 'lodash/get';
+import _clone from 'lodash/clone';
+import _findIndex from 'lodash/findIndex';
 import _isUndefined from 'lodash/isUndefined';
 
 import Vue from 'vue';
@@ -92,22 +94,23 @@ export const getSavedStandards = async ({ state, commit }) => {
 };
 
 export const getFavorites = async ({ state, commit }) => {
-  const userId: number | string | undefined = _get(state, 'user.id');
-  if (_isUndefined(userId)) {
-    return;
+  if (state.userPromise) {
+    await state.userPromise;
   }
 
-  if (state.savedStandards.length) {
+  const userId: number | string | undefined = _get(state, 'user.id');
+  if (_isUndefined(userId)) {
     return;
   }
 
   try {
     commit('updateFavoritesLoading', true);
 
-    const favorites = await jsonApi
-      .one(User.jsonApiClassName, userId)
-      .relationships('favorites')
-      .get();
+    const response = await apiRaw.get(`/users/${userId}/relationships/favorites`);
+
+    const favorites: OccupationStandard[] = (await Promise.all((response.data.data as [])
+      .map(async (unsyncedOccupation: any) => OccupationStandard.get(unsyncedOccupation.id))) as []
+    ).map((jsonApiResponse: any) => jsonApiResponse.model);
 
     commit('updateFavorites', favorites);
   } catch (e) {
@@ -115,4 +118,54 @@ export const getFavorites = async ({ state, commit }) => {
   }
 
   commit('updateFavoritesLoading', false);
+};
+
+export const favoriteStandard = async ({ state, commit }, standardId: number | string) => {
+  const userId: number | string | undefined = _get(state, 'user.id');
+  if (_isUndefined(userId)) {
+    return;
+  }
+
+  const favorites: OccupationStandard[] = _clone(state.favorites);
+
+  try {
+    favorites.push(new OccupationStandard({ id: standardId }));
+
+    await apiRaw.post(`/users/${userId}/relationships/favorites`, {
+      data: [{
+        type: 'occupation_standard',
+        id: standardId,
+      }],
+    });
+
+    commit('updateFavorites', favorites);
+  } catch (e) {
+    commit('updateFavorites', favorites);
+  }
+};
+
+export const unfavoriteStandard = async ({ state, commit }, standardId: number | string) => {
+  const userId: number | string | undefined = _get(state, 'user.id');
+  if (_isUndefined(userId)) {
+    return;
+  }
+
+  const favorites: OccupationStandard[] = _clone(state.favorites);
+
+  try {
+    favorites.splice(_findIndex(favorites, (favorite: OccupationStandard) => String(favorite.id) === String(standardId)), 1);
+
+    await apiRaw.delete(`/users/${userId}/relationships/favorites`, {
+      data: {
+        data: [{
+          type: 'occupation_standard',
+          id: standardId,
+        }],
+      },
+    });
+
+    commit('updateFavorites', favorites);
+  } catch (e) {
+    commit('updateFavorites', favorites);
+  }
 };

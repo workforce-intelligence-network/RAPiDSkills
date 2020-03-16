@@ -17,3 +17,11 @@ export const updateSavedStandards = (state, standards) => {
 export const updateSavedStandardsLoading = (state, loading) => {
   state.savedStandardsLoading = loading;
 };
+
+export const updateFavorites = (state, favorites) => {
+  state.favorites = favorites;
+};
+
+export const updateFavoritesLoading = (state, loading) => {
+  state.favoritesLoading = loading;
+};
