@@ -12,9 +12,9 @@
       <div class="app__inner--dashboard__nav--top__navbar-actions" :class="{ 'app__inner--dashboard__nav--top__navbar-actions--session-active': sessionActive }">
         <router-view name="navbarActions" />
       </div>
-      <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
+      <!-- <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--support" href="javascript:void(0)">
         <img :src="ICON_TOP_NAV_SUPPORT" alt="Support Icon" class="app__inner--dashboard__nav--top__link__icon" />
-      </a>
+      </a> -->
       <a class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--user" href="javascript:void(0)" v-if="sessionActive" @click="toggleUserOpen">
         <div class="app__inner--dashboard__nav--top__link--user__button">
           {{ userInitials }}
@@ -47,11 +47,21 @@
       </router-link>
       <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'saved' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
+          <FontAwesomeIcon :icon="['fas', 'file-alt']" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa" />
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
             Saved Standards
+          </span>
+        </span>
+      </router-link>
+      <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'favorites' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
+        <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
+          <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
+        </span>
+        <span class="app__inner--dashboard__nav--left__link__name">
+          <span class="app__inner--dashboard__nav--left__link__name__text">
+            Favorites
           </span>
         </span>
       </router-link>
@@ -163,11 +173,12 @@ export default class AppInnerDashboard extends Vue {
   flex-grow: 1;
   justify-content: center;
   padding-left: 0.5rem;
+  padding-right: 0.5rem;
   max-width: calc(100% - 4rem);
   &.app__inner--dashboard__nav--top__navbar-actions--session-active {
-    max-width: calc(100% - 8.0625rem - 9.5rem);
+    max-width: calc(100% - 8.0625rem - 5.5rem);
     @include breakpoint--sm {
-      max-width: calc(100% - 8.0625rem);
+      max-width: calc(100% - 4.0625rem);
     }
   }
 }
@@ -183,6 +194,7 @@ export default class AppInnerDashboard extends Vue {
 }
 
 .app__inner--dashboard__nav--top__link--logo {
+  min-width: 9.5rem;
   align-self: flex-start;
   flex-basis: 0;
 
@@ -239,7 +251,13 @@ export default class AppInnerDashboard extends Vue {
 }
 
 .app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon {
+  color: $color-white;
   width: 1.5rem;
+}
+
+.app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa {
+  height: 100%;
+  width: 1.333rem;
 }
 
 .app__inner--dashboard__nav--left__link--active {
@@ -289,6 +307,7 @@ export default class AppInnerDashboard extends Vue {
 }
 
 .app__inner--dashboard__nav--top__link--user {
+  align-self: flex-end;
   position: relative;
   padding: 0.75rem;
   border-left: 1px solid $color-gray-light;

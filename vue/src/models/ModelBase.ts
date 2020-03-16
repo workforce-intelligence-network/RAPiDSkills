@@ -14,6 +14,7 @@ import _isNumber from 'lodash/isNumber';
 import {
   validateSync, ValidationError, ValidatorOptions,
 } from 'class-validator';
+import moment, { Moment } from 'moment';
 import jsonApi from '@/utilities/api';
 
 interface ValidationErrorMap {
@@ -32,6 +33,8 @@ export default class ModelBase {
   type?: string
 
   links?: {}
+
+  updatedAt?: string
 
   classDefinition!: Function
 
@@ -137,6 +140,8 @@ export default class ModelBase {
           this.id = data.id;
         }
       }
+
+      this.updatedAt = moment().format();
     } catch (errors) {
       this.apiErrors = _flatten([errors]);
       this.dirty = true;
@@ -178,6 +183,7 @@ export default class ModelBase {
           'validating',
           'loading',
           'apiErrors',
+          'dirty',
         ].indexOf(key) === -1),
       ),
     );

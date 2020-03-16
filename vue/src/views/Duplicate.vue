@@ -37,7 +37,7 @@ export default class Duplicate extends Vue {
 
   textQuestion: string = 'What would you like to name your new standard?'
 
-  textExplanation: string = 'A copy of the original unedited version of this standard will be saved to "Saved Standards" along with this new standard draft.'
+  textExplanation: string = 'This new standard draft will be saved to "Saved Standards".'
 
   textStandardNamePlaceholder: string = 'Example: Hotel Bar Back for Acme Hotel Enterprises'
 
