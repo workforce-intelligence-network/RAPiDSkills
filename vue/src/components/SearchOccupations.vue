@@ -1,6 +1,6 @@
 <template>
   <form class="search" @submit.prevent="submitSearch" @keyup.esc="closeSearch">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="onFocus" ref="searchInput" :value="inputValue" />
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="onFocus" ref="searchInput" :value="inputValue" autocomplete="off" />
     <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>

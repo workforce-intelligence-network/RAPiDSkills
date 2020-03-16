@@ -6,9 +6,12 @@ export default {
   namespaced: true,
   state: {
     user: undefined,
+    userPromise: undefined,
     loading: false,
     savedStandards: [],
     savedStandardsLoading: false,
+    favorites: [],
+    favoritesLoading: false,
   },
   mutations,
   actions,
