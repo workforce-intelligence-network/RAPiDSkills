@@ -10,6 +10,8 @@ export default {
     loading: false,
     savedStandards: [],
     savedStandardsLoading: false,
+    favorites: [],
+    favoritesLoading: false,
   },
   mutations,
   actions,

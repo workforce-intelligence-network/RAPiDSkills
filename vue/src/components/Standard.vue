@@ -30,9 +30,19 @@
     </div>
     <div class="standard__divider" v-if="!saved && sessionActive" />
     <div class="standard__actions" v-if="!saved && sessionActive">
-      <Tooltip tip="Duplicate">
-        <button class="button button--link standard__actions__button standard__actions__button--right" @click.prevent="duplicateStandard">
-          <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__button__icon" />
+      <Tooltip class="standard__actions__action" tip="Favorite" v-if="!standard.favorited">
+        <button class="button button--link standard__actions__action__button standard__actions__action__button--left standard__actions__action__button--favorite" @click.prevent="favoriteStandard">
+          <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
+        </button>
+      </Tooltip>
+      <Tooltip class="standard__actions__action" tip="Unfavorite" v-if="standard.favorited">
+        <button class="button button--link standard__actions__action__button standard__actions__action__button--left" @click.prevent="unfavoriteStandard">
+          <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
+        </button>
+      </Tooltip>
+      <Tooltip class="standard__actions__action standard__actions__action--right" tip="Duplicate">
+        <button class="button button--link standard__actions__action__button standard__actions__action__button--right" @click.prevent="duplicateStandard">
+          <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__action__button__icon" />
         </button>
       </Tooltip>
     </div>
@@ -65,6 +75,14 @@ export default {
           id: (this as any).standard.id,
         },
       });
+    },
+    favoriteStandard() {
+      (this as any).$store.dispatch('user/favoriteStandard', (this as any).standard.id);
+      (this as any).$forceUpdate();
+    },
+    unfavoriteStandard() {
+      (this as any).$store.dispatch('user/unfavoriteStandard', (this as any).standard.id);
+      (this as any).$forceUpdate();
     },
   },
   data() {
@@ -203,17 +221,29 @@ export default {
 
 .standard__actions {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   height: 3rem;
 }
 
-.standard__actions__button {
+.standard__actions__action__button {
   height: 3rem;
   width: 3rem;
   padding: .75rem;
 }
 
-.standard__actions__button__icon {
+.standard__actions__action--right {
+  margin-left: auto;
+}
+
+.standard__actions__action__button__icon {
   height: 100%;
+}
+
+.standard__actions__action__button__icon--fa {
+  width: 1.125rem;
+}
+
+.standard__actions__action__button--favorite {
+  color: $color-black-lighter;
 }
 </style>

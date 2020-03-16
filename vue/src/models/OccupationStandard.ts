@@ -186,6 +186,12 @@ export default class OccupationStandard extends ModelBase {
     return user && user.synced && this.creator && !_isUndefined(this.creator.id) && String(user.id) === String(this.creator.id);
   }
 
+  get favorited() {
+    // eslint-disable-next-line prefer-destructuring
+    const favorites: OccupationStandard[] = (store.state as any).user.favorites;
+    return this.synced && !!_find(favorites, (favorite: OccupationStandard) => String(favorite.id) === String(this.id));
+  }
+
   async destroySkillIfSynced(skill: Skill) {
     if (!skill.synced) {
       return;
