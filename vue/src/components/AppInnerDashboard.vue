@@ -47,7 +47,8 @@
       </router-link>
       <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'saved' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
+          <!-- <img :src="ICON_LEFT_NAV_HEART" alt="Saved Standards Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" /> -->
+          <FontAwesomeIcon :icon="['fas', 'file-alt']" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa" />
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
@@ -239,7 +240,13 @@ export default class AppInnerDashboard extends Vue {
 }
 
 .app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon {
+  color: $color-white;
   width: 1.5rem;
+}
+
+.app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa {
+  height: 100%;
+  width: 1.333rem;
 }
 
 .app__inner--dashboard__nav--left__link--active {

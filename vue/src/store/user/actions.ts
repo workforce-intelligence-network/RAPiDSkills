@@ -4,7 +4,7 @@ import _isUndefined from 'lodash/isUndefined';
 
 import Vue from 'vue';
 
-import { apiRaw } from '@/utilities/api';
+import jsonApi, { apiRaw } from '@/utilities/api';
 
 import User from '@/models/User';
 import OccupationStandard from '@/models/OccupationStandard';
@@ -78,4 +78,30 @@ export const getSavedStandards = async ({ state, commit }) => {
   }
 
   commit('updateSavedStandardsLoading', false);
+};
+
+export const getFavorites = async ({ state, commit }) => {
+  const userId: number | string | undefined = _get(state, 'user.id');
+  if (_isUndefined(userId)) {
+    return;
+  }
+
+  if (state.savedStandards.length) {
+    return;
+  }
+
+  try {
+    commit('updateFavoritesLoading', true);
+
+    const favorites = await jsonApi
+      .one(User.jsonApiClassName, userId)
+      .relationships('favorites')
+      .get();
+
+    commit('updateFavorites', favorites);
+  } catch (e) {
+    //
+  }
+
+  commit('updateFavoritesLoading', false);
 };
