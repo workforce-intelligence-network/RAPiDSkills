@@ -69,7 +69,11 @@ class API::V1::OccupationStandardSerializer
 
   attributes :hours_count,
              :industry_title,
+             :organization_logo_url,
              :organization_title,
+             :occupation_kind,
+             :occupation_onet_code,
+             :occupation_rapids_code,
              :occupation_title,
              :registration_organization_name,
              :registration_state_name,
@@ -103,6 +107,12 @@ class API::V1::OccupationStandardSerializer
 
   attribute :excel_created_at do |object|
     object.excel.created_at if object.excel.attached?
+  end
+
+  attribute :organization_logo_url do |object|
+    if object.organization&.logo.attached?
+      Rails.application.routes.url_helpers.url_for(object.organization.logo)
+    end
   end
 
   attribute :should_generate_attachments do |object|

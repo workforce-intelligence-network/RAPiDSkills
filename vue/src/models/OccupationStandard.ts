@@ -2,12 +2,12 @@ import _find from 'lodash/find';
 import _pick from 'lodash/pick';
 import _every from 'lodash/every';
 import _clone from 'lodash/clone';
+import _capitalize from 'lodash/capitalize';
+import _isUndefined from 'lodash/isUndefined';
 
 import Vue from 'vue';
 
 import { MinLength } from 'class-validator';
-
-import _isUndefined from 'lodash/isUndefined';
 
 import store from '@/store';
 
@@ -22,6 +22,8 @@ import Organization from '@/models/Organization';
 import Occupation from '@/models/Occupation';
 import User from '@/models/User';
 
+import LOGO_DEFAULT from '@/assets/default-standard-logo-alt.png';
+
 export default class OccupationStandard extends ModelBase {
   constructor(standard: Partial<OccupationStandard> = {}) {
     super(standard);
@@ -32,6 +34,10 @@ export default class OccupationStandard extends ModelBase {
     this.industryTitle = standard.industryTitle || '';
     this.occupationTitle = standard.occupationTitle || '';
     this.organizationTitle = standard.organizationTitle || '';
+    this.organizationLogoUrl = standard.organizationLogoUrl || LOGO_DEFAULT;
+    this.occupationKind = _capitalize(standard.occupationKind || '');
+    this.occupationOnetCode = standard.occupationOnetCode || '';
+    this.occupationRapidsCode = standard.occupationRapidsCode || '';
     this.pdfCreatedAt = standard.pdfCreatedAt || '';
     this.pdfFilename = standard.pdfFilename || '';
     this.pdfUrl = standard.pdfUrl || '';
@@ -97,9 +103,17 @@ export default class OccupationStandard extends ModelBase {
 
   industryTitle: string
 
-  occupationTitle: string
-
   organizationTitle: string
+
+  organizationLogoUrl: string
+
+  occupationKind: string
+
+  occupationOnetCode: string
+
+  occupationRapidsCode: string
+
+  occupationTitle: string
 
   pdfCreatedAt: string
 
