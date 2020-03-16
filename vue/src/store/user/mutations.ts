@@ -6,6 +6,10 @@ export const updateUserLoading = (state, loading) => {
   state.loading = loading;
 };
 
+export const updateUserPromise = (state, userPromise) => {
+  state.userPromise = userPromise;
+};
+
 export const updateSavedStandards = (state, standards) => {
   state.savedStandards = standards;
 };
