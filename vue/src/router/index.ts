@@ -105,6 +105,7 @@ const routes = [
     component: AppInnerDashboard,
     beforeEnter(to, from, next) {
       store.dispatch('user/getUser'); // TODO: get name, icon, etc.
+      store.dispatch('user/getFavorites');
       next();
     },
     children: [
@@ -186,6 +187,18 @@ const routes = [
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
         beforeEnter(to, from, next) {
           store.dispatch('user/getSavedStandards');
+          next();
+        },
+      },
+      {
+        path: 'favorites',
+        name: 'favorites',
+        meta: {
+          pageTitle: 'Favorites',
+        },
+        component: () => import(/* webpackChunkName: "favorites" */ '@/views/Favorites.vue'),
+        beforeEnter(to, from, next) {
+          store.dispatch('user/getFavorites');
           next();
         },
       },
