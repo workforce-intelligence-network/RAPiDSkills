@@ -34,7 +34,12 @@ export const getUser = async ({ dispatch, commit, rootState }) => {
 
   commit('updateUserLoading', true);
 
-  const response = await apiRaw.get(`/sessions/${sessionId}/user`);
+  const userPromise = apiRaw.get(`/sessions/${sessionId}/user`);
+
+  commit('updateUserPromise', userPromise);
+
+  const response = await userPromise;
+
   if (!_get(response, 'data.data.attributes')) {
     (Vue as any).rollbar.error(new Error('Invalid response for session user GET'));
     return;
@@ -46,6 +51,7 @@ export const getUser = async ({ dispatch, commit, rootState }) => {
   });
 
   commit('updateUserLoading', false);
+
   dispatch('setUser', user);
 };
 
@@ -59,8 +65,13 @@ export const getSavedStandards = async ({ state, commit }) => {
     return;
   }
 
-  if (state.savedStandards.length) {
-    return;
+  // TODO: clear on saves to standards instead? Clear only affected standard?
+  // if (state.savedStandards.length) {
+  //   return;
+  // }
+
+  if (state.userPromise) {
+    await state.userPromise;
   }
 
   try {
