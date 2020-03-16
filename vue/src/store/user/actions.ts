@@ -60,6 +60,10 @@ export const clearSavedStandards = async ({ commit }) => {
 };
 
 export const getSavedStandards = async ({ state, commit }) => {
+  if (state.userPromise) {
+    await state.userPromise;
+  }
+
   const userId: number | string | undefined = _get(state, 'user.id');
   if (_isUndefined(userId)) {
     return;
@@ -69,10 +73,6 @@ export const getSavedStandards = async ({ state, commit }) => {
   // if (state.savedStandards.length) {
   //   return;
   // }
-
-  if (state.userPromise) {
-    await state.userPromise;
-  }
 
   try {
     commit('updateSavedStandardsLoading', true);
