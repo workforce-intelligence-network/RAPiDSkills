@@ -59,30 +59,96 @@ class API::V1::ImportOccupationStandard
   private
 
   def find_or_create_occupation_standard(row)
+    occupation = nil
     DataImport.transaction do
-      if row["rapids_code"].present?
-        occupation = Occupation.find_by(rapids_code: row["rapids_code"])
-      elsif row["onet_code"].present?
-        occupation = Occupation.find_by(onet_code: row["onet_code"])
+      rapids_code = row["rapids_code"].presence.try(:strip)
+      onet_code = row["onet_code"].presence.try(:strip)
+      standard_title = row["occupation_standard_title"].strip.downcase
+
+      # Determine Occupation Type
+      type = if row["work_process_hours"].present? && row["skill"].present?
+               "HybridOccupation"
+             elsif row["work_process_hours"].present?
+               "TimeOccupation"
+             elsif row["skill"].present?
+               "CompetencyOccupation"
+             else
+               raise "Either work process or skill is required"
+             end
+
+      # Try matching on rapids, onet, type, title
+      if rapids_code && onet_code
+        occupation = Occupation.where(
+          rapids_code: rapids_code,
+          onet_code: onet_code,
+          type: type,
+        ).where(
+          "LOWER(title) = ?", standard_title
+        ).first
+      end
+
+      # Try matching on rapids, type, title
+      unless occupation
+        if rapids_code
+          occupation = Occupation.where(
+            rapids_code: rapids_code,
+            type: type,
+          ).where(
+            "LOWER(title) = ?", standard_title
+          ).first
+        end
+      end
+
+      # Try matching on onet, type, title
+      unless occupation
+        if onet_code
+          occupation = Occupation.where(
+            onet_code: onet_code,
+            type: type,
+          ).where(
+            "LOWER(title) = ?", standard_title
+          ).first
+        end
+      end
+
+      # Try matching on rapids, onet, type
+      unless occupation
+        if rapids_code && onet_code
+          occupation = Occupation.where(
+            rapids_code: rapids_code,
+            onet_code: onet_code,
+            type: type,
+          ).first
+        end
+      end
+
+      # Try matching on rapids, type
+      unless occupation
+        if rapids_code
+          occupation = Occupation.where(
+            rapids_code: rapids_code,
+            type: type,
+          ).first
+        end
+      end
+
+      # Try matching on onet, type
+      unless occupation
+        if onet_code
+          occupation = Occupation.where(
+            onet_code: onet_code,
+            type: type,
+          ).first
+        end
       end
 
       unless occupation
-        # Determine Occupation Type
-        type = if row["work_process_hours"].present? && row["skill"].present?
-                 "HybridOccupation"
-               elsif row["work_process_hours"].present?
-                 "TimeOccupation"
-               elsif row["skill"].present?
-                 "CompetencyOccupation"
-               else
-                 raise "Either work process or skill is required"
-               end
-        occupation = Occupation.where("LOWER(title) = ?", row["occupation_standard_title"].downcase).first_or_create!(
-          title: row["occupation_standard_title"],
+        occupation = Occupation.where(
+          title: row["occupation_standard_title"].strip,
           type: type,
           rapids_code: row["rapids_code"],
           onet_code: row["onet_code"],
-        )
+        ).first_or_create!
       end
       organization = Organization.where(title: row["organization_title"]).first_or_create!
       state = State.find_by(short_name: row["registration_state"])
