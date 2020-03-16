@@ -103,7 +103,7 @@ const routes = [
   {
     path: '/',
     component: AppInnerDashboard,
-    async beforeEnter(to, from, next) {
+    beforeEnter(to, from, next) {
       store.dispatch('user/getUser'); // TODO: get name, icon, etc.
       store.dispatch('user/getFavorites');
       next();
