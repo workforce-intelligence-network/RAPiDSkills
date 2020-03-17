@@ -44,13 +44,14 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(di.description).to eq "this is a description"
             expect(di.occupation_standards?).to be true
 
-            organization1 = Organization.first
+            organizations = Organization.order(:id)
+            organization1 = organizations.first
             expect(organization1.title).to eq "Acme Dog Walking"
 
-            organization2 = Organization.all[1]
+            organization2 = organizations[1]
             expect(organization2.title).to eq "Dog Walking R Us"
 
-            organization3 = Organization.last
+            organization3 = organizations.last
             expect(organization3.title).to eq "Pet Palace"
 
             occupation_new = Occupation.last
