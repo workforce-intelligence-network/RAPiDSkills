@@ -19,7 +19,7 @@ class DataImport < ApplicationRecord
       current_key = nil
       self.all_sections_invalid = true
       CSV.parse(file_data, headers: true) do |row|
-        key = "#{row["rapids_code"]}|#{row["onet_code"]}|#{row["organization_title"]}|#{row["occupation_standard_title"]}"
+        key = "#{row["rapids_code"]}|#{row["onet_code"]}|#{row["organization_title"]}|#{row["occupation_standard_title"]}|#{row["type"]}"
         if key != current_key
           current_key = key
           unless rows.empty?
