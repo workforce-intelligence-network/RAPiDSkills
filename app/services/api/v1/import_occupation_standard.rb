@@ -63,7 +63,7 @@ class API::V1::ImportOccupationStandard
     DataImport.transaction do
       rapids_code = row["rapids_code"].presence.try(:strip)
       onet_code = row["onet_code"].presence.try(:strip)
-      standard_title = row["occupation_standard_title"].strip.downcase
+      standard_title = row["occupation_standard_title"].try(:strip).try(:downcase)
 
       # Determine Occupation Type
       type = if row["work_process_hours"].present? && row["skill"].present?
@@ -138,6 +138,17 @@ class API::V1::ImportOccupationStandard
           occupation = Occupation.where(
             onet_code: onet_code,
             type: type,
+          ).first
+        end
+      end
+
+      # Try matching on title, type
+      unless occupation
+        if onet_code.nil? && rapids_code.nil?
+          occupation = Occupation.where(
+            type: type,
+          ).where(
+            "LOWER(title) = ?", standard_title
           ).first
         end
       end

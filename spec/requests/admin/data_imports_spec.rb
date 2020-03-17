@@ -179,8 +179,8 @@ RSpec.describe "Admin::DataImports", type: :request do
           end
 
           it "triggers pdf/excel generation" do
-            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).exactly(4).times
-            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).exactly(4).times
+            expect(GenerateOccupationStandardPdfJob).to receive(:perform_later).exactly(6).times
+            expect(GenerateOccupationStandardExcelJob).to receive(:perform_later).exactly(6).times
             post path, params: params
           end
         end
