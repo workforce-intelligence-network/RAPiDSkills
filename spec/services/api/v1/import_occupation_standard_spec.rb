@@ -10,7 +10,7 @@ RSpec.describe API::V1::ImportOccupationStandard do
       let(:rows) { CSV.parse(File.read(fixture_file_upload("files/dog_walking_time_occupation.csv", "text/csv")), headers: true) }
 
       context "when occupation exists" do
-        let!(:occupation) { create(:occupation, rapids_code: "1039HY", title: "Dog Training") }
+        let!(:occupation) { create(:time_occupation, rapids_code: "1039HY", title: "Dog Training") }
 
         it "returns service object with success true" do
           sr = subject.call

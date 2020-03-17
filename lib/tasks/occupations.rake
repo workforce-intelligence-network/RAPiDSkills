@@ -30,17 +30,21 @@ namespace :occupations do
              else
                raise_error "Unknown type: #{row['type']}"
              end
-      
-      occupation = Occupation.where(
-        rapids_code: row['rapids_code']
-      ).first_or_create(
-        type: type,
-        title: title,
-        onet_code: row['onet_code'],
-        term_length_min: term_length_min,
-        term_length_max: term_length_max,
-        title_aliases: [title_alias].compact,
-      )
+
+      begin
+        occupation = Occupation.where(
+          rapids_code: row['rapids_code'].strip,
+          onet_code: row['onet_code'].strip,
+          title: title,
+        ).first_or_create!(
+          type: type,
+          term_length_min: term_length_min,
+          term_length_max: term_length_max,
+          title_aliases: [title_alias].compact,
+        )
+      rescue Exception => e
+        Notify.error("Error in occupations:import task", e)
+      end
     end
   end
 end
