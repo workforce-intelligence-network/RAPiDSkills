@@ -25,6 +25,9 @@ gem 'webpacker', '~> 4.0'
 # Authorization
 gem 'pundit'
 
+# Search
+gem 'searchkick'
+
 # Admin dashboard
 gem 'activeadmin'
 gem 'devise'
@@ -50,9 +53,6 @@ gem 'aws-sdk-s3', require: false
 
 # Error reporting
 gem 'rollbar'
-
-# Search
-gem 'searchkick'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
