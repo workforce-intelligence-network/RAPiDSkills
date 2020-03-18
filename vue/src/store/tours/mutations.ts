@@ -1,0 +1,4 @@
+/* eslint-disable import/prefer-default-export */
+export const update = (state, component: ModalComponent) => {
+  state.component = component;
+};

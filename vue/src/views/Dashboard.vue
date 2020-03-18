@@ -1,7 +1,13 @@
 <template>
   <div class="page page--dashboard">
     <div class="page--dashboard__cards" v-if="!showLoadingState && !showEmptyState">
-      <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" />
+      <div v-for="(standard, standardIndex) in standards" :key="standard.id">
+        <Standard
+          :standard="standard"
+          label="Standard"
+          :firstInList="standardIndex === 0"
+        />
+      </div>
     </div>
     <button v-if="showLoadMoreButton" class="page--dashboard__button--load-more button button--link" @click="loadMoreStandards">
       Load more standards

@@ -4,7 +4,15 @@
       <div class="page--standard__sidebar--left__logo">
         <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
-      <div class="page--standard__sidebar--left__occupation-name">{{ standard.title }}</div>
+      <div class="page--standard__sidebar--left__occupation-name">
+        <!-- <Tour
+          content="This left hand section is your Standard's Details."
+          :skip="() => {}"
+          :close="() => {}"
+          v-if="editing"
+        /> -->
+        <span>{{ standard.title }}</span>
+      </div>
       <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
       <div class="page--standard__sidebar--left__actions">
         <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
@@ -88,10 +96,20 @@
     <div class="page--standard__body">
       <Loading v-if="loading" />
       <div class="page--standard__body__actions" v-if="editing">
-        <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addNewWorkProcess" :disabled="addNewWorkProcessDisabled">
-          <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
-          <span>New Work Process</span>
-        </button>
+        <div class="page--standard__body__actions__action">
+          <button role="button" class="button button--square button--alternative" @click="addNewWorkProcess" :disabled="addNewWorkProcessDisabled">
+            <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
+            <span>
+              New Work Process
+            </span>
+          </button>
+          <!-- <Tour
+            content='Click the "+ New Work Process" button to add a new work process to your standard.'
+            :skip="() => {}"
+            :close="() => {}"
+            v-if="editing"
+          /> -->
+        </div>
         <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addSkill" :disabled="addNewSkillDisabled">
           <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="page--standard__body__actions__action__icon" />
           <span>New Skill</span>
@@ -135,6 +153,7 @@ import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
 import Loading from '@/components/Loading.vue';
 import StandardWorkProcess from '@/components/StandardWorkProcess.vue';
 import StandardSkill from '@/components/StandardSkill.vue';
+import Tour from '@/components/Tour.vue';
 
 import OccupationStandard from '@/models/OccupationStandard';
 import WorkProcess from '@/models/WorkProcess';
@@ -148,6 +167,7 @@ import TextArea from '@/components/TextArea.vue';
     TextArea,
     StandardWorkProcess,
     StandardSkill,
+    Tour,
   },
 })
 export default class Standard extends Vue {

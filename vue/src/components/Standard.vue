@@ -1,6 +1,15 @@
 <template>
   <router-link class="standard" :to="routerLink">
-    <div class="standard__label">{{ label }}</div>
+    <div class="standard__label">
+      <Tour
+        content="See a high-level summary of another program's standards, which organization contributed them, and how it's been used."
+        :skip="() => {}"
+        :close="() => {}"
+        v-if="firstInList"
+        id=""
+      />
+      {{ label }}
+    </div>
     <div class="standard__logo">
       <img :src="standard.organizationLogoUrl" :alt="standard.organizationTitle" class="standard__logo__logo" />
     </div>
@@ -31,16 +40,34 @@
     <div class="standard__divider" v-if="!saved && sessionActive" />
     <div class="standard__actions" v-if="!saved && sessionActive">
       <Tooltip class="standard__actions__action" tip="Favorite" v-if="!standard.favorited">
+        <Tour
+          content="Save standards you're interested in coming back to review later. You'll need to create an account."
+          :skip="() => {}"
+          :close="() => {}"
+          v-if="firstInList"
+        />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left standard__actions__action__button--favorite" @click.prevent="favoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
         </button>
       </Tooltip>
       <Tooltip class="standard__actions__action" tip="Unfavorite" v-if="standard.favorited">
+        <Tour
+          content="Save standards you're interested in coming back to review later. You'll need to create an account."
+          :skip="() => {}"
+          :close="() => {}"
+          v-if="firstInList"
+        />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left" @click.prevent="unfavoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
         </button>
       </Tooltip>
       <Tooltip class="standard__actions__action standard__actions__action--right" tip="Duplicate">
+        <Tour
+          content="Copy standards you want to build on and customize for your needs. You'll need to create an account."
+          :skip="() => {}"
+          :close="() => {}"
+          v-if="firstInList"
+        />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--right" @click.prevent="duplicateStandard">
           <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__action__button__icon" />
         </button>
@@ -53,16 +80,20 @@
 import { mapGetters } from 'vuex';
 
 import Tooltip from '@/components/Tooltip.vue';
+import Tour from '@/components/Tour.vue';
+
 import ICON_DUPLICATE_ALT from '@/assets/icon-duplicate-alt.svg';
 
 export default {
   components: {
     Tooltip,
+    Tour,
   },
   props: {
     standard: Object,
     label: String,
     saved: Boolean,
+    firstInList: Boolean,
   },
   methods: {
     duplicateStandard() {
