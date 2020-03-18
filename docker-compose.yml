@@ -52,6 +52,14 @@ services:
       - '1080:1080'
       - '1025:1025'
 
+  elasticsearch:
+    image: elasticsearch:7.2.0
+    environment:
+      discovery.type: 'single-node'
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+
   middleman:
     build: documentation/.
     volumes:
