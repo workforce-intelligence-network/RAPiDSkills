@@ -12,40 +12,42 @@ RSpec.describe Occupation, type: :model do
     expect(os.occupation.industries).to eq [industry]
   end
 
-  describe ".search" do
-    let!(:occupation1) { create(:occupation, title: "Foo Bar") }
-    let!(:occupation2) { create(:occupation, title: "Bar Baz") }
-    let!(:occupation3) { create(:occupation, title: "Moo Bar", title_aliases: ["Mar", "Foo"]) }
+  describe ".search_records" do
+    let!(:occupation1) { create(:occupation, title: "Fig Berry") }
+    let!(:occupation2) { create(:occupation, title: "Berry Chocolate") }
+    let!(:occupation3) { create(:occupation, title: "Ginger Berry", title_aliases: ["Marshmallow", "Fig"]) }
+
+    before { Occupation.reindex }
 
     it "returns all results when q is blank" do
-      results = Occupation.search(q: nil)
+      results = Occupation.search_records(q: nil)
       expect(results).to contain_exactly occupation1, occupation2, occupation3
 
-      results = Occupation.search(q: "")
+      results = Occupation.search_records(q: "")
       expect(results).to contain_exactly occupation1, occupation2, occupation3
     end
 
     it "returns matched results when q is not blank" do
-      results = Occupation.search(q: "Foo")
+      results = Occupation.search_records(q: "Fig")
       expect(results).to contain_exactly occupation1, occupation3
 
-      results = Occupation.search(q: "Mar")
+      results = Occupation.search_records(q: "Marshmallow")
       expect(results).to contain_exactly occupation3
 
-      results = Occupation.search(q: "Baz")
+      results = Occupation.search_records(q: "Chocolate")
       expect(results).to contain_exactly occupation2
     end
 
     it "returns OR matched results when q has multiple terms" do
-      results = Occupation.search(q: "Baz Fob")
+      results = Occupation.search_records(q: "Chocolate Fob")
       expect(results).to contain_exactly occupation2
 
-      results = Occupation.search(q: "Foo Mar")
+      results = Occupation.search_records(q: "Fig Marshmallow")
       expect(results).to contain_exactly occupation1, occupation3
     end
 
     it "returns no results when q does not match" do
-      results = Occupation.search(q: "Fob")
+      results = Occupation.search_records(q: "Fob")
       expect(results).to be_empty
     end
   end

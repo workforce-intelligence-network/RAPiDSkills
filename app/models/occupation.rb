@@ -7,6 +7,14 @@ class Occupation < ApplicationRecord
   has_many :occupation_standards
   has_many :industries, through: :occupation_standards
 
+  class << self
+    def search_records(args={})
+      q = args[:q]
+      return all if q.blank?
+      search(q, operator: "or")
+    end
+  end
+
   def search_data
     {
       title: title,
