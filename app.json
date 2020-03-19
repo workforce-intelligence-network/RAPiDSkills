@@ -1,5 +1,6 @@
 {
   "addons": [
+    "bonsai",
     "mailgun",
     "heroku-postgresql",
     "heroku-redis"
