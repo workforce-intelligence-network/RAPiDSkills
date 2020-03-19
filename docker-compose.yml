@@ -13,6 +13,7 @@ services:
       - config/docker.env
     depends_on:
       - database
+      - elasticsearch
       - redis
       - sidekiq
     tty: true
