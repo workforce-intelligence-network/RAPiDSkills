@@ -4,7 +4,7 @@ class API::V1::UsersController < API::V1::APIController
   ## TODO remove support for leads overriding generated passwords once the site 
   ## is opened up to anyone.
   def create
-    existing_user = User.find_by(email: user_params[:email])
+    existing_user = User.find_by(email: user_params[:email].downcase)
     if existing_user&.joined? || existing_user.nil? 
       @user = User.new ## Default behavior
     else 
