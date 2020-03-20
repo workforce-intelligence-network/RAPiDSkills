@@ -15,6 +15,10 @@ import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 
 import Standard from '@/views/Standard.vue';
 
+import {
+  TOUR_ID_STANDARDS,
+} from '@/store/tours';
+
 import { duplicateComponentName } from '@/modal';
 
 Vue.use(VueRouter);
@@ -153,6 +157,7 @@ const routes = [
         },
         beforeEnter(to, from, next) {
           store.dispatch('standards/fetchStandards');
+          store.dispatch('tours/continueTour', TOUR_ID_STANDARDS);
           next();
         },
         meta: {

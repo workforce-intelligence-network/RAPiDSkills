@@ -1,27 +1,29 @@
+import Vue from 'vue';
+
 export const updateUser = (state, user) => {
-  state.user = user;
+  Vue.set(state, 'user', user);
 };
 
 export const updateUserLoading = (state, loading) => {
-  state.loading = loading;
+  Vue.set(state, 'loading', loading);
 };
 
 export const updateUserPromise = (state, userPromise) => {
-  state.userPromise = userPromise;
+  Vue.set(state, 'userPromise', userPromise);
 };
 
 export const updateSavedStandards = (state, standards) => {
-  state.savedStandards = standards;
+  Vue.set(state, 'savedStandards', standards);
 };
 
 export const updateSavedStandardsLoading = (state, loading) => {
-  state.savedStandardsLoading = loading;
+  Vue.set(state, 'savedStandardsLoading', loading);
 };
 
 export const updateFavorites = (state, favorites) => {
-  state.favorites = favorites;
+  Vue.set(state, 'favorites', favorites);
 };
 
 export const updateFavoritesLoading = (state, loading) => {
-  state.favoritesLoading = loading;
+  Vue.set(state, 'favoritesLoading', loading);
 };

@@ -1,13 +1,7 @@
 <template>
   <router-link class="standard" :to="routerLink">
     <div class="standard__label">
-      <Tour
-        content="See a high-level summary of another program's standards, which organization contributed them, and how it's been used."
-        :skip="() => {}"
-        :close="() => {}"
-        v-if="firstInList"
-        id=""
-      />
+      <Tour :id="TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY" v-if="firstInList" />
       {{ label }}
     </div>
     <div class="standard__logo">
@@ -40,34 +34,19 @@
     <div class="standard__divider" v-if="!saved && sessionActive" />
     <div class="standard__actions" v-if="!saved && sessionActive">
       <Tooltip class="standard__actions__action" tip="Favorite" v-if="!standard.favorited">
-        <Tour
-          content="Save standards you're interested in coming back to review later. You'll need to create an account."
-          :skip="() => {}"
-          :close="() => {}"
-          v-if="firstInList"
-        />
+        <Tour :id="TOUR_STEP_ID_STANDARDS_FAVORITE" v-if="firstInList" />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left standard__actions__action__button--favorite" @click.prevent="favoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
         </button>
       </Tooltip>
       <Tooltip class="standard__actions__action" tip="Unfavorite" v-if="standard.favorited">
-        <Tour
-          content="Save standards you're interested in coming back to review later. You'll need to create an account."
-          :skip="() => {}"
-          :close="() => {}"
-          v-if="firstInList"
-        />
+        <Tour :id="TOUR_STEP_ID_STANDARDS_FAVORITE" v-if="firstInList" />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left" @click.prevent="unfavoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
         </button>
       </Tooltip>
       <Tooltip class="standard__actions__action standard__actions__action--right" tip="Duplicate">
-        <Tour
-          content="Copy standards you want to build on and customize for your needs. You'll need to create an account."
-          :skip="() => {}"
-          :close="() => {}"
-          v-if="firstInList"
-        />
+        <Tour :id="TOUR_STEP_ID_STANDARDS_DUPLICATE" v-if="firstInList" />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--right" @click.prevent="duplicateStandard">
           <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__action__button__icon" />
         </button>
@@ -83,6 +62,12 @@ import Tooltip from '@/components/Tooltip.vue';
 import Tour from '@/components/Tour.vue';
 
 import ICON_DUPLICATE_ALT from '@/assets/icon-duplicate-alt.svg';
+
+import {
+  TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
+  TOUR_STEP_ID_STANDARDS_FAVORITE,
+  TOUR_STEP_ID_STANDARDS_DUPLICATE,
+} from '@/store/tours';
 
 export default {
   components: {
@@ -118,6 +103,9 @@ export default {
   data() {
     return {
       ICON_DUPLICATE_ALT,
+      TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
+      TOUR_STEP_ID_STANDARDS_FAVORITE,
+      TOUR_STEP_ID_STANDARDS_DUPLICATE,
     };
   },
   computed: {

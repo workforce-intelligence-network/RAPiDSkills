@@ -4,11 +4,7 @@
     <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
-    <Tour
-      content="Search by occupation to find similar standards to your own."
-      :skip="() => {}"
-      :close="() => {}"
-    />
+    <Tour :id="TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH" />
     <div class="search__dropdown" v-if="showList">
       <div class="search__dropdown__loading" v-if="listLoading">
         <Loading />
@@ -33,6 +29,10 @@ import ICON_TOP_NAV_SEARCH from '@/assets/top-nav-icon-search.svg';
 import Loading from '@/components/Loading.vue';
 import OccupationCell from '@/components/OccupationCell.vue';
 import Tour from '@/components/Tour.vue';
+
+import {
+  TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
+} from '@/store/tours';
 
 export default {
   components: {
@@ -72,6 +72,7 @@ export default {
   data() {
     return {
       ICON_TOP_NAV_SEARCH,
+      TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
     };
   },
   computed: {

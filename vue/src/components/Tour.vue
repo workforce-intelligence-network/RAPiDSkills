@@ -1,13 +1,13 @@
 <template>
-  <div class="tour-wrapper">
+  <div class="tour-wrapper" v-if="tourStepVisible">
     <div class="tour">
       <div class="tour__triangle" />
       <div class="tour__title" v-html="title" />
       <div class="tour__content" v-html="content" />
       <div class="tour__actions">
-        <button class="button button--link tour__actions__action tour__actions__skip" v-html="skipText" @click.stop.prevent="skip" />
-        <button class="button button--square tour__actions__action tour__actions__close" @click.stop.prevent="close">
-          <span v-html="closeText" class="tour__actions__close__text" />
+        <button class="button button--link tour__actions__action tour__actions__action--skip" v-html="skipText" @click.stop.prevent="skip" />
+        <button class="button button--square tour__actions__action tour__actions__action--close" @click.stop.prevent="next">
+          <span v-html="closeText" class="tour__actions__action--close__text" />
           <FontAwesomeIcon :icon="['fas', 'caret-right']" />
         </button>
       </div>
@@ -23,19 +23,43 @@ import {
 
 @Component
 export default class tour extends Vue {
-  @Prop({ default: 'Tip:' }) readonly title?: string
+  @Prop(String) readonly id!: string
 
-  @Prop(String) readonly content!: string
+  async next() {
+    await this.$store.dispatch('tours/nextTourStep', this.id);
+  }
 
-  @Prop({ default: 'Skip tips' }) readonly skipText?: string
+  async skip() {
+    await this.$store.dispatch('tours/skipTour', this.configuration.tourId);
+  }
 
-  @Prop(Function) readonly skip!: Function
+  protected get configuration() {
+    return this.$store.getters['tours/tourStepConfiguration'](this.id) || {};
+  }
 
-  @Prop({ default: 'Got it' }) readonly closeText?: string
+  protected get title() {
+    return this.configuration.title || 'Tip:';
+  }
 
-  @Prop(Function) readonly close!: Function
+  protected get content() {
+    return this.configuration.content || 'No content';
+  }
 
-  @Prop({ default: 'left' }) readonly position?: string
+  protected get skipText() {
+    return this.configuration.skipText || 'Skip tips';
+  }
+
+  protected get closeText() {
+    return this.configuration.closeText || 'Got it';
+  }
+
+  protected get position() {
+    return this.configuration.position || 'top-left';
+  }
+
+  protected get tourStepVisible() {
+    return this.$store.getters['tours/tourStepVisible'](this.id);
+  }
 }
 </script>
 
@@ -44,17 +68,18 @@ export default class tour extends Vue {
 
 .tour-wrapper {
   position: relative;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .tour {
-  pointer-events: none;
+  /* pointer-events: none; */
   position: absolute;
   left: calc(100% + .5rem);
   top: -10px;
   background: $color-white;
   box-shadow: 0px 2px 36px $color-tip-box-shadow;
   width: 20rem;
+  max-width: 100vw;
   z-index: 1;
   padding: 1rem 2rem;
   text-align: left;
@@ -64,7 +89,7 @@ export default class tour extends Vue {
   letter-spacing: initial;
 }
 
-.tour__actions__close__text {
+.tour__actions__action--close__text {
   margin-right: .75rem;
 }
 
@@ -92,10 +117,10 @@ export default class tour extends Vue {
 }
 
 .tour__actions__action {
-  pointer-events: all;
+  /* pointer-events: all; */
 }
 
-// .tour__actions__skip {
+// .tour__actions__action--skip {
 // }
 
 $triangle-size: 20px;

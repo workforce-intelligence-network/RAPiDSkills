@@ -1,4 +1,9 @@
-/* eslint-disable import/prefer-default-export */
-export const update = (state, component: ModalComponent) => {
-  state.component = component;
+import Vue from 'vue';
+
+export const showTourStep = (state, tourStepVisibleId: string) => {
+  Vue.set(state, tourStepVisibleId, true);
+};
+
+export const hideTourStep = (state, tourStepVisibleId: string) => {
+  Vue.set(state, tourStepVisibleId, false);
 };

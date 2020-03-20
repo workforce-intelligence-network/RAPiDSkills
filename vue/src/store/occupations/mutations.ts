@@ -1,23 +1,25 @@
 import _isFunction from 'lodash/isFunction';
 
+import Vue from 'vue';
+
 export const updateOccupationsSearchLoading = (state, loading: boolean) => {
-  state.loading = loading;
+  Vue.set(state, 'loading', loading);
 };
 
 export const updateOccupationsSearchQuery = (state, query: string) => {
-  state.query = query;
-  state.freshSearch = true;
+  Vue.set(state, 'query', query);
+  Vue.set(state, 'freshSearch', true);
 };
 
 export const updateOccupationsSearchList = (state, list: []) => {
-  state.list = list;
+  Vue.set(state, 'list', list);
 };
 
 export const updateSelectedOccupation = (state, occupation: object) => {
-  state.selectedOccupation = occupation;
-  state.freshSearch = false;
+  Vue.set(state, 'selectedOccupation', occupation);
+  Vue.set(state, 'freshSearch', false);
 };
 
 export const hideOccupationsList = (state) => {
-  state.freshSearch = false;
+  Vue.set(state, 'freshSearch', false);
 };
