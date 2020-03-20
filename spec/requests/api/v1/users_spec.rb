@@ -10,7 +10,7 @@ RSpec.describe API::V1::UsersController, type: :request do
           data: {
             type: "user",
             attributes: {
-              email: "foo@example.com",
+              email: "foo@Example.com",
               password: "supersecret",
               name: "Mickey Mouse",
               organization_title: "Acme Computing",
@@ -35,7 +35,7 @@ RSpec.describe API::V1::UsersController, type: :request do
       end
 
       context "with existing user" do
-        let!(:user) { create(:user, email: params[:data][:attributes][:email]) }
+        let!(:user) { create(:user, email: "foo@example.com") }
 
         context "with no existing sign in" do
           it "updates the User record and signs in" do
@@ -50,7 +50,7 @@ RSpec.describe API::V1::UsersController, type: :request do
         context "with an existing sign in" do
           before(:each) { allow_any_instance_of(User).to receive(:joined?).and_return(true) }
 
-          it "doesnt update the User record or sign in" do
+          it "doesn't update the User record or sign in" do
             expect(user.sign_in_count).to eq 0
             post path, params: params
             user.reload
