@@ -1,7 +1,7 @@
 <template>
   <div class="tour-wrapper" v-if="tourStepVisible">
-    <div class="tour">
-      <div class="tour__triangle" />
+    <div class="tour" :class="{ [`tour--position-${position}`]: true }" @click.stop.prevent="() => {}" ref="tour" :style="tourTranslationStyle">
+      <div class="tour__triangle" :style="tourTriangleTranslationStyle" />
       <div class="tour__title" v-html="title" />
       <div class="tour__content" v-html="content" />
       <div class="tour__actions">
@@ -21,9 +21,31 @@ import {
   Component, Prop,
 } from 'vue-property-decorator';
 
+const LEFT_BOUND = 80;
+
 @Component
 export default class tour extends Vue {
   @Prop(String) readonly id!: string
+
+  xTranslation: number = 0
+
+  mounted() {
+    if (this.$refs.tour) {
+      if (this.topOrBottom) {
+        return;
+      }
+
+      const rect = (this.$refs.tour as HTMLElement).getBoundingClientRect();
+      if (rect.left < LEFT_BOUND) {
+        this.xTranslation = LEFT_BOUND - rect.left;
+      }
+
+      const RIGHT_BOUND = document.body.clientWidth - 16;
+      if (rect.right > RIGHT_BOUND) {
+        this.xTranslation = RIGHT_BOUND - rect.right;
+      }
+    }
+  }
 
   async next() {
     await this.$store.dispatch('tours/nextTourStep', this.id);
@@ -31,6 +53,24 @@ export default class tour extends Vue {
 
   async skip() {
     await this.$store.dispatch('tours/skipTour', this.configuration.tourId);
+  }
+
+  protected get topOrBottom() {
+    return this.position === 'top' || this.position === 'bottom';
+  }
+
+  protected get tourTranslationStyle() {
+    if (this.topOrBottom) {
+      return '';
+    }
+    return `transform: translateX(${this.xTranslation}px);`;
+  }
+
+  protected get tourTriangleTranslationStyle() {
+    if (this.topOrBottom) {
+      return '';
+    }
+    return `transform: translateX(${-this.xTranslation}px);`;
   }
 
   protected get configuration() {
@@ -54,7 +94,7 @@ export default class tour extends Vue {
   }
 
   protected get position() {
-    return this.configuration.position || 'top-left';
+    return this.configuration.position || 'left-top';
   }
 
   protected get tourStepVisible() {
@@ -66,20 +106,22 @@ export default class tour extends Vue {
 <style scoped lang="scss">
 @import '@/scss/colors';
 
+$triangle-size: 20px;
+
 .tour-wrapper {
-  position: relative;
-  /* pointer-events: none; */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 .tour {
-  /* pointer-events: none; */
   position: absolute;
-  left: calc(100% + .5rem);
-  top: -10px;
   background: $color-white;
   box-shadow: 0px 2px 36px $color-tip-box-shadow;
   width: 20rem;
-  max-width: 100vw;
+  max-width: calc(100vw - 6rem);
   z-index: 1;
   padding: 1rem 2rem;
   text-align: left;
@@ -87,6 +129,111 @@ export default class tour extends Vue {
   text-decoration: none;
   text-transform: none;
   letter-spacing: initial;
+
+  &,
+  &:hover {
+    cursor: default;
+  }
+}
+
+.tour--position-left-top {
+  left: calc(100% + .5rem);
+  top: -10px;
+
+  .tour__triangle {
+    left: -10px;
+    top: 10px;
+
+    &:before {
+      border-right: #{$triangle-size + 3px} solid $color-white;
+      border-bottom: $triangle-size solid transparent;
+      border-top: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-top-right {
+  right: -10px;
+  top: calc(100% + 10px);
+
+  .tour__triangle {
+    right: 10px;
+    top: -10px;
+
+    &:before {
+      border-bottom: #{$triangle-size + 3px} solid $color-white;
+      border-right: $triangle-size solid transparent;
+      border-left: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-top {
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(100% + 10px);
+
+  .tour__triangle {
+    left: 50%;
+    transform: translateX(-50%);
+    top: -10px;
+
+    &:before {
+      border-bottom: #{$triangle-size + 3px} solid $color-white;
+      border-right: $triangle-size solid transparent;
+      border-left: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-bottom {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(100% + 10px);
+
+  .tour__triangle {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -10px;
+
+    &:before {
+      border-top: #{$triangle-size + 3px} solid $color-white;
+      border-right: $triangle-size solid transparent;
+      border-left: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-bottom-left {
+  left: -10px;
+  bottom: calc(100% + 10px);
+
+  .tour__triangle {
+    bottom: -10px;
+    left: 10px;
+
+    &:before {
+      border-top: #{$triangle-size + 3px} solid $color-white;
+      border-right: $triangle-size solid transparent;
+      border-left: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-bottom-right {
+  right: -10px;
+  bottom: calc(100% + 10px);
+
+  .tour__triangle {
+    bottom: -10px;
+    right: 10px;
+
+    &:before {
+      border-top: #{$triangle-size + 3px} solid $color-white;
+      border-right: $triangle-size solid transparent;
+      border-left: $triangle-size solid transparent;
+    }
+  }
 }
 
 .tour__actions__action--close__text {
@@ -116,28 +263,14 @@ export default class tour extends Vue {
   align-items: center;
 }
 
-.tour__actions__action {
-  /* pointer-events: all; */
-}
-
-// .tour__actions__action--skip {
-// }
-
-$triangle-size: 20px;
 .tour__triangle {
   position: absolute;
-  left: -10px;
-  top: 10px;
 
   &:before {
     content: '';
     display: block;
     width: 0;
     height: 0;
-
-    border-right: #{$triangle-size + 3px} solid $color-white;
-    border-bottom: $triangle-size solid transparent;
-    border-top: $triangle-size solid transparent;
   }
 }
 </style>

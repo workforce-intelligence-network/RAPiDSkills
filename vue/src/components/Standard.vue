@@ -33,20 +33,19 @@
     </div>
     <div class="standard__divider" v-if="!saved && sessionActive" />
     <div class="standard__actions" v-if="!saved && sessionActive">
+      <Tour :id="TOUR_STEP_ID_STANDARDS_FAVORITE" v-if="firstInList" />
+      <Tour :id="TOUR_STEP_ID_STANDARDS_DUPLICATE" v-if="firstInList" />
       <Tooltip class="standard__actions__action" tip="Favorite" v-if="!standard.favorited">
-        <Tour :id="TOUR_STEP_ID_STANDARDS_FAVORITE" v-if="firstInList" />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left standard__actions__action__button--favorite" @click.prevent="favoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
         </button>
       </Tooltip>
       <Tooltip class="standard__actions__action" tip="Unfavorite" v-if="standard.favorited">
-        <Tour :id="TOUR_STEP_ID_STANDARDS_FAVORITE" v-if="firstInList" />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left" @click.prevent="unfavoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
         </button>
       </Tooltip>
       <Tooltip class="standard__actions__action standard__actions__action--right" tip="Duplicate">
-        <Tour :id="TOUR_STEP_ID_STANDARDS_DUPLICATE" v-if="firstInList" />
         <button class="button button--link standard__actions__action__button standard__actions__action__button--right" @click.prevent="duplicateStandard">
           <img :src="ICON_DUPLICATE_ALT" alt="Duplicate" class="standard__actions__action__button__icon" />
         </button>
@@ -154,6 +153,7 @@ export default {
 }
 
 .standard__label {
+  position: relative;
   background: $color-black;
   color: $color-white;
   text-transform: uppercase;
@@ -238,6 +238,7 @@ export default {
 }
 
 .standard__actions {
+  position: relative;
   display: flex;
   flex-direction: row;
   height: 3rem;
