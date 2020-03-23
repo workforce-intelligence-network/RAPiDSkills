@@ -215,4 +215,116 @@ RSpec.describe API::V1::UsersController, type: :request do
       end
     end
   end
+
+  describe "PATCH #update" do
+    let(:path) { "/api/v1/users/#{user.id}" }
+    let(:user) { create(:user) }
+    let(:header) { auth_header(user) }
+    let(:params) { {} }
+
+    context "when updating other user" do
+      it_behaves_like "forbidden", :patch do
+        let(:header) { auth_header(create(:user)) }
+      end
+    end
+
+    context "when updating non-existent user" do
+      it_behaves_like "not found", :patch do
+        let(:path) { "/api/v1/users/9999" }
+      end
+    end
+
+    context "when updating self" do
+      context "with valid params" do
+        let(:params) {
+          {
+            data: {
+              type: "user",
+              attributes: {
+                email: "foo@Example.com",
+                password: "supersecret",
+                name: "Mickey Mouse",
+                organization_title: "Acme Computing",
+                settings: { foo: "bar" }.to_json,
+              }
+            }
+          }
+        }
+
+        it_behaves_like "authentication", :patch
+
+        it "updates user data" do
+          patch path, params: params, headers: header
+          user.reload
+          expect(user.email).to eq "foo@example.com"
+          expect(user.name).to eq "Mickey Mouse"
+          expect(user.employer_title).to eq "Acme Computing"
+          expect(user.settings).to eq '{"foo":"bar"}'
+          expect(user.valid_password?("supersecret")).to be true
+        end
+
+        it "returns user data" do
+          patch path, params: params, headers: header
+          user.reload
+          expect(response).to have_http_status(:success)
+          expect(json["data"]["attributes"]["email"]).to eq "foo@example.com"
+          expect(json["data"]["attributes"]["name"]).to eq "Mickey Mouse"
+          expect(json["data"]["attributes"]["role"]).to eq "basic"
+          expect(json["data"]["attributes"]["settings"]).to eq '{"foo":"bar"}'
+          expect(json["data"]["relationships"]["employer"]["data"]["type"]).to eq "organization"
+          expect(json["data"]["relationships"]["employer"]["data"]["id"]).to eq user.employer.id.to_s
+        end
+      end
+
+      context "with invalid params" do
+        context "with blank email" do
+          let(:params) {
+            {
+              data: {
+                type: "user",
+                attributes: {
+                  email: "",
+                  password: "supersecret",
+                  name: "Mickey Mouse",
+                }
+              }
+            }
+          }
+
+          it "does not update user record" do
+            patch path, params: params, headers: header
+            user.reload
+            expect(user.name).to_not eq "Mickey Mouse"
+          end
+
+          it "returns 422 with error message" do
+            patch path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"].count).to eq 1
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to eq "Email can't be blank"
+          end
+        end
+
+        context "when missing attributes data" do
+          let(:params) {
+            {
+              data: {
+                type: "user",
+                attributes: {
+                }
+              }
+            }
+          }
+
+          it "returns 422 http status" do
+            patch path, params: params, headers: header
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to match "empty: attributes"
+          end
+        end
+      end
+    end
+  end
 end

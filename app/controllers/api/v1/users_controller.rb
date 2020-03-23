@@ -1,5 +1,6 @@
 class API::V1::UsersController < API::V1::APIController
   skip_before_action :authenticate, only: :create
+  before_action :set_target_user, only: [:update]
 
   ## TODO remove support for leads overriding generated passwords once the site 
   ## is opened up to anyone.
@@ -25,10 +26,29 @@ class API::V1::UsersController < API::V1::APIController
     render_error(status: :unprocessable_entity, detail: e.message)
   end
 
+  def update
+    @user = authorize([:api, :v1, @target_user])[2]
+    @user.assign_attributes(user_params)
+    @user.employer = define_employer
+    if @user.save
+      render json: API::V1::UserSerializer.new(@user, render_options)
+    else
+      render_resource_error(@user)
+    end
+
+  rescue ActionController::ParameterMissing => e
+    render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
   private
 
+  def set_target_user
+    @target_user = User.find_by(id: params[:id])
+    head :not_found and return unless @target_user
+  end
+
   def user_params
-    params.require(:data).require(:attributes).permit(:name, :email, :password)
+    params.require(:data).require(:attributes).permit(:name, :email, :settings, :password)
   end
 
   def organization_params
@@ -42,10 +62,9 @@ class API::V1::UsersController < API::V1::APIController
   end
 
   def render_options
-    {
-      include: include_options,
-      meta: { access_token: @session.token , token_type: "Bearer" }
-    }
+    options = { include: include_options }
+    options[:meta] = { access_token: @session.token , token_type: "Bearer" } if @session
+    options
   end
 
   def include_options
