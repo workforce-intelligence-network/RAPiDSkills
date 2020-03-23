@@ -327,4 +327,37 @@ RSpec.describe API::V1::UsersController, type: :request do
       end
     end
   end
+
+  describe "GET #show" do
+    let(:path) { "/api/v1/users/#{user.id}" }
+    let(:user) { create(:user, settings: { foo: "bar" }.to_json) }
+    let(:header) { auth_header(user) }
+    let(:params) { {} }
+
+    context "when viewing other user" do
+      it_behaves_like "forbidden", :patch do
+        let(:header) { auth_header(create(:user)) }
+      end
+    end
+
+    context "when viewing non-existent user" do
+      it_behaves_like "not found", :patch do
+        let(:path) { "/api/v1/users/9999" }
+      end
+    end
+
+    context "when viewing self" do
+      it_behaves_like "authentication", :get
+
+      it "returns user data" do
+        get path, headers: header
+        expect(response).to have_http_status(:success)
+        expect(json["data"]["attributes"]["email"]).to eq user.email
+        expect(json["data"]["attributes"]["name"]).to eq user.name
+        expect(json["data"]["attributes"]["role"]).to eq "basic"
+        expect(json["data"]["attributes"]["settings"]).to eq '{"foo":"bar"}'
+        expect(json["data"]["relationships"]["employer"]["data"]).to be nil
+      end
+    end
+  end
 end

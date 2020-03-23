@@ -10,6 +10,10 @@ class API::V1::UserPolicy < ApplicationPolicy
     owned_by_user?
   end
 
+  def show?
+    owned_by_user?
+  end
+
   def favorite?
     owned_by_user?
   end

@@ -1,6 +1,6 @@
 class API::V1::UsersController < API::V1::APIController
   skip_before_action :authenticate, only: :create
-  before_action :set_target_user, only: [:update]
+  before_action :set_target_user, only: [:show, :update]
 
   ## TODO remove support for leads overriding generated passwords once the site 
   ## is opened up to anyone.
@@ -24,6 +24,11 @@ class API::V1::UsersController < API::V1::APIController
 
   rescue ActionController::ParameterMissing => e
     render_error(status: :unprocessable_entity, detail: e.message)
+  end
+
+  def show
+    @user = authorize([:api, :v1, @target_user])[2]
+    render json: API::V1::UserSerializer.new(@user, render_options)
   end
 
   def update
@@ -69,7 +74,7 @@ class API::V1::UsersController < API::V1::APIController
 
   def include_options
     options = []
-    options += [:employer] if @user.employer.persisted?
+    options += [:employer] if @user.employer&.persisted?
     options += [:client_sessions] if @session
   end
 end
