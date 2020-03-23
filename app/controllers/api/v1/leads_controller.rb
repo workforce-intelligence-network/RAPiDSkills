@@ -2,12 +2,11 @@ class API::V1::LeadsController < API::V1::APIController
   skip_before_action :authenticate, only: :create
 
   def create
-    @user = User.where(
-      email: user_params[:email]
-    ).first_or_initialize(
-      name: user_params[:name],
-      password: SecureRandom.uuid,
-    )
+    @user = User.find_for_database_authentication(email: user_params[:email])
+    unless @user
+      @user = User.new(user_params)
+      @user.password = SecureRandom.uuid
+    end
 
     if @user.new_record?
       @user.employer = Organization.where(
