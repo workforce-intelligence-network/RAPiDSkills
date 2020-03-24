@@ -31,7 +31,7 @@ Rails.application.routes.draw do
           get "relationships/parent_occupation_standard", to: "occupation_standards/relationships#parent_occupation_standard"
         end
         resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
-        resources :occupation_standard_skills, path: "skills", only: [:index]
+        resources :occupation_standard_skills, path: "skills", only: [:index], to: "occupation_standards/occupation_standard_skills#index"
       end
 
       resources :occupation_standard_work_processes, path: "work_processes", only: [:show, :create, :update] do
