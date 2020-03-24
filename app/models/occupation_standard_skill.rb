@@ -18,10 +18,11 @@ class OccupationStandardSkill < ApplicationRecord
         skills = Skill.search(q, operator: "or")
       end
       OccupationStandardSkill
-        .select("DISTINCT ON(skills.description) occupation_standard_skills.id, skills.description")
+        .select("DISTINCT ON(t.ord) occupation_standard_skills.id, skills.description, occupation_standard_skills.skill_id")
         .joins(:skill)
-        .where(skill: skills.to_a)
-        .order("skills.description, occupation_standard_skills.id")
+        .joins("JOIN UNNEST('{#{skills.map(&:id).join(",")}}'::int[]) WITH ORDINALITY t(elem, ord) ON (skills.id = elem)")
+        .includes(:skill)
+        .order("t.ord")
     end
   end
 

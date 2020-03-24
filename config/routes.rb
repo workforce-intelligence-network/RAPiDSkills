@@ -45,7 +45,7 @@ Rails.application.routes.draw do
         resources :categories, only: [:index], controller: "occupation_standard_work_processes/categories"
       end
 
-      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
+      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update, :index]
       resources :categories, only: [:create, :show, :update] do
         member do
           get "relationships/skills", to: "categories/relationships/skills#index"

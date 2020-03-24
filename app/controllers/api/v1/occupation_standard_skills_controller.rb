@@ -5,6 +5,11 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
   before_action :authorize_parent, only: [:create]
   after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
+  def index
+    @osss = OccupationStandardSkill.search_records(q: params[:q])
+    render json: API::V1::OccupationStandardSkillSearchSerializer.new(@osss)
+  end
+
   def show
     render_resource
   end
