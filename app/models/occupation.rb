@@ -10,8 +10,7 @@ class Occupation < ApplicationRecord
   scope :search_import, -> { includes(:industry) }
 
   class << self
-    def search_records(args={})
-      q = args[:q]
+    def search_records(q:)
       return all if q.blank?
       search(q, operator: "or")
     end
