@@ -15,9 +15,9 @@ export const updateOccupationsSearchList = (state, list: []) => {
   Vue.set(state, 'list', list);
 };
 
-export const updateSelectedOccupation = (state, occupation: object) => {
+export const updateSelectedOccupation = (state, occupation?: object) => {
   Vue.set(state, 'selectedOccupation', occupation);
-  Vue.set(state, 'freshSearch', false);
+  Vue.set(state, 'freshSearch', !occupation);
 };
 
 export const hideOccupationsList = (state) => {
