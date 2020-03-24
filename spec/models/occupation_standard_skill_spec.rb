@@ -28,4 +28,49 @@ RSpec.describe OccupationStandardSkill, type: :model do
                    )
     expect(oss_new.valid?).to be true
   end
+
+  describe ".search_records" do
+    let!(:skill1) { create(:skill, description: "Fig Berry") }
+    let!(:skill2) { create(:skill, description: "Berry Chocolate") }
+    let!(:skill3) { create(:skill, description: "Ginger Blueberry") }
+    let!(:oss1a) { create(:occupation_standard_skill, skill: skill1) }
+    let!(:oss1b) { create(:occupation_standard_skill, skill: skill1) }
+    let!(:oss2a) { create(:occupation_standard_skill, skill: skill2) }
+    let!(:oss2b) { create(:occupation_standard_skill, skill: skill2) }
+    let!(:oss3a) { create(:occupation_standard_skill, skill: skill3) }
+    let!(:oss3b) { create(:occupation_standard_skill, skill: skill3) }
+
+    before { Skill.reindex }
+
+    it "returns all results when q is blank" do
+      results = OccupationStandardSkill.search_records(q: nil)
+      expect(results.map(&:id)).to contain_exactly oss1a.id, oss2a.id, oss3a.id
+
+      results = OccupationStandardSkill.search_records(q: "")
+      expect(results.map(&:id)).to contain_exactly oss1a.id, oss2a.id, oss3a.id
+    end
+
+    it "returns matched results when q is not blank" do
+      results = OccupationStandardSkill.search_records(q: "Fig")
+      expect(results.map(&:id)).to contain_exactly oss1a.id
+
+      results = OccupationStandardSkill.search_records(q: "Berry")
+      expect(results.map(&:id)).to contain_exactly oss1a.id, oss2a.id
+    end
+
+    it "returns OR matched results when q has multiple terms" do
+      results = OccupationStandardSkill.search_records(q: "Chocolate Fob")
+      expect(results.map(&:id)).to contain_exactly oss2a.id
+    end
+
+    it "returns no results when q does not match" do
+      results = OccupationStandardSkill.search_records(q: "Fob")
+      expect(results).to be_empty
+    end
+
+    it "returns partial match for description" do
+      results = OccupationStandardSkill.search_records(q: "Choco")
+      expect(results.map(&:id)).to contain_exactly oss2a.id
+    end
+  end
 end

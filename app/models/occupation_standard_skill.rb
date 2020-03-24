@@ -10,6 +10,21 @@ class OccupationStandardSkill < ApplicationRecord
   delegate :description, to: :skill, prefix: true
   delegate :creator, to: :occupation_standard
 
+  class << self
+    def search_records(q:)
+      if q.blank?
+        skills = Skill.all
+      else
+        skills = Skill.search(q, operator: "or")
+      end
+      OccupationStandardSkill
+        .select("DISTINCT ON(skills.description) occupation_standard_skills.id, skills.description")
+        .joins(:skill)
+        .where(skill: skills.to_a)
+        .order("skills.description, occupation_standard_skills.id")
+    end
+  end
+
   def to_s
     "#{occupation_standard.to_s}: #{skill.to_s}"
   end
