@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_23_210613) do
+ActiveRecord::Schema.define(version: 2020_03_24_160425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -156,6 +156,8 @@ ActiveRecord::Schema.define(version: 2020_03_23_210613) do
     t.string "title_aliases", default: [], array: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "industry_id"
+    t.index ["industry_id"], name: "index_occupations_on_industry_id"
     t.index ["title", "rapids_code", "onet_code"], name: "index_occupations_on_title_and_rapids_code_and_onet_code", unique: true
   end
 
@@ -260,6 +262,7 @@ ActiveRecord::Schema.define(version: 2020_03_23_210613) do
   add_foreign_key "occupation_standards", "organizations"
   add_foreign_key "occupation_standards", "states", column: "registration_state_id"
   add_foreign_key "occupation_standards", "users", column: "creator_id"
+  add_foreign_key "occupations", "industries"
   add_foreign_key "relationships", "occupation_standards"
   add_foreign_key "relationships", "users"
   add_foreign_key "skills", "skills", column: "parent_skill_id"
