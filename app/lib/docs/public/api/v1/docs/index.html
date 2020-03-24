@@ -1614,7 +1614,7 @@ standard.</p>
 </code></pre><h3 id='occupation-standards-retrieve-occupation-standard-http-request'>HTTP Request</h3>
 <p><code>GET http://www.rapidskills.org/api/v1/occupation_standards/:occupation_standard_id</code></p>
 
-<p>Included relationships: creator, industry, occupation, organization,
+<p>Included relationships: creator, occupation, organization,
 parent_occupation_standard, registration_state, skills, work_processes</p>
 
 <blockquote>
@@ -2047,12 +2047,6 @@ skill</a> endpoint. Adding and deleting skills TBD.</p>
                     "id": "398"
                 }
             },
-            "industry": {
-                "data": {
-                    "type": "industry",
-                    "id": "1"
-                }
-            },
             "registration_state": {
                 "data": {
                     "type": "state",
@@ -2090,7 +2084,6 @@ skill</a> endpoint. Adding and deleting skills TBD.</p>
 </tbody></table>
 <h3 id='occupation-standards-update-occupation-standard-relationships-to-update'>Relationships to update</h3>
 <ul>
-<li>industry</li>
 <li>occupation</li>
 <li>registration_state</li>
 </ul>
@@ -2118,16 +2111,6 @@ skill</a> endpoint. Adding and deleting skills TBD.</p>
             </span><span class="s2">"should_generate_attachments"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"industry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"industry"</span><span class="w">
-                </span><span class="p">},</span><span class="w">
-                </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/15/relationships/industry"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/industry/1"</span><span class="w">
-                </span><span class="p">}</span><span class="w">
-            </span><span class="p">},</span><span class="w">
             </span><span class="s2">"registration_state"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"26"</span><span class="p">,</span><span class="w">
@@ -2167,16 +2150,6 @@ skill</a> endpoint. Adding and deleting skills TBD.</p>
         </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/occupation_standards/15"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"industry"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Engineering"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/industry/1"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"398"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"occupation"</span><span class="p">,</span><span class="w">
