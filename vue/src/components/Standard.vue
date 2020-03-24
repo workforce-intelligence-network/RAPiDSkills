@@ -1,6 +1,9 @@
 <template>
   <router-link class="standard" :to="routerLink">
-    <div class="standard__label">{{ label }}</div>
+    <div class="standard__label">
+      <Tour :id="TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY" v-if="firstInList" />
+      {{ label }}
+    </div>
     <div class="standard__logo">
       <img :src="standard.organizationLogoUrl" :alt="standard.organizationTitle" class="standard__logo__logo" />
     </div>
@@ -30,6 +33,8 @@
     </div>
     <div class="standard__divider" v-if="!saved && sessionActive" />
     <div class="standard__actions" v-if="!saved && sessionActive">
+      <Tour :id="TOUR_STEP_ID_STANDARDS_FAVORITE" v-if="firstInList" />
+      <Tour :id="TOUR_STEP_ID_STANDARDS_DUPLICATE" v-if="firstInList" />
       <Tooltip class="standard__actions__action" tip="Favorite" v-if="!standard.favorited">
         <button class="button button--link standard__actions__action__button standard__actions__action__button--left standard__actions__action__button--favorite" @click.prevent="favoriteStandard">
           <FontAwesomeIcon :icon="['fas', 'heart']" class="standard__actions__action__button__icon standard__actions__action__button__icon--fa" />
@@ -53,16 +58,26 @@
 import { mapGetters } from 'vuex';
 
 import Tooltip from '@/components/Tooltip.vue';
+import Tour from '@/components/Tour.vue';
+
 import ICON_DUPLICATE_ALT from '@/assets/icon-duplicate-alt.svg';
+
+import {
+  TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
+  TOUR_STEP_ID_STANDARDS_FAVORITE,
+  TOUR_STEP_ID_STANDARDS_DUPLICATE,
+} from '@/store/tours';
 
 export default {
   components: {
     Tooltip,
+    Tour,
   },
   props: {
     standard: Object,
     label: String,
     saved: Boolean,
+    firstInList: Boolean,
   },
   methods: {
     duplicateStandard() {
@@ -87,6 +102,9 @@ export default {
   data() {
     return {
       ICON_DUPLICATE_ALT,
+      TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
+      TOUR_STEP_ID_STANDARDS_FAVORITE,
+      TOUR_STEP_ID_STANDARDS_DUPLICATE,
     };
   },
   computed: {
@@ -135,6 +153,7 @@ export default {
 }
 
 .standard__label {
+  position: relative;
   background: $color-black;
   color: $color-white;
   text-transform: uppercase;
@@ -219,6 +238,7 @@ export default {
 }
 
 .standard__actions {
+  position: relative;
   display: flex;
   flex-direction: row;
   height: 3rem;

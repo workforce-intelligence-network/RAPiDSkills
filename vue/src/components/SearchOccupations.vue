@@ -4,6 +4,7 @@
     <a class="search__button" href="javascript:void(0)" @click.stop.prevent="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
+    <Tour :id="TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH" />
     <div class="search__dropdown" v-if="showList">
       <div class="search__dropdown__empty" v-if="!listLoading && !list.length">
         No occupations found.
@@ -30,11 +31,17 @@ import ICON_TOP_NAV_SEARCH from '@/assets/top-nav-icon-search.svg';
 
 import Loading from '@/components/Loading.vue';
 import OccupationCell from '@/components/OccupationCell.vue';
+import Tour from '@/components/Tour.vue';
+
+import {
+  TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
+} from '@/store/tours';
 
 export default {
   components: {
     OccupationCell,
     Loading,
+    Tour,
   },
   created() {
     (this as any).submitSearchDebounced = _debounce((this as any).submitSearchDebounced, 500).bind(this);
@@ -91,7 +98,7 @@ export default {
     return {
       inputValue: '',
       ICON_TOP_NAV_SEARCH,
-      bodyClickListener: undefined,
+      TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
     };
   },
   computed: {

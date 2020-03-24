@@ -1,6 +1,6 @@
 <template>
   <div class="app__inner--dashboard">
-    <div class="app__inner--dashboard__body">
+    <div class="app__inner--dashboard__body" id="body">
       <div class="app__inner--dashboard__body__content">
         <router-view />
       </div>
@@ -143,6 +143,7 @@ export default class AppInnerDashboard extends Vue {
 @import "@/scss/mixins";
 @import "@/scss/colors";
 @import "@/scss/navbars";
+@import "@/scss/dashboard";
 
 .app__inner--dashboard__nav--top,
 .app__inner--dashboard__nav--left,
@@ -303,7 +304,7 @@ export default class AppInnerDashboard extends Vue {
   min-height: 100%;
   width: 100%;
   overflow-x: hidden;
-  padding-bottom: 5rem;
+  padding-bottom: $dashboard-body-content-bottom-padding;
 }
 
 .app__inner--dashboard__nav--top__link--user {
