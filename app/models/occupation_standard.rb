@@ -1,7 +1,6 @@
 class OccupationStandard < ApplicationRecord
   belongs_to :organization
   belongs_to :occupation
-  belongs_to :industry, optional: true
   belongs_to :creator, class_name: 'User'
   belongs_to :parent_occupation_standard, class_name: 'OccupationStandard', optional: true
   belongs_to :registration_state, class_name: 'State', optional: true
@@ -27,13 +26,13 @@ class OccupationStandard < ApplicationRecord
   delegate :type, to: :occupation, prefix: true
   delegate :title, to: :organization, prefix: true
   delegate :title, to: :occupation, prefix: true
-  delegate :title, to: :industry, prefix: true, allow_nil: true
   delegate :name, to: :creator, prefix: true
+  delegate :industry, to: :occupation
 
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
   scope :creator, ->(creator_id) { where(creator_id: creator_id) if creator_id.present? }
 
-  scope :with_eager_loading, -> { includes(:creator, :occupation, :industry, :parent_occupation_standard, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, pdf_attachment: :blob, excel_attachment: :blob, organization: [logo_attachment: :blob]) }
+  scope :with_eager_loading, -> { includes(:creator, :parent_occupation_standard, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, pdf_attachment: :blob, excel_attachment: :blob, organization: [logo_attachment: :blob], occupation: :industry) }
 
   CSV_HEADERS = %w(rapids_code onet_code organization_title registration_organization_name registration_state occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort category category_sort skill skill_sort).freeze
 
@@ -86,6 +85,10 @@ class OccupationStandard < ApplicationRecord
       os.errors.add(:base, e.message)
       os
     end
+  end
+
+  def industry_title
+    industry&.title
   end
 
   def registration_state_name

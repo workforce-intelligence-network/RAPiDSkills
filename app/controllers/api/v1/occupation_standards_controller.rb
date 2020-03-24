@@ -88,7 +88,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def update_params
-    relationships_params = params.require(:data).permit(relationships: { industry: {}, occupation: {}, registration_state: {} })
+    relationships_params = params.require(:data).permit(relationships: { occupation: {}, registration_state: {} })
     relationships_params = relationships_params[:relationships] || {}
 
     relationships = {}
@@ -113,7 +113,6 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   def include_relationships
     [
       :creator,
-      :industry,
       :occupation,
       :organization,
       :parent_occupation_standard,

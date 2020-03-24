@@ -6,25 +6,20 @@ RSpec.describe Occupation, type: :model do
     expect(o.valid?).to be true
   end
 
-  it "has many industries" do
-    industry = create(:industry)
-    os = create(:occupation_standard, industry: industry)
-    expect(os.occupation.industries).to eq [industry]
-  end
-
   describe ".search_records" do
     let!(:occupation1) { create(:occupation, title: "Fig Berry") }
     let!(:occupation2) { create(:occupation, title: "Berry Chocolate") }
     let!(:occupation3) { create(:occupation, title: "Ginger Berry", title_aliases: ["Marshmallow", "Fig"]) }
+    let!(:occupation4) { create(:occupation, title: "Acme Computing", onet_code: "12-3456.00") }
 
     before { Occupation.reindex }
 
     it "returns all results when q is blank" do
       results = Occupation.search_records(q: nil)
-      expect(results).to contain_exactly occupation1, occupation2, occupation3
+      expect(results).to contain_exactly occupation1, occupation2, occupation3, occupation4
 
       results = Occupation.search_records(q: "")
-      expect(results).to contain_exactly occupation1, occupation2, occupation3
+      expect(results).to contain_exactly occupation1, occupation2, occupation3, occupation4
     end
 
     it "returns matched results when q is not blank" do
@@ -49,6 +44,11 @@ RSpec.describe Occupation, type: :model do
     it "returns no results when q does not match" do
       results = Occupation.search_records(q: "Fob")
       expect(results).to be_empty
+    end
+
+    it "returns partial match for onet code" do
+      results = Occupation.search_records(q: "12-34")
+      expect(results).to contain_exactly occupation4
     end
   end
 end
