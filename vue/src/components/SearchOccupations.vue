@@ -62,10 +62,10 @@ export default {
       ((this as any).$refs.searchInput as any).blur();
       (this as any).$store.dispatch('occupations/hideOccupationsList');
     },
-    async onFocus() {
+    onFocus() {
       (this as any).inputValue = '';
       if ((this as any).selectedOccupation) {
-        await (this as any).$store.dispatch('occupations/setSelectedOccupation');
+        (this as any).$store.dispatch('occupations/setSelectedOccupation');
       }
       (this as any).submitSearch();
     },
