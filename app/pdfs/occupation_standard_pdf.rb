@@ -23,7 +23,7 @@ class OccupationStandardPdf < Prawn::Document
     bounding_box([bounds.left, bounds.top - 50], width: bounds.width, height: bounds.height - 100) do
       text os.organization_title
       text os.occupation_title
-      text os.industry_title if os.industry
+      text os.industry_title
       move_down 20
 
       text "Work Processes", size: 16, style: :bold
