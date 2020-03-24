@@ -7,6 +7,8 @@ class Occupation < ApplicationRecord
   belongs_to :industry, optional: true
   has_many :occupation_standards
 
+  scope :search_import, -> { includes(:industry) }
+
   class << self
     def search_records(args={})
       q = args[:q]
@@ -19,6 +21,10 @@ class Occupation < ApplicationRecord
     {
       title: title,
       title_aliases: title_aliases,
+      onet_code: onet_code,
+      rapids_code: rapids_code,
+      industry_naics_code: industry&.naics_code,
+      industry_title: industry&.title,
     }
   end
 

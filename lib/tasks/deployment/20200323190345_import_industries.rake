@@ -20,8 +20,6 @@ namespace :after_party do
       end
     end
 
-    Industry.reindex
-
     # Link occupations to industry
     Occupation.find_each do |occupation|
       next if occupation.onet_code.blank?
@@ -41,6 +39,8 @@ namespace :after_party do
         Notify.error("Error in after_party:industries_import assigning industries", e)
       end
     end
+
+    Occupation.reindex
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
