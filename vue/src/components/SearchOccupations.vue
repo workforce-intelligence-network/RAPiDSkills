@@ -1,17 +1,20 @@
 <template>
-  <form class="search" @submit.prevent="submitSearch" @keyup.esc="closeSearch">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="onFocus" ref="searchInput" :value="inputValue" autocomplete="off" />
-    <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
+  <form class="search" @submit.prevent="submitSearchDebounced" @keyup.esc="closeSearch">
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @focus="onFocus" ref="searchInput" v-model="query" autocomplete="off" @click.stop.prevent="() => {}" />
+    <a class="search__button" href="javascript:void(0)" @click.stop.prevent="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
     <div class="search__dropdown" v-if="showList">
+      <div class="search__dropdown__empty" v-if="!listLoading && !list.length">
+        No occupations found.
+      </div>
       <div class="search__dropdown__loading" v-if="listLoading">
         <Loading />
       </div>
       <div class="search__dropdown__list" v-if="!listLoading">
-        <div class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="selectItem(item)">
+        <a class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="selectItem(item)" href="javascript:void(0);">
           <OccupationCell :occupation="item" />
-        </div>
+        </a>
       </div>
     </div>
   </form>
@@ -34,15 +37,33 @@ export default {
     Loading,
   },
   created() {
-    (this as any).submitSearch = _debounce((this as any).submitSearch, 500, { leading: true }).bind(this);
+    (this as any).submitSearchDebounced = _debounce((this as any).submitSearchDebounced, 500).bind(this);
+    (this as any).onBodyClick = (this as any).onBodyClick.bind(this);
+  },
+  updated() {
+    if ((this as any).showList) {
+      document.body.addEventListener('click', (this as any).onBodyClick);
+    } else {
+      document.body.removeEventListener('click', (this as any).onBodyClick);
+    }
+  },
+  destroyed() {
+    document.body.removeEventListener('click', (this as any).onBodyClick);
   },
   methods: {
+    onBodyClick() {
+      if (!(this as any).showList) {
+        return;
+      }
+
+      (this as any).closeSearch();
+    },
     closeSearch() {
       ((this as any).$refs.searchInput as any).blur();
       (this as any).$store.dispatch('occupations/hideOccupationsList');
     },
     onFocus() {
-      ((this as any).$refs.searchInput as any).value = '';
+      (this as any).inputValue = '';
       if ((this as any).selectedOccupation) {
         (this as any).$store.dispatch('occupations/setSelectedOccupation');
       }
@@ -50,13 +71,17 @@ export default {
     },
     onClickSearchButton() {
       if ((this as any).showList) {
-        return (this as any).closeSearch();
+        (this as any).closeSearch();
+        return;
       }
 
-      return (this as any).submitSearch();
+      (this as any).submitSearch();
+    },
+    submitSearchDebounced() {
+      (this as any).submitSearch();
     },
     submitSearch() {
-      (this as any).$store.dispatch('occupations/searchForOccupations', ((this as any).$refs.searchInput as any).value);
+      (this as any).$store.dispatch('occupations/searchForOccupations', this.query);
     },
     selectItem(item) {
       (this as any).$store.dispatch('occupations/setSelectedOccupation', item);
@@ -64,7 +89,9 @@ export default {
   },
   data() {
     return {
+      inputValue: '',
       ICON_TOP_NAV_SEARCH,
+      bodyClickListener: undefined,
     };
   },
   computed: {
@@ -76,10 +103,19 @@ export default {
       listLoading: (state: any) => state.occupations.loading,
       listEmpty: (state: any) => !state.occupations.list.length,
       selectedOccupation: (state: any) => state.occupations.selectedOccupation,
-      query: (state: any) => state.occupations.query,
     }),
-    inputValue() {
-      return ((this as any).selectedOccupation || {}).title || (this as any).query;
+    query: {
+      get() {
+        if ((this as any).selectedOccupation) {
+          return (this as any).selectedOccupation.title;
+        }
+
+        return (this as any).inputValue;
+      },
+      set(value) {
+        (this as any).inputValue = value;
+        (this as any).submitSearchDebounced();
+      },
     },
   },
 };
@@ -129,14 +165,19 @@ $search-button-width: 3rem;
 }
 
 .search__dropdown__list__item {
+  display: block;
+  color: $color-black;
   cursor: pointer;
+  border-bottom: 1px solid $color-gray-border;
 
   &:hover {
     background: darken($color: $color-white, $amount: 10);
   }
 }
 
+.search__dropdown__empty,
 .search__dropdown__loading {
   line-height: 5rem;
 }
+
 </style>

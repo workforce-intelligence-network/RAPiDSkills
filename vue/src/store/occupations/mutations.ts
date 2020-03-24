@@ -13,9 +13,9 @@ export const updateOccupationsSearchList = (state, list: []) => {
   state.list = list;
 };
 
-export const updateSelectedOccupation = (state, occupation: object) => {
+export const updateSelectedOccupation = (state, occupation?: object) => {
   state.selectedOccupation = occupation;
-  state.freshSearch = false;
+  state.freshSearch = !occupation;
 };
 
 export const hideOccupationsList = (state) => {
