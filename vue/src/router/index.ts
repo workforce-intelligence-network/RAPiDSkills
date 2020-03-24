@@ -16,6 +16,7 @@ import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 import Standard from '@/views/Standard.vue';
 
 import {
+  TOUR_ID_STANDARD,
   TOUR_ID_STANDARDS,
 } from '@/store/tours';
 
@@ -122,6 +123,7 @@ const routes = [
         },
         beforeEnter(to, from, next) {
           store.dispatch('standards/getStandard', to.params.id);
+          store.dispatch('tours/continueTour', TOUR_ID_STANDARD);
           next();
         },
         meta: {

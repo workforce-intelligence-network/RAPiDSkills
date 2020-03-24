@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
+import VueScrollTo from 'vue-scrollto';
 
 import Rollbar from 'vue-rollbar';
 
@@ -34,6 +35,10 @@ Vue.use(Rollbar, {
       },
     },
   },
+});
+
+Vue.use(VueScrollTo, {
+  container: '#body',
 });
 
 (async () => {

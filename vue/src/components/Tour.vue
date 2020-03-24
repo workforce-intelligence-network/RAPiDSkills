@@ -16,6 +16,8 @@
 </template>
 
 <script lang="ts">
+import _debounce from 'lodash/debounce';
+
 import Vue from 'vue';
 import {
   Component, Prop,
@@ -29,8 +31,20 @@ export default class tour extends Vue {
 
   xTranslation: number = 0
 
+  created() {
+    this.onMountOrUpdate = _debounce(this.onMountOrUpdate, 500, { leading: true }).bind(this);
+  }
+
   mounted() {
-    if (!this.$refs.tour) {
+    this.$nextTick(this.onMountOrUpdate);
+  }
+
+  updated() {
+    this.$nextTick(this.onMountOrUpdate);
+  }
+
+  onMountOrUpdate() {
+    if (!this.tourStepVisible || !this.$refs.tour) {
       return;
     }
 
@@ -55,7 +69,10 @@ export default class tour extends Vue {
   }
 
   scrollIntoView() {
-    (this.$refs.tour as HTMLElement).scrollIntoView();
+    this.$scrollTo((this.$refs.tour as HTMLElement), 500, {
+      container: '#body',
+      offset: -20,
+    });
   }
 
   async next() {
@@ -125,6 +142,7 @@ $triangle-size: 20px;
   bottom: 0;
   right: 0;
   left: 0;
+  pointer-events: none;
 }
 
 .tour {
@@ -167,6 +185,38 @@ $triangle-size: 20px;
       border-right: #{$triangle-size + 3px} solid $color-white;
       border-bottom: $triangle-size solid transparent;
       border-top: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-right-top {
+  right: calc(100% + .5rem);
+  top: -10px;
+
+  .tour__triangle {
+    right: -10px;
+    top: 10px;
+
+    &:before {
+      border-left: #{$triangle-size + 3px} solid $color-white;
+      border-bottom: $triangle-size solid transparent;
+      border-top: $triangle-size solid transparent;
+    }
+  }
+}
+
+.tour--position-top-left {
+  left: -10px;
+  top: calc(100% + 10px);
+
+  .tour__triangle {
+    left: 10px;
+    top: -10px;
+
+    &:before {
+      border-bottom: #{$triangle-size + 3px} solid $color-white;
+      border-right: $triangle-size solid transparent;
+      border-left: $triangle-size solid transparent;
     }
   }
 }

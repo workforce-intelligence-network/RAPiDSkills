@@ -5,12 +5,6 @@
         <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
       <div class="page--standard__sidebar--left__occupation-name">
-        <!-- <Tour
-          content="This left hand section is your Standard's Details."
-          :skip="() => {}"
-          :close="() => {}"
-          v-if="editing"
-        /> -->
         <span>{{ standard.title }}</span>
       </div>
       <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
@@ -18,10 +12,12 @@
         <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
           Duplicate
         </button>
+        <Tour :id="TOUR_STEP_ID_STANDARD_DUPLICATE" v-if="sessionActive" />
         <div class="page--standard__sidebar--left__actions__action page--standard__sidebar--left__actions__action--dropdown">
           <button role="button" class="button button--square" @click="toggleDownloadOpen" :disabled="!standard.pdfUrl && !standard.excelUrl">
             Download
           </button>
+          <Tour :id="TOUR_STEP_ID_STANDARD_DOWNLOAD" v-if="sessionActive" />
           <div class="page--standard__sidebar--left__actions__action--dropdown__list" v-if="downloadOpen">
             <a class="page--standard__sidebar--left__actions__action--dropdown__list__item" :href="standard.pdfUrl" @click="toggleDownloadOpen" target="_blank" v-if="standard.pdfUrl">
               Download as PDF
@@ -103,12 +99,6 @@
               New Work Process
             </span>
           </button>
-          <!-- <Tour
-            content='Click the "+ New Work Process" button to add a new work process to your standard.'
-            :skip="() => {}"
-            :close="() => {}"
-            v-if="editing"
-          /> -->
         </div>
         <button role="button" class="button button--square button--alternative page--standard__body__actions__action" @click="addSkill" :disabled="addNewSkillDisabled">
           <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="page--standard__body__actions__action__icon" />
@@ -121,6 +111,7 @@
         :key="`work-process-${workProcess.synced ? `id-${workProcess.id}` : workProcessIndex}`"
         :workProcessIndex="workProcessIndex"
         :editing="editing"
+        :firstInList="workProcessIndex === 0"
       />
       <StandardSkill
         v-for="(skill, skillIndex) in standard.skills"
@@ -154,12 +145,16 @@ import Loading from '@/components/Loading.vue';
 import StandardWorkProcess from '@/components/StandardWorkProcess.vue';
 import StandardSkill from '@/components/StandardSkill.vue';
 import Tour from '@/components/Tour.vue';
+import TextArea from '@/components/TextArea.vue';
 
 import OccupationStandard from '@/models/OccupationStandard';
 import WorkProcess from '@/models/WorkProcess';
 import Skill from '@/models/Skill';
 
-import TextArea from '@/components/TextArea.vue';
+import {
+  TOUR_STEP_ID_STANDARD_DUPLICATE,
+  TOUR_STEP_ID_STANDARD_DOWNLOAD,
+} from '@/store/tours';
 
 @Component({
   components: {
@@ -172,6 +167,10 @@ import TextArea from '@/components/TextArea.vue';
 })
 export default class Standard extends Vue {
   @Provide('ICON_PLUS_BLUE') ICON_PLUS_BLUE: string = ICON_PLUS_BLUE
+
+  @Provide('TOUR_STEP_ID_STANDARD_DUPLICATE') TOUR_STEP_ID_STANDARD_DUPLICATE: string = TOUR_STEP_ID_STANDARD_DUPLICATE
+
+  @Provide('TOUR_STEP_ID_STANDARD_DOWNLOAD') TOUR_STEP_ID_STANDARD_DOWNLOAD: string = TOUR_STEP_ID_STANDARD_DOWNLOAD
 
   downloadOpen: boolean = false
 
@@ -253,6 +252,7 @@ export default class Standard extends Vue {
 @import "@/scss/navbars";
 @import "@/scss/mixins";
 @import "@/scss/standards";
+@import "@/scss/dashboard";
 
 $sidebar-left-width: 20rem;
 
@@ -273,7 +273,7 @@ $sidebar-left-width: 20rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   flex-shrink: 0;
   @include breakpoint--above-sm {
-    min-height: calc(100vh - #{$nav-top-height});
+    min-height: calc(100vh - #{$nav-top-height} - #{$dashboard-body-content-bottom-padding});
   }
   @include breakpoint--sm {
     // display: none;
@@ -311,6 +311,7 @@ $sidebar-left-width: 20rem;
 .page--standard__sidebar--left__actions {
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 .page--standard__sidebar--left__actions__action {
