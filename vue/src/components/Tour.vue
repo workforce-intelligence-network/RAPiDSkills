@@ -1,6 +1,6 @@
 <template>
-  <div class="tour-wrapper" v-if="tourStepVisible">
-    <div class="tour" :class="{ [`tour--position-${position}`]: true }" @click.stop.prevent="() => {}" ref="tour" :style="tourTranslationStyle">
+  <div class="tour-wrapper">
+    <div class="tour" :class="{ [`tour--position-${position}`]: true, 'tour--shown': tourStepVisible }" @click.stop.prevent="() => {}" ref="tour" :style="tourTranslationStyle">
       <div class="tour__triangle" :style="tourTriangleTranslationStyle" />
       <div class="tour__title" v-html="title" />
       <div class="tour__content" v-html="content" />
@@ -30,21 +30,32 @@ export default class tour extends Vue {
   xTranslation: number = 0
 
   mounted() {
-    if (this.$refs.tour) {
-      if (this.topOrBottom) {
-        return;
-      }
-
-      const rect = (this.$refs.tour as HTMLElement).getBoundingClientRect();
-      if (rect.left < LEFT_BOUND) {
-        this.xTranslation = LEFT_BOUND - rect.left;
-      }
-
-      const RIGHT_BOUND = document.body.clientWidth - 16;
-      if (rect.right > RIGHT_BOUND) {
-        this.xTranslation = RIGHT_BOUND - rect.right;
-      }
+    if (!this.$refs.tour) {
+      return;
     }
+
+    this.adjustXPositioning();
+    this.scrollIntoView();
+  }
+
+  adjustXPositioning() {
+    if (this.topOrBottom) {
+      return;
+    }
+
+    const rect = (this.$refs.tour as HTMLElement).getBoundingClientRect();
+    if (rect.left < LEFT_BOUND) {
+      this.xTranslation = LEFT_BOUND - rect.left;
+    }
+
+    const RIGHT_BOUND = document.body.clientWidth - 16;
+    if (rect.right > RIGHT_BOUND) {
+      this.xTranslation = RIGHT_BOUND - rect.right;
+    }
+  }
+
+  scrollIntoView() {
+    (this.$refs.tour as HTMLElement).scrollIntoView();
   }
 
   async next() {
@@ -129,11 +140,19 @@ $triangle-size: 20px;
   text-decoration: none;
   text-transform: none;
   letter-spacing: initial;
+  opacity: 0;
+  transition: .25s opacity ease;
+  pointer-events: none;
 
   &,
   &:hover {
     cursor: default;
   }
+}
+
+.tour--shown {
+  opacity: 1;
+  pointer-events: all;
 }
 
 .tour--position-left-top {
