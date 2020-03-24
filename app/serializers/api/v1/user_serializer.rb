@@ -2,7 +2,8 @@ class API::V1::UserSerializer
   include FastJsonapi::ObjectSerializer
   attributes :email,
              :name,
-             :role
+             :role,
+             :settings
 
   belongs_to :employer,
     serializer: API::V1::OrganizationSerializer,

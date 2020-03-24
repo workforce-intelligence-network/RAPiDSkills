@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :favorites, -> { order(id: :desc) }, through: :relationships,
     class_name: 'OccupationStandard', source: :occupation_standard
 
+  delegate :title, to: :employer, prefix: true
+
   def create_api_access_token!
     client_session = create_session!
     client_session.token

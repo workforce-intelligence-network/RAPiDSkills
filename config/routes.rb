@@ -57,7 +57,7 @@ Rails.application.routes.draw do
       resources :organizations, only: [:show]
       resources :states, only: [:show]
       resources :leads, only: [:create]
-      resources :users, only: [:create, :show] do
+      resources :users, only: [:create, :show, :update] do
         member do
           get "relationships/favorites", to: "users/relationships/favorites#index"
           post "relationships/favorites", to: "users/relationships/favorites#create"
