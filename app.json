@@ -1,9 +1,10 @@
 {
   "addons": [
     "bonsai",
-    "mailgun",
     "heroku-postgresql",
-    "heroku-redis"
+    "heroku-redis",
+    "mailgun",
+    "papertrail"
   ],
   "buildpacks": [
     {
