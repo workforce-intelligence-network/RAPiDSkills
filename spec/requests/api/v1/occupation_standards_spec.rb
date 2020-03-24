@@ -167,9 +167,10 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     after { Timecop.return }
 
     let(:industry) { create(:industry) }
+    let(:occupation) { create(:occupation, industry: industry) }
     let(:state) { create(:state) }
     let(:parent) { create(:occupation_standard) }
-    let(:os) { create(:occupation_standard, :with_attachments, industry: industry, registration_state: state, parent_occupation_standard: parent) }
+    let(:os) { create(:occupation_standard, :with_attachments, occupation: occupation, registration_state: state, parent_occupation_standard: parent) }
     let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os, hours: 30) }
     let!(:oswp2) { create(:occupation_standard_work_process, occupation_standard: os, hours: 10) }
     let!(:cat1) { create(:category, occupation_standard_work_process: oswp) }
@@ -231,11 +232,6 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["data"]["relationships"]["organization"]["data"]["type"]).to eq "organization"
       expect(json["data"]["relationships"]["organization"]["data"]["id"]).to eq os.organization_id.to_s
 
-      expect(json["data"]["relationships"]["industry"]["links"]["self"]).to eq relationships_industry_api_v1_occupation_standard_url(os)
-      expect(json["data"]["relationships"]["industry"]["links"]["related"]).to eq api_v1_industry_url(os.industry)
-      expect(json["data"]["relationships"]["industry"]["data"]["type"]).to eq "industry"
-      expect(json["data"]["relationships"]["industry"]["data"]["id"]).to eq os.industry_id.to_s
-
       expect(json["data"]["relationships"]["registration_state"]["links"]["self"]).to eq relationships_registration_state_api_v1_occupation_standard_url(os)
       expect(json["data"]["relationships"]["registration_state"]["links"]["related"]).to eq api_v1_state_url(os.registration_state)
       expect(json["data"]["relationships"]["registration_state"]["data"]["type"]).to eq "state"
@@ -256,7 +252,6 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
       expect(json["included"]).to include(a_hash_including("type" => "skill", "id" => oss7.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "occupation", "id" => os.occupation_id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "organization", "id" => os.organization_id.to_s))
-      expect(json["included"]).to include(a_hash_including("type" => "industry", "id" => industry.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "state", "id" => state.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "occupation_standard", "id" => parent.id.to_s))
       expect(json["included"]).to include(a_hash_including("type" => "category", "id" => cat1.id.to_s))
@@ -503,9 +498,6 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
                   occupation: {
                     data: { type: "occupation", id: occupation.id.to_s }
                   },
-                  industry: {
-                    data: { type: "industry", id: industry.id.to_s }
-                  },
                   registration_state: {
                     data: { type: "state", id: state.id.to_s }
                   },
@@ -524,7 +516,6 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
             expect(json["data"]["attributes"]["title"]).to eq "new title"
             expect(json["data"]["attributes"]["organization_title"]).to eq "new org name"
             expect(json["data"]["attributes"]["occupation_title"]).to eq occupation.title
-            expect(json["data"]["attributes"]["industry_title"]).to eq industry.title
             expect(json["data"]["attributes"]["should_generate_attachments"]).to be true
             expect(json["data"]["attributes"]["pdf_filename"]).to be nil
             expect(json["data"]["attributes"]["pdf_url"]).to be nil

@@ -3,7 +3,7 @@ ActiveAdmin.register OccupationStandard do
 
   includes :organization, :occupation, :parent_occupation_standard, :creator
 
-  permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :industry_id, :completed_at, :published_at, :source_file_url, :title, skill_ids: [], work_process_ids: []
+  permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :completed_at, :published_at, :source_file_url, :title, skill_ids: [], work_process_ids: []
 
   SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)
 
@@ -11,7 +11,6 @@ ActiveAdmin.register OccupationStandard do
   filter :type, as: :select, collection: SUBMODELS
   filter :organization, collection: proc { Organization.order(:title) }
   filter :occupation, collection: proc { Occupation.order(:title) }
-  filter :industry, collection: proc { Industry.order(:title) }
   filter :creator, collection: proc { User.order(:name) }
   filter :parent_occupation_standard, collection: proc { OccupationStandard.joins(:parent_occupation_standard).order("occupation_standards.title") }
   filter :registration_state, collection: proc { State.order(:long_name) }
@@ -103,7 +102,6 @@ ActiveAdmin.register OccupationStandard do
       row :rapids_code
       row :data_trust_approval
       row :parent_occupation_standard
-      row :industry
       row :registration_state
       row :registration_organization_name
       row :completed_at
@@ -200,7 +198,6 @@ ActiveAdmin.register OccupationStandard do
       f.input :occupation, collection: Occupation.order(:title)
       f.input :data_trust_approval
       f.input :parent_occupation_standard, collection: OccupationStandard.order(:title)
-      f.input :industry, collection: Industry.order(:title)
       f.input :skills, include_blank: true
       f.input :work_processes, include_blank: true
       f.input :registration_state, collection: State.order(:long_name)
