@@ -46,5 +46,7 @@ namespace :occupations do
         Notify.error("Error in occupations:import task", e)
       end
     end
+
+    Occupation.reindex
   end
 end

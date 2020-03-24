@@ -6,6 +6,14 @@ class API::V1::UserPolicy < ApplicationPolicy
     @target_user = target_user
   end
 
+  def update?
+    owned_by_user?
+  end
+
+  def show?
+    owned_by_user?
+  end
+
   def favorite?
     owned_by_user?
   end

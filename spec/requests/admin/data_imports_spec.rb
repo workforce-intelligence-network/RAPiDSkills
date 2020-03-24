@@ -44,13 +44,14 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(di.description).to eq "this is a description"
             expect(di.occupation_standards?).to be true
 
-            organization1 = Organization.first
+            organizations = Organization.order(:id)
+            organization1 = organizations.first
             expect(organization1.title).to eq "Acme Dog Walking"
 
-            organization2 = Organization.all[1]
+            organization2 = organizations[1]
             expect(organization2.title).to eq "Dog Walking R Us"
 
-            organization3 = Organization.last
+            organization3 = organizations.last
             expect(organization3.title).to eq "Pet Palace"
 
             occupation_new = Occupation.last
@@ -59,7 +60,8 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(occupation_new.rapids_code).to be_blank
             expect(occupation_new.onet_code).to be_blank
 
-            os1 = OccupationStandard.first
+            occupation_standards = OccupationStandard.order(:id)
+            os1 = occupation_standards[0]
             expect(os1.title).to eq "Heeling"
             expect(os1.occupation).to eq occupation
             expect(os1.organization).to eq organization1
@@ -84,7 +86,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os1.occupation_standard_skills[2].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
             expect(os1.occupation_standard_skills[3].occupation_standard_work_process).to eq os1.occupation_standard_work_processes[1]
 
-            os2 = OccupationStandard.all[1]
+            os2 = occupation_standards[1]
             expect(os2.title).to eq "Heeling"
             expect(os2.occupation).to eq occupation
             expect(os2.organization).to eq organization2
@@ -98,7 +100,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os2.flattened_skills[0].description).to eq "Communicate with dog"
             expect(os2.occupation_standard_skills[0].occupation_standard_work_process).to eq os2.occupation_standard_work_processes[0]
 
-            os3 = OccupationStandard.all[2]
+            os3 = occupation_standards[2]
             expect(os3.title).to eq "Dog Training"
             expect(os3.occupation).to eq occupation
             expect(os3.organization).to eq organization1
@@ -112,7 +114,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os3.flattened_skills[0].description).to eq "Understand costs"
             expect(os3.occupation_standard_skills[0].occupation_standard_work_process).to eq os3.occupation_standard_work_processes[0]
 
-            os4 = OccupationStandard.all[3]
+            os4 = occupation_standards[3]
             expect(os4.title).to eq "Grooming"
             expect(os4.occupation).to eq occupation
             expect(os4.organization).to eq organization3
@@ -125,7 +127,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(oswp.hours).to eq 10
             expect(oswp.sort_order).to eq 1
 
-            os5 = OccupationStandard.all[4]
+            os5 = occupation_standards[4]
             expect(os5.title).to eq "Heeling"
             expect(os5.occupation).to eq occupation2
             expect(os5.organization).to eq organization1
@@ -141,7 +143,7 @@ RSpec.describe "Admin::DataImports", type: :request do
             expect(os5.flattened_skills[0].description).to eq "Communicate with dog"
             expect(os5.occupation_standard_skills[0].occupation_standard_work_process).to eq os5.occupation_standard_work_processes[0]
 
-            os6 = OccupationStandard.all[5]
+            os6 = occupation_standards[5]
             expect(os6.title).to eq "Heeling"
             expect(os6.occupation).to eq occupation_new
             expect(os6.organization).to eq organization1

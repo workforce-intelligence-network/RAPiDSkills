@@ -387,10 +387,16 @@
                     <a href="#users-user-object" class="toc-h2 toc-link" data-title="User object">User object</a>
                   </li>
                   <li>
+                    <a href="#users-retrieve-user" class="toc-h2 toc-link" data-title="Retrieve user">Retrieve user</a>
+                  </li>
+                  <li>
                     <a href="#users-create-lead" class="toc-h2 toc-link" data-title="Create lead">Create lead</a>
                   </li>
                   <li>
                     <a href="#users-create-user" class="toc-h2 toc-link" data-title="Create user">Create user</a>
+                  </li>
+                  <li>
+                    <a href="#users-update-user" class="toc-h2 toc-link" data-title="Update user">Update user</a>
                   </li>
                   <li>
                     <a href="#users-list-occupation-standards" class="toc-h2 toc-link" data-title="List occupation standards">List occupation standards</a>
@@ -2678,8 +2684,55 @@ must belong to the category.</p>
 <td>string</td>
 <td>Employer name</td>
 </tr>
+<tr>
+<td>settings</td>
+<td>json</td>
+<td>Blob to store user tour settings</td>
+</tr>
 </tbody></table>
-<h2 id='users-create-lead'>Create lead</h2>
+<h2 id='users-retrieve-user'>Retrieve user</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request GET <span class="s1">'http://www.rapidskills.org/api/v1/users/1'</span> <span class="se">\</span>
+--header <span class="s1">'Accept:  application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type:  application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJEdFa3JKQURQZHM0OVp1MndXLkp0US55ajkvMkk1THpYMzZvaG5DM0h1Qm9MSGlzdzJzNTZ5Iiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiYWIwNjc4YjUtM2Y2NC00Y2JmLTllNTItZTJiNzBmYjFkYzlhIn0.z1JRZmtuH4qwhRtJo1sdG5F1xu4FeZTXRdf3Utmv9yY'</span> <span class="se">\</span>
+--data-raw <span class="s1">''</span>
+</code></pre><h3 id='users-retrieve-user-http-request'>HTTP Request</h3>
+<p><code>GET http://www.rapidskills.org/api/v1/users/:user_id</code></p>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mickey@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mickey Mouse"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"basic"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"settings"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">foo</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">bar</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"employer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"favorites"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/relationships/favorites"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/favorites"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='users-create-lead'>Create lead</h2>
 <p>A password will be auto-generated when the user is created, and the user type will be set to &quot;lead&quot;.</p>
 
 <blockquote>
@@ -2853,6 +2906,104 @@ must belong to the category.</p>
             </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h2 id='users-update-user'>Update user</h2>
+<blockquote>
+<p>Example request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl --location --request PATCH <span class="s1">'http://www.rapidskills.org/api/v1/users/1'</span> <span class="se">\</span>
+--header <span class="s1">'Accept:  application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Content-Type: application/vnd.api+json'</span> <span class="se">\</span>
+--header <span class="s1">'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW5jcnlwdGVkX3Bhc3N3b3JkIjoiJDJhJDExJE0zL0dzSU5HUnZtQmlwU2lxSkxsemV2Ymtsbk1va2ZHM1JmRkx6YzBRNENtMVZGazBuRmE2Iiwic2Vzc2lvbl9pZGVudGlmaWVyIjoiMjdhNTkxODktOTA4Ni00NzEwLWFlMTEtYTExOWEyZWVlODI3In0.NLLsU2owFAmOI3XiYa-lcMvsmoWfaiUMKLKkDfoX8B4'</span> <span class="se">\</span>
+--data-raw <span class="s1">'{
+    "data": {
+        "type": "users",
+        "attributes": {
+            "email": "mickey@example.com",
+            "password": "supersecret",
+            "name": "Mickey Mouse",
+            "organization_title": "Magic Mountain",
+            "settings": "{\"foo\":\"bar\"}"
+        }
+    }
+}'</span>
+</code></pre><h3 id='users-update-user-http-request'>HTTP Request</h3>
+<p><code>PATCH http://www.rapidskills.org/api/v1/users/:user_id</code></p>
+<h3 id='users-update-user-query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td></td>
+</tr>
+<tr>
+<td>organization_title</td>
+<td>string</td>
+<td>Employer name</td>
+</tr>
+<tr>
+<td>settings</td>
+<td>json</td>
+<td>Blob to store user tour settings</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Example response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mickey@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mickey Mouse"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"settings"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">foo</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">bar</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"employer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"organization"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"favorites"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/relationships/favorites"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"related"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/users/1/favorites"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"sessions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27a59189-9086-4710-ae11-a119a2eee827"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"session"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"self"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.rapidskills.org/api/v1/sessions/27a59189-9086-4710-ae11-a119a2eee827"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre><h2 id='users-list-occupation-standards'>List occupation standards</h2>
 <p>See the <a href="#occupation-standards-retrieve-occupation-standard">Retrieve occupation standard</a> response

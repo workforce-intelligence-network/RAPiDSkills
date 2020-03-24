@@ -12,7 +12,7 @@ RSpec.describe API::V1::LeadsController, type: :request do
           data: {
             type: "user",
             attributes: {
-              email: "foo@example.com",
+              email: "FOO@example.com",
               name: "Mickey Mouse",
               organization_title: "Acme Computing",
             }

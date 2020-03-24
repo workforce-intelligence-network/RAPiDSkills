@@ -25,6 +25,9 @@ gem 'webpacker', '~> 4.0'
 # Authorization
 gem 'pundit'
 
+# Search
+gem 'searchkick'
+
 # Admin dashboard
 gem 'activeadmin'
 gem 'devise'
