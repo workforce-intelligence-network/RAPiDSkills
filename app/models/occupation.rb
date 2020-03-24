@@ -4,8 +4,8 @@ class Occupation < ApplicationRecord
   validates :type, presence: true
   validates :title, uniqueness: { scope: [:rapids_code, :onet_code] }
 
+  belongs_to :industry, optional: true
   has_many :occupation_standards
-  has_many :industries, through: :occupation_standards
 
   class << self
     def search_records(args={})
