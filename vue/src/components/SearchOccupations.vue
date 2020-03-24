@@ -1,7 +1,7 @@
 <template>
   <form class="search" @submit.prevent="submitSearch" @keyup.esc="closeSearch">
-    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="onFocus" ref="searchInput" :value="inputValue" autocomplete="off" />
-    <a class="search__button" href="javascript:void(0)" @click="onClickSearchButton">
+    <input class="input__input search__input" type="text" name="search" placeholder="Search by occupation name" @input="submitSearch" @focus="onFocus" ref="searchInput" :value="inputValue" autocomplete="off" @click.stop.prevent="() => {}" />
+    <a class="search__button" href="javascript:void(0)" @click.stop.prevent="onClickSearchButton">
       <img :src=ICON_TOP_NAV_SEARCH alt="Search Icon" class="search__button__icon" />
     </a>
     <div class="search__dropdown" v-if="showList">
@@ -9,9 +9,9 @@
         <Loading />
       </div>
       <div class="search__dropdown__list" v-if="!listLoading">
-        <div class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="selectItem(item)">
+        <a class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="selectItem(item)" href="javascript:void(0);">
           <OccupationCell :occupation="item" />
-        </div>
+        </a>
       </div>
     </div>
   </form>
@@ -34,9 +34,27 @@ export default {
     Loading,
   },
   created() {
-    (this as any).submitSearch = _debounce((this as any).submitSearch, 500, { leading: true }).bind(this);
+    (this as any).submitSearch = _debounce((this as any).submitSearch, 500).bind(this);
+    (this as any).onBodyClick = (this as any).onBodyClick.bind(this);
+  },
+  updated() {
+    if ((this as any).showList) {
+      document.body.addEventListener('click', (this as any).onBodyClick);
+    } else {
+      document.body.removeEventListener('click', (this as any).onBodyClick);
+    }
+  },
+  destroyed() {
+    document.body.removeEventListener('click', (this as any).onBodyClick);
   },
   methods: {
+    onBodyClick() {
+      if (!(this as any).showList) {
+        return;
+      }
+
+      (this as any).closeSearch();
+    },
     closeSearch() {
       ((this as any).$refs.searchInput as any).blur();
       (this as any).$store.dispatch('occupations/hideOccupationsList');
@@ -65,6 +83,7 @@ export default {
   data() {
     return {
       ICON_TOP_NAV_SEARCH,
+      bodyClickListener: undefined,
     };
   },
   computed: {
@@ -129,7 +148,10 @@ $search-button-width: 3rem;
 }
 
 .search__dropdown__list__item {
+  display: block;
+  color: $color-black;
   cursor: pointer;
+  border-bottom: 1px solid $color-gray-border;
 
   &:hover {
     background: darken($color: $color-white, $amount: 10);
