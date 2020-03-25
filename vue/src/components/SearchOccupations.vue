@@ -88,7 +88,7 @@ export default {
       (this as any).submitSearch();
     },
     submitSearch() {
-      (this as any).$store.dispatch('occupations/searchForOccupations', this.query);
+      (this as any).$store.dispatch('occupations/searchForOccupations', (this as any).query);
     },
     selectItem(item) {
       (this as any).$store.dispatch('occupations/setSelectedOccupation', item);
