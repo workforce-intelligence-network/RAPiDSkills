@@ -25,7 +25,6 @@ services:
       - '8080:8080'
     volumes:
       - ./vue:/usr/src/app
-      - /usr/src/app/node_modules
     depends_on:
       - web
 

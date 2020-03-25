@@ -1,8 +1,10 @@
+import Vue from 'vue';
+
 export const setSession = (state, session) => {
-  state.session = session;
+  Vue.set(state, 'session', session);
 };
 
 export const setToken = (state, token?: string) => {
-  state.token = token;
-  state.initialized = true;
+  Vue.set(state, 'token', token);
+  Vue.set(state, 'initialized', true);
 };

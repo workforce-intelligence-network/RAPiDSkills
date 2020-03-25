@@ -1,4 +1,6 @@
+import Vue from 'vue';
+
 /* eslint-disable import/prefer-default-export */
 export const update = (state, component: ModalComponent) => {
-  state.component = component;
+  Vue.set(state, 'component', component);
 };

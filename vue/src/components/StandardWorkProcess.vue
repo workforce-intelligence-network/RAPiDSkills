@@ -7,6 +7,7 @@
       'standard__work-process--editing': editing
     }"
   >
+    <Tour :id="TOUR_STEP_ID_STANDARD_WORK_PROCESS" v-if="firstInList" />
     <div class="standard__work-process__wrapper" @click="toggleWorkProcess(workProcess)">
       <div class="standard__work-process__wrapper__icon--folder">
         <img :src="ICON_FOLDER" alt="Work Process icon" v-if="expanded" />
@@ -65,8 +66,13 @@ import Skill from '@/models/Skill';
 import WorkProcess from '@/models/WorkProcess';
 import OccupationStandard from '@/models/OccupationStandard';
 
+import Tour from '@/components/Tour.vue';
 import TextArea from '@/components/TextArea.vue';
 import StandardWorkProcessSkill from '@/components/StandardWorkProcessSkill.vue';
+
+import {
+  TOUR_STEP_ID_STANDARD_WORK_PROCESS,
+} from '@/store/tours';
 
 import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
 import ICON_FOLDER from '@/assets/folder.svg';
@@ -74,6 +80,7 @@ import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
 
 @Component({
   components: {
+    Tour,
     TextArea,
     StandardWorkProcessSkill,
   },
@@ -83,11 +90,15 @@ export default class StandardWorkProcess extends Vue {
 
   @Prop(Boolean) editing!: boolean
 
+  @Prop(Boolean) firstInList!: boolean
+
   @Provide('ICON_FOLDER') ICON_FOLDER = ICON_FOLDER
 
   @Provide('ICON_FOLDER_CLOSED') ICON_FOLDER_CLOSED = ICON_FOLDER_CLOSED
 
   @Provide('ICON_PLUS_BLUE') ICON_PLUS_BLUE = ICON_PLUS_BLUE
+
+  @Provide('TOUR_STEP_ID_STANDARD_WORK_PROCESS') TOUR_STEP_ID_STANDARD_WORK_PROCESS = TOUR_STEP_ID_STANDARD_WORK_PROCESS
 
   expanded: boolean = false
 
@@ -157,8 +168,8 @@ export default class StandardWorkProcess extends Vue {
 @import "@/scss/standards";
 
 .standard__work-process {
+  position: relative;
   min-height: $work-process-height;
-  overflow: hidden;
   width: 100%;
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
@@ -220,6 +231,7 @@ export default class StandardWorkProcess extends Vue {
 }
 
 .standard__work-process__wrapper__icon--caret {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

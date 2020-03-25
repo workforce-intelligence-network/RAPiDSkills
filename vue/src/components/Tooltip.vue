@@ -2,7 +2,7 @@
   <div class="tooltip">
     <div class="tooltip__bubble">
       <div class="tooltip__bubble__text" v-html="tip" />
-      <div class="tooltip__bubble__triangle"/>
+      <div class="tooltip__bubble__triangle" />
     </div>
     <slot />
   </div>

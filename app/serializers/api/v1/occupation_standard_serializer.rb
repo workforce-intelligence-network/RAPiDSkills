@@ -28,13 +28,6 @@ class API::V1::OccupationStandardSerializer
     record_type: :user,
     cached: true
 
-  belongs_to :industry,
-    cached: true,
-    links: {
-      self: ->(object) { object.relationships_url('industry') },
-      related: ->(object) { Rails.application.routes.url_helpers.api_v1_industry_url(object.industry) },
-    }, if: Proc.new { |object| object.industry }
-
   belongs_to :registration_state,
     serializer: API::V1::StateSerializer,
     record_type: :state,
