@@ -1,8 +1,8 @@
 # RAPiDSkills
 
 The RAPiDSkills API is a Ruby on Rails application hosted on Heroku.  It is
-written using Ruby 2.6.5 and Rails 6.0.1.  Postgres 11.5 is used for the
-database.
+written using Ruby 2.6.5 and Rails 6.0.1. It uses Postgres 11.5, Redis 5.0, and
+Elasticsearch 7.2.0.
 
 ## Development setup
 The following commands should just be run for the initial setup only. Rebuilding the docker images is only necessary when upgrading, if there are changes to the Dockerfile, or if new gems have been added.
@@ -71,6 +71,22 @@ $ docker-compose exec web rails c
 ```
 $ docker-compose exec redis redis-cli -h redis
 ```
+
+### Troubleshooting
+* If you receive an error that the web service cannot access Elasticsearch, then stop both the elasticsearch and web services. Restart the elasticsearch service first, and wait until it has fully loaded (watch the logs) before starting the web service.
+    ```
+    $ docker-compose stop web elasticsearch
+    $ docker-compose up -d elasticsearch
+    $ docker-compose logs -f elasticsearch
+    $ docker-compose up -d web
+    ```
+
+* If you receive an error when running the specs that includes `FORBIDDEN/12/index read-only` in relation to Elasticsearch, then the elasticsearch container has less than 5% of free disk space and has switched to read-only mode. In this case, stop and remove the container, and then restart the elasticsearch service.
+    ```
+    $ docker-compose stop elasticsearch
+    $ docker-compose rm -f elasticsearch
+    $ docker-compose up -d elasticsearch
+    ```
 
 ## Mailcatcher
 We use [Mailcatcher](https://mailcatcher.me/) to receive mail in development.
