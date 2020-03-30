@@ -5,17 +5,20 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
     let!(:skill1) { create(:skill, description: "Fig Berry") }
     let!(:skill2) { create(:skill, description: "Berry Chocolate") }
     let!(:skill3) { create(:skill, description: "Ginger Blueberry") }
+    let!(:skill4) { create(:skill, description: "Berry Test") }
     let!(:oss1a) { create(:occupation_standard_skill, skill: skill1) }
     let!(:oss1b) { create(:occupation_standard_skill, skill: skill1) }
     let!(:oss2a) { create(:occupation_standard_skill, skill: skill2) }
     let!(:oss2b) { create(:occupation_standard_skill, skill: skill2) }
     let!(:oss3a) { create(:occupation_standard_skill, skill: skill3) }
     let!(:oss3b) { create(:occupation_standard_skill, skill: skill3) }
+    let!(:os) { create(:unregistered_occupation_standard) }
+    let!(:oss4) { create(:occupation_standard_skill, skill: skill4, occupation_standard: os) }
     let(:path) { "/api/v1/skills" }
 
     before { Skill.reindex }
 
-    it "returns the correct data" do
+    it "returns skills, exluding those from unregistered standards" do
       # With no search parameters, returns all data
       get path
       expect(response).to have_http_status(:success)

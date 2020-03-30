@@ -1,9 +1,5 @@
 RSpec.configure do |config|
   config.before(:suite) do
-    # reindex models
-    Occupation.reindex
-
-    # and disable callbacks
     Searchkick.disable_callbacks
   end
 

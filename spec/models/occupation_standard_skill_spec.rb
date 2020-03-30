@@ -33,12 +33,15 @@ RSpec.describe OccupationStandardSkill, type: :model do
     let!(:skill1) { create(:skill, description: "Fig Berry") }
     let!(:skill2) { create(:skill, description: "Berry Chocolate") }
     let!(:skill3) { create(:skill, description: "Ginger Blueberry") }
+    let!(:skill4) { create(:skill, description: "Berry Test") }
     let!(:oss1a) { create(:occupation_standard_skill, skill: skill1) }
     let!(:oss1b) { create(:occupation_standard_skill, skill: skill1) }
     let!(:oss2a) { create(:occupation_standard_skill, skill: skill2) }
     let!(:oss2b) { create(:occupation_standard_skill, skill: skill2) }
     let!(:oss3a) { create(:occupation_standard_skill, skill: skill3) }
     let!(:oss3b) { create(:occupation_standard_skill, skill: skill3) }
+    let!(:os) { create(:unregistered_occupation_standard) }
+    let!(:oss4) { create(:occupation_standard_skill, skill: skill4, occupation_standard: os) }
 
     before { Skill.reindex }
 
