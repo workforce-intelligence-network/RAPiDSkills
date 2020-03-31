@@ -4,14 +4,14 @@ RSpec.describe API::V1::Categories::OccupationStandardSkillsController, type: :r
   describe "GET #index" do
     let(:path) { "/api/v1/categories/#{category.id}/skills" }
 
-    let(:os) { create(:occupation_standard) }
-    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let(:category) { create(:category, occupation_standard_work_process: oswp) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: category, sort_order: 2, id: 101) }
-    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: category, sort_order: 1, id: 102) }
-    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: nil) }
-
     context "with valid category id" do
+      let(:os) { create(:occupation_standard) }
+      let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
+      let(:category) { create(:category, occupation_standard_work_process: oswp) }
+      let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: category, sort_order: 2, id: 101) }
+      let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: category, sort_order: 1, id: 102) }
+      let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp, category: nil) }
+
       it "returns the correct data" do
         get path
         expect(response).to have_http_status(:success)

@@ -2,35 +2,66 @@ require 'rails_helper'
 
 RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
   describe "GET #index" do
-    let(:path) { "/api/v1/occupation_standards/#{os.id}/skills" }
+    let!(:skill1) { create(:skill, description: "Fig Berry") }
+    let!(:skill2) { create(:skill, description: "Berry Chocolate") }
+    let!(:skill3) { create(:skill, description: "Ginger Blueberry") }
+    let!(:skill4) { create(:skill, description: "Berry Test") }
+    let!(:oss1a) { create(:occupation_standard_skill, skill: skill1) }
+    let!(:oss1b) { create(:occupation_standard_skill, skill: skill1) }
+    let!(:oss2a) { create(:occupation_standard_skill, skill: skill2) }
+    let!(:oss2b) { create(:occupation_standard_skill, skill: skill2) }
+    let!(:oss3a) { create(:occupation_standard_skill, skill: skill3) }
+    let!(:oss3b) { create(:occupation_standard_skill, skill: skill3) }
+    let!(:os) { create(:unregistered_occupation_standard) }
+    let!(:oss4) { create(:occupation_standard_skill, skill: skill4, occupation_standard: os) }
+    let(:path) { "/api/v1/skills" }
 
-    let(:os) { create(:occupation_standard) }
-    let!(:oss1) { create(:occupation_standard_skill, occupation_standard: os, sort_order: 2, occupation_standard_work_process: nil) }
-    let!(:oss2) { create(:occupation_standard_skill, occupation_standard: os, sort_order: 1, occupation_standard_work_process: nil) }
-    let!(:oswp) { create(:occupation_standard_work_process, occupation_standard: os) }
-    let!(:oss3) { create(:occupation_standard_skill, occupation_standard: os, occupation_standard_work_process: oswp) }
+    before { Skill.reindex }
 
-    context "with valid standard" do
-      it "returns the correct data" do
-        get path
-        expect(response).to have_http_status(:success)
-        expect(json["links"]["self"]).to eq api_v1_occupation_standard_occupation_standard_skills_url(os)
-        expect(json["data"].count).to eq 2
-        expect(json["data"][0]["id"]).to eq oss2.id.to_s
-        expect(json["data"][0]["type"]).to eq "skill"
-        expect(json["data"][0]["attributes"]["description"]).to eq oss2.skill.description
-        expect(json["data"][1]["id"]).to eq oss1.id.to_s
-        expect(json["data"][1]["type"]).to eq "skill"
-        expect(json["data"][1]["attributes"]["description"]).to eq oss1.skill.description
-      end
-    end
+    it "returns skills, exluding those from unregistered standards" do
+      # With no search parameters, returns all data
+      get path
+      expect(response).to have_http_status(:success)
+      expect(json["data"].count).to eq 3
+      expect(json["data"][0]["id"]).to eq oss1a.id.to_s
+      expect(json["data"][0]["type"]).to eq "skill"
+      expect(json["data"][0]["attributes"]["description"]).to eq "Fig Berry"
+      expect(json["data"][1]["id"]).to eq oss2a.id.to_s
+      expect(json["data"][1]["type"]).to eq "skill"
+      expect(json["data"][1]["attributes"]["description"]).to eq "Berry Chocolate"
+      expect(json["data"][2]["id"]).to eq oss3a.id.to_s
+      expect(json["data"][2]["type"]).to eq "skill"
+      expect(json["data"][2]["attributes"]["description"]).to eq "Ginger Blueberry"
 
-    context "with bad standard id" do
-      it_behaves_like "not found", :get do
-        let(:path) { "/api/v1/occupation_standards/999/skills" }
-        let(:params) { {} }
-        let(:header) { {} }
-      end
+      # With search query, returns matches
+      get path, params: { q: "Berry" }
+      expect(response).to have_http_status(:success)
+      expect(json["data"].count).to eq 2
+      expect(json["data"][0]["id"]).to eq oss1a.id.to_s
+      expect(json["data"][0]["type"]).to eq "skill"
+      expect(json["data"][0]["attributes"]["description"]).to eq "Fig Berry"
+      expect(json["data"][1]["id"]).to eq oss2a.id.to_s
+      expect(json["data"][1]["type"]).to eq "skill"
+      expect(json["data"][1]["attributes"]["description"]).to eq "Berry Chocolate"
+
+      get path, params: { q: "Ginger Foo" }
+      expect(response).to have_http_status(:success)
+      expect(json["data"].count).to eq 1
+      expect(json["data"][0]["id"]).to eq oss3a.id.to_s
+      expect(json["data"][0]["type"]).to eq "skill"
+      expect(json["data"][0]["attributes"]["description"]).to eq "Ginger Blueberry"
+
+      get path, params: { q: "Chocolate" }
+      expect(response).to have_http_status(:success)
+      expect(json["data"].count).to eq 1
+      expect(json["data"][0]["id"]).to eq oss2a.id.to_s
+      expect(json["data"][0]["type"]).to eq "skill"
+      expect(json["data"][0]["attributes"]["description"]).to eq "Berry Chocolate"
+
+      # With bad search parameters, returns no data
+      get path, params: { q: "Fob" }
+      expect(response).to have_http_status(:success)
+      expect(json["data"]).to be_empty
     end
   end
 

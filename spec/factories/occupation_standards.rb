@@ -20,4 +20,13 @@ FactoryBot.define do
       excel { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.csv'), 'text/csv') }
     end
   end
+
+  factory :unregistered_occupation_standard, class: 'UnregisteredStandard'  do
+    type { "UnregisteredStandard" }
+    title { Faker::Job.title }
+    organization
+    association :creator, factory: :user
+    occupation
+    data_trust_approval { false }
+  end
 end

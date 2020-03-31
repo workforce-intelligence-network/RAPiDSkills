@@ -31,7 +31,7 @@ Rails.application.routes.draw do
           get "relationships/parent_occupation_standard", to: "occupation_standards/relationships#parent_occupation_standard"
         end
         resources :occupation_standard_work_processes, path: "work_processes", only: [:index]
-        resources :occupation_standard_skills, path: "skills", only: [:index]
+        resources :occupation_standard_skills, path: "skills", only: [:index], to: "occupation_standards/occupation_standard_skills#index"
       end
 
       resources :occupation_standard_work_processes, path: "work_processes", only: [:show, :create, :update] do
@@ -45,7 +45,7 @@ Rails.application.routes.draw do
         resources :categories, only: [:index], controller: "occupation_standard_work_processes/categories"
       end
 
-      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update]
+      resources :occupation_standard_skills, path: "skills", only: [:create, :show, :update, :index]
       resources :categories, only: [:create, :show, :update] do
         member do
           get "relationships/skills", to: "categories/relationships/skills#index"
