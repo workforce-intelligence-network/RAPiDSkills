@@ -18,7 +18,7 @@ class OccupationStandardSkill < ApplicationRecord
   class << self
     def search_records(q:)
       if q.blank?
-        skills = Skill.all
+        skills = Skill.order(:description)
       else
         skills = Skill.search(q, operator: "or")
       end

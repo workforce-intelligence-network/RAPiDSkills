@@ -47,10 +47,10 @@ RSpec.describe OccupationStandardSkill, type: :model do
 
     it "returns all results when q is blank" do
       results = OccupationStandardSkill.search_records(q: nil)
-      expect(results.map(&:id)).to contain_exactly oss1a.id, oss2a.id, oss3a.id
+      expect(results.map(&:id)).to contain_exactly oss2a.id, oss1a.id, oss3a.id
 
       results = OccupationStandardSkill.search_records(q: "")
-      expect(results.map(&:id)).to contain_exactly oss1a.id, oss2a.id, oss3a.id
+      expect(results.map(&:id)).to contain_exactly oss2a.id, oss1a.id, oss3a.id
     end
 
     it "returns matched results when q is not blank" do

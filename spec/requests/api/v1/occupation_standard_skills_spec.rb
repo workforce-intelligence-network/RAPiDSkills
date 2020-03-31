@@ -23,12 +23,12 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
       get path
       expect(response).to have_http_status(:success)
       expect(json["data"].count).to eq 3
-      expect(json["data"][0]["id"]).to eq oss1a.id.to_s
+      expect(json["data"][0]["id"]).to eq oss2a.id.to_s
       expect(json["data"][0]["type"]).to eq "skill"
-      expect(json["data"][0]["attributes"]["description"]).to eq "Fig Berry"
-      expect(json["data"][1]["id"]).to eq oss2a.id.to_s
+      expect(json["data"][0]["attributes"]["description"]).to eq "Berry Chocolate"
+      expect(json["data"][1]["id"]).to eq oss1a.id.to_s
       expect(json["data"][1]["type"]).to eq "skill"
-      expect(json["data"][1]["attributes"]["description"]).to eq "Berry Chocolate"
+      expect(json["data"][1]["attributes"]["description"]).to eq "Fig Berry"
       expect(json["data"][2]["id"]).to eq oss3a.id.to_s
       expect(json["data"][2]["type"]).to eq "skill"
       expect(json["data"][2]["attributes"]["description"]).to eq "Ginger Blueberry"
