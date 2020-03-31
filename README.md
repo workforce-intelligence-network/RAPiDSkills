@@ -73,10 +73,9 @@ $ docker-compose exec redis redis-cli -h redis
 ```
 
 ### Troubleshooting
-* If you receive an error that the web service cannot access Elasticsearch, then stop both the elasticsearch and web services. Restart the elasticsearch service first, and wait until it has fully loaded (watch the logs) before starting the web service.
+* If you receive an error that the web service cannot access Elasticsearch, then stop the web service and restart only after confirming through the logs that the elasticsearch service has fully loaded.
     ```
-    $ docker-compose stop web elasticsearch
-    $ docker-compose up -d elasticsearch
+    $ docker-compose stop web
     $ docker-compose logs -f elasticsearch
     $ docker-compose up -d web
     ```

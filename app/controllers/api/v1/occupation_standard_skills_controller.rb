@@ -69,8 +69,11 @@ class API::V1::OccupationStandardSkillsController < API::V1::APIController
       }
       attributes[:occupation_standard_work_process] = @oswp if @oswp.present?
       attributes[:category] = @category if @category.present?
-      @oss.update(attributes)
-      render_resource
+      if @oss.update(attributes)
+        render_resource
+      else
+        render_resource_error(@oss)
+      end
     else
       render_resource_error(skill)
     end
