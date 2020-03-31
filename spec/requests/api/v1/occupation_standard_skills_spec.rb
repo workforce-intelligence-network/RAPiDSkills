@@ -450,6 +450,20 @@ RSpec.describe API::V1::OccupationStandardSkillsController, type: :request do
       end
 
       context "with invalid parameters" do
+        context "when skill for standard already exists" do
+          it "returns 422 unprocessable entity" do
+            post path, params: params, headers: header
+            expect{
+              post path, params: params, headers: header
+            }.to change(Skill, :count).by(0)
+              .and change(OccupationStandardSkill, :count).by(0)
+            oss = OccupationStandardSkill.last
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(json["errors"][0]["status"]).to eq "422"
+            expect(json["errors"][0]["detail"]).to eq "Occupation standard has already been taken"
+          end
+        end
+
         context "when description is blank" do
           let(:params) {
             {
