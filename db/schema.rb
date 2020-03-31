@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_160549) do
+ActiveRecord::Schema.define(version: 2020_03_31_195516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(version: 2020_03_24_160549) do
     t.bigint "parent_skill_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["description"], name: "index_skills_on_description"
     t.index ["parent_skill_id"], name: "index_skills_on_parent_skill_id"
   end
 
