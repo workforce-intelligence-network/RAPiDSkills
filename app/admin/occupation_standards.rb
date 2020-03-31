@@ -5,10 +5,10 @@ ActiveAdmin.register OccupationStandard do
 
   permit_params :type, :organization_id, :creator_id, :occupation_id, :data_trust_approval, :parent_occupation_standard_id, :completed_at, :published_at, :source_file_url, :title, skill_ids: [], work_process_ids: []
 
-  SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)
+  OCCUPATION_SUBMODELS = %w(FrameworkStandard RegisteredStandard GuidelineStandard UnregisteredStandard)
 
   preserve_default_filters!
-  filter :type, as: :select, collection: SUBMODELS
+  filter :type, as: :select, collection: OCCUPATION_SUBMODELS
   filter :organization, collection: proc { Organization.order(:title) }
   filter :occupation, collection: proc { Occupation.order(:title) }
   filter :creator, collection: proc { User.order(:name) }
@@ -191,7 +191,7 @@ ActiveAdmin.register OccupationStandard do
   form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
-      f.input :type, as: :select, collection: SUBMODELS, include_blank: false
+      f.input :type, as: :select, collection: OCCUPATION_SUBMODELS, include_blank: false
       f.input :organization, collection: Organization.order(:title)
       f.input :title
       f.input :creator, collection: User.order(:name)

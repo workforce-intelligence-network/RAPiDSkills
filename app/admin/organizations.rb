@@ -6,11 +6,11 @@ ActiveAdmin.register Organization do
   preserve_default_filters!
   remove_filter :logo_blob
   remove_filter :logo_attachment
+  remove_filter :type
 
   index do
     selectable_column
     column :id
-    column :type
     column :title
     column :registers_standards
     actions
@@ -19,7 +19,6 @@ ActiveAdmin.register Organization do
   show do
     attributes_table do
       row :id
-      row :type
       row :title
       row :registers_standards
       row :locations
@@ -35,7 +34,6 @@ ActiveAdmin.register Organization do
   form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs do
-      f.input :type
       f.input :title
       f.input :registers_standards
       f.input :logo, as: :file
