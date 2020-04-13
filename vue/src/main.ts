@@ -12,12 +12,19 @@ import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
 
-const { VUE_APP_ROLLBAR_ENVIRONMENT } = process.env;
+const { VUE_APP_ROLLBAR_ENVIRONMENT, NODE_ENV } = process.env;
+
+const PROD = NODE_ENV === 'production';
 
 Vue.config.productionTip = false;
 
 Vue.use(VueAnalytics, {
   id: 'UA-159063587-1',
+  debug: {
+    enabled: !PROD,
+    sendHitTask: PROD,
+  },
+  router,
 });
 
 Vue.use(Rollbar, {
