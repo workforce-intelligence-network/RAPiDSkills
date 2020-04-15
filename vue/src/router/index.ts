@@ -9,8 +9,9 @@ import store from '@/store';
 
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
+import AppInnerPages from '@/components/AppInnerPages.vue';
 import SearchOccupations from '@/components/SearchOccupations.vue';
-import PageTitle from '@/components/PageTitle.vue';
+// import PageTitle from '@/components/PageTitle.vue';
 import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 
 import Standard from '@/views/Standard.vue';
@@ -101,6 +102,27 @@ const routes = [
           await store.dispatch('user/clear');
           return next({ name: 'login' });
         },
+      },
+    ],
+  },
+  {
+    path: '/',
+    component: AppInnerPages,
+    children: [
+      {
+        path: 'privacy',
+        name: 'privacy',
+        component: () => import(/* webpackChunkName: "privacy" */ '@/views/Privacy.vue'),
+      },
+      {
+        path: 'terms',
+        name: 'terms',
+        component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue'),
+      },
+      {
+        path: 'partners',
+        name: 'partners',
+        component: () => import(/* webpackChunkName: "partners" */ '@/views/Partners.vue'),
       },
     ],
   },
