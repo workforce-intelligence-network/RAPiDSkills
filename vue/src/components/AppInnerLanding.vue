@@ -31,21 +31,36 @@
       <div class="app__inner--landing__body__content">
         <router-view />
       </div>
+      <div class="app__inner--landing__footer--dol">
+        This workforce product was funded by a grant awarded by the U.S. Department of Labor’s Employment and Training Administration. The product was created by the recipient and does not necessarily reflect the official position of the U.S. Department of Labor. The Department of Labor makes no guarantees, warranties, or assurances of any kind, express or implied, with respect to such information, including any information on linked sites and including, but not limited to, accuracy of the information or its completeness, timeliness, usefulness, adequacy, continued availability, or ownership. This product is copyrighted by the institution that created it.
+      </div>
       <div class="app__inner--landing__footer">
-        <router-link to="">
-          <div class="app__inner--landing__footer__icon">
-            <img :src="ICON_NO_LOGO" alt="RapidSkills" />
-          </div>
-        </router-link>
-        <div class="app__inner--landing__footer__dol-copy">
-          <small>
-            This workforce product was funded by a grant awarded by the U.S. Department of Labor’s Employment and Training Administration. The product was created by the recipient and does not necessarily reflect the official position of the U.S. Department of Labor. The Department of Labor makes no guarantees, warranties, or assurances of any kind, express or implied, with respect to such information, including any information on linked sites and including, but not limited to, accuracy of the information or its completeness, timeliness, usefulness, adequacy, continued availability, or ownership. This product is copyrighted by the institution that created it.
-          </small>
+        <div class="app__inner--landing__footer__index">
+          <router-link to="">
+            <div class="app__inner--landing__footer__index__link--rapid">
+              <img :src="ICON_NO_LOGO" alt="RapidSkills" />
+            </div>
+          </router-link>
+          <!-- <router-link to="privacy">
+            <div class="app__inner--landing__footer__index__link">
+              Privacy
+            </div>
+          </router-link>
+          <router-link to="terms">
+            <div class="app__inner--landing__footer__index__link">
+              Terms
+            </div>
+          </router-link>
+          <router-link to="partners">
+            <div class="app__inner--landing__footer__index__link">
+              Partners
+            </div>
+          </router-link> -->
         </div>
         <div class="app__inner--landing__footer__copyright">
           © {{ currentYear }} all rights reserved.
         </div>
-        <div class="app__inner--landing__footer__links">
+        <!-- <div class="app__inner--landing__footer__links"> -->
           <!-- <a class="app__inner--landing__footer__links__link" href="https://facebook.com" target="_blank">
             <FontAwesomeIcon
               :icon="['fab', 'facebook-f']"
@@ -58,7 +73,7 @@
               class="app__inner--landing__footer__links__icon"
             />
           </a> -->
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -94,6 +109,8 @@ export default class AppInnerLanding extends Vue {
 $nav-height: 4rem;
 
 $footer-height: 12.5rem;
+$footer-dol-height: 12.5rem;
+$footer-dol-height-mobile: 26rem;
 
 $hero-height: 50rem;
 
@@ -172,7 +189,10 @@ $hero-height: 50rem;
 .app__inner--landing__body__content {
   position: relative;
   z-index: 1;
-  min-height: calc(100vh - #{$footer-height});
+  min-height: calc(100vh - #{$footer-height + $footer-dol-height});
+  @include breakpoint--sm {
+    min-height: calc(100vh - #{$footer-height + $footer-dol-height-mobile});
+  }
 }
 
 .app__inner--landing__body__hero {
@@ -191,22 +211,45 @@ $hero-height: 50rem;
   height: $footer-height;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   max-width: 69rem;
-  padding: 0 1rem;
+  padding: 2rem 1rem;
   margin: 0 auto;
 }
 
+.app__inner--landing__footer__index {
+  /* padding: 1rem 0; */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
 .app__inner--landing__footer__copyright {
+  align-self: flex-end;
   line-height: 1.25rem;
-  margin-left: 1rem;
+  margin-left: auto;
 }
 
-.app__inner--landing__footer__dol-copy {
-  margin: 3.125rem;
+.app__inner--landing__footer--dol {
+  display: flex;
+  align-items: center;
+  background: $color-gray-light;
+  padding: 0 2rem;
+  line-height: 1.5rem;
+  font-size: .8rem;
+  height: $footer-dol-height;
+  @include breakpoint--sm {
+    height: $footer-dol-height-mobile;
+  }
 }
 
-.app__inner--landing__footer__icon {
+.app__inner--landing__footer__index__link {
+  padding: .25rem 0;
+}
+
+.app__inner--landing__footer__index__link--rapid {
   padding-top: 0.5rem;
+  margin-bottom: .75rem;
 }
 
 .app__inner--landing__footer__links {
