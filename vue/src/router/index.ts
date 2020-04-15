@@ -9,14 +9,14 @@ import store from '@/store';
 
 import AppInnerLanding from '@/components/AppInnerLanding.vue';
 import AppInnerDashboard from '@/components/AppInnerDashboard.vue';
+import AppInnerPages from '@/components/AppInnerPages.vue';
 import SearchOccupations from '@/components/SearchOccupations.vue';
-import PageTitle from '@/components/PageTitle.vue';
+// import PageTitle from '@/components/PageTitle.vue';
 import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 
 import Standard from '@/views/Standard.vue';
 
 import {
-  TOUR_ID_STANDARD,
   TOUR_ID_STANDARDS,
 } from '@/store/tours';
 
@@ -107,6 +107,27 @@ const routes = [
   },
   {
     path: '/',
+    component: AppInnerPages,
+    children: [
+      {
+        path: 'privacy',
+        name: 'privacy',
+        component: () => import(/* webpackChunkName: "privacy" */ '@/views/Privacy.vue'),
+      },
+      {
+        path: 'terms',
+        name: 'terms',
+        component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue'),
+      },
+      {
+        path: 'partners',
+        name: 'partners',
+        component: () => import(/* webpackChunkName: "partners" */ '@/views/Partners.vue'),
+      },
+    ],
+  },
+  {
+    path: '/',
     component: AppInnerDashboard,
     beforeEnter(to, from, next) {
       store.dispatch('user/getUser'); // TODO: get name, icon, etc.
@@ -120,11 +141,6 @@ const routes = [
         components: {
           default: Standard,
           navbarActions: StandardNavBarActions,
-        },
-        beforeEnter(to, from, next) {
-          store.dispatch('standards/getStandard', to.params.id);
-          store.dispatch('tours/continueTour', TOUR_ID_STANDARD);
-          next();
         },
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
