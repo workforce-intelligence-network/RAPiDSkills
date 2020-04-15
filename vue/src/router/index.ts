@@ -16,7 +16,6 @@ import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 import Standard from '@/views/Standard.vue';
 
 import {
-  TOUR_ID_STANDARD,
   TOUR_ID_STANDARDS,
 } from '@/store/tours';
 
@@ -120,11 +119,6 @@ const routes = [
         components: {
           default: Standard,
           navbarActions: StandardNavBarActions,
-        },
-        beforeEnter(to, from, next) {
-          store.dispatch('standards/getStandard', to.params.id);
-          store.dispatch('tours/continueTour', TOUR_ID_STANDARD);
-          next();
         },
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),

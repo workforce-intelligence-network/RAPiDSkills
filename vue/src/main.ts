@@ -21,7 +21,7 @@ Vue.config.productionTip = false;
 Vue.use(VueAnalytics, {
   id: 'UA-159063587-1',
   debug: {
-    enabled: !PROD,
+    enabled: false, // !PROD,
     sendHitTask: PROD,
   },
   router,

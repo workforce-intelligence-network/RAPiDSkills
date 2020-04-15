@@ -61,7 +61,11 @@
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.parentOccupationStandard">
           <label class="input__label page--standard__sidebar--left__about__input__label">Duplicated from</label>
-          <div class="page--standard__sidebar--left__about__input__text" v-html="standard.parentOccupationStandard.title" />
+          <router-link
+            class="button button--link page--standard__sidebar--left__about__input__text page--standard__sidebar--left__about__input__link"
+            v-html="standard.parentOccupationStandard.title"
+            :to="parentStandardLink"
+          />
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input">
           <label class="input__label page--standard__sidebar--left__about__input__label">Estimated hours</label>
@@ -141,6 +145,8 @@ import { mapState, mapGetters } from 'vuex';
 
 import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
 
+import store from '@/store';
+
 import Loading from '@/components/Loading.vue';
 import StandardWorkProcess from '@/components/StandardWorkProcess.vue';
 import StandardSkill from '@/components/StandardSkill.vue';
@@ -154,7 +160,14 @@ import Skill from '@/models/Skill';
 import {
   TOUR_STEP_ID_STANDARD_DUPLICATE,
   TOUR_STEP_ID_STANDARD_DOWNLOAD,
+  TOUR_ID_STANDARD,
 } from '@/store/tours';
+
+const beforeRouteChange = (to, from, next) => {
+  store.dispatch('standards/getStandard', to.params.id);
+  store.dispatch('tours/continueTour', TOUR_ID_STANDARD);
+  next();
+};
 
 @Component({
   components: {
@@ -164,6 +177,8 @@ import {
     StandardSkill,
     Tour,
   },
+  beforeRouteUpdate: beforeRouteChange,
+  beforeRouteEnter: beforeRouteChange,
 })
 export default class Standard extends Vue {
   @Provide('ICON_PLUS_BLUE') ICON_PLUS_BLUE: string = ICON_PLUS_BLUE
@@ -180,11 +195,6 @@ export default class Standard extends Vue {
 
   created() {
     this.saveStandard = _debounce(this.saveStandard, 500).bind(this);
-  }
-
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch('standards/getStandard', to.params.id);
-    next();
   }
 
   onSkillInput() {
@@ -218,6 +228,19 @@ export default class Standard extends Vue {
         id: String(this.standard.id),
       },
     });
+  }
+
+  protected get parentStandardLink() {
+    if (!this.standard.parentOccupationStandard) {
+      return {};
+    }
+
+    return {
+      name: 'standard',
+      params: {
+        id: String(this.standard.parentOccupationStandard!.id),
+      },
+    };
   }
 
   protected get editing() {
@@ -381,6 +404,10 @@ $sidebar-left-width: 20rem;
   padding-top: .25rem;
   line-height: 1.25rem;
   word-break: break-word;
+}
+
+.page--standard__sidebar--left__about__input__link {
+  white-space: normal;
 }
 
 .page--standard__body__actions {
