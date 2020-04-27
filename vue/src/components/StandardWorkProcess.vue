@@ -205,7 +205,6 @@ export default class StandardWorkProcess extends Vue {
   display: flex;
   flex-direction: row;
   align-items: center;
-  // justify-content: space-between;
   min-height: $work-process-height;
   background: $color-white;
   cursor: pointer;
@@ -320,5 +319,4 @@ export default class StandardWorkProcess extends Vue {
 .standard__work-process__wrapper__info__icon {
   margin-right: .25rem;
 }
-/* .standard__work-process__wrapper__info__number */
 </style>
