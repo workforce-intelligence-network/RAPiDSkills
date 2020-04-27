@@ -32,7 +32,15 @@
         <router-view />
       </div>
       <div class="app__inner--landing__footer--dol">
-        This workforce product was funded by a grant awarded by the U.S. Department of Labor’s Employment and Training Administration. The product was created by the recipient and does not necessarily reflect the official position of the U.S. Department of Labor. The Department of Labor makes no guarantees, warranties, or assurances of any kind, express or implied, with respect to such information, including any information on linked sites and including, but not limited to, accuracy of the information or its completeness, timeliness, usefulness, adequacy, continued availability, or ownership. This product is copyrighted by the institution that created it.
+        <div>This workforce product was funded by a grant awarded by the U.S. Department of Labor’s Employment and Training Administration. The product was created by the recipient and does not necessarily reflect the official position of the U.S. Department of Labor. The Department of Labor makes no guarantees, warranties, or assurances of any kind, express or implied, with respect to such information, including any information on linked sites and including, but not limited to, accuracy of the information or its completeness, timeliness, usefulness, adequacy, continued availability, or ownership. This product is copyrighted by the institution that created it.</div>
+        <div class="app__inner--landing__footer--dol__cc">
+          <a rel="license" href="http://creativecommons.org/licenses/by/4.0/" class="app__inner--landing__footer--dol__cc__link">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+          </a>
+          <span>
+            Except where otherwise noted, this website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+          </span>
+        </div>
       </div>
       <div class="app__inner--landing__footer">
         <div class="app__inner--landing__footer__index">
@@ -109,8 +117,8 @@ export default class AppInnerLanding extends Vue {
 $nav-height: 4rem;
 
 $footer-height: 12.5rem;
-$footer-dol-height: 12.5rem;
-$footer-dol-height-mobile: 26rem;
+$footer-dol-height: 18rem;
+$footer-dol-height-mobile: 36rem;
 
 $hero-height: 50rem;
 
@@ -233,6 +241,8 @@ $hero-height: 50rem;
 
 .app__inner--landing__footer--dol {
   display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
   background: $color-gray-light;
   padding: 0 2rem;
@@ -268,5 +278,21 @@ $hero-height: 50rem;
     color: initial;
     background: none;
   }
+}
+
+.app__inner--landing__footer--dol__cc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid $color-black-lightest;
+}
+
+.app__inner--landing__footer--dol__cc__link {
+  display: block;
+  height: 31px;
+  margin-right: .5rem;
 }
 </style>
