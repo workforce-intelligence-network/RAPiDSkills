@@ -30,17 +30,17 @@
       </div>
       <div class="page--standard__sidebar--left__divider--stats" />
       <div class="page--standard__sidebar--left__work-process-data">
-        <div class="page--standard__sidebar--left__work-process-data__stat">
+        <div class="page--standard__sidebar--left__work-process-data__stat" v-if="standard.workProcesses.length">
           <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.workProcesses.length }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Work</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Processes</div>
         </div>
-        <div class="page--standard__sidebar--left__work-process-data__stat">
+        <div class="page--standard__sidebar--left__work-process-data__stat" v-if="standard.totalNumberOfSkills">
           <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfSkills }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Skills</div>
         </div>
-        <div class="page--standard__sidebar--left__work-process-data__stat">
+        <div class="page--standard__sidebar--left__work-process-data__stat" v-if="standard.totalNumberOfHours">
           <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfHours }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Total</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Hours</div>
@@ -351,10 +351,14 @@ $sidebar-left-width: 20rem;
 }
 
 .page--standard__sidebar--left__work-process-data {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
   margin-bottom: 2rem;
+}
+
+.page--standard__sidebar--left__work-process-data__stat {
+  min-width: 33%;
 }
 
 .page--standard__sidebar--left__work-process-data__stat__number {
