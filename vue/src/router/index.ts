@@ -267,7 +267,7 @@ const router = new VueRouter({
 });
 
 const updateDocumentTitle = async (pageTitle?: string | Function, pageTitlePromise?: () => Promise<any>) => {
-  const titleSections = ['RapidSkills'];
+  const titleSections = ['ASB'];
 
   if (_isString(pageTitle) && (pageTitle as string).length) {
     titleSections.push((pageTitle as string));

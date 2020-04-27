@@ -6,9 +6,6 @@
       </div>
     </div>
     <div class="app__inner--dashboard__nav--top">
-      <router-link class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--logo" :to="{ name: 'home' }">
-        <img :src="LOGO_ALT_FULL_NO_ICON" alt="RapidSkills Logo" class="app__inner--dashboard__nav--top__link--logo__logo" />
-      </router-link>
       <div class="app__inner--dashboard__nav--top__navbar-actions" :class="{ 'app__inner--dashboard__nav--top__navbar-actions--session-active': sessionActive }">
         <router-view name="navbarActions" />
       </div>
@@ -29,11 +26,11 @@
     <div class="app__inner--dashboard__nav--left">
       <a class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--icon" href="javascript:void(0)">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <img :src="ICON_WHITE" alt="RapidSkills White Icon" class="app__inner--dashboard__nav--left__link--icon__icon" />
+          <img :src="ICON_WHITE" alt="Apprenticeship Skills Builder White Icon" class="app__inner--dashboard__nav--left__link--icon__icon" />
         </span>
-        <span class="app__inner--dashboard__nav--left__link__name">
-          <img :src="LOGO_ALT_FULL_NO_ICON_WHITE" alt="RapidSkills Logo White" class="app__inner--dashboard__nav--left__link__name__logo" />
-        </span>
+        <!-- <span class="app__inner--dashboard__nav--left__link__name">
+          <img :src="LOGO_ALT_FULL_NO_ICON_WHITE" alt="Apprenticeship Skills Builder Logo White" class="app__inner--dashboard__nav--left__link__name__logo" />
+        </span> -->
       </a>
       <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'standards' }" active-class="app__inner--dashboard__nav--left__link--active">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
@@ -100,10 +97,8 @@ import ICON_LEFT_NAV_DASHBOARD from '@/assets/left-nav-icon-dashboard.svg';
 import ICON_LEFT_NAV_HEART from '@/assets/left-nav-icon-heart.svg';
 import ICON_LEFT_NAV_PIE_CHART from '@/assets/left-nav-icon-pie-chart.svg';
 import ICON_LEFT_NAV_SETTINGS from '@/assets/left-nav-icon-settings.svg';
-import LOGO_ALT_FULL_NO_ICON from '@/assets/logo-alt-full-no-icon.svg';
 import LOGO_ALT_FULL_NO_ICON_WHITE from '@/assets/logo-alt-full-no-icon-white.svg';
 import ICON_TOP_NAV_SUPPORT from '@/assets/top-nav-icon-support.svg';
-
 
 @Component
 export default class AppInnerDashboard extends Vue {
@@ -116,8 +111,6 @@ export default class AppInnerDashboard extends Vue {
   @Provide('ICON_LEFT_NAV_PIE_CHART') ICON_LEFT_NAV_PIE_CHART = ICON_LEFT_NAV_PIE_CHART
 
   @Provide('ICON_LEFT_NAV_SETTINGS') ICON_LEFT_NAV_SETTINGS = ICON_LEFT_NAV_SETTINGS
-
-  @Provide('LOGO_ALT_FULL_NO_ICON') LOGO_ALT_FULL_NO_ICON = LOGO_ALT_FULL_NO_ICON
 
   @Provide('LOGO_ALT_FULL_NO_ICON_WHITE') LOGO_ALT_FULL_NO_ICON_WHITE = LOGO_ALT_FULL_NO_ICON_WHITE
 
@@ -175,12 +168,9 @@ export default class AppInnerDashboard extends Vue {
   justify-content: center;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  max-width: calc(100% - 4rem);
+  max-width: 100%;
   &.app__inner--dashboard__nav--top__navbar-actions--session-active {
-    max-width: calc(100% - 8.0625rem - 5.5rem);
-    @include breakpoint--sm {
-      max-width: calc(100% - 4.0625rem);
-    }
+    max-width: calc(100% - 4.125rem);
   }
 }
 

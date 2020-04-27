@@ -7,7 +7,7 @@
     </div>
     <div class="app__inner--pages__nav--top">
       <router-link class="app__inner--pages__nav--top__link app__inner--pages__nav--top__link--logo" :to="{ name: 'home' }">
-        <img :src="LOGO_ALT" alt="RapidSkills Logo" class="app__inner--pages__nav--top__link--logo__logo" />
+        <img :src="LOGO_BLUE_ALT" alt="Apprenticeship Skills Builder Logo" class="app__inner--pages__nav--top__link--logo__logo" />
       </router-link>
     </div>
   </div>
@@ -19,11 +19,11 @@ import {
   Component, Provide,
 } from 'vue-property-decorator';
 
-import LOGO_ALT from '@/assets/logo-alt.svg';
+import LOGO_BLUE_ALT from '@/assets/icon-blue-alt.svg';
 
 @Component
 export default class AppInnerDashboard extends Vue {
-  @Provide('LOGO_ALT') LOGO_ALT = LOGO_ALT
+  @Provide('LOGO_BLUE_ALT') LOGO_BLUE_ALT = LOGO_BLUE_ALT
 }
 </script>
 

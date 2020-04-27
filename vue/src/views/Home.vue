@@ -1,12 +1,12 @@
 <template>
   <div class="page--home">
     <div class="page--home__hero">
-      <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
+      <img alt="Apprenticeship Skills Builder Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__hero__text page--home__hero__text--title">
         Create competency-based apprenticeships in a snap!
       </div>
       <div class="page--home__text page--home__hero__text page--home__hero__text--description">
-        <span>RapidSkills takes the pain out of creating competency-based apprenticeships from scratch.</span>
+        <span>Apprenticeship Skills Builder takes the pain out of creating competency-based apprenticeships from scratch.</span>
         <span> Time-based programs will be supported soon, too! Follow now to find out when we launch.</span>
       </div>
       <div class="page--home__links">
@@ -67,13 +67,13 @@
           <img :src="ICON_SHARE_WITH_OTHERS" alt="Share with Others Icon" class="page--home__how-it-works__cards__card__icon" />
           <div class="page--home__how-it-works__cards__card__title">Share with Others</div>
           <div class="page--home__how-it-works__cards__card__description">
-            Share with others by entering an email address - RapidSkills will send an invite so your contacts can collaborate.
+            Share with others by entering an email address - Apprenticeship Skills Builder will send an invite so your contacts can collaborate.
           </div>
         </div>
       </div>
     </div>
     <div class="page--home__follow">
-      <img alt="RapidSkills Logo" :src="APP_LOGO" class="page--home__hero__logo" />
+      <img alt="Apprenticeship Skills Builder Logo" :src="APP_LOGO" class="page--home__hero__logo" />
       <div class="page--home__text page--home__follow__text page--home__follow__text--call-to-action">
         <div>
           <span>Sign up now to find out when we launch or contribute your own competency outlines.</span>

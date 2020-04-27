@@ -3,7 +3,7 @@
     <div class="app__inner--landing__nav">
       <router-link to="/">
         <div class="app__inner--landing__nav__link app__inner--landing__nav__link--logo">
-          <img :src="ICON_WITH_LOGO" alt="RapidSkills Icon" class="app__inner--landing__nav__link__icon" />
+          <img :src="ICON_WHITE" alt="Apprenticeship Skills Builder Icon" class="app__inner--landing__nav__link__icon" />
         </div>
       </router-link>
       <div class="app__inner--landing__nav__right" v-if="sessionActive">
@@ -46,7 +46,7 @@
         <div class="app__inner--landing__footer__index">
           <router-link to="">
             <div class="app__inner--landing__footer__index__link--rapid">
-              <img :src="ICON_NO_LOGO" alt="RapidSkills" />
+              Apprenticeship Skills Builder
             </div>
           </router-link>
           <router-link to="terms">
@@ -93,14 +93,11 @@ import {
   Component, Provide,
 } from 'vue-property-decorator';
 
-import ICON_WITH_LOGO from '@/assets/icon-with-logo.svg';
-import ICON_NO_LOGO from '@/assets/icon-no-logo.svg';
+import ICON_WHITE from '@/assets/icon-white.svg';
 
 @Component
 export default class AppInnerLanding extends Vue {
-  @Provide('ICON_WITH_LOGO') ICON_WITH_LOGO = ICON_WITH_LOGO
-
-  @Provide('ICON_NO_LOGO') ICON_NO_LOGO = ICON_NO_LOGO
+  @Provide('ICON_WHITE') ICON_WHITE = ICON_WHITE
 
   @Provide('currentYear') currentYear = (new Date()).getFullYear()
 
@@ -261,6 +258,12 @@ $hero-height: 50rem;
 .app__inner--landing__footer__index__link--rapid {
   padding-top: 0.5rem;
   margin-bottom: .75rem;
+  font-size: 1.5rem;
+  color: $color-black;
+
+  &:hover {
+    color: $color-blue;
+  }
 }
 
 .app__inner--landing__footer__links {
