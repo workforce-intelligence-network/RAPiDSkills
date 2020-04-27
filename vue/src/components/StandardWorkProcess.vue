@@ -24,6 +24,14 @@
           <TextArea v-model="workProcess.title" class="input__input standard__work-process__wrapper__vertical-group__input__input" ref="title" @input="onInput" />
         </div>
       </div>
+      <div class="standard__work-process__wrapper__info standard__work-process__wrapper__info--skills" v-if="!editing && !!workProcess.skills.length">
+        <img :src="ICON_SKILL" alt="Number of skills" class="standard__work-process__wrapper__info__icon" />
+        <span class="standard__work-process__wrapper__info__number">{{ workProcess.skills.length }}</span>
+      </div>
+      <div class="standard__work-process__wrapper__info standard__work-process__wrapper__info--hours" v-if="!editing && !!workProcess.hours">
+        <img :src="ICON_HOURS" alt="Number of hours" class="standard__work-process__wrapper__info__icon" />
+        <span class="standard__work-process__wrapper__info__number">{{ workProcess.hours }}</span>
+      </div>
       <button class="button button--link standard__work-process__wrapper__icon--delete" v-if="editing && !workProcess.skills.length" @click.stop="deleteWorkProcess">
         <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__work-process__wrapper__icon--delete__icon" />
       </button>
@@ -77,6 +85,8 @@ import {
 import ICON_PLUS_BLUE from '@/assets/icon-plus-blue.svg';
 import ICON_FOLDER from '@/assets/folder.svg';
 import ICON_FOLDER_CLOSED from '@/assets/folder-closed.svg';
+import ICON_SKILL from '@/assets/icon-skill.svg';
+import ICON_HOURS from '@/assets/icon-hours.svg';
 
 @Component({
   components: {
@@ -97,6 +107,10 @@ export default class StandardWorkProcess extends Vue {
   @Provide('ICON_FOLDER_CLOSED') ICON_FOLDER_CLOSED = ICON_FOLDER_CLOSED
 
   @Provide('ICON_PLUS_BLUE') ICON_PLUS_BLUE = ICON_PLUS_BLUE
+
+  @Provide('ICON_SKILL') ICON_SKILL = ICON_SKILL
+
+  @Provide('ICON_HOURS') ICON_HOURS = ICON_HOURS
 
   @Provide('TOUR_STEP_ID_STANDARD_WORK_PROCESS') TOUR_STEP_ID_STANDARD_WORK_PROCESS = TOUR_STEP_ID_STANDARD_WORK_PROCESS
 
@@ -190,6 +204,7 @@ export default class StandardWorkProcess extends Vue {
 .standard__work-process__wrapper {
   display: flex;
   flex-direction: row;
+  align-items: center;
   // justify-content: space-between;
   min-height: $work-process-height;
   background: $color-white;
@@ -294,4 +309,16 @@ export default class StandardWorkProcess extends Vue {
 .standard__work-process__skills__actions {
   padding: 1rem .5rem;
 }
+
+.standard__work-process__wrapper__info {
+  display: flex;
+  align-items: center;
+  color: $color-text-light;
+  padding: 0 .5rem;
+}
+
+.standard__work-process__wrapper__info__icon {
+  margin-right: .25rem;
+}
+/* .standard__work-process__wrapper__info__number */
 </style>
