@@ -1,12 +1,16 @@
 <template>
   <div class="occupation-cell">
-    <!-- <div class="occupation-cell__logo">
-    </div> -->
     <div class="occupation-cell__title">
       {{ occupation.title }}
     </div>
-    <!-- <div class="occupation-cell__meta">
-    </div> -->
+    <div class="occupation-cell__codes">
+      <div class="occupation-cell__codes__code occupation-cell__codes__code--rapid">
+        {{ occupation.rapidsCode }}
+      </div>
+      <div class="occupation-cell__codes__code occupation-cell__codes__code--onet">
+        {{ occupation.onetCode }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,24 +24,29 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/scss/colors";
+
 .occupation-cell {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  align-content: space-between;
-  align-items: center;
-  height: 3rem;
-  padding: 0 1rem;
+  padding: .5rem 1rem;
 }
 
-.occupation-cell__logo {
-  /* width: .5rem; */
+.occupation-cell__codes {
+  display: flex;
+  justify-content: flex-end;
+  color: $color-text-light;
+}
+
+.occupation-cell__codes__code {
+  &:not(:first-child) {
+    margin-left: 1.5rem;
+  }
 }
 
 .occupation-cell__title {
-  display: flex;
-  justify-content: flex-start;
-  flex-grow: 1;
+  margin-bottom: .25rem;
   text-align: left;
   font-weight: 500;
 }

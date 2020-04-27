@@ -9,23 +9,23 @@
     </div>
     <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__type">{{ standard.occupationKind }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet">{{ standard.occupationOnetCode || 'ONET' }}</div>
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb">{{ standard.occupationRapidsCode || 'Rapid' }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__type" v-if="standard.occupationKind">{{ standard.occupationKind }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__onet" v-if="standard.occupationOnetCode">{{ standard.occupationOnetCode }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__cb" v-if="standard.occupationRapidsCode">{{ standard.occupationRapidsCode }}</div>
     </div>
     <div class="standard__divider--stats" />
     <div class="standard__work-process-data">
-      <div class="standard__work-process-data__stat">
+      <div class="standard__work-process-data__stat" v-if="standard.workProcessesCount">
         <div class="standard__work-process-data__stat__number">{{ standard.workProcessesCount }}</div>
         <div class="standard__work-process-data__stat__text">Work</div>
         <div class="standard__work-process-data__stat__text">Processes</div>
       </div>
-      <div class="standard__work-process-data__stat">
+      <div class="standard__work-process-data__stat" v-if="standard.skillsCount">
         <div class="standard__work-process-data__stat__number">{{ standard.skillsCount }}</div>
         <div class="standard__work-process-data__stat__text">Total</div>
         <div class="standard__work-process-data__stat__text">Skills</div>
       </div>
-      <div class="standard__work-process-data__stat">
+      <div class="standard__work-process-data__stat" v-if="standard.hoursCount">
         <div class="standard__work-process-data__stat__number">{{ standard.hoursCount }}</div>
         <div class="standard__work-process-data__stat__text">Total</div>
         <div class="standard__work-process-data__stat__text">Hours</div>
@@ -194,12 +194,13 @@ export default {
 
 .standard__occupation-metadata {
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: center;
 }
 
 .standard__occupation-metadata__item {
   opacity: 0.5;
+  min-width: 20%;
 
   &:not(:last-child) {
     margin-right: 0.75rem;
@@ -216,10 +217,13 @@ export default {
 }
 
 .standard__work-process-data {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: space-between;
+  display: flex;
+  justify-content: space-evenly;
   margin-bottom: 1.5rem;
+}
+
+.standard__work-process-data__stat {
+  min-width: 33%;
 }
 
 .standard__work-process-data__stat__number {
