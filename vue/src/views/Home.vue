@@ -190,7 +190,7 @@ export default {
 
 .page--home__hero__laptop-preview {
   margin-bottom: 3rem;
-  min-height: 20rem;
+  min-height: 35rem;
   @include breakpoint--sm {
     min-height: auto;
   }
