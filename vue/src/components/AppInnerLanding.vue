@@ -241,7 +241,7 @@ $hero-height: 50rem;
 .app__inner--landing__footer--dol {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background: $color-gray-light;
   padding: 0 2rem;
