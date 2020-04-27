@@ -29,6 +29,7 @@ export default class App extends Vue {
 
 @import url("https://fonts.googleapis.com/css?family=Livvic:100,200,300,400,500,600,700,900&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Heebo:300,400,500,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');
 
 html,
 body {
