@@ -49,17 +49,17 @@
               <img :src="ICON_NO_LOGO" alt="RapidSkills" />
             </div>
           </router-link>
-          <!-- <router-link to="privacy">
-            <div class="app__inner--landing__footer__index__link">
-              Privacy
-            </div>
-          </router-link>
           <router-link to="terms">
             <div class="app__inner--landing__footer__index__link">
-              Terms
+              Terms & Conditions
             </div>
           </router-link>
-          <router-link to="partners">
+          <router-link to="privacy">
+            <div class="app__inner--landing__footer__index__link">
+              Privacy Policy
+            </div>
+          </router-link>
+          <!-- <router-link to="partners">
             <div class="app__inner--landing__footer__index__link">
               Partners
             </div>
@@ -236,6 +236,7 @@ $hero-height: 50rem;
   align-self: flex-end;
   line-height: 1.25rem;
   margin-left: auto;
+  text-align: right;
 }
 
 .app__inner--landing__footer--dol {
