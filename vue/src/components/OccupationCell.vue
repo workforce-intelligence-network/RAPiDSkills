@@ -30,7 +30,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: .25rem 1rem;
+  padding: .5rem 1rem;
 }
 
 .occupation-cell__codes {
