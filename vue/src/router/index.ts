@@ -110,6 +110,11 @@ const routes = [
     component: AppInnerPages,
     children: [
       {
+        path: 'about',
+        name: 'about',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+      },
+      {
         path: 'privacy',
         name: 'privacy',
         component: () => import(/* webpackChunkName: "privacy" */ '@/views/Privacy.vue'),
