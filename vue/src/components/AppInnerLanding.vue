@@ -59,11 +59,11 @@
               Privacy Policy
             </div>
           </router-link>
-          <!-- <router-link to="partners">
+          <router-link to="about">
             <div class="app__inner--landing__footer__index__link">
-              Partners
+              About Us
             </div>
-          </router-link> -->
+          </router-link>
         </div>
         <div class="app__inner--landing__footer__copyright">
           © {{ currentYear }} all rights reserved.
