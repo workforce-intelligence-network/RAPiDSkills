@@ -4,6 +4,11 @@
       <div class="app__inner--dashboard__body__content">
         <router-view />
       </div>
+      <div class="app__inner--dashboard__body__sidebar--right">
+        <div class="app__inner--dashboard__body__sidebar--right__section">
+          <SidebarSectionFAQ />
+        </div>
+      </div>
     </div>
     <div class="app__inner--dashboard__nav--top">
       <router-link class="app__inner--dashboard__nav--top__link app__inner--dashboard__nav--top__link--logo" :to="{ name: 'home' }">
@@ -95,6 +100,8 @@ import {
   Component, Provide,
 } from 'vue-property-decorator';
 
+import SidebarSectionFAQ from '@/components/SidebarSectionFAQ.vue';
+
 import ICON_WHITE from '@/assets/icon-white.svg';
 import ICON_LEFT_NAV_DASHBOARD from '@/assets/left-nav-icon-dashboard.svg';
 import ICON_LEFT_NAV_HEART from '@/assets/left-nav-icon-heart.svg';
@@ -105,7 +112,11 @@ import LOGO_ALT_FULL_NO_ICON_WHITE from '@/assets/logo-alt-full-no-icon-white.sv
 import ICON_TOP_NAV_SUPPORT from '@/assets/top-nav-icon-support.svg';
 
 
-@Component
+@Component({
+  components: {
+    SidebarSectionFAQ,
+  },
+})
 export default class AppInnerDashboard extends Vue {
   @Provide('ICON_WHITE') ICON_WHITE = ICON_WHITE
 
@@ -290,6 +301,7 @@ export default class AppInnerDashboard extends Vue {
 }
 
 .app__inner--dashboard__body {
+  display: flex;
   top: $nav-top-height;
   left: $nav-left-width;
   min-width: calc(100vw - #{$nav-left-width});
@@ -302,9 +314,8 @@ export default class AppInnerDashboard extends Vue {
 .app__inner--dashboard__body__content {
   position: relative;
   min-height: 100%;
-  width: 100%;
-  overflow-x: hidden;
   padding-bottom: $dashboard-body-content-bottom-padding;
+  flex-grow: 1;
 }
 
 .app__inner--dashboard__nav--top__link--user {
@@ -350,5 +361,24 @@ export default class AppInnerDashboard extends Vue {
   &:hover {
     background: darken($color: $color-white, $amount: 10);
   }
+}
+
+.app__inner--dashboard__body__sidebar--right {
+  padding: 2rem;
+  width: $dashboard-sidebar-right-width;
+  flex-shrink: 0;
+  border-left: 1px solid $color-gray-border;
+
+  @include breakpoint--md {
+    display: none;
+  }
+}
+
+.app__inner--dashboard__body__sidebar--right__section {
+  width: 100%;
+
+  background: $color-white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.02);
+  border-radius: 3px;
 }
 </style>

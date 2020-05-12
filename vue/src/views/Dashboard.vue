@@ -8,6 +8,7 @@
           :firstInList="standardIndex === 0"
         />
       </div>
+      <FlexFiller />
     </div>
     <button v-if="showLoadMoreButton" class="page--dashboard__button--load-more button button--link" @click="loadMoreStandards">
       Load more standards
@@ -39,12 +40,14 @@ import { mapGetters, mapState } from 'vuex';
 
 import Standard from '@/components/Standard.vue';
 import Loading from '@/components/Loading.vue';
+import FlexFiller from '@/components/FlexFiller.vue';
 
 export default {
   name: 'dashboard',
   components: {
     Standard,
     Loading,
+    FlexFiller,
   },
   methods: {
     clearSelectedOccupation() {
