@@ -2,7 +2,6 @@
   <div class="page page--saved">
     <div class="page--saved__cards" v-if="standards.length">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" saved />
-      <FlexFiller />
     </div>
     <div class="page--saved__state--loading" v-if="showLoadingState">
       <Loading />
@@ -21,13 +20,11 @@ import {
 
 import Standard from '@/components/Standard.vue';
 import Loading from '@/components/Loading.vue';
-import FlexFiller from '@/components/FlexFiller.vue';
 
 @Component({
   components: {
     Standard,
     Loading,
-    FlexFiller,
   },
 })
 export default class SavedStandards extends Vue {

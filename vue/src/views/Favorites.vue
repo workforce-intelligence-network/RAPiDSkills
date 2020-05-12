@@ -2,7 +2,6 @@
   <div class="page page--favorites">
     <div class="page--favorites__cards" v-if="!showLoadingState">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" saved />
-      <FlexFiller />
     </div>
     <div class="page--favorites__state--loading" v-if="showLoadingState">
       <Loading />
@@ -21,13 +20,11 @@ import {
 
 import Standard from '@/components/Standard.vue';
 import Loading from '@/components/Loading.vue';
-import FlexFiller from '@/components/FlexFiller.vue';
 
 @Component({
   components: {
     Standard,
     Loading,
-    FlexFiller,
   },
 })
 export default class Favorites extends Vue {
