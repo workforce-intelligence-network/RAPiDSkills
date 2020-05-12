@@ -17,6 +17,7 @@ import StandardNavBarActions from '@/components/StandardNavBarActions.vue';
 import Standard from '@/views/Standard.vue';
 
 import {
+  TOUR_ID_STANDARD,
   TOUR_ID_STANDARDS,
 } from '@/store/tours';
 
@@ -150,6 +151,7 @@ const routes = [
         meta: {
           pageTitle: () => _get(store, 'state.standards.selectedStandard.title'),
           pageTitlePromise: () => _get(store, 'state.standards.selectedStandardPromise'),
+          tourId: TOUR_ID_STANDARD,
         },
         children: [
           {
@@ -185,6 +187,7 @@ const routes = [
         },
         meta: {
           pageTitle: 'Standards',
+          tourId: TOUR_ID_STANDARDS,
         },
         children: [
           {

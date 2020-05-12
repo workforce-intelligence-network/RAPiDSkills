@@ -34,3 +34,10 @@ export const closeTourStep = async ({ commit, getters }, tourStepId: string) => 
   commit('hideTourStep', getters.tourStepVisibleId(tourStepId));
   await storage.setItem(getters.tourStepSeenStorageId(tourStepId), true);
 };
+
+export const resetTour = async ({ getters }, tourId: string) => {
+  const tourConfiguration: string[] = getters.tourConfiguration(tourId);
+  tourConfiguration.forEach((tourStepId: string) => {
+    storage.setItem(getters.tourStepSeenStorageId(tourStepId), false);
+  });
+};
