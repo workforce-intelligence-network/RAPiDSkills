@@ -73,7 +73,7 @@ export default class SidebarSectionFAQ extends Vue {
 .sidebar-section--faq__divider {
   margin: 1.25rem auto;
   background: $color-blue;
-  height: 0.125rem;
+  height: 3px;
   width: 3rem;
 }
 
