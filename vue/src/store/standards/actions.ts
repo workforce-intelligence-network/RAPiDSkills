@@ -80,8 +80,9 @@ export const persistStandardDuplicate = async ({ state, commit }) => {
   }
 };
 
-export const refreshSelectedStandard = ({ state, commit }) => {
+export const refreshSelectedStandard = ({ state, commit, dispatch }) => {
   commit('updateSelectedStandard', new OccupationStandard(state.selectedStandard));
+  dispatch('user/clearSavedStandards', undefined, { root: true });
 };
 
 export const deleteSkillFromSelectedStandard = async ({ dispatch, state }, { skill, workProcess }) => {
