@@ -69,7 +69,7 @@ export default class tour extends Vue {
   }
 
   scrollIntoView() {
-    this.$scrollTo((this.$refs.tour as HTMLElement), 500, {
+    (this as any).$scrollTo((this.$refs.tour as HTMLElement), 500, {
       container: '#body',
       offset: -20,
     });
