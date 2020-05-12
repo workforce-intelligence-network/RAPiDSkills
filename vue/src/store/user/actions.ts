@@ -82,15 +82,13 @@ export const getSavedStandards = async ({ state, commit }) => {
 
     const standards: OccupationStandard[] = [];
 
-    await Promise.all(
-      (response.data.data as [])
-        .map(async (unsyncedOccupation: any) => {
-          const { model } = await OccupationStandard.get(unsyncedOccupation.id);
-          standards.push(model);
-          commit('updateSavedStandards', standards);
-          return model;
-        }),
-    );
+    await Promise.all((response.data.data as [])
+      .map(async (unsyncedOccupation: any) => {
+        const { model } = await OccupationStandard.get(unsyncedOccupation.id);
+        standards.push(model);
+        commit('updateSavedStandards', standards);
+        return model;
+      }));
   } catch (e) {
     //
   }
