@@ -71,21 +71,24 @@ export const getSavedStandards = async ({ state, commit }) => {
     return;
   }
 
-  // TODO: clear on saves to standards instead? Clear only affected standard?
-  // if (state.savedStandards.length) {
-  //   return;
-  // }
+  if (state.savedStandards.length) {
+    return;
+  }
 
   try {
     commit('updateSavedStandardsLoading', true);
 
     const response = await apiRaw.get(`/users/${userId}/relationships/occupation_standards`);
 
-    const standards: OccupationStandard[] = (await Promise.all((response.data.data as [])
-      .map(async (unsyncedOccupation: any) => OccupationStandard.get(unsyncedOccupation.id))) as []
-    ).map((jsonApiResponse: any) => jsonApiResponse.model);
+    const standards: OccupationStandard[] = [];
 
-    commit('updateSavedStandards', standards);
+    await Promise.all((response.data.data as [])
+      .map(async (unsyncedOccupation: any) => {
+        const { model } = await OccupationStandard.get(unsyncedOccupation.id);
+        standards.push(model);
+        commit('updateSavedStandards', standards);
+        return model;
+      }));
   } catch (e) {
     //
   }
