@@ -1,6 +1,6 @@
 <template>
   <div class="page page--saved">
-    <div class="page--saved__cards" v-if="!showLoadingState">
+    <div class="page--saved__cards" v-if="standards.length">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" saved />
     </div>
     <div class="page--saved__state--loading" v-if="showLoadingState">

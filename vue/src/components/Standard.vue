@@ -134,8 +134,15 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-content: space-between;
-  max-width: $standard-width;
+  background: $color-white;
+  box-shadow: $color-nav-bar-top-box-shadow 0px 2px 4px 0px;
+  cursor: pointer;
+  color: initial;
 
+  margin-right: $card-row-gap;
+  margin-bottom: $card-column-gap;
+
+  max-width: $standard-width;
   @include breakpoint--xs {
     max-width: 100%;
     min-width: auto;
@@ -145,11 +152,6 @@ export default {
     min-width: $standard-width;
     width: $standard-width;
   }
-
-  background: $color-white;
-  box-shadow: $color-nav-bar-top-box-shadow 0px 2px 4px 0px;
-  cursor: pointer;
-  color: initial;
 }
 
 .standard__label {

@@ -120,7 +120,8 @@ a {
 .button--inverted {
   background: $color-white;
   &:hover {
-    background: darken(white, 10);
+    background: $color-white;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.178103);
   }
 }
 
