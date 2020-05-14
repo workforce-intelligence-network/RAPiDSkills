@@ -54,7 +54,7 @@ export default class WorkProcess extends ModelBase {
       && _every(this.skills, skill => skill.valid);
   }
 
-  removeSkill(skill: Skill): WorkProcess {
+  removeOrReplaceSkill(skill: Skill, replacement?: Skill): WorkProcess {
     const updatedWorkProcessSkills: Skill[] = _clone(this.skills);
     const indexOfWorkProcessSkill: number = updatedWorkProcessSkills.indexOf(skill);
 
@@ -62,7 +62,12 @@ export default class WorkProcess extends ModelBase {
       throw new Error('Failed to find skill to remove from work process skills');
     }
 
-    updatedWorkProcessSkills.splice(indexOfWorkProcessSkill, 1);
+    if (replacement) {
+      updatedWorkProcessSkills.splice(indexOfWorkProcessSkill, 1, replacement);
+    } else {
+      updatedWorkProcessSkills.splice(indexOfWorkProcessSkill, 1);
+    }
+
     this.skills = updatedWorkProcessSkills;
 
     return this;

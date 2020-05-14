@@ -205,12 +205,17 @@ export default class OccupationStandard extends ModelBase {
     // TODO: undo if fails?
   }
 
-  async removeSkill(skill: Skill, workProcess?: WorkProcess) {
+  async removeOrReplaceSkill(skill: Skill, workProcess?: WorkProcess, replacement?: Skill) {
     const updatedSkills: Skill[] = _clone(this.skills);
     const indexOfSkill: number = updatedSkills.indexOf(skill);
 
     if (indexOfSkill !== -1) {
-      updatedSkills.splice(indexOfSkill, 1);
+      if (replacement) {
+        updatedSkills.splice(indexOfSkill, 1, replacement);
+      } else {
+        updatedSkills.splice(indexOfSkill, 1);
+      }
+
       this.skills = updatedSkills;
 
       await this.destroySkillIfSynced(skill);
@@ -222,13 +227,13 @@ export default class OccupationStandard extends ModelBase {
       throw new Error('Failed to find skill to remove from standard skills');
     }
 
-    const accurateWorkProcessReference = _find(
+    const accurateWorkProcessReference: WorkProcess = _find(
       this.workProcesses,
       (currentWorkProcess: WorkProcess) => currentWorkProcess === workProcess || (currentWorkProcess.synced && currentWorkProcess.id === workProcess.id),
     );
 
     try {
-      accurateWorkProcessReference.removeSkill(skill);
+      accurateWorkProcessReference.removeOrReplaceSkill(skill, replacement);
     } catch (e) {
       (Vue as any).rollbar.error(e);
     }

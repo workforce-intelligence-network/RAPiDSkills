@@ -85,8 +85,8 @@ export const refreshSelectedStandard = ({ state, commit, dispatch }) => {
   dispatch('user/clearSavedStandards', undefined, { root: true });
 };
 
-export const deleteSkillFromSelectedStandard = async ({ dispatch, state }, { skill, workProcess }) => {
-  await state.selectedStandard.removeSkill(skill, workProcess);
+export const deleteSkillFromSelectedStandard = async ({ dispatch, state }, { skill, workProcess, replacement }) => {
+  await state.selectedStandard.removeOrReplaceSkill(skill, workProcess, replacement);
 
   dispatch('refreshSelectedStandard');
 };
@@ -120,6 +120,10 @@ export const addNewSkillToSelectedStandard = async ({ dispatch, state }, workPro
   }
 
   dispatch('refreshSelectedStandard');
+};
+
+export const replaceSkill = async ({ dispatch }, { skill, replacement, workProcess }) => {
+  dispatch('deleteSkillFromSelectedStandard');
 };
 
 export const updateStandardToDuplicate = ({ commit }, standard: OccupationStandard) => {
