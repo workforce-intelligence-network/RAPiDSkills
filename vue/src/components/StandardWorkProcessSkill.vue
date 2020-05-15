@@ -48,7 +48,7 @@ export default class StandardWorkProcessSkill extends StandardSkill {
   @Prop(Number) workProcessIndex!: number
 
   async deleteSkill() {
-    await this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
+    await this.$store.dispatch('standards/deleteOrReplaceSkillFromSelectedStandard', {
       skill: this.skill,
       workProcess: this.workProcess,
     });

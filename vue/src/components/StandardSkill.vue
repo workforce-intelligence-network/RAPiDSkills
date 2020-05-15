@@ -14,17 +14,19 @@
         <div class="standard__skill__wrapper__vertical-group__description" v-if="!editing">
           {{ skill.description }}
         </div>
-        <div class="input input--subtle standard__skill__wrapper__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
-          <TextArea class="input__input standard__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="description" @input="onInput" />
-          <div class="search__dropdown" v-if="showList">
-            <div class="search__dropdown__empty" v-if="!listLoading && !list.length">
+        <div class="standard__skill__wrapper__dropdown-wrapper">
+          <div class="input input--subtle standard__skill__wrapper__vertical-group__input" :class="{ 'input--error': skill.invalid }" v-if="editing">
+            <TextArea class="input__input standard__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="description" @input="onInput" @blur="closeSearch" />
+          </div>
+          <div class="standard__skill__wrapper__dropdown-wrapper__dropdown" v-if="showList">
+            <div class="standard__skill__wrapper__dropdown-wrapper__dropdown__empty" v-if="!listLoading && !list.length">
               No occupations found.
             </div>
-            <div class="search__dropdown__loading" v-if="listLoading">
+            <div class="standard__skill__wrapper__dropdown-wrapper__dropdown__loading" v-if="listLoading">
               <Loading />
             </div>
-            <div class="search__dropdown__list" v-if="!listLoading">
-              <a class="search__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="onSkillSelected(item)" href="javascript:void(0);">
+            <div class="standard__skill__wrapper__dropdown-wrapper__dropdown__list" v-if="!listLoading">
+              <a class="standard__skill__wrapper__dropdown-wrapper__dropdown__list__item" v-for="item in list" :key="item.id" @click.stop.prevent="onSkillSelected(item)" href="javascript:void(0);">
                 {{ item.description }}
               </a>
             </div>
@@ -70,12 +72,13 @@ export default class StandardSkill extends Vue {
   @Prop(Function) onSkillInput!: Function
 
   searchForSkills() {
-    this.$store.dispatch('skills/searchForSkills', this.skill.description);
+    this.$store.dispatch('skills/searchForSkills', this.skill);
   }
 
   async onSkillSelected(skill: Skill) {
-    this.$store.dispatch('skills/hideSkillsSearch');
-    await this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
+    this.$store.dispatch('skills/hideSkillsSearch', this.skill);
+
+    await this.$store.dispatch('standards/deleteOrReplaceSkillFromSelectedStandard', {
       skill: this.skill,
       replacement: skill,
     });
@@ -99,13 +102,15 @@ export default class StandardSkill extends Vue {
   }
 
   async deleteSkill() {
-    await this.$store.dispatch('standards/deleteSkillFromSelectedStandard', {
+    await this.$store.dispatch('standards/deleteOrReplaceSkillFromSelectedStandard', {
       skill: this.skill,
     });
   }
 
   created() {
-    (this as any).saveSkill = _debounce((this as any).saveSkill, 500).bind(this);
+    this.saveSkill = _debounce(this.saveSkill, 500).bind(this);
+    this.searchForSkills = _debounce(this.searchForSkills, 500).bind(this);
+    this.onBodyClick = this.onBodyClick.bind(this);
   }
 
   focusInput() {
@@ -121,12 +126,40 @@ export default class StandardSkill extends Vue {
     this.focusInput();
   }
 
+  updated() {
+    if (this.skill === this.$store.state.skills.skill) {
+      console.log('show list', this.showList);
+    }
+
+    if (this.showList) {
+      document.body.addEventListener('click', this.onBodyClick);
+    } else {
+      document.body.removeEventListener('click', this.onBodyClick);
+    }
+  }
+
+  destroyed() {
+    document.body.removeEventListener('click', this.onBodyClick);
+  }
+
+  onBodyClick() {
+    if (!this.showList) {
+      return;
+    }
+
+    this.closeSearch();
+  }
+
+  closeSearch() {
+    this.$store.dispatch('skills/hideSkillsSearch', this.skill);
+  }
+
   protected get skill(): Skill {
     return ((this.$store.state.standards.selectedStandard || {} as OccupationStandard).skills || [])[this.skillIndex];
   }
 
   protected get showList(): boolean {
-    return this.$store.getters['skills/showSkillsSearchList'];
+    return this.$store.getters['skills/showSkillsSearchList'](this.skill);
   }
 
   protected get listLoading(): boolean {
@@ -134,7 +167,7 @@ export default class StandardSkill extends Vue {
   }
 
   protected get list(): Skill[] {
-    return this.$store.state.skills.list || [] as Skill[];
+    return this.$store.state.skills.list || [];
   }
 }
 </script>
@@ -156,6 +189,7 @@ export default class StandardSkill extends Vue {
   font-size: 1.125rem;
 }
 
+.standard__skill__wrapper__dropdown-wrapper,
 .standard__skill__wrapper__vertical-group__input__input,
 .standard__skill__wrapper__vertical-group__input {
   width: 100%;
@@ -215,7 +249,11 @@ export default class StandardSkill extends Vue {
   text-align: left;
 }
 
-.search__dropdown {
+.standard__skill__wrapper__dropdown-wrapper {
+  position: relative;
+}
+
+.standard__skill__wrapper__dropdown-wrapper__dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -228,7 +266,7 @@ export default class StandardSkill extends Vue {
   box-shadow: 0 10px 20px 0 transparentize($color-link-blue, 0.9);
 }
 
-.search__dropdown__list__item {
+.standard__skill__wrapper__dropdown-wrapper__dropdown__list__item {
   display: block;
   color: $color-black;
   cursor: pointer;
@@ -239,8 +277,8 @@ export default class StandardSkill extends Vue {
   }
 }
 
-.search__dropdown__empty,
-.search__dropdown__loading {
+.standard__skill__wrapper__dropdown-wrapper__dropdown__empty,
+.standard__skill__wrapper__dropdown-wrapper__dropdown__loading {
   line-height: 5rem;
 }
 

@@ -8,7 +8,7 @@ export default {
     loading: false,
     list: [],
     query: '',
-    freshSearch: false,
+    skill: undefined,
   },
   mutations,
   actions,
