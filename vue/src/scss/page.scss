@@ -1,7 +1,13 @@
+@import "@/scss/mixins";
+
 .page {
   display: flex;
   flex-direction: column;
   align-content: flex-start;
   padding: 2rem;
   padding-right: 0;
+
+  @include breakpoint--sm {
+    padding-left: 1rem;
+  }
 }
