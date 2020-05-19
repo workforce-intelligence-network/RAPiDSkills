@@ -3,7 +3,7 @@
     <div class="app__inner--landing__nav">
       <router-link to="/">
         <div class="app__inner--landing__nav__link app__inner--landing__nav__link--logo">
-          <img :src="ICON_WITH_LOGO" alt="RapidSkills Icon" class="app__inner--landing__nav__link__icon" />
+          <img :src="LOGO_WITH_ICON" alt="RapidSkills Icon" class="app__inner--landing__nav__link__icon" />
         </div>
       </router-link>
       <div class="app__inner--landing__nav__right" v-if="sessionActive">
@@ -93,12 +93,12 @@ import {
   Component, Provide,
 } from 'vue-property-decorator';
 
-import ICON_WITH_LOGO from '@/assets/icon-with-logo.svg';
+import LOGO_WITH_ICON from '@/assets/logo-with-icon.svg';
 import ICON_NO_LOGO from '@/assets/icon-no-logo.svg';
 
 @Component
 export default class AppInnerLanding extends Vue {
-  @Provide('ICON_WITH_LOGO') ICON_WITH_LOGO = ICON_WITH_LOGO
+  @Provide('LOGO_WITH_ICON') LOGO_WITH_ICON = LOGO_WITH_ICON
 
   @Provide('ICON_NO_LOGO') ICON_NO_LOGO = ICON_NO_LOGO
 
@@ -174,13 +174,14 @@ $hero-height: 50rem;
 }
 
 .app__inner--landing__nav__link__icon {
+  height: 2rem;
   @include breakpoint--sm {
     max-width: 8rem;
   }
 }
 
 .app__inner--landing__nav__link {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   line-height: 2rem;
   color: $color-white;
   padding: 1rem 1rem;
