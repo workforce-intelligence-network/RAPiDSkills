@@ -181,7 +181,7 @@ $hero-height: 50rem;
 }
 
 .app__inner--landing__nav__link {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   line-height: 2rem;
   color: $color-white;
   padding: 1rem 1rem;
