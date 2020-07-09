@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--privacy">
+  <div class="page--privacy">
     <div class="page--privacy__title">
       Privacy Policy
     </div>
@@ -49,7 +49,7 @@
 
       <p>When we share Sample Information we enter into an agreement with the receiver of the Sample Information.</p>
       <h3>Your Ability to Opt Out of Our Use of Your Information</h3>
-      <p>When you provide your email address on RapidSkills Generator, you agree to receiving relevant updates and information from us. You have the ability to opt out of receiving our emails at any time by emailing us at <a href="mailto:info@rapidskills.org">info@rapidskills.org</a>, or by clicking “unsubscribe” on any email that you receive. Additionally, we retain and use the information we collect from and about you on RapidSkills Generator for as long as it is necessary to achieve the purposes for which the information was collected, unless otherwise prohibited by the appropriate legal authorities. Users of RapidSkills Generator who have created an account in order to access certain features of RapidSkills Generator are able to access and manage that profile to ensure that it is accurate and up-to-date, to make changes, or to change their username and password.</p>
+      <p>When you provide your email address on RapidSkills Generator, you agree to receiving relevant updates and information from us. You have the ability to opt out of receiving our emails at any time by emailing us at <a href="mailto:info@rapidskillsgenerator.org">info@rapidskillsgenerator.org</a>, or by clicking “unsubscribe” on any email that you receive. Additionally, we retain and use the information we collect from and about you on RapidSkills Generator for as long as it is necessary to achieve the purposes for which the information was collected, unless otherwise prohibited by the appropriate legal authorities. Users of RapidSkills Generator who have created an account in order to access certain features of RapidSkills Generator are able to access and manage that profile to ensure that it is accurate and up-to-date, to make changes, or to change their username and password.</p>
       <h3>Security of Your Personal Information</h3>
       <p>We have implemented commercially reasonable security measures to help prevent loss of, unauthorized access to, or misuse of your User Information. However, no method of internet security is completely impenetrable or error free; hence we cannot guarantee that your information or that of your organization or company will never be disclosed in a manner inconsistent with this Privacy Statement (for example, as a result of unauthorized acts, such as hacking, by third parties that violate applicable laws).</p>
       <h3>Governing Law and Jurisdiction/Shortening Limitations Period/Jury Waiver</h3>
@@ -76,6 +76,7 @@ export default class Privacy extends Vue {
 @import "@/scss/colors";
 
 .page--privacy {
+  padding-top: 2rem;
   max-width: 50rem;
   margin: 0 auto;
 }

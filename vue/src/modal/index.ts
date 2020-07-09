@@ -1,6 +1,9 @@
 import Vue from 'vue';
 
-// eslint-disable-next-line import/prefer-default-export
-export const duplicateComponentName = 'duplicate-standard';
+export const MODAL_COMPONENT_NAME_DUPLICATE = 'duplicate-standard';
 
-Vue.component(duplicateComponentName, () => import(/* webpackChunkName: "duplicate" */ '@/views/Duplicate.vue'));
+Vue.component(MODAL_COMPONENT_NAME_DUPLICATE, () => import(/* webpackChunkName: "duplicate" */ '@/views/Duplicate.vue'));
+
+export const MODAL_COMPONENT_NAME_WELCOME = 'welcome';
+
+Vue.component(MODAL_COMPONENT_NAME_WELCOME, () => import(/* webpackChunkName: "welcome" */ '@/views/Welcome.vue'));

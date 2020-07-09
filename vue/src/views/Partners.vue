@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--partners">
+  <div class="page--partners">
     <div class="page--partners__title">
       Partners
     </div>
@@ -42,6 +42,7 @@ export default class Partners extends Vue {
 @import "@/scss/colors";
 
 .page--partners {
+  padding-top: 2rem;
   max-width: 50rem;
   margin: 0 auto;
 }

@@ -7,7 +7,7 @@
     </div>
     <div class="sidebar-section--faq__divider" />
     <div class="sidebar-section--faq__contact">
-      Try these resources or email us at <a href="mailto:info@rapidskills.org">info@rapidskills.org</a>
+      Try these resources or email us at <a href="mailto:info@rapidskillsgenerator.org">info@rapidskillsgenerator.org</a>
     </div>
     <button class="sidebar-section--faq__button button button--alternative" v-if="tourId" @click="resetTour">
       Show me around

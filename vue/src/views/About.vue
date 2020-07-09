@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--about">
+  <div class="page--about">
     <div class="page--about__title">
       About Us
     </div>
@@ -57,6 +57,7 @@ export default class about extends Vue {
 @import "@/scss/colors";
 
 .page--about {
+  padding-top: 2rem;
   max-width: 50rem;
   margin: 0 auto;
 }

@@ -97,7 +97,7 @@ export default class SignUp extends Vue {
 
       await session.persist();
 
-      this.$router.push({ name: 'standards' }); // TODO: define a "go to home" method?
+      this.$router.push({ name: 'welcome' });
     } catch (e) {
       this.submitError = this.user.valid;
     }

@@ -2,10 +2,10 @@
   <div class="modal" @click="onBackdropClick">
     <div class="modal__backdrop" />
     <div class="modal__content" v-if="component" @click.stop="" @mousedown="onMouseDownInsideContent">
-      <div class="button button--link modal__content__button--close" @click="close">
+      <div class="button button--link modal__content__button--close" @click="close" v-if="component.onClose">
         <img :src="ICON_CLOSE" alt="Close" class="modal__content__button--close__icon" />
       </div>
-      <component :is="component" />
+      <component :is="component.name" />
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ import ICON_CLOSE from '@/assets/icon-close.svg';
 
 @Component
 export default class Modal extends Vue {
-  @Prop(String) readonly component?: string
+  @Prop() readonly component?: ModalComponent
 
   @Provide('ICON_CLOSE') ICON_CLOSE = ICON_CLOSE
 
