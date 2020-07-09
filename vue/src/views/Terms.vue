@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--terms">
+  <div class="page--terms">
     <div class="page--terms__title">
       Terms {{ '&' }} Conditions
     </div>
@@ -60,6 +60,7 @@ export default class Terms extends Vue {
 @import "@/scss/colors";
 
 .page--terms {
+  padding-top: 2rem;
   max-width: 50rem;
   margin: 0 auto;
 }
