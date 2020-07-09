@@ -51,7 +51,7 @@
           </router-link>
           <router-link to="terms">
             <div class="app__inner--landing__footer__index__link">
-              Terms & Conditions
+              Terms {{ '&' }} Conditions
             </div>
           </router-link>
           <router-link to="privacy">

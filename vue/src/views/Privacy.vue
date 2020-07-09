@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--privacy">
+  <div class="page--privacy">
     <div class="page--privacy__title">
       Privacy Policy
     </div>
@@ -76,6 +76,7 @@ export default class Privacy extends Vue {
 @import "@/scss/colors";
 
 .page--privacy {
+  padding-top: 2rem;
   max-width: 50rem;
   margin: 0 auto;
 }

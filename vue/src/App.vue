@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app">
-    <router-view :class="{ 'app__inner--blurred': !!modalComponentName }" />
-    <Modal :class="{ 'modal--visible': !!modalComponentName }" :component="modalComponentName" />
+    <router-view :class="{ 'app__inner--blurred': !!modalComponent }" />
+    <Modal :class="{ 'modal--visible': !!modalComponent }" :component="modalComponent" />
   </div>
 </template>
 
@@ -16,8 +16,8 @@ import Modal from '@/components/Modal.vue';
   },
 })
 export default class App extends Vue {
-  protected get modalComponentName() {
-    return this.$store.getters['modal/modalComponentName'];
+  protected get modalComponent() {
+    return this.$store.state.modal.component;
   }
 }
 </script>

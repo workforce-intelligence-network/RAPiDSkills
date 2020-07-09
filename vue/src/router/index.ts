@@ -21,7 +21,10 @@ import {
   TOUR_ID_STANDARDS,
 } from '@/store/tours';
 
-import { duplicateComponentName } from '@/modal';
+import {
+  MODAL_COMPONENT_NAME_DUPLICATE,
+  MODAL_COMPONENT_NAME_WELCOME,
+} from '@/modal';
 
 Vue.use(VueRouter);
 
@@ -142,6 +145,58 @@ const routes = [
     },
     children: [
       {
+        path: 'standards',
+        name: 'standards',
+        components: {
+          default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
+          navbarActions: SearchOccupations,
+        },
+        beforeEnter(to, from, next) {
+          store.dispatch('standards/fetchStandards');
+          store.dispatch('tours/continueTour', TOUR_ID_STANDARDS);
+          next();
+        },
+        meta: {
+          pageTitle: 'Standards',
+          tourId: TOUR_ID_STANDARDS,
+        },
+        children: [
+          {
+            path: 'welcome',
+            name: 'welcome',
+            async beforeEnter(to, from, next) {
+              store.dispatch('modal/update', {
+                name: MODAL_COMPONENT_NAME_WELCOME,
+                onClose() {
+                  // eslint-disable-next-line no-use-before-define
+                  router.replace({
+                    name: 'standards',
+                  });
+                },
+              });
+              next();
+            },
+          },
+          {
+            path: 'duplicate/:id',
+            name: 'duplicate',
+            async beforeEnter(to, from, next) {
+              store.dispatch('standards/ensureDuplicateStandard', to.params.id);
+              store.dispatch('modal/update', {
+                name: MODAL_COMPONENT_NAME_DUPLICATE,
+                onClose() {
+                  // eslint-disable-next-line no-use-before-define
+                  router.replace({
+                    name: 'standards',
+                  });
+                },
+              });
+              next();
+            },
+          },
+        ],
+      },
+      {
         path: 'standards/:id',
         name: 'standard',
         components: {
@@ -160,47 +215,11 @@ const routes = [
             async beforeEnter(to, from, next) {
               store.dispatch('standards/ensureDuplicateStandard', to.params.id);
               store.dispatch('modal/update', {
-                name: duplicateComponentName,
+                name: MODAL_COMPONENT_NAME_DUPLICATE,
                 onClose() {
                   // eslint-disable-next-line no-use-before-define
                   router.replace({
                     name: 'standard',
-                  });
-                },
-              });
-              next();
-            },
-          },
-        ],
-      },
-      {
-        path: 'standards',
-        name: 'standards',
-        components: {
-          default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-          navbarActions: SearchOccupations,
-        },
-        beforeEnter(to, from, next) {
-          store.dispatch('standards/fetchStandards');
-          store.dispatch('tours/continueTour', TOUR_ID_STANDARDS);
-          next();
-        },
-        meta: {
-          pageTitle: 'Standards',
-          tourId: TOUR_ID_STANDARDS,
-        },
-        children: [
-          {
-            path: ':id/duplicate',
-            name: 'duplicate',
-            async beforeEnter(to, from, next) {
-              store.dispatch('standards/ensureDuplicateStandard', to.params.id);
-              store.dispatch('modal/update', {
-                name: duplicateComponentName,
-                onClose() {
-                  // eslint-disable-next-line no-use-before-define
-                  router.replace({
-                    name: 'standards',
                   });
                 },
               });
