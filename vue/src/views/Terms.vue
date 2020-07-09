@@ -5,7 +5,7 @@
     </div>
     <div class="page--terms__terms">
       <h5>Last Updated 4/24/2020</h5>
-      <p>These terms and conditions of use (“Terms”) describe your rights and responsibilities as they relate to your use of RapidSkills Generator at rapidskills.org, including its mobile application (“RapidSkills Generator”). By browsing, accessing, and/or using RapidSkills Generator, you acknowledge that you have read, understood, and agree to be legally bound by these Terms, and have authority to agree on behalf of your organization or company. If you do not agree to these Terms, do not use in any way RapidSkills Generator.</p>
+      <p>These terms and conditions of use (“Terms”) describe your rights and respo nsibilities as they relate to your use of RapidSkills Generator at rapidskillsgenerator.org, including its mobile application (“RapidSkills Generator”). By browsing, accessing, and/or using RapidSkills Generator, you acknowledge that you have read, understood, and agree to be legally bound by these Terms, and have authority to agree on behalf of your organization or company. If you do not agree to these Terms, do not use in any way RapidSkills Generator.</p>
 
       <h3>Privacy Policy</h3>
       <p>Our <router-link to="privacy">Privacy Policy</router-link> describes how we collect, use, and share information about you and your use of RapidSkills Generator. By browsing, accessing, and/or using RapidSkills Generator, you accept our Privacy Policy. If you do not agree with the Privacy Policy, do not use in any way RapidSkills Generator.</p>
@@ -39,7 +39,7 @@
       <h3>Indemnification</h3>
       <p>You, your organization or company jointly agree to indemnify, defend, and hold harmless the WIN Parties from and against all Claims.</p>
       <h3>Contact Information</h3>
-      <p>If you have any questions or concerns about these Terms or the Privacy Policy, please email us at <a href="mailto:info@rapidskills.org">info@rapidskills.org</a>.</p>
+      <p>If you have any questions or concerns about these Terms or the Privacy Policy, please email us at <a href="mailto:info@rapidskillsgenerator.org">info@rapidskillsgenerator.org</a>.</p>
     </div>
   </div>
 </template>
