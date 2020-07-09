@@ -90,6 +90,29 @@
           </span>
         </span>
       </router-link> -->
+      <div class="app__inner--dashboard__nav--left__legal-links">
+        <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal app__inner--dashboard__nav--left__link--legal--first" to="terms">
+          <span class="app__inner--dashboard__nav--left__link__name">
+            <span class="app__inner--dashboard__nav--left__link__name__text">
+              Terms & Conditions
+            </span>
+          </span>
+        </router-link>
+        <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal" to="privacy">
+          <span class="app__inner--dashboard__nav--left__link__name">
+            <span class="app__inner--dashboard__nav--left__link__name__text">
+              Privacy Policy
+            </span>
+          </span>
+        </router-link>
+        <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal" to="about">
+          <span class="app__inner--dashboard__nav--left__link__name">
+            <span class="app__inner--dashboard__nav--left__link__name__text">
+              About Us
+            </span>
+          </span>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -234,6 +257,7 @@ export default class AppInnerDashboard extends Vue {
   align-content: flex-start;
   transition: width 0.25s ease;
   overflow-x: hidden;
+  padding-bottom: 2rem;
 
   &:hover {
     width: $nav-left-width-expanded;
@@ -249,6 +273,25 @@ export default class AppInnerDashboard extends Vue {
   &:hover {
     background: $color-black-darkened;
   }
+}
+
+.app__inner--dashboard__nav--left__link--legal {
+    padding-left: .75rem;
+    padding-right: .25rem;
+
+    .app__inner--dashboard__nav--left__link__name {
+      font-size: 1rem;
+      text-align: left;
+      line-height: $nav-top-height;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+  }
+
+.app__inner--dashboard__nav--left__legal-links {
+  margin-top: auto;
 }
 
 .app__inner--dashboard__nav--left__link--icon__icon {
