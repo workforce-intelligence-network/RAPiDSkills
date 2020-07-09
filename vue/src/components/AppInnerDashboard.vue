@@ -94,7 +94,7 @@
         <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal app__inner--dashboard__nav--left__link--legal--first" to="terms">
           <span class="app__inner--dashboard__nav--left__link__name">
             <span class="app__inner--dashboard__nav--left__link__name__text">
-              Terms & Conditions
+              Terms {{ '&' }} Conditions
             </span>
           </span>
         </router-link>
