@@ -1,6 +1,6 @@
 class API::V1::OccupationStandardSerializer
   include FastJsonapi::ObjectSerializer
-  cache_options enabled: false, cache_length: 1.day
+  cache_options enabled: true, cache_length: 1.day
 
   link :self, :url
 
