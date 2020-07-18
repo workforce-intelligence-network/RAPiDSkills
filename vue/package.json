@@ -20,7 +20,7 @@
     "devour-client": "^2.1.0",
     "file-loader": "^4.2.0",
     "localforage": "^1.7.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
     "vue-analytics": "^5.22.1",
