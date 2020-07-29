@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'info@rapidskills.org'
+  default from: 'info@rapidskillsgenerator.org'
   layout 'mailer'
 end
