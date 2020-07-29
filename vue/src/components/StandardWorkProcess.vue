@@ -15,7 +15,7 @@
       </div>
       <div class="standard__work-process__wrapper__vertical-group">
         <div class="standard__work-process__wrapper__vertical-group__label">
-          Work Process
+          Category
         </div>
         <div class="standard__work-process__wrapper__vertical-group__title" v-if="!editing">
           {{ workProcess.title }}

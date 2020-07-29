@@ -10,9 +10,11 @@
       <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
       <div class="page--standard__sidebar--left__actions">
         <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
-          Duplicate
+          Use Work Schedule
         </button>
         <Tour :id="TOUR_STEP_ID_STANDARD_DUPLICATE" v-if="sessionActive" />
+      </div>
+      <div class="page--standard__sidebar--left__actions">
         <div class="page--standard__sidebar--left__actions__action page--standard__sidebar--left__actions__action--dropdown">
           <button role="button" class="button button--square" @click="toggleDownloadOpen" :disabled="!standard.pdfUrl && !standard.excelUrl">
             Download
@@ -33,7 +35,7 @@
         <div class="page--standard__sidebar--left__work-process-data__stat" v-if="standard.workProcesses.length">
           <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.workProcesses.length }}</div>
           <div class="page--standard__sidebar--left__work-process-data__stat__text">Work</div>
-          <div class="page--standard__sidebar--left__work-process-data__stat__text">Processes</div>
+          <div class="page--standard__sidebar--left__work-process-data__stat__text">Categories</div>
         </div>
         <div class="page--standard__sidebar--left__work-process-data__stat" v-if="standard.totalNumberOfSkills">
           <div class="page--standard__sidebar--left__work-process-data__stat__number">{{ standard.totalNumberOfSkills }}</div>
