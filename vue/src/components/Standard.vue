@@ -18,7 +18,7 @@
       <div class="standard__work-process-data__stat" v-if="standard.workProcessesCount">
         <div class="standard__work-process-data__stat__number">{{ standard.workProcessesCount }}</div>
         <div class="standard__work-process-data__stat__text">Work</div>
-        <div class="standard__work-process-data__stat__text">Processes</div>
+        <div class="standard__work-process-data__stat__text">Categories</div>
       </div>
       <div class="standard__work-process-data__stat" v-if="standard.skillsCount">
         <div class="standard__work-process-data__stat__number">{{ standard.skillsCount }}</div>

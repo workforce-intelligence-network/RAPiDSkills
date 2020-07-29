@@ -4,7 +4,7 @@
       <div v-for="(standard, standardIndex) in standards" :key="standard.id">
         <Standard
           :standard="standard"
-          label="Standard"
+          label="Work Schedule"
           :firstInList="standardIndex === 0"
         />
       </div>
