@@ -1,4 +1,6 @@
 class OccupationStandard < ApplicationRecord
+  searchkick
+
   belongs_to :organization
   belongs_to :occupation
   belongs_to :creator, class_name: 'User'
@@ -41,10 +43,31 @@ class OccupationStandard < ApplicationRecord
   end
 
   class << self
-    def search(args={})
-      occupation(args[:occupation_id])
-        .creator(args[:creator])
+    # def search(args={})
+    #   occupation(args[:occupation_id])
+    #     .creator(args[:creator])
+    # end
+
+    def search_records(q:)
+      return all if q.blank?
+      search(q, operator: "or")
     end
+  end
+
+  def search_data
+    {
+      organization_id: organization_id,
+      occupation_id: occupation_id,
+      organization_title: organization_title,
+      occupation_title: occupation_title,
+      title: title,
+      title_aliases: occupation.title_aliases,
+      onet_code: occupation.onet_code,
+      rapids_code: occupation.rapids_code,
+      industry_naics_code: occupation&.industry&.naics_code,
+      industry_title: occupation&.industry&.title,
+      creator_id: creator_id
+    }
   end
 
   def clone_as_unregistered!(creator_id:, organization_id:, new_title: nil)
