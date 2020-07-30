@@ -10,6 +10,8 @@ RSpec.describe API::V1::OccupationStandardsController, type: :request do
     let!(:os4) { create(:occupation_standard, type: "UnregisteredStandard") }
     let(:path) { "/api/v1/occupation_standards" }
 
+    before { OccupationStandard.reindex }
+
     it "returns the correct data" do
       # With no occupation_id parameter, returns all data
       get path

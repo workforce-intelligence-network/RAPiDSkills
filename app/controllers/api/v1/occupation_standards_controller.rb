@@ -5,9 +5,9 @@ class API::V1::OccupationStandardsController < API::V1::APIController
 
   def index
     @oss = OccupationStandard.with_eager_loading
-             .search(search_params.to_h)
+             .search_records(search_params.to_h)
              .where.not(type: "UnregisteredStandard")
-             .order(id: :desc)
+             .order(id: :asc)
              .page(page_params[:number])
              .per(page_params[:size])
 
@@ -80,7 +80,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def search_params
-    params.permit(:occupation_id)
+    params.permit(:q, :occupation_id, :organization_id, :creator)
   end
 
   def create_params

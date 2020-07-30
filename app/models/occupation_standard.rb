@@ -43,14 +43,10 @@ class OccupationStandard < ApplicationRecord
   end
 
   class << self
-    # def search(args={})
-    #   occupation(args[:occupation_id])
-    #     .creator(args[:creator])
-    # end
-
-    def search_records(q:)
-      return all if q.blank?
-      search(q, operator: "or")
+    def search_records(args={})
+      query = args.delete(:q)
+      query = "*" if query.blank?
+      search(query, operator: "or", where: args)
     end
   end
 
