@@ -6,8 +6,6 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   def index
     @oss = OccupationStandard.with_eager_loading
              .search_records(search_params.to_h)
-             .where.not(type: "UnregisteredStandard")
-             .order(id: :asc)
              .page(page_params[:number])
              .per(page_params[:size])
 

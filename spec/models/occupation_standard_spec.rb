@@ -7,14 +7,15 @@ RSpec.describe OccupationStandard, type: :model do
   end
 
   describe ".search_records" do
-    before { OccupationStandard.reindex }
-    
-    context "by occupation" do
-      let(:occupation) { create(:occupation) }
-      let!(:os1) { create(:occupation_standard, occupation: occupation) }
-      let!(:os2) { create(:occupation_standard, occupation: occupation) }
-      let!(:os3) { create(:occupation_standard) }
+    let(:occupation) { create(:occupation) }
+    let(:user) { create(:user) }
+    let!(:os1) { create(:occupation_standard, occupation: occupation, creator: user) }
+    let!(:os2) { create(:occupation_standard, occupation: occupation, creator: user) }
+    let!(:os3) { create(:occupation_standard) }
 
+    before { OccupationStandard.reindex }
+
+    context "by occupation" do
       it "returns all objects if options are empty" do
         expect(OccupationStandard.search_records).to contain_exactly os1, os2, os3
       end
@@ -33,11 +34,6 @@ RSpec.describe OccupationStandard, type: :model do
     end
 
     context "by creator" do
-      let(:user) { create(:user) }
-      let!(:os1) { create(:occupation_standard, creator: user) }
-      let!(:os2) { create(:occupation_standard, creator: user) }
-      let!(:os3) { create(:occupation_standard) }
-
       it "returns all objects if options are empty" do
         expect(OccupationStandard.search_records).to contain_exactly os1, os2, os3
       end
@@ -56,22 +52,16 @@ RSpec.describe OccupationStandard, type: :model do
     end
 
     context "by multiple fields" do
-      let(:occupation) { create(:occupation) }
-      let(:user) { create(:user) }
-      let!(:os1) { create(:occupation_standard, creator: user, occupation: occupation) }
-      let!(:os2) { create(:occupation_standard, creator: user) }
-      let!(:os3) { create(:occupation_standard, occupation: occupation) }
-
       it "returns all objects if options are empty" do
         expect(OccupationStandard.search_records).to contain_exactly os1, os2, os3
       end
 
       it "returns occupation objects if creator_id is blank" do
-        expect(OccupationStandard.search_records(occupation_id: occupation.id, creator: nil)).to contain_exactly os1, os3
+        expect(OccupationStandard.search_records(occupation_id: occupation.id, creator: nil)).to contain_exactly os1, os2
       end
 
       it "returns filtered objects for valid creator_id, occupation_id" do
-        expect(OccupationStandard.search_records(occupation_id: occupation.id, creator: user.id)).to eq [os1]
+        expect(OccupationStandard.search_records(occupation_id: occupation.id, creator: user.id)).to contain_exactly os1, os2
       end
 
       it "returns no objects for invalid creator_id, valid  occupation" do

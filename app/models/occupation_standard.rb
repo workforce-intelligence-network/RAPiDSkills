@@ -45,8 +45,15 @@ class OccupationStandard < ApplicationRecord
   class << self
     def search_records(args={})
       query = args.delete(:q)
-      query = "*" if query.blank?
-      search(query, operator: "or", where: args)
+      if query.blank?
+        query = "*" 
+        order = { title: :asc } 
+      else
+        order = { _score: :desc }
+      end
+      args.merge!({ type: { not: "UnregisteredStandard" }})
+      args.delete_if { |k, v| v.nil? }
+      search(query, operator: "or", where: args, order: order)
     end
   end
 
@@ -62,7 +69,7 @@ class OccupationStandard < ApplicationRecord
       rapids_code: occupation.rapids_code,
       industry_naics_code: occupation&.industry&.naics_code,
       industry_title: occupation&.industry&.title,
-      creator_id: creator_id
+      creator: creator_id
     }
   end
 
