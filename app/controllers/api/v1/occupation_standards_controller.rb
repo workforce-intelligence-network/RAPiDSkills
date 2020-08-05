@@ -4,11 +4,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   after_action :generate_download_docs, only: [:create, :update], if: -> { response.successful? }
 
   def index
-    @oss = OccupationStandard.with_eager_loading
-             .search_records(search_params.to_h)
-             .page(page_params[:number])
-             .per(page_params[:size])
-
+    @oss = OccupationStandard.with_eager_loading.search_records(search_params.to_h)
     options = API::V1::PaginationLinkGenerator.new(
       request: request,
       query_params: query_params,
@@ -78,7 +74,7 @@ class API::V1::OccupationStandardsController < API::V1::APIController
   end
 
   def search_params
-    params.permit(:q, :occupation_id, :organization_id, :creator)
+    params.permit(:q, :occupation_id, :organization_id, :creator, page: [:number, :size])
   end
 
   def create_params
@@ -100,12 +96,8 @@ class API::V1::OccupationStandardsController < API::V1::APIController
     params.require(:data).fetch(:attributes, {}).permit(:organization_title)
   end
 
-  def page_params
-    params.fetch(:page, {}).permit(:number, :size)
-  end
-
   def query_params
-    params.permit(:occupation_id, page: {})
+    params.permit(:q, :occupation_id, :organization_id, :creator, page: {})
   end
 
   def include_relationships
