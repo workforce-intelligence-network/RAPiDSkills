@@ -120,6 +120,14 @@ class OccupationStandard < ApplicationRecord
     end
   end
 
+  def generate_pdf!
+    pdf.attach(
+      io: StringIO.new(::OccupationStandardPdf.new(self).render),
+      filename: "#{export_filename}.pdf",
+      content_type: "application/pdf",
+    )
+  end
+
   def industry_title
     industry&.title
   end
