@@ -31,25 +31,25 @@ export default {
     [TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH]: {
       id: TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
       tourId: TOUR_ID_STANDARDS,
-      content: 'Search by occupation to find similar standards to your own.',
+      content: 'Search by occupation to find similar work schedules to your own.',
       position: 'top-right',
     },
     [TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY]: {
       id: TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
       tourId: TOUR_ID_STANDARDS,
-      content: "See a high-level summary of another program's standards, which organization contributed them, and how it's been used.",
+      content: "See a high-level summary of another program's work schedules, which organization contributed them, and how it's been used.",
       position: 'top',
     },
     [TOUR_STEP_ID_STANDARDS_FAVORITE]: {
       id: TOUR_STEP_ID_STANDARDS_FAVORITE,
       tourId: TOUR_ID_STANDARDS,
-      content: "Save standards you're interested in coming back to review later.",
+      content: "Save work schedules you're interested in coming back to review later.",
       position: 'bottom-left',
     },
     [TOUR_STEP_ID_STANDARDS_DUPLICATE]: {
       id: TOUR_STEP_ID_STANDARDS_DUPLICATE,
       tourId: TOUR_ID_STANDARDS,
-      content: 'Copy standards you want to build on and customize for your needs.',
+      content: 'Copy work schedules you want to build on and customize for your needs.',
       position: 'bottom-right',
     },
     [TOUR_STEP_ID_STANDARDS_HELP]: {
@@ -79,7 +79,7 @@ export default {
     [TOUR_STEP_ID_STANDARD_DOWNLOAD]: {
       id: TOUR_STEP_ID_STANDARD_DOWNLOAD,
       tourId: TOUR_ID_STANDARD,
-      content: 'Download the original source for this standard.',
+      content: 'Download the original source for this work schedule.',
       position: 'top-left',
     },
     [TOUR_STEP_ID_STANDARD_HELP]: {
