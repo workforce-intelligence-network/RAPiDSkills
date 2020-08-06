@@ -9,7 +9,7 @@
     </div>
     <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__type" v-if="standard.occupationKind">{{ standard.occupationKind }}</div>
+      <div class="standard__occupation-metadata__item standard__occupation-metadata__type" v-if="standard.industryTitle">{{ standard.industryTitle }}</div>
       <div class="standard__occupation-metadata__item standard__occupation-metadata__onet" v-if="standard.occupationOnetCode">{{ standard.occupationOnetCode }}</div>
       <div class="standard__occupation-metadata__item standard__occupation-metadata__cb" v-if="standard.occupationRapidsCode">{{ standard.occupationRapidsCode }}</div>
     </div>

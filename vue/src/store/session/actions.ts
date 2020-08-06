@@ -25,23 +25,23 @@ export const setSession = async ({ commit, dispatch }, session: Session) => {
 };
 
 export const initializeSession = async ({ dispatch, commit }) => {
-  const token: string | undefined = await storage.getItem('sessionToken');
-  const sessionId: string | number | undefined = await storage.getItem('sessionId');
+  const token: string | null | undefined = await storage.getItem('sessionToken');
+  const sessionId: string | number | null | undefined = await storage.getItem('sessionId');
 
   if (!token || _isUndefined(sessionId)) {
     return dispatch('expireToken');
   }
 
-  const expirationMomentString: string | undefined = await storage.getItem('sessionTokenExpiration');
+  const expirationMomentString: string | null | undefined = await storage.getItem('sessionTokenExpiration');
 
-  const expirationDateTime: moment.Moment = moment(expirationMomentString);
+  const expirationDateTime: moment.Moment = moment(expirationMomentString as string | undefined);
 
   if (!expirationMomentString || moment().isAfter(expirationDateTime)) {
     return dispatch('expireToken');
   }
 
   commit('setSession', new Session({
-    id: sessionId,
+    id: sessionId as string | number | undefined,
   }));
 
   commit('setToken', token);

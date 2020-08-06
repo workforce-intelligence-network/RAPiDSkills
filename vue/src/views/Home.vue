@@ -17,7 +17,7 @@
           Get started
         </router-link>
         <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse" v-if="!sessionActive">
-          Browse Standards
+          Browse Work Schedules
         </router-link>
       </div>
       <LaptopPreview class="page--home__hero__laptop-preview" />
@@ -93,7 +93,7 @@
           Get started
         </router-link>
         <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse" v-if="!sessionActive">
-          Browse Standards
+          Browse Work Schedules
         </router-link>
       </div>
     </div>

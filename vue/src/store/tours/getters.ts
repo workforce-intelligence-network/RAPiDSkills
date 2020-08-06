@@ -20,7 +20,7 @@ export const tourStepSeen = (state, getters) => async (tourStepId: string): Prom
   }
 
   const seenId: string = getters.tourStepSeenStorageId(tourStepId);
-  const seen: boolean | undefined = await storage.getItem(seenId);
+  const seen: boolean | null | undefined = await storage.getItem(seenId);
   return !!seen;
 };
 

@@ -4,7 +4,7 @@
     <div class="standard__navbar-actions__state" v-if="userIsCreator">
       <div class="standard__navbar-actions__state__text" v-if="loading">Updating...</div>
       <div class="standard__navbar-actions__state__text" v-if="valid && !loading" v-html="lastUpdated()" />
-      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error" v-if="!valid && !loading">Standard invalid.</div>
+      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error" v-if="!valid && !loading">Work schedule invalid.</div>
       <button class="button standard__navbar-actions__state__button__button" :disabled="loading || !valid" @click="saveStandard">
         Save
       </button>
