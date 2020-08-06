@@ -145,7 +145,7 @@ const routes = [
     },
     children: [
       {
-        path: 'standards',
+        path: 'home',
         name: 'standards',
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
@@ -157,7 +157,7 @@ const routes = [
           next();
         },
         meta: {
-          pageTitle: 'Standards',
+          pageTitle: 'Work Schedules',
           tourId: TOUR_ID_STANDARDS,
         },
         children: [

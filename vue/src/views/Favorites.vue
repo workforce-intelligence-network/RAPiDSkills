@@ -1,7 +1,7 @@
 <template>
   <div class="page page--favorites">
     <div class="page--favorites__cards" v-if="!showLoadingState">
-      <Standard v-for="standard in standards" :standard="standard" :key="standard.id" label="Standard" saved />
+      <Standard v-for="standard in standards" :standard="standard" :key="standard.id" :label="standard.occupationKind" saved />
     </div>
     <div class="page--favorites__state--loading" v-if="showLoadingState">
       <Loading />
