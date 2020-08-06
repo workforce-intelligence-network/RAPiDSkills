@@ -12,9 +12,14 @@
     <button class="sidebar-section--faq__button button button--alternative" v-if="tourId" @click="resetTour">
       Show me around
     </button>
-    <a class="sidebar-section--faq__button button button--alternative" target="_blank" href="https://rapidskills.zendesk.com/hc/en-us">
-      FAQ
+    <a class="sidebar-section--faq__button button button--alternative" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us">
+      Help
     </a>
+    <div class="sidebar-section--faq__button">
+      <a class="button button--alternative" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us/sections/360009797231-Work-process-schedules-explained">
+        How to
+      </a>
+    </div>
   </div>
 </template>
 
