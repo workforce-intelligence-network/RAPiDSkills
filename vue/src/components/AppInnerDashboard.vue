@@ -89,8 +89,6 @@
             Help
           </span>
         </span>
-        <Tour :id="TOUR_STEP_ID_STANDARDS_HELP" />
-        <Tour :id="TOUR_STEP_ID_STANDARD_HELP" />
       </a>
       <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'reports' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
@@ -156,17 +154,9 @@ import LOGO_ALT_FULL_NO_ICON from '@/assets/logo-alt-full-no-icon.svg';
 import LOGO_ALT_FULL_NO_ICON_WHITE from '@/assets/logo-alt-full-no-icon-white.svg';
 import ICON_TOP_NAV_SUPPORT from '@/assets/top-nav-icon-support.svg';
 
-import Tour from '@/components/Tour.vue';
-
-import {
-  TOUR_STEP_ID_STANDARDS_HELP,
-  TOUR_STEP_ID_STANDARD_HELP,
-} from '@/store/tours';
-
 @Component({
   components: {
     SidebarSectionFAQ,
-    Tour,
   },
 })
 export default class AppInnerDashboard extends Vue {
@@ -185,10 +175,6 @@ export default class AppInnerDashboard extends Vue {
   @Provide('LOGO_ALT_FULL_NO_ICON_WHITE') LOGO_ALT_FULL_NO_ICON_WHITE = LOGO_ALT_FULL_NO_ICON_WHITE
 
   @Provide('ICON_TOP_NAV_SUPPORT') ICON_TOP_NAV_SUPPORT = ICON_TOP_NAV_SUPPORT
-
-  @Provide('TOUR_STEP_ID_STANDARDS_HELP') TOUR_STEP_ID_STANDARDS_HELP = TOUR_STEP_ID_STANDARDS_HELP
-
-  @Provide('TOUR_STEP_ID_STANDARD_HELP') TOUR_STEP_ID_STANDARD_HELP = TOUR_STEP_ID_STANDARD_HELP
 
   userOpen: boolean = false
 
