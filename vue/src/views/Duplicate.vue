@@ -35,13 +35,13 @@ export default class Duplicate extends Vue {
 
   textBelowIcon: string = 'Woo Hoo! You\'re about to get busy.'
 
-  textQuestion: string = 'What would you like to name your new standard?'
+  textQuestion: string = 'What would you like to name your new work schedule?'
 
-  textExplanation: string = 'This new standard draft will be saved to "Saved Standards".'
+  textExplanation: string = 'This new work schedule draft will be saved to "Saved Work Schedules".'
 
   textStandardNamePlaceholder: string = 'Example: Hotel Bar Back for Acme Hotel Enterprises'
 
-  textButtonDuplicate: string = 'Edit my Standard'
+  textButtonDuplicate: string = 'Edit my Work Schedule'
 
   validating: boolean = false
 

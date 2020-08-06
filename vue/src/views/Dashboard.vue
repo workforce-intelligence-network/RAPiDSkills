@@ -4,20 +4,20 @@
       <div v-for="(standard, standardIndex) in standards" :key="standard.id">
         <Standard
           :standard="standard"
-          label="Work Schedule"
+          :label="standard.occupationKind"
           :firstInList="standardIndex === 0"
         />
       </div>
     </div>
     <button v-if="showLoadMoreButton" class="page--dashboard__button--load-more button button--link" @click="loadMoreStandards">
-      Load more standards
+      Load more work schedules
     </button>
     <div class="page--dashboard__state--loading" v-if="showLoadingState || showLoadingMoreState">
       <Loading />
     </div>
     <div class="page--dashboard__state--empty" v-if="showEmptyState && !showLoadingState">
       <div class="page--dashboard__state--empty__description">
-        <span>No standards found </span>
+        <span>No work schedules found </span>
         <span v-if="selectedOccupation">for occupation:</span>
         <div v-if="selectedOccupation" class="page--dashboard__state--empty__description__occupation">{{ selectedOccupation.title }}</div>
       </div>
