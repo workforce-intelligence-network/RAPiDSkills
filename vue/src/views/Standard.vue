@@ -9,14 +9,14 @@
       </div>
       <div class="page--standard__sidebar--left__organization-name">{{ standard.organizationTitle }}</div>
       <div class="page--standard__sidebar--left__actions">
-        <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
-          Use Work Schedule
-        </button>
-        <Tour :id="TOUR_STEP_ID_STANDARD_DUPLICATE" v-if="sessionActive" />
-      </div>
-      <div class="page--standard__sidebar--left__actions">
+        <div class="page--standard__sidebar--left__actions__action-wrapper">
+          <button role="button" class="button button--square page--standard__sidebar--left__actions__action" @click="duplicateStandard" :disabled="!sessionActive">
+            Use This Schedule
+          </button>
+          <Tour :id="TOUR_STEP_ID_STANDARD_DUPLICATE" v-if="sessionActive" />
+        </div>
         <div class="page--standard__sidebar--left__actions__action page--standard__sidebar--left__actions__action--dropdown">
-          <button role="button" class="button button--square" @click="toggleDownloadOpen" :disabled="!standard.pdfUrl && !standard.excelUrl">
+          <button role="button" class="button button--square button--inverted" @click="toggleDownloadOpen" :disabled="!standard.pdfUrl && !standard.excelUrl">
             Download
           </button>
           <Tour :id="TOUR_STEP_ID_STANDARD_DOWNLOAD" v-if="sessionActive" />
@@ -335,13 +335,22 @@ $sidebar-left-width: 20rem;
 
 .page--standard__sidebar--left__actions {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.page--standard__sidebar--left__actions__action-wrapper {
   position: relative;
 }
 
 .page--standard__sidebar--left__actions__action {
+  &,
+  .button {
+    width: 100%;
+  }
+
   &:not(:last-child) {
-    margin-right: .75rem;
+    margin-bottom: .75rem;
   }
 }
 
