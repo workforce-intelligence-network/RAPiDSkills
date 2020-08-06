@@ -232,7 +232,7 @@ const routes = [
         path: 'saved',
         name: 'saved',
         meta: {
-          pageTitle: 'Saved Standards',
+          pageTitle: 'My Work Schedules',
         },
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
         beforeEnter(to, from, next) {
