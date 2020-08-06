@@ -70,6 +70,26 @@
           </span>
         </span>
       </router-link>
+      <a class="app__inner--dashboard__nav--left__link" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us/sections/360009797231-Work-process-schedules-explained">
+        <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
+          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text">?</span>
+        </span>
+        <span class="app__inner--dashboard__nav--left__link__name">
+          <span class="app__inner--dashboard__nav--left__link__name__text">
+            How To
+          </span>
+        </span>
+      </a>
+      <a class="app__inner--dashboard__nav--left__link" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us">
+        <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
+          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text">?</span>
+        </span>
+        <span class="app__inner--dashboard__nav--left__link__name">
+          <span class="app__inner--dashboard__nav--left__link__name__text">
+            Help
+          </span>
+        </span>
+      </a>
       <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'reports' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_PIE_CHART" alt="Reports Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
@@ -133,7 +153,6 @@ import ICON_LEFT_NAV_SETTINGS from '@/assets/left-nav-icon-settings.svg';
 import LOGO_ALT_FULL_NO_ICON from '@/assets/logo-alt-full-no-icon.svg';
 import LOGO_ALT_FULL_NO_ICON_WHITE from '@/assets/logo-alt-full-no-icon-white.svg';
 import ICON_TOP_NAV_SUPPORT from '@/assets/top-nav-icon-support.svg';
-
 
 @Component({
   components: {
@@ -308,6 +327,11 @@ export default class AppInnerDashboard extends Vue {
 .app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon {
   color: $color-white;
   width: 1.5rem;
+}
+
+.app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text {
+  font-size: 1.5rem;
+  line-height: 4rem;
 }
 
 .app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa {
