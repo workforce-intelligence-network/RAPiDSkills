@@ -34,7 +34,7 @@ export const initializeSession = async ({ dispatch, commit }) => {
 
   const expirationMomentString: string | null | undefined = await storage.getItem('sessionTokenExpiration');
 
-  const expirationDateTime: moment.Moment = moment(expirationMomentString);
+  const expirationDateTime: moment.Moment = moment(expirationMomentString as string | undefined);
 
   if (!expirationMomentString || moment().isAfter(expirationDateTime)) {
     return dispatch('expireToken');
