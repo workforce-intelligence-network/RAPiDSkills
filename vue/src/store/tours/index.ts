@@ -8,12 +8,14 @@ export const TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH = `${TOUR_ID_STANDARDS}-oc
 export const TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY = `${TOUR_ID_STANDARDS}-high-level-summary`;
 export const TOUR_STEP_ID_STANDARDS_FAVORITE = `${TOUR_ID_STANDARDS}-favorite`;
 export const TOUR_STEP_ID_STANDARDS_DUPLICATE = `${TOUR_ID_STANDARDS}-duplicate`;
+export const TOUR_STEP_ID_STANDARDS_HELP = `${TOUR_ID_STANDARDS}-help`;
 
 export const TOUR_ID_STANDARD = 'standard';
 
 export const TOUR_STEP_ID_STANDARD_WORK_PROCESS = `${TOUR_ID_STANDARD}-work-process`;
 export const TOUR_STEP_ID_STANDARD_DUPLICATE = `${TOUR_ID_STANDARD}-duplicate`;
 export const TOUR_STEP_ID_STANDARD_DOWNLOAD = `${TOUR_ID_STANDARD}-download`;
+export const TOUR_STEP_ID_STANDARD_HELP = `${TOUR_ID_STANDARD}-help`;
 
 export default {
   namespaced: true,
@@ -24,6 +26,7 @@ export default {
       TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
       TOUR_STEP_ID_STANDARDS_FAVORITE,
       TOUR_STEP_ID_STANDARDS_DUPLICATE,
+      TOUR_STEP_ID_STANDARDS_HELP,
     ],
     [TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH]: {
       id: TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
@@ -49,10 +52,17 @@ export default {
       content: 'Copy standards you want to build on and customize for your needs.',
       position: 'bottom-right',
     },
+    [TOUR_STEP_ID_STANDARDS_HELP]: {
+      id: TOUR_STEP_ID_STANDARDS_HELP,
+      tourId: TOUR_ID_STANDARDS,
+      content: 'Need more help? See frequently asked questions in Help.',
+      position: 'top-right',
+    },
     [TOUR_ID_STANDARD]: [
       TOUR_STEP_ID_STANDARD_WORK_PROCESS,
       TOUR_STEP_ID_STANDARD_DUPLICATE,
       TOUR_STEP_ID_STANDARD_DOWNLOAD,
+      TOUR_STEP_ID_STANDARD_HELP,
     ],
     [TOUR_STEP_ID_STANDARD_WORK_PROCESS]: {
       id: TOUR_STEP_ID_STANDARD_WORK_PROCESS,
@@ -71,6 +81,12 @@ export default {
       tourId: TOUR_ID_STANDARD,
       content: 'Download the original source for this standard.',
       position: 'top-left',
+    },
+    [TOUR_STEP_ID_STANDARD_HELP]: {
+      id: TOUR_STEP_ID_STANDARD_HELP,
+      tourId: TOUR_ID_STANDARD,
+      content: 'Need more help? See frequently asked questions in Help.',
+      position: 'top-right',
     },
   },
   mutations,

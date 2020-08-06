@@ -70,6 +70,28 @@
           </span>
         </span>
       </router-link>
+      <a class="app__inner--dashboard__nav--left__link" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us/sections/360009797231-Work-process-schedules-explained">
+        <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
+          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text">?</span>
+        </span>
+        <span class="app__inner--dashboard__nav--left__link__name">
+          <span class="app__inner--dashboard__nav--left__link__name__text">
+            How To
+          </span>
+        </span>
+      </a>
+      <a class="app__inner--dashboard__nav--left__link" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us">
+        <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
+          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text">?</span>
+        </span>
+        <span class="app__inner--dashboard__nav--left__link__name">
+          <span class="app__inner--dashboard__nav--left__link__name__text">
+            Help
+          </span>
+        </span>
+        <Tour :id="TOUR_STEP_ID_STANDARDS_HELP" />
+        <Tour :id="TOUR_STEP_ID_STANDARD_HELP" />
+      </a>
       <!-- <router-link class="app__inner--dashboard__nav--left__link" :to="{ name: 'reports' }" active-class="app__inner--dashboard__nav--left__link--active" v-if="sessionActive">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
           <img :src="ICON_LEFT_NAV_PIE_CHART" alt="Reports Icon" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon" />
@@ -134,10 +156,17 @@ import LOGO_ALT_FULL_NO_ICON from '@/assets/logo-alt-full-no-icon.svg';
 import LOGO_ALT_FULL_NO_ICON_WHITE from '@/assets/logo-alt-full-no-icon-white.svg';
 import ICON_TOP_NAV_SUPPORT from '@/assets/top-nav-icon-support.svg';
 
+import Tour from '@/components/Tour.vue';
+
+import {
+  TOUR_STEP_ID_STANDARDS_HELP,
+  TOUR_STEP_ID_STANDARD_HELP,
+} from '@/store/tours';
 
 @Component({
   components: {
     SidebarSectionFAQ,
+    Tour,
   },
 })
 export default class AppInnerDashboard extends Vue {
@@ -156,6 +185,10 @@ export default class AppInnerDashboard extends Vue {
   @Provide('LOGO_ALT_FULL_NO_ICON_WHITE') LOGO_ALT_FULL_NO_ICON_WHITE = LOGO_ALT_FULL_NO_ICON_WHITE
 
   @Provide('ICON_TOP_NAV_SUPPORT') ICON_TOP_NAV_SUPPORT = ICON_TOP_NAV_SUPPORT
+
+  @Provide('TOUR_STEP_ID_STANDARDS_HELP') TOUR_STEP_ID_STANDARDS_HELP = TOUR_STEP_ID_STANDARDS_HELP
+
+  @Provide('TOUR_STEP_ID_STANDARD_HELP') TOUR_STEP_ID_STANDARD_HELP = TOUR_STEP_ID_STANDARD_HELP
 
   userOpen: boolean = false
 
@@ -308,6 +341,11 @@ export default class AppInnerDashboard extends Vue {
 .app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon {
   color: $color-white;
   width: 1.5rem;
+}
+
+.app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text {
+  font-size: 1.5rem;
+  line-height: 4rem;
 }
 
 .app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa {
