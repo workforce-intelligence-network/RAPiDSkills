@@ -1,6 +1,9 @@
 <template>
   <div class="page--standard">
     <div class="page--standard__sidebar--left" v-if="!loading">
+      <div class="page--standard__sidebar--left__owner" v-if="editing">
+        My Work Schedule
+      </div>
       <div class="page--standard__sidebar--left__logo">
         <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
@@ -297,9 +300,11 @@ $sidebar-left-width: 20rem;
 }
 
 .page--standard__sidebar--left {
+  position: relative;
   width: $sidebar-left-width;
   background: $color-white;
   padding: 1rem 1.5rem;
+  padding-top: 2rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   flex-shrink: 0;
   @include breakpoint--above-sm {
@@ -498,5 +503,22 @@ $sidebar-left-width: 20rem;
   white-space: nowrap;
   border-radius: 4px;
   border-top-left-radius: 0;
+}
+
+.page--standard__sidebar--left__owner {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $color-black;
+  color: $color-white;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 0.5rem 1.5rem;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  font-size: 0.7rem;
+  letter-spacing: 0.1ch;
+  white-space: nowrap;
 }
 </style>
