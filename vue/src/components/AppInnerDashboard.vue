@@ -56,7 +56,7 @@
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
-            Saved Work Schedules
+            My Work Schedules
           </span>
         </span>
       </router-link>
