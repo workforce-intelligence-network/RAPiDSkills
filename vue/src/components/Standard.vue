@@ -9,9 +9,11 @@
     </div>
     <div class="standard__occupation-name">{{ standard.title }}</div>
     <div class="standard__occupation-metadata">
-      <div class="standard__occupation-metadata__item standard__occupation-metadata__type" v-if="standard.industryTitle">{{ standard.industryTitle }}</div>
       <div class="standard__occupation-metadata__item standard__occupation-metadata__onet" v-if="standard.occupationOnetCode">{{ standard.occupationOnetCode }}</div>
       <div class="standard__occupation-metadata__item standard__occupation-metadata__cb" v-if="standard.occupationRapidsCode">{{ standard.occupationRapidsCode }}</div>
+    </div>
+    <div class="standard__occupation-industry">
+      {{ standard.industryTitle }}
     </div>
     <div class="standard__divider--stats" />
     <div class="standard__work-process-data">
@@ -194,10 +196,27 @@ export default {
   -webkit-box-orient: vertical;
 }
 
+.standard__occupation-industry {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  opacity: 0.5;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  min-height: 3rem;
+  max-height: 3rem;
+  height: 3rem;
+  margin-top: .75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .standard__occupation-metadata {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 1.25rem;
+  max-height: 1.25rem;
 }
 
 .standard__occupation-metadata__item {
