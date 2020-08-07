@@ -7,6 +7,16 @@
         </div>
       </router-link>
       <div class="app__inner--landing__nav__right" v-if="sessionActive">
+        <router-link :to="{ name: 'about' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--link button--link--alternative">
+            About
+          </div>
+        </router-link>
+        <!-- <router-link :to="{ name: 'about' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--link button--link--alternative">
+            News
+          </div>
+        </router-link> -->
         <router-link :to="{ name: 'standards' }" active-class="app__inner--landing__nav__button--active">
           <div class="app__inner--landing__nav__button button button--inverted">
             Dashboard
@@ -14,6 +24,16 @@
         </router-link>
       </div>
       <div class="app__inner--landing__nav__right" v-if="!sessionActive">
+        <router-link :to="{ name: 'about' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--link button--link--alternative">
+            About
+          </div>
+        </router-link>
+        <!-- <router-link :to="{ name: 'about' }" active-class="app__inner--landing__nav__button--active">
+          <div class="app__inner--landing__nav__button button button--link button--link--alternative">
+            News
+          </div>
+        </router-link> -->
         <router-link :to="{ name: 'login' }" active-class="app__inner--landing__nav__button--active">
           <div class="app__inner--landing__nav__button button button--link button--link--alternative">
             Login
@@ -157,11 +177,15 @@ $hero-height: 50rem;
 
 .app__inner--landing__nav__button {
   white-space: nowrap;
+
+  &.button--inverted {
+    margin-left: 1rem;
+  }
 }
 
 .app__inner--landing__nav__button.button--link {
   display: flex;
-  padding: .7rem 2rem;
+  padding: .7rem 1.5rem;
 
   @include breakpoint--xs {
     padding: .7rem .75rem;
