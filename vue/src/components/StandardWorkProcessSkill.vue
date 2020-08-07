@@ -2,7 +2,9 @@
   <div
     class="standard__work-process__skill"
     :class="{
-      'standard__work-process__skill--editing': editing
+      'standard__work-process__skill--error': skill.invalid || errors.length,
+      'standard__work-process__skill--editing': editing,
+      'standard__work-process__skill--loading': skill.loading
     }"
   >
     <div class="standard__work-process__skill__vertical-group">
@@ -16,8 +18,14 @@
         <TextArea class="input__input standard__work-process__skill__vertical-group__input__input" v-model="skill.description" ref="description" @input="onInput" />
       </div>
     </div>
-    <button class="button button--link standard__work-process__skill__icon--delete" v-if="editing" @click.stop="deleteSkill">
-      <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__work-process__skill__icon--delete__icon" />
+    <!-- <button class="button button--link standard__work-process__skill__icon standard__work-process__skill__icon--save" v-if="editing" @click.stop="">
+      <FontAwesomeIcon :icon="['fas', 'save']" class="standard__work-process__skill__icon__icon" />
+    </button> -->
+    <button class="button button--link standard__work-process__skill__icon standard__work-process__skill__icon--edit" v-if="editing" @click.stop="focusInputManually">
+      <FontAwesomeIcon :icon="['fas', 'pencil-alt']" class="standard__work-process__skill__icon__icon" />
+    </button>
+    <button class="button button--link standard__work-process__skill__icon standard__work-process__skill__icon--delete" v-if="editing" @click.stop="deleteSkill">
+      <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__work-process__skill__icon__icon" />
     </button>
   </div>
 </template>
@@ -74,20 +82,27 @@ export default class StandardWorkProcessSkill extends StandardSkill {
   padding-right: 0;
 }
 
-.standard__work-process__skill__icon--delete {
+.standard__work-process__skill__icon {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-left: auto;
   width: 3.5rem;
-  color: $color-salmon;
   font-size: 1.125rem;
+}
+
+.standard__work-process__skill__icon--delete {
+  color: $color-salmon;
+  &:hover {
+    color: darken($color-salmon, 40%);
+  }
 }
 
 .standard__work-process__skill {
   display: flex;
   flex-direction: row;
+  align-items: stretch;
   // justify-content: space-between;
   background: $color-white;
   width: 100%;
@@ -101,6 +116,15 @@ export default class StandardWorkProcessSkill extends StandardSkill {
   border-radius: 4px;
   cursor: pointer;
   padding: 0 2rem;
+  border-left: 3px solid $color-blue;
+
+  &.standard__work-process__skill--loading {
+    border-left-color: $color-text-light;
+  }
+
+  &.standard__work-process__skill--error {
+    border-left-color: $color-salmon;
+  }
 }
 
 .standard__work-process__skill__vertical-group {

@@ -2,9 +2,10 @@
   <div
     class="standard__work-process"
     :class="{
-      'standard__work-process--error': workProcess.invalid,
+      'standard__work-process--error': workProcess.invalid || errors.length,
       'standard__work-process--expanded': expanded,
-      'standard__work-process--editing': editing
+      'standard__work-process--editing': editing,
+      'standard__work-process--loading': workProcess.loading
     }"
   >
     <Tour :id="TOUR_STEP_ID_STANDARD_WORK_PROCESS" v-if="firstInList" />
@@ -32,10 +33,16 @@
         <img :src="ICON_HOURS" alt="Number of hours" class="standard__work-process__wrapper__info__icon" />
         <span class="standard__work-process__wrapper__info__number">{{ workProcess.hours }}</span>
       </div>
-      <button class="button button--link standard__work-process__wrapper__icon--delete" v-if="editing && !workProcess.skills.length" @click.stop="deleteWorkProcess">
-        <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__work-process__wrapper__icon--delete__icon" />
+      <!-- <button class="button button--link standard__work-process__wrapper__icon standard__work-process__wrapper__icon--save" v-if="editing" @click.stop="">
+        <FontAwesomeIcon :icon="['fas', 'save']" class="standard__work-process__wrapper__icon__icon" />
+      </button> -->
+      <button class="button button--link standard__work-process__wrapper__icon standard__work-process__wrapper__icon--edit" v-if="editing" @click.stop="focusInputManually">
+        <FontAwesomeIcon :icon="['fas', 'pencil-alt']" class="standard__work-process__wrapper__icon__icon" />
       </button>
-      <div class="standard__work-process__wrapper__icon--caret">
+      <button class="button button--link standard__work-process__wrapper__icon standard__work-process__wrapper__icon--delete" v-if="editing && !workProcess.skills.length" @click.stop="deleteWorkProcess">
+        <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__work-process__wrapper__icon__icon" />
+      </button>
+      <div class="standard__work-process__wrapper__icon standard__work-process__wrapper__icon--caret">
         <FontAwesomeIcon :icon="['fas', 'caret-down']" class="standard__work-process__wrapper__icon--caret__icon" v-if="expanded" />
         <FontAwesomeIcon :icon="['fas', 'caret-right']" class="standard__work-process__wrapper__icon--caret__icon" v-if="!expanded" />
       </div>
@@ -49,7 +56,7 @@
       </div>
       <StandardWorkProcessSkill
         v-for="(skill, skillIndex) in workProcess.skills"
-        :key="`skill-${skill.synced ? `id-${skill.id}` : skillIndex}`"
+        :key="`work-process-${workProcess.synced ? `id-${workProcess.id}` : workProcessIndex}-skill-${skill.synced ? `id-${skill.id}` : skillIndex}`"
         :skillIndex="skillIndex"
         :editing="editing"
         :workProcessIndex="workProcessIndex"
@@ -114,6 +121,8 @@ export default class StandardWorkProcess extends Vue {
 
   @Provide('TOUR_STEP_ID_STANDARD_WORK_PROCESS') TOUR_STEP_ID_STANDARD_WORK_PROCESS = TOUR_STEP_ID_STANDARD_WORK_PROCESS
 
+  errors: [] = []
+
   expanded: boolean = false
 
   created() {
@@ -125,13 +134,17 @@ export default class StandardWorkProcess extends Vue {
     this.focusInput();
   }
 
-  focusInput() {
+  focusInput(ignoreSynced?: boolean) {
     this.$nextTick(() => {
       const ref: Vue | undefined = _flatten([this.$refs.title])[0];
-      if (ref && !this.workProcess.synced) {
+      if (ref && (!this.workProcess.synced || ignoreSynced)) {
         (ref.$el as HTMLElement).focus();
       }
     });
+  }
+
+  focusInputManually() {
+    this.focusInput(true);
   }
 
   toggleWorkProcess() {
@@ -148,13 +161,18 @@ export default class StandardWorkProcess extends Vue {
   }
 
   async saveWorkProcess() {
+    this.errors = [];
+
     try {
       await this.workProcess.save();
     } catch (e) {
       (Vue as any).rollbar.error(e);
+      this.errors = e;
     }
 
-    this.$store.dispatch('standards/refreshSelectedStandard');
+    this.$forceUpdate();
+
+    // this.$store.dispatch('standards/refreshSelectedStandard');
   }
 
   async deleteWorkProcess() {
@@ -193,6 +211,10 @@ export default class StandardWorkProcess extends Vue {
   &.standard__work-process--error {
     border-color: $color-salmon;
   }
+
+  &.standard__work-process--loading {
+    border-color: $color-text-light;
+  }
 }
 
 .standard__work-process:not(.standard__work-process--expanded) {
@@ -210,6 +232,7 @@ export default class StandardWorkProcess extends Vue {
   cursor: pointer;
   border-bottom: 1px solid $color-gray-light;
   overflow: hidden;
+  align-items: stretch;
 }
 
 .standard__work-process__wrapper__vertical-group {
@@ -245,25 +268,24 @@ export default class StandardWorkProcess extends Vue {
 }
 
 .standard__work-process__wrapper__icon--caret {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-left: auto;
-  width: 3.5rem;
   color: $color-blue;
 }
 
-.standard__work-process__wrapper__icon--delete {
+.standard__work-process__wrapper__icon {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-left: auto;
   width: 3.5rem;
-  color: $color-salmon;
   font-size: 1.125rem;
+}
+
+.standard__work-process__wrapper__icon--delete {
+  color: $color-salmon;
+  &:hover {
+    color: darken($color-salmon, 40%);
+  }
 }
 
 .standard__work-process__skills {

@@ -53,8 +53,13 @@
           About this standard
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
-          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Title</label>
-          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" />
+          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">
+            Title
+            <a class="page--standard__sidebar--left__about__input__label__button button button--link" v-if="editing">
+              <FontAwesomeIcon :icon="['fas', 'pencil-alt']" class="page--standard__sidebar--left__about__input__button__icon" />
+            </a>
+          </label>
+          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" ref="title" />
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input">
@@ -77,7 +82,7 @@
             <span v-if="standard.occupation.termLengthMin !== standard.occupation.termLengthMax" v-html="standard.occupation.termLengthMax" />
           </div>
         </div>
-        <div class="input input--subtle page--standard__sidebar--left__about__input">
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.occupation.kind">
           <label class="input__label page--standard__sidebar--left__about__input__label">Type</label>
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.kind" />
         </div>
@@ -210,7 +215,7 @@ export default class Standard extends Vue {
       (Vue as any).rollbar.error(e);
     }
 
-    this.$store.dispatch('standards/refreshSelectedStandard');
+    // this.$store.dispatch('standards/refreshSelectedStandard');
   }
 
   async addSkill() {
@@ -404,9 +409,15 @@ $sidebar-left-width: 20rem;
 }
 
 .page--standard__sidebar--left__about__input__label {
+  display: flex;
   font-size: .9rem;
   color: $color-text-light;
   margin-bottom: 0.25rem;
+  width: 100%;
+}
+
+.page--standard__sidebar--left__about__input__label__button {
+  margin-left: auto;
 }
 
 .page--standard__sidebar--left__about__input__input {
