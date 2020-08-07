@@ -436,7 +436,7 @@ export default class AppInnerDashboard extends Vue {
   flex-shrink: 0;
   border-left: 1px solid $color-gray-border;
 
-  @include breakpoint--md {
+  @include breakpoint--lg {
     display: none;
   }
 }
