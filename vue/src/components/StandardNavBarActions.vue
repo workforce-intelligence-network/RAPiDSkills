@@ -55,46 +55,49 @@ export default class StandardNavBarActions extends Vue {
       return;
     }
 
-    const promises: Promise<any>[] = [];
+    // const promises: Promise<any>[] = [];
 
     try {
-      promises.push(this.standard.save());
+      await this.standard.save();
+      // promises.push(this.standard.save());
     } catch (e) {
       (Vue as any).rollbar.error(e);
     }
 
-    // TODO: only if dirty?
-    this.standard.workProcesses.forEach((workProcess: WorkProcess) => {
-      try {
-        promises.push(workProcess.save());
-      } catch (e) {
-        (Vue as any).rollbar.error(e);
-      }
+    this.$forceUpdate();
 
-      workProcess.skills.forEach((skill: Skill) => {
-        try {
-          promises.push(skill.save());
-        } catch (e) {
-          (Vue as any).rollbar.error(e);
-        }
-      });
-    });
+    // // TODO: only if dirty?
+    // this.standard.workProcesses.forEach((workProcess: WorkProcess) => {
+    //   try {
+    //     promises.push(workProcess.save());
+    //   } catch (e) {
+    //     (Vue as any).rollbar.error(e);
+    //   }
 
-    this.standard.skills.forEach((skill: Skill) => {
-      try {
-        promises.push(skill.save());
-      } catch (e) {
-        (Vue as any).rollbar.error(e);
-      }
-    });
+    //   workProcess.skills.forEach((skill: Skill) => {
+    //     try {
+    //       promises.push(skill.save());
+    //     } catch (e) {
+    //       (Vue as any).rollbar.error(e);
+    //     }
+    //   });
+    // });
 
-    try {
-      await Promise.all(promises);
-    } catch (e) {
-      (Vue as any).rollbar.error(e);
-    }
+    // this.standard.skills.forEach((skill: Skill) => {
+    //   try {
+    //     promises.push(skill.save());
+    //   } catch (e) {
+    //     (Vue as any).rollbar.error(e);
+    //   }
+    // });
 
-    this.$store.dispatch('standards/refreshSelectedStandard');
+    // try {
+    //   await Promise.all(promises);
+    // } catch (e) {
+    //   (Vue as any).rollbar.error(e);
+    // }
+
+    // this.$store.dispatch('standards/refreshSelectedStandard');
   }
 
   protected get standard(): OccupationStandard {
