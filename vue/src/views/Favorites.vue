@@ -1,5 +1,13 @@
 <template>
   <div class="page page--favorites">
+    <div class="page__header">
+      <div class="page__header__title">
+        Favorites
+      </div>
+      <div class="page__header__subtitle">
+        Favorites contains any of the work schedules you've saved for later by clicking on the heart icon. These are not customizable but available for easy access if you want to customize later.
+      </div>
+    </div>
     <div class="page--favorites__cards" v-if="!showLoadingState">
       <Standard v-for="standard in standards" :standard="standard" :key="standard.id" :label="standard.occupationKind" saved />
     </div>
