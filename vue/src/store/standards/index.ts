@@ -11,7 +11,7 @@ export default {
     page: 1,
     pageSize: 25,
     moreAvailable: true,
-    occupationId: undefined,
+    occupationTitle: undefined,
     selectedStandard: undefined,
     selectedStandardLoading: false,
     selectedStandardPromise: undefined,
