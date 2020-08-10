@@ -147,7 +147,7 @@ $triangle-size: 20px;
 
 .tour {
   position: absolute;
-  background: $color-white;
+  background: $color-nav-left-background-blue;
   box-shadow: 0px 2px 36px $color-tip-box-shadow;
   width: 20rem;
   max-width: calc(100vw - 6rem);
@@ -175,14 +175,14 @@ $triangle-size: 20px;
 
 .tour--position-left-top {
   left: calc(100% + .5rem);
-  top: -10px;
+  top: -12px;
 
   .tour__triangle {
-    left: -10px;
-    top: 10px;
+    left: -12px;
+    top: 12px;
 
     &:before {
-      border-right: #{$triangle-size + 3px} solid $color-white;
+      border-right: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-bottom: $triangle-size solid transparent;
       border-top: $triangle-size solid transparent;
     }
@@ -191,14 +191,14 @@ $triangle-size: 20px;
 
 .tour--position-right-top {
   right: calc(100% + .5rem);
-  top: -10px;
+  top: -12px;
 
   .tour__triangle {
-    right: -10px;
-    top: 10px;
+    right: -12px;
+    top: 12px;
 
     &:before {
-      border-left: #{$triangle-size + 3px} solid $color-white;
+      border-left: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-bottom: $triangle-size solid transparent;
       border-top: $triangle-size solid transparent;
     }
@@ -206,15 +206,15 @@ $triangle-size: 20px;
 }
 
 .tour--position-top-left {
-  left: -10px;
-  top: calc(100% + 10px);
+  left: -12px;
+  top: calc(100% + 12px);
 
   .tour__triangle {
-    left: 10px;
-    top: -10px;
+    left: 12px;
+    top: -12px;
 
     &:before {
-      border-bottom: #{$triangle-size + 3px} solid $color-white;
+      border-bottom: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-right: $triangle-size solid transparent;
       border-left: $triangle-size solid transparent;
     }
@@ -222,15 +222,15 @@ $triangle-size: 20px;
 }
 
 .tour--position-top-right {
-  right: -10px;
-  top: calc(100% + 10px);
+  right: -12px;
+  top: calc(100% + 12px);
 
   .tour__triangle {
-    right: 10px;
-    top: -10px;
+    right: 12px;
+    top: -12px;
 
     &:before {
-      border-bottom: #{$triangle-size + 3px} solid $color-white;
+      border-bottom: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-right: $triangle-size solid transparent;
       border-left: $triangle-size solid transparent;
     }
@@ -240,15 +240,15 @@ $triangle-size: 20px;
 .tour--position-top {
   left: 50%;
   transform: translateX(-50%);
-  top: calc(100% + 10px);
+  top: calc(100% + 12px);
 
   .tour__triangle {
     left: 50%;
     transform: translateX(-50%);
-    top: -10px;
+    top: -12px;
 
     &:before {
-      border-bottom: #{$triangle-size + 3px} solid $color-white;
+      border-bottom: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-right: $triangle-size solid transparent;
       border-left: $triangle-size solid transparent;
     }
@@ -258,15 +258,15 @@ $triangle-size: 20px;
 .tour--position-bottom {
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(100% + 10px);
+  bottom: calc(100% + 12px);
 
   .tour__triangle {
     left: 50%;
     transform: translateX(-50%);
-    bottom: -10px;
+    bottom: -12px;
 
     &:before {
-      border-top: #{$triangle-size + 3px} solid $color-white;
+      border-top: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-right: $triangle-size solid transparent;
       border-left: $triangle-size solid transparent;
     }
@@ -274,15 +274,15 @@ $triangle-size: 20px;
 }
 
 .tour--position-bottom-left {
-  left: -10px;
-  bottom: calc(100% + 10px);
+  left: -12px;
+  bottom: calc(100% + 12px);
 
   .tour__triangle {
-    bottom: -10px;
-    left: 10px;
+    bottom: -12px;
+    left: 12px;
 
     &:before {
-      border-top: #{$triangle-size + 3px} solid $color-white;
+      border-top: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-right: $triangle-size solid transparent;
       border-left: $triangle-size solid transparent;
     }
@@ -290,15 +290,15 @@ $triangle-size: 20px;
 }
 
 .tour--position-bottom-right {
-  right: -10px;
-  bottom: calc(100% + 10px);
+  right: -12px;
+  bottom: calc(100% + 12px);
 
   .tour__triangle {
-    bottom: -10px;
-    right: 10px;
+    bottom: -12px;
+    right: 12px;
 
     &:before {
-      border-top: #{$triangle-size + 3px} solid $color-white;
+      border-top: #{$triangle-size + 3px} solid $color-nav-left-background-blue;
       border-right: $triangle-size solid transparent;
       border-left: $triangle-size solid transparent;
     }
@@ -313,7 +313,7 @@ $triangle-size: 20px;
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: .5rem;
-  color: $color-black;
+  color: $color-white;
   line-height: 1.125rem;
 }
 
