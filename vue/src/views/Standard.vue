@@ -359,9 +359,7 @@ $sidebar-left-width: 20rem;
     width: 100%;
   }
 
-  &:not(:last-child) {
-    margin-bottom: .75rem;
-  }
+  margin-top: .75rem;
 }
 
 .page--standard__sidebar--left__divider--stats {

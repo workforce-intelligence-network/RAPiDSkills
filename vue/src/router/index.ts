@@ -151,11 +151,6 @@ const routes = [
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
           navbarActions: SearchOccupations,
         },
-        beforeEnter(to, from, next) {
-          store.dispatch('standards/fetchStandards');
-          store.dispatch('tours/continueTour', TOUR_ID_STANDARDS);
-          next();
-        },
         meta: {
           pageTitle: 'Work Schedules',
           tourId: TOUR_ID_STANDARDS,
@@ -313,6 +308,11 @@ const updateDocumentTitle = async (pageTitle?: string | Function, pageTitlePromi
 
 router.afterEach((to, from) => {
   updateDocumentTitle(_get(to, 'meta.pageTitle'), _get(to, 'meta.pageTitlePromise'));
+
+  const tourId: string | undefined = _get(from, 'meta.tourId');
+  if (tourId) {
+    store.dispatch('tours/closeTour', tourId);
+  }
 
   if (['duplicate', 'standardDuplicate'].includes(from.name || '')) {
     store.dispatch('modal/close', false);
