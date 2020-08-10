@@ -4,10 +4,9 @@ LABEL maintainer="jhash147@gmail.com"
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
-COPY yarn.lock ./
+COPY package*.json ./
 
-RUN npx yarn
+RUN npm config set -g production false && npm install --silent
 
 COPY . .
 
