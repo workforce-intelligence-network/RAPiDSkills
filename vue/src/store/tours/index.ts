@@ -8,12 +8,14 @@ export const TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH = `${TOUR_ID_STANDARDS}-oc
 export const TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY = `${TOUR_ID_STANDARDS}-high-level-summary`;
 export const TOUR_STEP_ID_STANDARDS_FAVORITE = `${TOUR_ID_STANDARDS}-favorite`;
 export const TOUR_STEP_ID_STANDARDS_DUPLICATE = `${TOUR_ID_STANDARDS}-duplicate`;
+export const TOUR_STEP_ID_STANDARDS_HELP = `${TOUR_ID_STANDARDS}-help`;
 
 export const TOUR_ID_STANDARD = 'standard';
 
 export const TOUR_STEP_ID_STANDARD_WORK_PROCESS = `${TOUR_ID_STANDARD}-work-process`;
 export const TOUR_STEP_ID_STANDARD_DUPLICATE = `${TOUR_ID_STANDARD}-duplicate`;
 export const TOUR_STEP_ID_STANDARD_DOWNLOAD = `${TOUR_ID_STANDARD}-download`;
+export const TOUR_STEP_ID_STANDARD_HELP = `${TOUR_ID_STANDARD}-help`;
 
 export default {
   namespaced: true,
@@ -24,35 +26,43 @@ export default {
       TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
       TOUR_STEP_ID_STANDARDS_FAVORITE,
       TOUR_STEP_ID_STANDARDS_DUPLICATE,
+      TOUR_STEP_ID_STANDARDS_HELP,
     ],
     [TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH]: {
       id: TOUR_STEP_ID_STANDARDS_OCCUPATION_SEARCH,
       tourId: TOUR_ID_STANDARDS,
-      content: 'Search by occupation to find similar standards to your own.',
+      content: 'Search by occupation to find similar work schedules to your own.',
       position: 'top-right',
     },
     [TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY]: {
       id: TOUR_STEP_ID_STANDARDS_HIGH_LEVEL_SUMMARY,
       tourId: TOUR_ID_STANDARDS,
-      content: "See a high-level summary of another program's standards, which organization contributed them, and how it's been used.",
+      content: "See a high-level summary of another program's work schedules, which organization contributed them, and how it's been used.",
       position: 'top',
     },
     [TOUR_STEP_ID_STANDARDS_FAVORITE]: {
       id: TOUR_STEP_ID_STANDARDS_FAVORITE,
       tourId: TOUR_ID_STANDARDS,
-      content: "Save standards you're interested in coming back to review later.",
+      content: "Save work schedules you're interested in coming back to review later.",
       position: 'bottom-left',
     },
     [TOUR_STEP_ID_STANDARDS_DUPLICATE]: {
       id: TOUR_STEP_ID_STANDARDS_DUPLICATE,
       tourId: TOUR_ID_STANDARDS,
-      content: 'Copy standards you want to build on and customize for your needs.',
+      content: 'Copy work schedules you want to build on and customize for your needs.',
       position: 'bottom-right',
+    },
+    [TOUR_STEP_ID_STANDARDS_HELP]: {
+      id: TOUR_STEP_ID_STANDARDS_HELP,
+      tourId: TOUR_ID_STANDARDS,
+      content: 'Need more help? See frequently asked questions in Help.',
+      position: 'top-right',
     },
     [TOUR_ID_STANDARD]: [
       TOUR_STEP_ID_STANDARD_WORK_PROCESS,
       TOUR_STEP_ID_STANDARD_DUPLICATE,
       TOUR_STEP_ID_STANDARD_DOWNLOAD,
+      TOUR_STEP_ID_STANDARD_HELP,
     ],
     [TOUR_STEP_ID_STANDARD_WORK_PROCESS]: {
       id: TOUR_STEP_ID_STANDARD_WORK_PROCESS,
@@ -69,8 +79,14 @@ export default {
     [TOUR_STEP_ID_STANDARD_DOWNLOAD]: {
       id: TOUR_STEP_ID_STANDARD_DOWNLOAD,
       tourId: TOUR_ID_STANDARD,
-      content: 'Download the original source for this standard.',
+      content: 'Download the original source for this work schedule.',
       position: 'top-left',
+    },
+    [TOUR_STEP_ID_STANDARD_HELP]: {
+      id: TOUR_STEP_ID_STANDARD_HELP,
+      tourId: TOUR_ID_STANDARD,
+      content: 'Need more help? See frequently asked questions in Help.',
+      position: 'top-right',
     },
   },
   mutations,

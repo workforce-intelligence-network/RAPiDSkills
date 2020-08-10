@@ -12,9 +12,13 @@
     <button class="sidebar-section--faq__button button button--alternative" v-if="tourId" @click="resetTour">
       Show me around
     </button>
-    <a class="sidebar-section--faq__button button button--alternative" target="_blank" href="https://rapidskills.zendesk.com/hc/en-us">
-      FAQ
-    </a>
+    <div class="sidebar-section--faq__button-wrapper">
+      <a class="sidebar-section--faq__button--last sidebar-section--faq__button button button--alternative" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us">
+        Help
+      </a>
+      <Tour :id="TOUR_STEP_ID_STANDARDS_HELP" />
+      <Tour :id="TOUR_STEP_ID_STANDARD_HELP" />
+    </div>
   </div>
 </template>
 
@@ -24,10 +28,25 @@ import {
   Component, Provide,
 } from 'vue-property-decorator';
 
+import Tour from '@/components/Tour.vue';
+
 import ICON_FAQ_SIDEBAR from '@/assets/icon-faq-sidebar.svg';
 
-@Component
+import {
+  TOUR_STEP_ID_STANDARDS_HELP,
+  TOUR_STEP_ID_STANDARD_HELP,
+} from '@/store/tours';
+
+@Component({
+  components: {
+    Tour,
+  },
+})
 export default class SidebarSectionFAQ extends Vue {
+  @Provide('TOUR_STEP_ID_STANDARDS_HELP') TOUR_STEP_ID_STANDARDS_HELP = TOUR_STEP_ID_STANDARDS_HELP
+
+  @Provide('TOUR_STEP_ID_STANDARD_HELP') TOUR_STEP_ID_STANDARD_HELP = TOUR_STEP_ID_STANDARD_HELP
+
   @Provide('ICON_FAQ_SIDEBAR') ICON_FAQ_SIDEBAR = ICON_FAQ_SIDEBAR
 
   resetTour() {
@@ -85,12 +104,15 @@ export default class SidebarSectionFAQ extends Vue {
 
 .sidebar-section--faq__button {
   display: block;
-  width: auto;
-  flex-grow: 0;
   margin: 0 auto;
 
-  &:not(:last-child) {
+  &:not(:last-child):not(.sidebar-section--faq__button--last) {
     margin-bottom: 1rem;
   }
+}
+
+.sidebar-section--faq__button-wrapper {
+  position: relative;
+  margin: 0 auto;
 }
 </style>

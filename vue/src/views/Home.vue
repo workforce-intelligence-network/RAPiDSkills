@@ -10,11 +10,14 @@
         <span> Time-based programs will be supported soon, too! Follow now to find out when we launch.</span>
       </div>
       <div class="page--home__links">
-        <router-link :to="{ name: 'signup' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+        <router-link :to="{ name: 'standards' }" class="button button--inverted page--home__links__button page--home__links__button--follow" v-if="sessionActive">
           Get started
         </router-link>
-        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
-          Browse Standards
+        <router-link :to="{ name: 'signup' }" class="button button--inverted page--home__links__button page--home__links__button--follow" v-if="!sessionActive">
+          Get started
+        </router-link>
+        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse" v-if="!sessionActive">
+          Browse Work Schedules
         </router-link>
       </div>
       <LaptopPreview class="page--home__hero__laptop-preview" />
@@ -83,11 +86,14 @@
         </div>
       </div>
       <div class="page--home__links">
-        <router-link :to="{ name: 'signup' }" class="button button--inverted page--home__links__button page--home__links__button--follow">
+        <router-link :to="{ name: 'standards' }" class="button button--inverted page--home__links__button page--home__links__button--follow" v-if="sessionActive">
           Get started
         </router-link>
-        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse">
-          Browse Standards
+        <router-link :to="{ name: 'signup' }" class="button button--inverted page--home__links__button page--home__links__button--follow" v-if="!sessionActive">
+          Get started
+        </router-link>
+        <router-link :to="{ name: 'standards' }" class="button button--link button--link--alternative page--home__links__button page--home__links__button--browse" v-if="!sessionActive">
+          Browse Work Schedules
         </router-link>
       </div>
     </div>
@@ -122,6 +128,11 @@ export default {
       ICON_DOWNLOAD_PDF,
       ICON_SHARE_WITH_OTHERS,
     };
+  },
+  computed: {
+    sessionActive() {
+      return this.$store.getters['session/isActive'];
+    },
   },
 };
 </script>
