@@ -24,7 +24,8 @@ services:
     ports:
       - '8080:8080'
     volumes:
-      - ./vue:/usr/src/app
+      - './vue:/usr/src/app/:rw'
+      - '/usr/src/app/node_modules'
     depends_on:
       - web
 
