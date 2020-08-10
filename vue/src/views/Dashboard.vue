@@ -73,10 +73,6 @@ export default {
     store.dispatch('tours/continueTour', TOUR_ID_STANDARDS);
     next();
   },
-  beforeRouteLeave(to, from, next) {
-    store.dispatch('standards/fetchStandards');
-    next();
-  },
   computed: {
     ...mapGetters({
       showEmptyState: 'standards/standardsListEmptyAndNotLoading',
