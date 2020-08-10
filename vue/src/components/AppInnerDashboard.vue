@@ -56,7 +56,7 @@
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
-            Saved Work Schedules
+            My Work Schedules
           </span>
         </span>
       </router-link>
@@ -111,6 +111,13 @@
         </span>
       </router-link> -->
       <div class="app__inner--dashboard__nav--left__legal-links">
+        <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal" to="about">
+          <span class="app__inner--dashboard__nav--left__link__name">
+            <span class="app__inner--dashboard__nav--left__link__name__text">
+              About Us
+            </span>
+          </span>
+        </router-link>
         <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal app__inner--dashboard__nav--left__link--legal--first" to="terms">
           <span class="app__inner--dashboard__nav--left__link__name">
             <span class="app__inner--dashboard__nav--left__link__name__text">
@@ -122,13 +129,6 @@
           <span class="app__inner--dashboard__nav--left__link__name">
             <span class="app__inner--dashboard__nav--left__link__name__text">
               Privacy Policy
-            </span>
-          </span>
-        </router-link>
-        <router-link class="app__inner--dashboard__nav--left__link app__inner--dashboard__nav--left__link--legal" to="about">
-          <span class="app__inner--dashboard__nav--left__link__name">
-            <span class="app__inner--dashboard__nav--left__link__name__text">
-              About Us
             </span>
           </span>
         </router-link>
@@ -436,7 +436,7 @@ export default class AppInnerDashboard extends Vue {
   flex-shrink: 0;
   border-left: 1px solid $color-gray-border;
 
-  @include breakpoint--md {
+  @include breakpoint--lg {
     display: none;
   }
 }

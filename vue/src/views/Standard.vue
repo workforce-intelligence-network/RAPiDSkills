@@ -1,6 +1,9 @@
 <template>
   <div class="page--standard">
     <div class="page--standard__sidebar--left" v-if="!loading">
+      <div class="page--standard__sidebar--left__owner" v-if="editing">
+        My Work Schedule
+      </div>
       <div class="page--standard__sidebar--left__logo">
         <img :src="standard.organization.logoUrl" :alt="standard.organizationTitle" class="page--standard__sidebar--left__logo__logo" />
       </div>
@@ -53,8 +56,13 @@
           About this standard
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input" :class="{ 'input--error': standard.propertyInvalid('title') }">
-          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">Title</label>
-          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" />
+          <label class="input__label page--standard__sidebar--left__about__input__label" for="standard-title">
+            Title
+            <a class="page--standard__sidebar--left__about__input__label__button button button--link" v-if="editing">
+              <FontAwesomeIcon :icon="['fas', 'pencil-alt']" class="page--standard__sidebar--left__about__input__button__icon" />
+            </a>
+          </label>
+          <TextArea class="input__input page--standard__sidebar--left__about__input__input" id="standard-title" v-model="standard.title" placeholder="Standard Title" v-if="editing" @input="saveStandard" ref="title" />
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.title" v-if="!editing" />
         </div>
         <div class="input input--subtle page--standard__sidebar--left__about__input">
@@ -77,7 +85,7 @@
             <span v-if="standard.occupation.termLengthMin !== standard.occupation.termLengthMax" v-html="standard.occupation.termLengthMax" />
           </div>
         </div>
-        <div class="input input--subtle page--standard__sidebar--left__about__input">
+        <div class="input input--subtle page--standard__sidebar--left__about__input" v-if="standard.occupation.kind">
           <label class="input__label page--standard__sidebar--left__about__input__label">Type</label>
           <div class="page--standard__sidebar--left__about__input__text" v-html="standard.occupation.kind" />
         </div>
@@ -210,7 +218,7 @@ export default class Standard extends Vue {
       (Vue as any).rollbar.error(e);
     }
 
-    this.$store.dispatch('standards/refreshSelectedStandard');
+    // this.$store.dispatch('standards/refreshSelectedStandard');
   }
 
   async addSkill() {
@@ -292,9 +300,11 @@ $sidebar-left-width: 20rem;
 }
 
 .page--standard__sidebar--left {
+  position: relative;
   width: $sidebar-left-width;
   background: $color-white;
   padding: 1rem 1.5rem;
+  padding-top: 2rem;
   box-shadow: 0 2px 4px 0 rgba(12, 0, 51, 0.1);
   flex-shrink: 0;
   @include breakpoint--above-sm {
@@ -404,9 +414,15 @@ $sidebar-left-width: 20rem;
 }
 
 .page--standard__sidebar--left__about__input__label {
+  display: flex;
   font-size: .9rem;
   color: $color-text-light;
   margin-bottom: 0.25rem;
+  width: 100%;
+}
+
+.page--standard__sidebar--left__about__input__label__button {
+  margin-left: auto;
 }
 
 .page--standard__sidebar--left__about__input__input {
@@ -487,5 +503,22 @@ $sidebar-left-width: 20rem;
   white-space: nowrap;
   border-radius: 4px;
   border-top-left-radius: 0;
+}
+
+.page--standard__sidebar--left__owner {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $color-black;
+  color: $color-white;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 0.5rem 1.5rem;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  font-size: 0.7rem;
+  letter-spacing: 0.1ch;
+  white-space: nowrap;
 }
 </style>

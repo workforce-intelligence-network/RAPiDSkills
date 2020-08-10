@@ -88,13 +88,13 @@ export const refreshSelectedStandard = ({ state, commit, dispatch }) => {
 export const deleteSkillFromSelectedStandard = async ({ dispatch, state }, { skill, workProcess }) => {
   await state.selectedStandard.removeSkill(skill, workProcess);
 
-  dispatch('refreshSelectedStandard');
+  // dispatch('refreshSelectedStandard');
 };
 
 export const deleteWorkProcessFromSelectedStandard = async ({ dispatch, state }, workProcess: WorkProcess) => {
   await state.selectedStandard.removeWorkProcess(workProcess);
 
-  dispatch('refreshSelectedStandard');
+  // dispatch('refreshSelectedStandard');
 };
 
 export const addNewWorkProcessToSelectedStandard = async ({ dispatch, state }) => {
@@ -103,7 +103,7 @@ export const addNewWorkProcessToSelectedStandard = async ({ dispatch, state }) =
     occupationStandard: state.selectedStandard,
   }));
 
-  dispatch('refreshSelectedStandard');
+  // dispatch('refreshSelectedStandard');
 };
 
 export const addNewSkillToSelectedStandard = async ({ dispatch, state }, workProcess?: WorkProcess) => {
@@ -119,7 +119,7 @@ export const addNewSkillToSelectedStandard = async ({ dispatch, state }, workPro
     state.selectedStandard.addSkill(freshSkill);
   }
 
-  dispatch('refreshSelectedStandard');
+  // dispatch('refreshSelectedStandard');
 };
 
 export const updateStandardToDuplicate = ({ commit }, standard: OccupationStandard) => {
