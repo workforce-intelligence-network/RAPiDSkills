@@ -24,10 +24,10 @@ export const tourStepSeen = (state, getters) => async (tourStepId: string): Prom
   return !!seen;
 };
 
-export const firstUnseenTourStepId = (state, getters) => async (tourId: string): Promise<string | undefined> => {
+export const firstUnseenTourStepId = (state, getters, rootState, rootGetters) => async (tourId: string): Promise<string | undefined> => {
   const configuration: string[] = getters.tourConfiguration(tourId);
   const stepsSeen = await Promise.all(configuration.map(async (tourStepId: string) => ({
-    unseen: !(await getters.tourStepSeen(tourStepId)),
+    unseen: (!state[tourStepId].loggedIn || rootGetters['session/isActive']) && !(await getters.tourStepSeen(tourStepId)),
     tourStepId,
   })));
 

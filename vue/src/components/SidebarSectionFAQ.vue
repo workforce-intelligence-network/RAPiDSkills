@@ -49,8 +49,8 @@ export default class SidebarSectionFAQ extends Vue {
 
   @Provide('ICON_FAQ_SIDEBAR') ICON_FAQ_SIDEBAR = ICON_FAQ_SIDEBAR
 
-  resetTour() {
-    this.$store.dispatch('tours/resetTour', this.tourId);
+  async resetTour() {
+    await this.$store.dispatch('tours/resetTour', this.tourId);
     this.$store.dispatch('tours/continueTour', this.tourId);
   }
 

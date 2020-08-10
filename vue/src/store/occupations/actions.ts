@@ -11,7 +11,16 @@ export const searchForOccupations = async ({ commit, state }, query: string) => 
   try {
     commit('updateOccupationsSearchLoading', true);
     commit('updateOccupationsSearchQuery', query);
-    const { model } = await Occupation.getAll({ q: query });
+
+    const promise = Occupation.getAll({ q: query });
+    commit('updateOccupationsSearchPromise', promise);
+    const { model } = await promise;
+
+    // Alternative to cancelable promise
+    if (promise !== state.promise) {
+      return;
+    }
+
     commit('updateOccupationsSearchList', model);
     commit('updateOccupationsSearchLoading', false);
   } catch (e) {

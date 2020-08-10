@@ -8,10 +8,11 @@ RSpec.describe API::V1::Users::FavoritesController, type: :request do
     let(:params) { {} }
 
     context "when user viewing own favorites" do
-      let(:os1) { create(:occupation_standard) }
-      let(:os2) { create(:occupation_standard) }
+      let!(:os1) { create(:occupation_standard, title: 'B Occupation') }
+      let!(:os2) { create(:occupation_standard, title: 'A Occupation') }
 
       before { user.favorites << os1 << os2 }
+      before { OccupationStandard.reindex }
 
       it_behaves_like "authentication", :get
 
@@ -40,10 +41,11 @@ RSpec.describe API::V1::Users::FavoritesController, type: :request do
 
     context "when user viewing own favorites with filter" do
       let(:path) { api_v1_user_favorites_url(user, filter: { creator: user.id }) }
-      let(:os1) { create(:occupation_standard) }
-      let(:os2) { create(:occupation_standard, creator: user) }
+      let!(:os1) { create(:occupation_standard) }
+      let!(:os2) { create(:occupation_standard, creator: user) }
 
       before { user.favorites << os1 << os2 }
+      before { OccupationStandard.reindex }
 
       it_behaves_like "authentication", :get
 
