@@ -145,7 +145,7 @@ const routes = [
     },
     children: [
       {
-        path: 'standards',
+        path: 'home',
         name: 'standards',
         components: {
           default: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
@@ -157,7 +157,7 @@ const routes = [
           next();
         },
         meta: {
-          pageTitle: 'Standards',
+          pageTitle: 'Work Schedules',
           tourId: TOUR_ID_STANDARDS,
         },
         children: [
@@ -232,7 +232,7 @@ const routes = [
         path: 'saved',
         name: 'saved',
         meta: {
-          pageTitle: 'Saved Standards',
+          pageTitle: 'My Work Schedules',
         },
         component: () => import(/* webpackChunkName: "saved" */ '@/views/SavedStandards.vue'),
         beforeEnter(to, from, next) {

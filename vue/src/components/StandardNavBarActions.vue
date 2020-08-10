@@ -4,7 +4,7 @@
     <div class="standard__navbar-actions__state" v-if="userIsCreator">
       <div class="standard__navbar-actions__state__text" v-if="loading">Updating...</div>
       <div class="standard__navbar-actions__state__text" v-if="valid && !loading" v-html="lastUpdated()" />
-      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error" v-if="!valid && !loading">Standard invalid.</div>
+      <div class="standard__navbar-actions__state__text standard__navbar-actions__state__text--error" v-if="!valid && !loading">Work schedule invalid.</div>
       <button class="button standard__navbar-actions__state__button__button" :disabled="loading || !valid" @click="saveStandard">
         Save
       </button>
@@ -55,46 +55,49 @@ export default class StandardNavBarActions extends Vue {
       return;
     }
 
-    const promises: Promise<any>[] = [];
+    // const promises: Promise<any>[] = [];
 
     try {
-      promises.push(this.standard.save());
+      await this.standard.save();
+      // promises.push(this.standard.save());
     } catch (e) {
       (Vue as any).rollbar.error(e);
     }
 
-    // TODO: only if dirty?
-    this.standard.workProcesses.forEach((workProcess: WorkProcess) => {
-      try {
-        promises.push(workProcess.save());
-      } catch (e) {
-        (Vue as any).rollbar.error(e);
-      }
+    this.$forceUpdate();
 
-      workProcess.skills.forEach((skill: Skill) => {
-        try {
-          promises.push(skill.save());
-        } catch (e) {
-          (Vue as any).rollbar.error(e);
-        }
-      });
-    });
+    // // TODO: only if dirty?
+    // this.standard.workProcesses.forEach((workProcess: WorkProcess) => {
+    //   try {
+    //     promises.push(workProcess.save());
+    //   } catch (e) {
+    //     (Vue as any).rollbar.error(e);
+    //   }
 
-    this.standard.skills.forEach((skill: Skill) => {
-      try {
-        promises.push(skill.save());
-      } catch (e) {
-        (Vue as any).rollbar.error(e);
-      }
-    });
+    //   workProcess.skills.forEach((skill: Skill) => {
+    //     try {
+    //       promises.push(skill.save());
+    //     } catch (e) {
+    //       (Vue as any).rollbar.error(e);
+    //     }
+    //   });
+    // });
 
-    try {
-      await Promise.all(promises);
-    } catch (e) {
-      (Vue as any).rollbar.error(e);
-    }
+    // this.standard.skills.forEach((skill: Skill) => {
+    //   try {
+    //     promises.push(skill.save());
+    //   } catch (e) {
+    //     (Vue as any).rollbar.error(e);
+    //   }
+    // });
 
-    this.$store.dispatch('standards/refreshSelectedStandard');
+    // try {
+    //   await Promise.all(promises);
+    // } catch (e) {
+    //   (Vue as any).rollbar.error(e);
+    // }
+
+    // this.$store.dispatch('standards/refreshSelectedStandard');
   }
 
   protected get standard(): OccupationStandard {

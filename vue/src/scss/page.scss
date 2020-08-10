@@ -1,13 +1,44 @@
 @import "@/scss/mixins";
+@import "@/scss/colors";
+
+$page-padding: 2rem;
+$page-padding-mobile: 1.5rem;
 
 .page {
   display: flex;
   flex-direction: column;
   align-content: flex-start;
-  padding: 2rem;
+  padding: $page-padding;
   padding-right: 0;
 
   @include breakpoint--sm {
-    padding-left: 1rem;
+    padding-left: $page-padding-mobile;
   }
+}
+
+.page__header {
+  padding-bottom: $page-padding;
+  margin-bottom: $page-padding;
+  margin-left: -$page-padding;
+  padding-left: $page-padding;
+  @include breakpoint--sm {
+    margin-left: -$page-padding-mobile;
+    padding-left: $page-padding-mobile;
+  }
+  text-align: left;
+  border-bottom: 1px solid $color-gray-border;
+}
+
+.page__header__title {
+  font-size: 1.5rem;
+  margin-bottom: .6rem;
+  font-weight: 500;
+}
+
+.page__header__subtitle {
+  color: $color-text-light;
+  line-height: 1.5rem;
+  max-width: 42rem;
+  font-size: 1rem;
+  margin-right: 2rem;
 }

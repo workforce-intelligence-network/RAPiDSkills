@@ -2,8 +2,9 @@
   <div
     class="standard__skill"
     :class="{
-      'standard__skill--error': skill.invalid,
-      'standard__skill--editing': editing
+      'standard__skill--error': skill.invalid || errors.length,
+      'standard__skill--editing': editing,
+      'standard__skill--loading': skill.loading
     }"
   >
     <div class="standard__skill__wrapper">
@@ -18,8 +19,14 @@
           <TextArea class="input__input standard__skill__wrapper__vertical-group__input__input" v-model="skill.description" ref="description" @input="onInput" />
         </div>
       </div>
-      <button class="button button--link standard__skill__wrapper__icon--delete" v-if="editing" @click.stop="deleteSkill">
-        <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__skill__wrapper__icon--delete__icon" />
+      <!-- <button class="button button--link standard__skill__wrapper__icon standard__skill__wrapper__icon--save" v-if="editing" @click.stop="">
+        <FontAwesomeIcon :icon="['fas', 'save']" class="standard__skill__wrapper__icon__icon" />
+      </button> -->
+      <button class="button button--link standard__skill__wrapper__icon standard__skill__wrapper__icon--edit" v-if="editing" @click.stop="focusInputManually">
+        <FontAwesomeIcon :icon="['fas', 'pencil-alt']" class="standard__skill__wrapper__icon__icon" />
+      </button>
+      <button class="button button--link standard__skill__wrapper__icon standard__skill__wrapper__icon--delete" v-if="editing" @click.stop="deleteSkill">
+        <FontAwesomeIcon :icon="['fas', 'trash-alt']" class="standard__skill__wrapper__icon__icon" />
       </button>
     </div>
   </div>
@@ -54,6 +61,8 @@ export default class StandardSkill extends Vue {
 
   @Prop(Function) onSkillInput!: Function
 
+  errors: [] = []
+
   onInput() {
     this.onSkillInput();
     this.$forceUpdate();
@@ -61,13 +70,18 @@ export default class StandardSkill extends Vue {
   }
 
   async saveSkill() {
+    this.errors = [];
+
     try {
       await this.skill.save();
     } catch (e) {
       (Vue as any).rollbar.error(e);
+      this.errors = e;
     }
 
-    this.$store.dispatch('standards/refreshSelectedStandard');
+    this.$forceUpdate();
+
+    // this.$store.dispatch('standards/refreshSelectedStandard');
   }
 
   async deleteSkill() {
@@ -80,13 +94,17 @@ export default class StandardSkill extends Vue {
     (this as any).saveSkill = _debounce((this as any).saveSkill, 500).bind(this);
   }
 
-  focusInput() {
+  focusInput(ignoreSynced?: boolean) {
     this.$nextTick(() => {
       const ref: Vue | undefined = _flatten([this.$refs.description])[0];
-      if (ref && !this.skill.synced) {
+      if (ref && (!this.skill.synced || ignoreSynced)) {
         (ref.$el as HTMLElement).focus();
       }
     });
+  }
+
+  focusInputManually() {
+    this.focusInput(true);
   }
 
   mounted() {
@@ -105,15 +123,21 @@ export default class StandardSkill extends Vue {
 @import "@/scss/mixins";
 @import "@/scss/standards";
 
-.standard__skill__wrapper__icon--delete {
+.standard__skill__wrapper__icon {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   margin-left: auto;
   width: 3.5rem;
-  color: $color-salmon;
   font-size: 1.125rem;
+}
+
+.standard__skill__wrapper__icon--delete {
+  color: $color-salmon;
+  &:hover {
+    color: darken($color-salmon, 40%);
+  }
 }
 
 .standard__skill__wrapper__vertical-group__input__input,
@@ -132,6 +156,10 @@ export default class StandardSkill extends Vue {
 
   &.standard__skill--error {
     border-color: $color-salmon;
+  }
+
+  &.standard__skill--loading {
+    border-color: $color-text-light;
   }
 }
 
