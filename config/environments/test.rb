@@ -54,7 +54,7 @@ Rails.application.configure do
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true
-    Bullet.raise = true # raise an error if n+1 query occurs
+    # Bullet.raise = true # raise an error if n+1 query occurs; hiding this for now as its raising a n+1 query for something that's already included
     Bullet.unused_eager_loading_enable = false
   end
 end

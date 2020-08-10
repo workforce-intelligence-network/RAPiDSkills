@@ -15,6 +15,10 @@ export const updateOccupationsSearchList = (state, list: []) => {
   Vue.set(state, 'list', list);
 };
 
+export const updateOccupationsSearchPromise = (state, promise) => {
+  Vue.set(state, 'promise', promise);
+};
+
 export const updateSelectedOccupation = (state, occupation?: object) => {
   Vue.set(state, 'selectedOccupation', occupation);
   Vue.set(state, 'freshSearch', !occupation);

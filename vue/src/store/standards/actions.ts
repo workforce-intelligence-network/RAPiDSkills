@@ -8,27 +8,36 @@ import Skill from '@/models/Skill';
 
 export const fetchStandards = async (
   { commit, state, rootState },
-  occupationId: number | undefined = _get(rootState, 'occupations.selectedOccupation.id'),
+  occupationTitle: string | undefined = _get(rootState, 'occupations.selectedOccupation.title'),
 ) => {
-  if (occupationId !== state.occupationId) {
+  if (occupationTitle !== state.occupationTitle) {
     commit('resetPagination');
   }
 
-  if (!state.moreAvailable && state.list.length && occupationId === state.occupationId) {
+  if (!state.moreAvailable && state.list.length && occupationTitle === state.occupationTitle) {
     return;
   }
 
   try {
-    commit('updateStandardsSearchOccupationId', occupationId);
+    commit('updateStandardsSearchOccupationTitle', occupationTitle);
     commit('updateStandardsSearchLoading', true);
 
-    const { meta, model } = await OccupationStandard.getAll({
-      occupationId,
+    const promise = OccupationStandard.getAll({
+      q: occupationTitle,
       page: {
         number: state.page,
         size: state.pageSize,
       },
     });
+
+    commit('updateStandardsSearchPromise', promise);
+
+    const { meta, model } = await promise;
+
+    // If this isn't the most current fetch, don't use anything from it. Alternative to a cancelable promise
+    if (state.promise !== promise) {
+      return;
+    }
 
     commit('updateStandardsSearchList', state.page <= 1 ? model : state.list.concat(model));
 

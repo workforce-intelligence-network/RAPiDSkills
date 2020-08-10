@@ -1,4 +1,6 @@
 class OccupationStandard < ApplicationRecord
+  searchkick
+
   belongs_to :organization
   belongs_to :occupation
   belongs_to :creator, class_name: 'User'
@@ -31,7 +33,7 @@ class OccupationStandard < ApplicationRecord
 
   scope :occupation, ->(occupation_id) { where(occupation_id: occupation_id) if occupation_id.present? }
   scope :creator, ->(creator_id) { where(creator_id: creator_id) if creator_id.present? }
-
+  scope :search_import, -> { includes(:organization, :creator, occupation: [:industry]) }
   scope :with_eager_loading, -> { includes(:creator, :parent_occupation_standard, :occupation_standard_skills_with_no_work_process, :occupation_standard_work_processes, :registration_state, pdf_attachment: :blob, excel_attachment: :blob, organization: [logo_attachment: :blob], occupation: :industry) }
 
   CSV_HEADERS = %w(rapids_code onet_code organization_title registration_organization_name registration_state occupation_standard_title type work_process_title work_process_description work_process_hours work_process_sort category category_sort skill skill_sort).freeze
@@ -41,10 +43,41 @@ class OccupationStandard < ApplicationRecord
   end
 
   class << self
-    def search(args={})
-      occupation(args[:occupation_id])
-        .creator(args[:creator])
+    ## TODO needs to be refactored once working
+    def search_records(args={})
+      args.delete_if { |k, v| v.nil? }
+      page_args = args[:page].present? ? args.delete(:page) : {}
+      limit = page_args[:size].present? ? page_args[:size].to_i : 20
+      offset = page_args[:number].present? ? ((page_args[:number].to_i - 1) * limit) : 0
+      query = args.delete(:q)
+      if query.blank?
+        query = "*" 
+        order = { title: :asc } 
+      else
+        order = { _score: :desc }
+      end
+      if args[:creator].blank?
+        args.merge!({ type: ["RegisteredStandard", "FrameworkStandard", "GuidelineStandard"] }) ## Remove Unregistered by default
+      end
+      search(query, { operator: "or", where: args, order: order, limit: limit, offset: offset })
     end
+  end
+
+  def search_data
+    {
+      occupation_id: occupation_id,
+      occupation_title: occupation_title,
+      organization_id: organization_id,
+      organization_title: organization_title,
+      title: title,
+      type: type,
+      title_aliases: occupation.title_aliases,
+      onet_code: occupation.onet_code,
+      rapids_code: occupation.rapids_code,
+      industry_naics_code: occupation&.industry&.naics_code,
+      industry_title: occupation&.industry&.title,
+      creator: creator_id
+    }
   end
 
   def clone_as_unregistered!(creator_id:, organization_id:, new_title: nil)
@@ -85,6 +118,14 @@ class OccupationStandard < ApplicationRecord
       os.errors.add(:base, e.message)
       os
     end
+  end
+
+  def generate_pdf!
+    pdf.attach(
+      io: StringIO.new(::OccupationStandardPdf.new(self).render),
+      filename: "#{export_filename}.pdf",
+      content_type: "application/pdf",
+    )
   end
 
   def industry_title

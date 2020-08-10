@@ -20,8 +20,8 @@ export const updateSelectedStandardPromise = (state, promise: Promise<any>) => {
   Vue.set(state, 'selectedStandardPromise', promise);
 };
 
-export const updateStandardsSearchOccupationId = (state, occupationId: number | undefined) => {
-  Vue.set(state, 'occupationId', occupationId);
+export const updateStandardsSearchOccupationTitle = (state, occupationTitle: string | undefined) => {
+  Vue.set(state, 'occupationTitle', occupationTitle);
 };
 
 export const resetPagination = (state) => {
@@ -43,4 +43,8 @@ export const updateDuplicateStandard = (state, duplicateStandard) => {
 
 export const updateDuplicateStandardLoading = (state, duplicateStandardLoading) => {
   Vue.set(state, 'duplicateStandardLoading', duplicateStandardLoading);
+};
+
+export const updateStandardsSearchPromise = (state, promise) => {
+  Vue.set(state, 'promise', promise);
 };

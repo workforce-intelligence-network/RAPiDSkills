@@ -20,6 +20,7 @@ class OccupationStandardPdf < Prawn::Document
       end
     end
 
+
     bounding_box([bounds.left, bounds.top - 50], width: bounds.width, height: bounds.height - 100) do
       text os.organization_title
       text os.occupation_title
@@ -28,38 +29,33 @@ class OccupationStandardPdf < Prawn::Document
 
       text "Work Processes", size: 16, style: :bold
       move_down 3
-      os.occupation_standard_work_processes.each do |oswp|
-
-        bounding_box([bounds.left + 18, cursor], width: bounds.width) do
-          font_size(14) do
-            text oswp.work_process.title
-          end
+      os.occupation_standard_work_processes.each do |oswp| 
+        font_size(14) do
+          text oswp.work_process.title
+        end
+        if oswp.hours.present?
           text "Hours: #{oswp.hours}"
+        end
 
-          if oswp.categories.any?
-            bounding_box([bounds.left + 18, cursor - 12], width: bounds.width - 20) do
-              oswp.categories.each do |category|
-                move_down 5
-                text category.name, size: 12, style: :bold
-                move_down 3
-                category.occupation_standard_skills.each do |oss|
-                  text oss.skill.description
-                  move_down 2
-                end
-              end
-              move_down 15
+        if oswp.categories.any?
+          oswp.categories.each do |category|
+            move_down 5
+            text category.name, size: 12, style: :bold
+            move_down 3
+            category.occupation_standard_skills.each do |oss|
+              text "- #{oss.skill.description}"
+              move_down 2
             end
-          elsif oswp.skills.any?
-            bounding_box([bounds.left + 18, cursor - 12], width: bounds.width - 20) do
-              text "Skills", size: 12, style: :bold
-              oswp.skills.each do |skill|
-                text skill.description
-                move_down 2
-              end
-            end
-            move_down 15
+          end
+          move_down 15
+        elsif oswp.skills.any?
+          text "Skills", size: 12, style: :bold
+          oswp.skills.each do |skill|
+            text "- #{skill.description}"
+            move_down 2
           end
         end
+        move_down 15
       end
 
       if os.occupation_standard_skills_with_no_work_process.any?
