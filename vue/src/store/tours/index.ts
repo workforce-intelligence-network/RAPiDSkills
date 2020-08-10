@@ -45,12 +45,14 @@ export default {
       tourId: TOUR_ID_STANDARDS,
       content: "Save work schedules you're interested in coming back to review later.",
       position: 'bottom-left',
+      loggedIn: true,
     },
     [TOUR_STEP_ID_STANDARDS_DUPLICATE]: {
       id: TOUR_STEP_ID_STANDARDS_DUPLICATE,
       tourId: TOUR_ID_STANDARDS,
       content: 'Copy work schedules you want to build on and customize for your needs.',
       position: 'bottom-right',
+      loggedIn: true,
     },
     [TOUR_STEP_ID_STANDARDS_HELP]: {
       id: TOUR_STEP_ID_STANDARDS_HELP,
@@ -75,12 +77,14 @@ export default {
       tourId: TOUR_ID_STANDARD,
       content: 'Want to customize this for your needs? Make a copy and get to work!',
       position: 'top-left',
+      loggedIn: true,
     },
     [TOUR_STEP_ID_STANDARD_DOWNLOAD]: {
       id: TOUR_STEP_ID_STANDARD_DOWNLOAD,
       tourId: TOUR_ID_STANDARD,
       content: 'Download the original source for this work schedule.',
       position: 'top-left',
+      loggedIn: true,
     },
     [TOUR_STEP_ID_STANDARD_HELP]: {
       id: TOUR_STEP_ID_STANDARD_HELP,

@@ -45,8 +45,14 @@ import _times from 'lodash/times';
 
 import { mapGetters, mapState } from 'vuex';
 
+import store from '@/store';
+
 import Standard from '@/components/Standard.vue';
 import Loading from '@/components/Loading.vue';
+
+import {
+  TOUR_ID_STANDARDS,
+} from '@/store/tours';
 
 export default {
   name: 'dashboard',
@@ -61,6 +67,15 @@ export default {
     loadMoreStandards() {
       (this as any).$store.dispatch('standards/fetchStandards');
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    store.dispatch('standards/fetchStandards');
+    store.dispatch('tours/continueTour', TOUR_ID_STANDARDS);
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    store.dispatch('standards/fetchStandards');
+    next();
   },
   computed: {
     ...mapGetters({
