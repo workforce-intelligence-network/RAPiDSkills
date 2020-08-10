@@ -22,13 +22,22 @@ export const fetchStandards = async (
     commit('updateStandardsSearchOccupationTitle', occupationTitle);
     commit('updateStandardsSearchLoading', true);
 
-    const { meta, model } = await OccupationStandard.getAll({
+    const promise = OccupationStandard.getAll({
       q: occupationTitle,
       page: {
         number: state.page,
         size: state.pageSize,
       },
     });
+
+    commit('updateStandardsSearchPromise', promise);
+
+    const { meta, model } = await promise;
+
+    // If this isn't the most current fetch, don't use anything from it. Alternative to a cancelable promise
+    if (state.promise !== promise) {
+      return;
+    }
 
     commit('updateStandardsSearchList', state.page <= 1 ? model : state.list.concat(model));
 

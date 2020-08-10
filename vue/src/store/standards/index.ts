@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state: {
     list: [],
+    promise: undefined,
     loading: false,
     query: '',
     page: 1,

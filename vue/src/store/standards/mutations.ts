@@ -44,3 +44,7 @@ export const updateDuplicateStandard = (state, duplicateStandard) => {
 export const updateDuplicateStandardLoading = (state, duplicateStandardLoading) => {
   Vue.set(state, 'duplicateStandardLoading', duplicateStandardLoading);
 };
+
+export const updateStandardsSearchPromise = (state, promise) => {
+  Vue.set(state, 'promise', promise);
+};
