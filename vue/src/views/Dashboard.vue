@@ -35,6 +35,12 @@
       <div class="page--dashboard__state--empty__button button button--link" @click="clearSelectedOccupation" v-if="selectedOccupation">
         Clear selected occupation
       </div>
+      <div class="page--dashboard__state--empty__contact">
+        If you know of organizations that might want to contribute this work schedule or others, please <a href="mailto:info@rapidskillsgenerator.org">contact us</a> to help fill this gap.
+      </div>
+      <div class="page--dashboard__state--empty__contact">
+        You can also try reviewing past work schedules in <a target="_blank" href="https://www.dropbox.com/sh/r6uucemwyhnywdn/AABYZ2Fi_nH1S9m7W8C2uL0xa">DOL's Dropbox.</a>
+      </div>
     </div>
     <router-view />
   </div>
@@ -135,5 +141,13 @@ export default {
   align-items: center;
   width: 100%;
   height: 8em;
+}
+
+.page--dashboard__state--empty__contact {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  max-width: 35rem;
+  margin: 0 auto;
+  margin-top: 1.5rem;
 }
 </style>
