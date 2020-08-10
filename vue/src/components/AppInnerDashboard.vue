@@ -72,7 +72,9 @@
       </router-link>
       <a class="app__inner--dashboard__nav--left__link" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us/sections/360009797231-Work-process-schedules-explained">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text">?</span>
+          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon">
+            <FontAwesomeIcon :icon="['fas', 'info']" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--info" />
+          </span>
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
@@ -82,7 +84,9 @@
       </a>
       <a class="app__inner--dashboard__nav--left__link" target="_blank" href="https://rapidskillsgenerator.zendesk.com/hc/en-us">
         <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper">
-          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--text">?</span>
+          <span class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon">
+            <FontAwesomeIcon :icon="['fas', 'question-circle']" class="app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--fa" />
+          </span>
         </span>
         <span class="app__inner--dashboard__nav--left__link__name">
           <span class="app__inner--dashboard__nav--left__link__name__text">
@@ -447,5 +451,10 @@ export default class AppInnerDashboard extends Vue {
   background: $color-white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
+}
+
+.app__inner--dashboard__nav--left__link--icon__icon-wrapper__icon--info {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 </style>
