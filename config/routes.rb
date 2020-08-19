@@ -69,6 +69,8 @@ Rails.application.routes.draw do
         resources :occupation_standards, only: [:index], controller: "users/occupation_standards"
       end
 
+      resources :passwords, only: [:create, :update], controller: "passwords"
+
       resources :client_sessions, path: "sessions", only: [:create, :destroy, :show], controller: "sessions" do
         member do
           get "relationships/user", to: "sessions/relationships#user"
