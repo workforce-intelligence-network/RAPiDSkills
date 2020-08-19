@@ -1,4 +1,4 @@
-class API::V1::SessionsController < API::V1::APIController
+class API::V1::PasswordsController < API::V1::APIController
   skip_before_action :authenticate, only: :create
   before_action :set_client_session, only: :show
 
