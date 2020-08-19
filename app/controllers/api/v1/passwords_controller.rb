@@ -11,9 +11,9 @@ class API::V1::PasswordsController < API::V1::APIController
   def update
     @user = User.find_by(reset_password_token: update_params[:reset_password_token])
     if @user.update(update_params)
-      render_resource
+      render json: { detail: "Password updated!" }, status: 200
     else
-      render_resource_error(@user)
+      render json: { detail: "Password not updated!" }, status: 400
     end
   end
 
