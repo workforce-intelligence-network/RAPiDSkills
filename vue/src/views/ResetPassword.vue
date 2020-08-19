@@ -32,6 +32,8 @@ import {
 
 import Session, { VALIDATION_GROUP_NAME_RESET } from '@/models/Session';
 
+import { apiRaw } from '@/utilities/api';
+
 const validatorOptions: ValidatorOptions = {
   groups: [VALIDATION_GROUP_NAME_RESET],
   whitelist: true,
@@ -63,10 +65,20 @@ export default class ResetPassword extends Vue {
 
   async submit() {
     try {
-      await this.session.save();
-      this.$router.push({ name: 'standards' }); // TODO: define a "go to home" method?
+      await apiRaw.patch(`/passwords/${this.$route.query.token}`, {
+        data: {
+          type: 'passwords',
+          attributes: {
+            reset_password_token: this.$route.query.token,
+            password: this.session.password,
+            password_confirmation: this.session.passwordConfirmation,
+          },
+        },
+      });
+
+      this.$router.push({ name: 'login', query: { reset: 'successful' } });
     } catch (e) {
-      this.submitError = this.session.valid;
+      this.submitError = true;
     }
   }
 

@@ -28,6 +28,8 @@ import {
 
 import User, { VALIDATION_GROUP_NAME_FORGOT } from '@/models/User';
 
+import { apiRaw } from '@/utilities/api';
+
 const validatorOptions: ValidatorOptions = {
   groups: [VALIDATION_GROUP_NAME_FORGOT],
 };
@@ -56,10 +58,18 @@ export default class ForgotPassword extends Vue {
 
   async submit() {
     try {
-      await this.user.save();
+      await apiRaw.post('/passwords', {
+        data: {
+          type: 'passwords',
+          attributes: {
+            email: this.user.email,
+          },
+        },
+      });
+
       this.successful = true;
     } catch (e) {
-      this.submitError = this.user.valid;
+      this.submitError = true;
     }
   }
 

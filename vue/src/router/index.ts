@@ -91,7 +91,7 @@ const routes = [
             return next({ name: 'standards' }); // TODO: go home method?
           }
 
-          if (!_get(to, 'query.resetToken')) {
+          if (!_get(to, 'query.token')) {
             return next({ name: 'login' });
           }
 
