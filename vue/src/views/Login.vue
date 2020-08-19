@@ -12,10 +12,11 @@
           <label for="password" class="input__label page--login__form__inputs__input__label">Password</label>
           <input type="password" id="password" name="password" :placeholder="passwordPlaceholder" class="input__input page--login__form__inputs__input__input" v-model="session.password" />
         </div>
-        <!-- <div>
+        <div>
           <router-link class="page--login__form__inputs__link--forgot-password" :to="{ name: 'forgot' }" v-html="forgotPasswordText" />
-        </div> -->
+        </div>
         <div class="page--login__form__inputs__error" v-if="submitError" v-html="errorMessage" />
+        <div class="page--login__form__inputs__reset" v-if="resetSuccessful" v-html="resetSuccessfulMessage" />
         <button type="submit" class="button button--inverted page--login__form__inputs__button--submit" :disabled="session.loading">
           {{ submitButtonText }}
         </button>
@@ -55,6 +56,8 @@ export default class Login extends Vue {
 
   errorMessage: string = 'Incorrect email or password, please try again.'
 
+  resetSuccessfulMessage: string = 'Password successfully reset.'
+
   forgotPasswordText: string = 'Forgot your password?'
 
   sessionPropertyInvalid(property: string) {
@@ -72,6 +75,10 @@ export default class Login extends Vue {
 
   get submitButtonText(): string {
     return this.session.loading ? 'Submitting...' : 'Submit';
+  }
+
+  get resetSuccessful() {
+    return this.$route.query.reset === 'successful';
   }
 }
 </script>
@@ -139,6 +146,12 @@ export default class Login extends Vue {
 .page--login__form__inputs__error {
   padding-top: .5rem;
   color: $color-salmon;
+  font-weight: 700;
+}
+
+.page--login__form__inputs__reset {
+  padding-top: .5rem;
+  color: $color-white;
   font-weight: 700;
 }
 
