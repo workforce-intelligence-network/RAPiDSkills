@@ -1,5 +1,5 @@
 class API::V1::PasswordsController < API::V1::APIController
-  skip_before_action :authenticate, only: :create
+  skip_before_action :authenticate
   before_action :set_client_session, only: :show
 
   def create
