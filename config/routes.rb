@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Helpers for vue routes
   get '/signup' => "vuejs#index", as: 'new_registration'
   get '/logins' => "vuejs#index", as: 'new_session'
+  get '/reset' => "vuejs#index", as: 'edit_password'
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
