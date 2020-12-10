@@ -48,8 +48,31 @@
       </div>
     </div>
     <div class="standard__work-process__skills" v-if="expanded">
+      <div class="standard__work-process__skills__inputs" v-if="editing">
+        <div
+          class="input standard__work-process__skills__inputs__input"
+          :class="{ 'input--error': workProcess.propertyInvalid('hours') }"
+          v-if="selectedStandard.isTimeStandard || selectedStandard.isHybridStandard"
+        >
+          <label for="hours" class="input__label">Hours</label>
+          <input
+            type="number"
+            id="hours"
+            name="hours"
+            placeholder="Hours"
+            class="input__input standard__work-process__skills__inputs__input__input"
+            v-model.number="workProcess.hours"
+            @input="onInput"
+          />
+        </div>
+      </div>
       <div class="standard__work-process__skills__actions" v-if="editing">
-        <button role="button" class="button button--square button--alternative standard__work-process__skills__actions__action" @click="addSkill" :disabled="addNewWorkProcessSkillDisabled">
+        <button
+          role="button"
+          class="button button--square button--alternative standard__work-process__skills__actions__action"
+          @click="addSkill" :disabled="addNewWorkProcessSkillDisabled"
+          v-if="!selectedStandard.isTimeStandard"
+        >
           <img :src="ICON_PLUS_BLUE" alt="New Skill plus icon" class="standard__work-process__skills__actions__action__icon" />
           <span>New Skill</span>
         </button>
@@ -187,8 +210,12 @@ export default class StandardWorkProcess extends Vue {
     return !this.workProcess.synced || (this.workProcess.skills[0] && this.workProcess.skills[0].invalid);
   }
 
+  protected get selectedStandard(): OccupationStandard {
+    return this.$store.state.standards.selectedStandard || {} as OccupationStandard;
+  }
+
   protected get workProcess(): WorkProcess {
-    return ((this.$store.state.standards.selectedStandard || {} as OccupationStandard).workProcesses || [])[this.workProcessIndex] || {};
+    return (this.selectedStandard.workProcesses || [])[this.workProcessIndex] || {} as WorkProcess;
   }
 }
 </script>
@@ -301,6 +328,12 @@ export default class StandardWorkProcess extends Vue {
 .standard__work-process__wrapper__vertical-group__input,
 .standard__work-process__wrapper__vertical-group__input__input {
   width: 100%;
+}
+
+.standard__work-process__skills__inputs {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem .5rem;
 }
 
 .standard__work-process__skills__actions {

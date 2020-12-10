@@ -148,3 +148,25 @@ Individual specs can also be run by specifying the line number:
 ```
 $ docker-compose exec web rspec spec/models/user_spec.rb:4 -fd
 ```
+
+## Certificate Management
+
+These should be managed automatically by Heroku: https://devcenter.heroku.com/articles/automated-certificate-management. However, if they expire, you can run the following:
+
+```
+$ heroku certs:auto:enable
+```
+
+To see the current status of certs, run:
+
+```
+$ heroku certs
+
+patricks-mbp:RAPiDSkills patrickcushing$ heroku certs
+Name                Common Name(s)                Expires               Trusted  Type
+──────────────────  ────────────────────────────  ────────────────────  ───────  ────
+triceratops-36981   rapidskillsgenerator.org      2021-02-18 01:37 UTC  True     ACM
+tyrannosaurs-86057  www.rapidskillsgenerator.org  2021-03-10 16:05 UTC  True     ACM
+```
+
+It's probably a good idea to check that these renew automatically on the next renewal date in February.
