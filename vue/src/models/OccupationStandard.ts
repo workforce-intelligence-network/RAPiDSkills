@@ -24,6 +24,12 @@ import User from '@/models/User';
 
 import LOGO_DEFAULT from '@/assets/default-standard-logo-alt.png';
 
+const OCCUPATION_KINDS = {
+  COMPETENCY: 'competency',
+  HYBRID: 'hybrid',
+  TIME: 'time',
+};
+
 export default class OccupationStandard extends ModelBase {
   constructor(standard: Partial<OccupationStandard> = {}) {
     super(standard);
@@ -143,6 +149,18 @@ export default class OccupationStandard extends ModelBase {
   hoursCount: number
 
   parentOccupationStandard: OccupationStandard | undefined
+
+  get isCompetencyStandard(): boolean {
+    return (this.occupationKind || '').toLowerCase() === OCCUPATION_KINDS.COMPETENCY;
+  }
+
+  get isHybridStandard(): boolean {
+    return (this.occupationKind || '').toLowerCase() === OCCUPATION_KINDS.HYBRID;
+  }
+
+  get isTimeStandard(): boolean {
+    return (this.occupationKind || '').toLowerCase() === OCCUPATION_KINDS.TIME;
+  }
 
   get totalNumberOfSkills() {
     return this.skills.length + this.workProcesses.reduce(

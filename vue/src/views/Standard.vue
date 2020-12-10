@@ -108,9 +108,9 @@
       <div class="page--standard__body__actions" v-if="editing">
         <div class="page--standard__body__actions__action">
           <button role="button" class="button button--square button--alternative" @click="addNewWorkProcess" :disabled="addNewWorkProcessDisabled">
-            <img :src="ICON_PLUS_BLUE" alt="New Work Process plus icon" class="page--standard__body__actions__action__icon" />
+            <img :src="ICON_PLUS_BLUE" alt="New Work Category plus icon" class="page--standard__body__actions__action__icon" />
             <span>
-              New Work Process
+              New Work Category
             </span>
           </button>
         </div>
