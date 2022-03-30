@@ -15,7 +15,7 @@ gem 'pg'
 
 # Web server
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.3'
 
 # Frontend
 gem 'sass-rails', '~> 5'
